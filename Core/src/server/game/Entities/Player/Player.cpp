@@ -1820,7 +1820,8 @@ void Player::RegenerateAll()
         m_holyPowerRegenTimerCount += m_regenTimer;
 
     if (getClass() == CLASS_HUNTER)
-        m_focusRegenTimerCount += m_regenTimer;
+		//m_focusRegenTimerCount += m_regenTimer;
+		m_focusRegenTimerCount += m_regenTimer*2;//STITCH regen focus chasseur
 
     Regenerate(POWER_ENERGY);
     Regenerate(POWER_MANA);
