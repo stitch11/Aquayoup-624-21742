@@ -1340,7 +1340,7 @@ void AddSC_shaman_spell_scripts()
     new spell_sha_nature_guardian();
     new spell_sha_thunderstorm();
     new spell_sha_tidal_waves();
-	new spell_sha_earthbind_totem();	//
-	new spell_sha_earthen_power();		//
+//	new spell_sha_earthbind_totem();	//
+//	new spell_sha_earthen_power();		//
 }
 

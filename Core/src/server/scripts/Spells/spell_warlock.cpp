@@ -1437,31 +1437,31 @@ class spell_warl_unstable_affliction : public SpellScriptLoader
 void AddSC_warlock_spell_scripts()
 {
 //    new spell_warl_aftermath();
-    new spell_warl_bane_of_doom();
+//    new spell_warl_bane_of_doom();
     new spell_warl_banish();
     new spell_warl_conflagrate();
     new spell_warl_create_healthstone();
     new spell_warl_demonic_circle_summon();
     new spell_warl_demonic_circle_teleport();
 //    new spell_warl_demonic_empowerment();
-    new spell_warl_demon_soul();
+//    new spell_warl_demon_soul();
     new spell_warl_devour_magic();
 //    new spell_warl_everlasting_affliction();
     //new spell_warl_fel_flame();
 //    new spell_warl_fel_synergy();
 //    new spell_warl_glyph_of_shadowflame();
-    new spell_warl_haunt();
+//    new spell_warl_haunt();
     new spell_warl_health_funnel();
     new spell_warl_healthstone_heal();
 //    new spell_warl_improved_soul_fire();
     //new spell_warl_life_tap();
 //    new spell_warl_nether_ward_overrride();
-    new spell_warl_seduction();
+//    new spell_warl_seduction();
     new spell_warl_seed_of_corruption();
     new spell_warl_shadow_trance_proc();
     new spell_warl_shadow_ward();
 //    new spell_warl_soul_leech();
-    new spell_warl_soul_swap();
+//    new spell_warl_soul_swap();
     new spell_warl_soul_swap_dot_marker();
     new spell_warl_soul_swap_exhale();
     new spell_warl_soul_swap_override();

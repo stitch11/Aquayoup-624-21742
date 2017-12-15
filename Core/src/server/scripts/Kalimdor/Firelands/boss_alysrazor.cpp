@@ -700,5 +700,5 @@ void AddSC_boss_alysrazor()
     new spell_alysrazor_cosmetic_egg_xplosion();
     new spell_alysrazor_turn_monstrosity();
     new spell_alysrazor_aggro_closest();
-    new spell_alysrazor_fieroblast();
+//    new spell_alysrazor_fieroblast();
 }

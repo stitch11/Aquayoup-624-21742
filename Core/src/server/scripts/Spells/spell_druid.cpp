@@ -1211,11 +1211,11 @@ void AddSC_druid_spell_scripts()
     new spell_dru_eclipse_energize();
 //    new spell_dru_glyph_of_innervate();
 //    new spell_dru_glyph_of_starfire();
-    new spell_dru_glyph_of_starfire_proc();
+//    new spell_dru_glyph_of_starfire_proc();
 //    new spell_dru_idol_lifebloom();
 //    new spell_dru_innervate();
 //    new spell_dru_insect_swarm();
-    new spell_dru_lifebloom();
+//   new spell_dru_lifebloom();
 //    new spell_dru_living_seed();
     new spell_dru_living_seed_proc();
 //    new spell_dru_predatory_strikes();

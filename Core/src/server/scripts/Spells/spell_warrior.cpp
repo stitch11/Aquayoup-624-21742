@@ -1066,13 +1066,13 @@ public:
 void AddSC_warrior_spell_scripts()
 {
     new spell_warr_bloodthirst();
-    new spell_warr_charge();
+//    new spell_warr_charge();
 //    new spell_warr_concussion_blow();
     new spell_warr_execute();
 //    new spell_warr_improved_spell_reflection();
     new spell_warr_intimidating_shout();
 //    new spell_warr_lambs_to_the_slaughter();
-    new spell_warr_last_stand();
+//    new spell_warr_last_stand();
 //    new spell_warr_overpower();
     new spell_warr_rallying_cry();
     new spell_warr_rend();
@@ -1080,7 +1080,7 @@ void AddSC_warrior_spell_scripts()
 //    new spell_warr_second_wind_proc();
 //    new spell_warr_second_wind_trigger();
     new spell_warr_shattering_throw();
-    new spell_warr_slam();
+//    new spell_warr_slam();
     new spell_warr_sudden_death();
     new spell_warr_sweeping_strikes();
 //    new spell_warr_sword_and_board();

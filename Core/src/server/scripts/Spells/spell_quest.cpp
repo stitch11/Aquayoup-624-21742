@@ -2612,7 +2612,7 @@ void AddSC_quest_spell_scripts()
     new spell_q12919_gymers_throw();
     new spell_q13400_illidan_kill_master();
     new spell_q14100_q14111_make_player_destroy_totems();
-    new spell_q10929_fumping();
+//    new spell_q10929_fumping();
     new spell_q28813_get_our_boys_back_dummy();
     new spell_q28813_set_health_random();
     new spell_q12414_hand_over_reins();

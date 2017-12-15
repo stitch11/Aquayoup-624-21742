@@ -4413,7 +4413,7 @@ void AddSC_generic_spell_scripts()
     new spell_gen_creature_permanent_feign_death();
     new spell_gen_dalaran_disguise("spell_gen_sunreaver_disguise");
     new spell_gen_dalaran_disguise("spell_gen_silver_covenant_disguise");
-    new spell_gen_defend();
+//    new spell_gen_defend();
     new spell_gen_despawn_self();
     new spell_gen_divine_storm_cd_reset();
 //    new spell_gen_ds_flush_knockback();
@@ -4453,7 +4453,7 @@ void AddSC_generic_spell_scripts()
     new spell_gen_two_forms();
     new spell_gen_darkflight();
     /*                          */
-    new spell_gen_seaforium_blast();
+//    new spell_gen_seaforium_blast();
     new spell_gen_spectator_cheer_trigger();
     new spell_gen_spirit_healer_res();
     new spell_gen_summon_elemental("spell_gen_summon_fire_elemental", SPELL_SUMMON_FIRE_ELEMENTAL);

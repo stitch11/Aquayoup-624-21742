@@ -1013,8 +1013,8 @@ class spell_hun_tnt : public SpellScriptLoader
 void AddSC_hunter_spell_scripts()
 {
     new spell_hun_ancient_hysteria();
-    new spell_hun_chimera_shot();
-    new spell_hun_cobra_shot();
+//    new spell_hun_chimera_shot();
+//    new spell_hun_cobra_shot();
     new spell_hun_disengage();
 //    new spell_hun_improved_mend_pet();
 //    new spell_hun_invigoration();

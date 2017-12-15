@@ -1499,11 +1499,11 @@ void AddSC_mage_spell_scripts()
 //    new spell_mage_master_of_elements();
 //    new spell_mage_nether_vortex();
 //    new spell_mage_permafrost();
-    new spell_mage_polymorph();
+//    new spell_mage_polymorph();
     new spell_mage_polymorph_cast_visual();
 //    new spell_mage_replenish_mana();
 //    new spell_mage_ring_of_frost();
-    new spell_mage_ring_of_frost_freeze();
+//    new spell_mage_ring_of_frost_freeze();
     new spell_mage_time_warp();
     new spell_mage_water_elemental_freeze();
 }

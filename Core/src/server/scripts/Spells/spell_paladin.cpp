@@ -1218,10 +1218,10 @@ void AddSC_paladin_spell_scripts()
 {
     //new spell_pal_ardent_defender();
     new spell_pal_aura_mastery();
-    new spell_pal_aura_mastery_immune();
-    new spell_pal_avenging_wrath();
+//    new spell_pal_aura_mastery_immune();
+//    new spell_pal_avenging_wrath();
     new spell_pal_blessing_of_faith();
-    new spell_pal_divine_storm();
+//    new spell_pal_divine_storm();
 //    new spell_pal_divine_storm_dummy();
 //    new spell_pal_exorcism_and_holy_wrath_damage();
 //    new spell_pal_eye_for_an_eye();
@@ -1233,12 +1233,12 @@ void AddSC_paladin_spell_scripts()
 //    new spell_pal_improved_aura_effect("spell_pal_improved_devotion_aura_effect");
 //    new spell_pal_improved_aura_effect("spell_pal_sanctified_retribution_effect");
     new spell_pal_item_healing_discount();
-    new spell_pal_judgement();
-    new spell_pal_lay_on_hands();
+//    new spell_pal_judgement();
+//    new spell_pal_lay_on_hands();
 //    new spell_pal_light_s_beacon();
     new spell_pal_righteous_defense();
 //    new spell_pal_sacred_shield();
     new spell_pal_shield_of_the_righteous();
     new spell_pal_templar_s_verdict();
-    new spell_pal_seal_of_righteousness();
+//    new spell_pal_seal_of_righteousness();
 }

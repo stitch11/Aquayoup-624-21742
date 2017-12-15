@@ -1245,7 +1245,7 @@ void AddSC_priest_spell_scripts()
 {
 //    new spell_pri_body_and_soul();
     new spell_pri_circle_of_healing();
-    new spell_pri_dispel_magic();
+//    new spell_pri_dispel_magic();
 //    new spell_pri_divine_aegis();
     new spell_pri_divine_hymn();
 //    new spell_pri_glyph_of_prayer_of_healing();
@@ -1261,12 +1261,12 @@ void AddSC_priest_spell_scripts()
 //    new spell_pri_pain_and_suffering_proc();
     new spell_pri_penance();
 //    new spell_pri_phantasm();
-    new spell_pri_power_word_shield();
+//    new spell_pri_power_word_shield();
     new spell_pri_prayer_of_mending_heal();
-    new spell_pri_renew();
+//    new spell_pri_renew();
     new spell_pri_shadow_word_death();
     new spell_pri_shadowform();
     new spell_pri_vampiric_embrace();
     new spell_pri_vampiric_embrace_target();
-    new spell_pri_vampiric_touch();
+//    new spell_pri_vampiric_touch();
 }
