@@ -144,6 +144,7 @@ extern int main(int argc, char** argv)
 	TC_LOG_INFO("server.worldserver", "xx * Toutes les Classes pour toutes les Races                            xx");
 	TC_LOG_INFO("server.worldserver", "xx * Creature equipé au spawn , Regen , etc            	                xx");
 	TC_LOG_INFO("server.worldserver", "xx * Rez sur le lieu de sa mort si pas de cim - Temp de rez réduit       xx");
+	TC_LOG_INFO("server.worldserver", "xx * Solocraft adapte les stats aux instances suivant le nbr de joueurs  xx");
 	TC_LOG_INFO("server.worldserver", "xx * Divers maj & debugs                                                 xx");
 	TC_LOG_INFO("server.worldserver", "xx * Un grand Merci a Noc & Scade pour leurs aides                       xx");
     TC_LOG_INFO("server.worldserver", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
