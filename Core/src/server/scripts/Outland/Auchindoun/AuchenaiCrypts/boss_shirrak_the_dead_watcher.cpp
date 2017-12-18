@@ -67,7 +67,7 @@ public:
 
         void Initialize()
         {
-            Inhibitmagic_Timer = 20000;
+            Inhibitmagic_Timer = 0;
             Attractmagic_Timer = 28000;
             Carnivorousbite_Timer = 10000;
             FocusFire_Timer = 17000;
