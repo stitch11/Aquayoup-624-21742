@@ -182,7 +182,7 @@ class spell_broggok_poison_cloud : public SpellScriptLoader
 
 void AddSC_boss_broggok()
 {
-    new boss_broggok();
+//    new boss_broggok();
     new go_broggok_lever();
     new spell_broggok_poison_cloud();
 }

@@ -68,9 +68,9 @@ public:
  
 		void Initialize()
         {
-            Inhibitmagic_Timer = 20000;
+            Inhibitmagic_Timer = 0;
             Attractmagic_Timer = 28000;
-            Carnivorousbite_Timer = 10000;
+            Carnivorousbite_Timer = 5000;
             FocusFire_Timer = 17000;
             FocusedTargetGUID.Clear();
         }
@@ -124,7 +124,7 @@ public:
                             if (dist < 15)
                                 me->AddAura(SPELL_INHIBITMAGIC, i_pl);
                         }
-                Inhibitmagic_Timer = 3000 + (rand32() % 1000);
+                Inhibitmagic_Timer = 15000 + (rand32() % 1000);
             } else Inhibitmagic_Timer -= diff;
 
             //Return since we have no target
@@ -143,7 +143,7 @@ public:
             if (Carnivorousbite_Timer <= diff)
             {
                 DoCast(me, SPELL_CARNIVOROUSBITE);
-                Carnivorousbite_Timer = 10000;
+                Carnivorousbite_Timer = 5000;
             } else Carnivorousbite_Timer -= diff;
 
             //FocusFire_Timer

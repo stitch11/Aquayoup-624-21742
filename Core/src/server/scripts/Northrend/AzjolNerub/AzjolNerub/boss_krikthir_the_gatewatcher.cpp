@@ -673,7 +673,7 @@ void AddSC_boss_krik_thir()
     new npc_skittering_infector();
     new npc_anub_ar_skirmisher();
     new npc_anub_ar_shadowcaster();
-    new npc_watcher_gashra();
+//    new npc_watcher_gashra();
     new npc_anub_ar_warrior();
     new npc_watcher_silthik();
     new npc_watcher_narjil();

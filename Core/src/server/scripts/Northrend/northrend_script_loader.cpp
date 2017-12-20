@@ -291,7 +291,7 @@ void AddNorthrendScripts()
     AddSC_boss_hodir();
     AddSC_boss_freya();
     AddSC_boss_yogg_saron();
-    AddSC_boss_algalon_the_observer();
+//    AddSC_boss_algalon_the_observer();
     AddSC_instance_ulduar();
 
     // Utgarde Keep - Utgarde Keep
