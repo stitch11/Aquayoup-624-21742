@@ -82,11 +82,7 @@ private:
 */
 			player->HandleStatModifier(UnitMods(UNIT_MOD_MANA), TOTAL_PCT, float(difficulty * 75), true);// Total mana
 			player->HandleStatModifier(UnitMods(UNIT_MOD_HEALTH), TOTAL_PCT, float(difficulty * 75), true);
-//			player->HandleStatModifier(UnitMods(UNIT_MOD_ATTACK_POWER), TOTAL_PCT, float(difficulty * 25), true); //  certains spells , n'ameliore pas les heal
 
-			
-//			player->HandleStatModifier(UnitMods(UNIT_MOD_ATTACK_POWER_RANGED), TOTAL_PCT, float(difficulty * 25), true);
-//			player->RemoveAura(300047); // pour risque de doublon
 			player->RemoveAurasDueToSpell(300047);// pour risque de doublon , retire toutes les auras 300047
 			player->AddAura(300047, player);
 
@@ -121,7 +117,7 @@ private:
 
 			player->HandleStatModifier(UnitMods(UNIT_MOD_MANA), TOTAL_PCT, float(difficulty * 75), false);
 			player->HandleStatModifier(UnitMods(UNIT_MOD_HEALTH), TOTAL_PCT, float(difficulty * 75), false);
-			player->RemoveAura(300047);
+			player->RemoveAurasDueToSpell(300047);// pour risque de doublon , retire toutes les auras 300047
 
 		}
 	}
