@@ -694,7 +694,7 @@ void AddSC_terokkar_forest()
     new npc_floon();
     new npc_isla_starmane();
     new go_skull_pile();
-    new npc_skywing();
+//    new npc_skywing();
     new npc_slim();
     new npc_akuno();
 }
