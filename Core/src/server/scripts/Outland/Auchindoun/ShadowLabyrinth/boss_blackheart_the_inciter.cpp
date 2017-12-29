@@ -29,8 +29,8 @@ Category: Auchindoun, Shadow Labyrinth
 
 enum BlackheartTheInciter
 {
-    SPELL_INCITE_CHAOS      = 33676,
-    SPELL_INCITE_CHAOS_B    = 33684,                         //debuff applied to each member of party
+	SPELL_INCITE_CHAOS = 14100,// 33676 remplacé par peur
+	SPELL_INCITE_CHAOS_B = 589, //debuff applied to each member of party - 33684 remplacé par Mot de l’ombre : Douleur
     SPELL_CHARGE            = 33709,
     SPELL_WAR_STOMP         = 33707,
 
