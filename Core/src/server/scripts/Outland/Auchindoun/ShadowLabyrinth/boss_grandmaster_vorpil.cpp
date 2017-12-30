@@ -197,10 +197,10 @@ class boss_grandmaster_vorpil : public CreatureScript
                             }
                         case EVENT_SUMMON_TRAVELER:
                             spawnVoidTraveler();
-                            events.ScheduleEvent(EVENT_SUMMON_TRAVELER, 10000);
+                            events.ScheduleEvent(EVENT_SUMMON_TRAVELER, 20000);
                             // enrage at 20%
                             if (HealthBelowPct(20))
-                                events.ScheduleEvent(EVENT_SUMMON_TRAVELER, 5000);
+                                events.ScheduleEvent(EVENT_SUMMON_TRAVELER, 10000);
                             break;
                     }
                 }
