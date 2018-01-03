@@ -276,7 +276,8 @@ float Player::GetHealthBonusFromStamina()
 
     float stamina = GetStat(STAT_STAMINA);
 
-    return stamina * ratio;
+//    return stamina * ratio;
+	return stamina * (ratio*0.75); // STITCH item rate bonus PV
 }
 
 void Player::UpdateMaxHealth()
