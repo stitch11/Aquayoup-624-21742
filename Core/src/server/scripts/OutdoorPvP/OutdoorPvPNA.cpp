@@ -632,5 +632,5 @@ class OutdoorPvP_nagrand : public OutdoorPvPScript
 
 void AddSC_outdoorpvp_na()
 {
-    new OutdoorPvP_nagrand();
+//    new OutdoorPvP_nagrand();
 }
