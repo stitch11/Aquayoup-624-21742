@@ -79,7 +79,7 @@ public:
         {
             ground = me->GetMap()->GetHeight(me->GetPositionX(), me->GetPositionY(), me->GetPositionZMinusOffset());
             SummonInfernal();
-            events.ScheduleEvent(EVENT_CAST_SUMMON_INFERNAL, urand(1000, 3000));
+            events.ScheduleEvent(EVENT_CAST_SUMMON_INFERNAL, urand(500, 1500));
         }
 
         void SetData(uint32 id, uint32 data) override
