@@ -56,7 +56,7 @@ enum InvisInfernalCaster
 {
     EVENT_CAST_SUMMON_INFERNAL = 1,
     NPC_INFERNAL_ATTACKER      = 21419,
-    MODEL_INVISIBLE            = 20577,
+	MODEL_INVISIBLE			= 17312,// supression invisibilitée INFERNAL vallée d'ombrelune 20577
     MODEL_INFERNAL             = 17312,
     SPELL_SUMMON_INFERNAL      = 37277,
     TYPE_INFERNAL              = 1,
