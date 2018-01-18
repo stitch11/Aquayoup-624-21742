@@ -1295,7 +1295,7 @@ void AuraEffect::HandleShapeshiftBoosts(Unit* target, bool apply) const
             spellId = 21156;
             break;
         case FORM_DEFENSIVE_STANCE:
-            spellId = 7376;
+            spellId = 71; // org 7376
             break;
         case FORM_BERSERKER_STANCE:
             spellId = 7381;
