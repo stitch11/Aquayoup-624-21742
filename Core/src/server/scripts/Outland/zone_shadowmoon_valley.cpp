@@ -1697,7 +1697,7 @@ public:
 void AddSC_shadowmoon_valley()
 {
 //    new npc_invis_infernal_caster();
-    new npc_infernal_attacker();
+//    new npc_infernal_attacker();
     new npc_mature_netherwing_drake();
     new npc_enslaved_netherwing_drake();
     new npc_dragonmaw_peon();
