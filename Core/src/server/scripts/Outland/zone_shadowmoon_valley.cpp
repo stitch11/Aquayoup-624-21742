@@ -1492,7 +1492,7 @@ enum Enraged_Dpirits
 
     // Totem
     ENTRY_TOTEM_OF_SPIRITS                  = 21071,
-    RADIUS_TOTEM_OF_SPIRITS                 = 15,
+    RADIUS_TOTEM_OF_SPIRITS                 = 50,//15
 
     // SPIRITS
     NPC_ENRAGED_EARTH_SPIRIT                = 21050,
