@@ -79,7 +79,7 @@ public:
         {
             ground = me->GetMap()->GetHeight(me->GetPositionX(), me->GetPositionY(), me->GetPositionZMinusOffset());
             SummonInfernal();
-            events.ScheduleEvent(EVENT_CAST_SUMMON_INFERNAL, urand(500, 1500));
+            events.ScheduleEvent(EVENT_CAST_SUMMON_INFERNAL, urand(1000, 3000));
         }
 
         void SetData(uint32 id, uint32 data) override
@@ -1696,7 +1696,7 @@ public:
 
 void AddSC_shadowmoon_valley()
 {
-    new npc_invis_infernal_caster();
+//    new npc_invis_infernal_caster();
     new npc_infernal_attacker();
     new npc_mature_netherwing_drake();
     new npc_enslaved_netherwing_drake();
