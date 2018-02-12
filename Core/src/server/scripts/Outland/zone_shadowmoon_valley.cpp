@@ -288,6 +288,8 @@ public:
 
                                 me->GetMotionMaster()->MoveIdle();
                                 me->StopMoving();
+								
+								me->DespawnOrUnsummon(20000); //stitch - despawn drake quete 10804 " Un peu de gentillesse "
 
                                 me->GetMotionMaster()->MovePoint(POINT_ID, go->GetPositionX(), go->GetPositionY(), go->GetPositionZ());
                             }
