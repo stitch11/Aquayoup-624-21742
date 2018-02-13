@@ -398,6 +398,8 @@ public:
                 me->setFaction(FACTION_FRIENDLY);
                 DoCast(caster, SPELL_FORCE_OF_NELTHARAKU, true);
 
+				me->DespawnOrUnsummon(20000); //stitch - despawn drake quete 10854 " La force de Neltharaku "
+
                 Unit* Dragonmaw = me->FindNearestCreature(NPC_DRAGONMAW_SUBJUGATOR, 50);
                 if (Dragonmaw)
                 {
