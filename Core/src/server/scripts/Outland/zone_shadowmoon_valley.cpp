@@ -1704,7 +1704,7 @@ void AddSC_shadowmoon_valley()
 //    new npc_infernal_attacker();
     new npc_mature_netherwing_drake();
     new npc_enslaved_netherwing_drake();
-    new npc_dragonmaw_peon();
+//    new npc_dragonmaw_peon();
     new npc_drake_dealer_hurlunk();
     new npcs_flanis_swiftwing_and_kagrosh();
     new npc_karynaku();
