@@ -57,11 +57,11 @@ enum EventIds
     EVENT_KALECGOS_LANDING           = 2
 };
 
-#define GOSSIP_ITEM_KAEL_1      "Who are you?"
-#define GOSSIP_ITEM_KAEL_2      "What can we do to assist you?"
-#define GOSSIP_ITEM_KAEL_3      "What brings you to the Sunwell?"
-#define GOSSIP_ITEM_KAEL_4      "You're not alone here?"
-#define GOSSIP_ITEM_KAEL_5      "What would Kil'jaeden want with a mortal woman?"
+#define GOSSIP_ITEM_KAEL_1      "Qui etes vous ?"
+#define GOSSIP_ITEM_KAEL_2      "Que pouvons-nous faire pour vous aider ?"
+#define GOSSIP_ITEM_KAEL_3      "Qu'est-ce qui vous amène a la terrasse des magistères ?"
+#define GOSSIP_ITEM_KAEL_4      "Vous n'êtes pas seul ici ?"
+#define GOSSIP_ITEM_KAEL_5      "Que voudrait Kil'jaeden avec une femme mortelle ?"
 
 class npc_kalecgos : public CreatureScript
 {
