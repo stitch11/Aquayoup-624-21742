@@ -59,8 +59,8 @@ enum EventIds
 
 #define GOSSIP_ITEM_KAEL_1      "Qui etes vous ?"
 #define GOSSIP_ITEM_KAEL_2      "Que pouvons-nous faire pour vous aider ?"
-#define GOSSIP_ITEM_KAEL_3      "Qu'est-ce qui vous amène a la terrasse des magistères ?"
-#define GOSSIP_ITEM_KAEL_4      "Vous n'êtes pas seul ici ?"
+#define GOSSIP_ITEM_KAEL_3      "Qu'est-ce qui vous amene a la terrasse des magisteres ?"
+#define GOSSIP_ITEM_KAEL_4      "Vous n' etes pas seul ici ?"
 #define GOSSIP_ITEM_KAEL_5      "Que voudrait Kil'jaeden avec une femme mortelle ?"
 
 class npc_kalecgos : public CreatureScript
