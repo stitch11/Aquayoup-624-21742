@@ -405,8 +405,8 @@ public:
 ## npc_timothy_daniels
 ######*/
 
-#define GOSSIP_TIMOTHY_DANIELS_ITEM1    "Specialist, eh? Just what kind of specialist are you, anyway?"
-#define GOSSIP_TEXT_BROWSE_POISONS      "Let me browse your reagents and poison supplies."
+#define GOSSIP_TIMOTHY_DANIELS_ITEM1    "Specialiste hein? Quel genre de specialiste etes vous d'ailleurs?"
+#define GOSSIP_TEXT_BROWSE_POISONS      "Permettez moi de parcourir vos reactifs et fournitures de poison"
 
 enum Timothy
 {
