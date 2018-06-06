@@ -142,5 +142,5 @@ public:
 
 void AddSC_instance_wailing_caverns()
 {
-    new instance_wailing_caverns();
+//    new instance_wailing_caverns();
 }

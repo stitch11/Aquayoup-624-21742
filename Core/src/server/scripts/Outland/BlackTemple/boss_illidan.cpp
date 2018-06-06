@@ -2241,7 +2241,6 @@ public:
 
 void AddSC_boss_illidan()
 {
-    new boss_illidan_stormrage();
     new npc_akama_illidan();
     new boss_maiev_shadowsong();
     new npc_flame_of_azzinoth();
@@ -2251,3 +2250,4 @@ void AddSC_boss_illidan()
     new npc_shadow_demon();
     new npc_parasitic_shadowfiend();
 }
+//    new boss_illidan_stormrage();

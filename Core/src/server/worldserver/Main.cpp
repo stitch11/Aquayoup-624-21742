@@ -136,14 +136,14 @@ extern int main(int argc, char** argv)
     TC_LOG_INFO("server.worldserver", "%s (worldserver-daemon)", GitRevision::GetFullVersion());
     TC_LOG_INFO("server.worldserver", "<Ctrl-C> to stop.\n");
     TC_LOG_INFO("server.worldserver", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-    TC_LOG_INFO("server.worldserver", "xx Core AquaYoup  2017 - REV 624-21742 498725f - DB 2016_07_16_03_world  xx");
-	TC_LOG_INFO("server.worldserver", "xx Stitch 12/2017  http://aquayoup.123.fr/                               xx");
+    TC_LOG_INFO("server.worldserver", "xx Core AquaYoup  2018 - REV 624-21742 498725f - DB 2016_07_16_03_world  xx");
+	TC_LOG_INFO("server.worldserver", "xx Stitch 05/2018  https://aquayoup.123.fr/                              xx");
     TC_LOG_INFO("server.worldserver", "xx                                                                       xx");
 	TC_LOG_INFO("server.worldserver", "xx * Pet Demo utilisent desormais energie plutot que mana                xx"); 
 	TC_LOG_INFO("server.worldserver", "xx * PNJ change race,faction,custom,panda        .NPC add 15000142       xx");
 	TC_LOG_INFO("server.worldserver", "xx * Toutes les Classes pour toutes les Races                            xx");
 	TC_LOG_INFO("server.worldserver", "xx * Creature equipé au spawn , Regen , etc            	                xx");
-	TC_LOG_INFO("server.worldserver", "xx * Rez sur le lieu de sa mort si pas de cim - Temp de rez réduit       xx");
+	TC_LOG_INFO("server.worldserver", "xx * Rez sur le lieu de sa mort ou tp pdf                                xx");
 	TC_LOG_INFO("server.worldserver", "xx * Solocraft adapte les stats aux instances suivant le nbr de joueurs  xx");
 	TC_LOG_INFO("server.worldserver", "xx * Divers maj & debugs                                                 xx");
 	TC_LOG_INFO("server.worldserver", "xx * Un grand Merci a Noc & Scade pour leurs aides                       xx");

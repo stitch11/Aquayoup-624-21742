@@ -174,6 +174,6 @@ public:
 
 void AddSC_moonglade()
 {
-    new npc_omen();
+//    new npc_omen();
     new npc_giant_spotlight();
 }

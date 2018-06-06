@@ -1043,10 +1043,10 @@ void AddSC_boss_ahune()
     new spell_ahune_synch_health();
     new spell_summoning_rhyme_aura();
     new spell_summon_ice_spear_delayer();
-    new spell_ice_spear_control_aura();
     new spell_slippery_floor_periodic();
     new spell_ahune_spanky_hands();
     new spell_ahune_minion_despawner();
     new spell_ice_spear_target_picker();
     new spell_ice_bombardment_dest_picker();
 }
+//    new spell_ice_spear_control_aura();
