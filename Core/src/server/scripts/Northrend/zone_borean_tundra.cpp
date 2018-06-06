@@ -2219,9 +2219,9 @@ enum HiddenCultist
     SAY_HIDDEN_CULTIST_4                        = 3
 };
 
-const char* GOSSIP_ITEM_TOM_HEGGER = "What do you know about the Cult of the Damned?";
-const char* GOSSIP_ITEM_GUARD_MITCHELLS = "How long have you worked for the Cult of the Damned?";
-const char* GOSSIP_ITEM_SALTY_JOHN_THORPE = "I have a reason to believe you're involved in the cultist activity";
+const char* GOSSIP_ITEM_TOM_HEGGER = "Que savez-vous du Culte des damnés ?";
+const char* GOSSIP_ITEM_GUARD_MITCHELLS = "Depuis combien de temps travaillez-vous pour le Culte des damnés ?";
+const char* GOSSIP_ITEM_SALTY_JOHN_THORPE = "J'ai une raison de croire que vous etes impliqué dans l'activité du Culte des damnés";
 
 class npc_hidden_cultist : public CreatureScript
 {
