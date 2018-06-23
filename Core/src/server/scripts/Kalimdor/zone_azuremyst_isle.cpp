@@ -777,6 +777,6 @@ void AddSC_azuremyst_isle()
 //    new npc_magwin();
     new npc_death_ravager();
     new go_ravager_cage();
-    new npc_stillpine_capitive();
+//    new npc_stillpine_capitive();
     new go_bristlelimb_cage();
 }

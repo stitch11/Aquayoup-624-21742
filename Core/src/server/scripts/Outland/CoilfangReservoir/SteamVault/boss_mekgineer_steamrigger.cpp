@@ -272,6 +272,6 @@ public:
 
 void AddSC_boss_mekgineer_steamrigger()
 {
-    new boss_mekgineer_steamrigger();
+//    new boss_mekgineer_steamrigger();
     new npc_steamrigger_mechanic();
 }

@@ -714,7 +714,7 @@ void AddSC_boss_high_priestess_azil()
 {
     new boss_high_priestess_azil();
     new npc_devout_follower();
-    new npc_gravity_well();
+//    new npc_gravity_well();
     new npc_seismic_shard();
     new spell_summon_wave_south();
     new spell_summon_wave_west();

@@ -288,6 +288,6 @@ class npc_voidtraveler : public CreatureScript
 
 void AddSC_boss_grandmaster_vorpil()
 {
-    new boss_grandmaster_vorpil();
+//    new boss_grandmaster_vorpil();
     new npc_voidtraveler();
 }

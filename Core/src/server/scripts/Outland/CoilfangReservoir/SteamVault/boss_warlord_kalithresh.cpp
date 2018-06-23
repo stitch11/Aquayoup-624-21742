@@ -203,5 +203,5 @@ public:
 void AddSC_boss_warlord_kalithresh()
 {
     new npc_naga_distiller();
-    new boss_warlord_kalithresh();
+//    new boss_warlord_kalithresh();
 }

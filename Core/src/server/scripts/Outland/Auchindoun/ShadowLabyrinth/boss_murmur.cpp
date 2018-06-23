@@ -279,8 +279,8 @@ class spell_murmur_thundering_storm : public SpellScriptLoader
 
 void AddSC_boss_murmur()
 {
-    new boss_murmur();
+//    new boss_murmur();
     new spell_murmur_sonic_boom();
-    new spell_murmur_sonic_boom_effect();
+//    new spell_murmur_sonic_boom_effect();
     new spell_murmur_thundering_storm();
 }

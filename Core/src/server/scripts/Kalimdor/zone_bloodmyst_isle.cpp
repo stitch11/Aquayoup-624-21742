@@ -808,6 +808,6 @@ public:
 void AddSC_bloodmyst_isle()
 {
     new npc_webbed_creature();
-    new npc_sironas();
-    new npc_demolitionist_legoso();
+//    new npc_sironas();
+//    new npc_demolitionist_legoso();
 }
