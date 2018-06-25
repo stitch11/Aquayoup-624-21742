@@ -486,7 +486,7 @@ enum WyrmDefenderEnum
     BOSS_EMOTE_ON_LOW_HEALTH               = 2
 };
 
-#define GOSSIP_ITEM_1      "We need to get into the fight. Are you ready?"
+#define GOSSIP_ITEM_1      "Nous allons entrer dans le combat. etes-vous pret ?"
 
 class npc_wyrmrest_defender : public CreatureScript
 {
@@ -525,13 +525,16 @@ class npc_wyrmrest_defender : public CreatureScript
             npc_wyrmrest_defenderAI(Creature* creature) : VehicleAI(creature)
             {
                 Initialize();
+
+				me->SetCanFly(true); //stitch : Défenseur du Repos du ver vole
+				me->SetDisableGravity(true);
+
             }
 
             void Initialize()
             {
                 hpWarningReady = true;
                 renewRecoveryCanCheck = false;
-
                 RenewRecoveryChecker = 0;
             }
 
