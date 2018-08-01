@@ -2585,12 +2585,14 @@ public:
 			break;
 		case 4:
 			if (RACE_PANDAREN_NEUTRAL)	{ Player->SetAtLoginFlag(AT_LOGIN_allianceverspanda); }
+			Player->SetAtLoginFlag(AT_LOGIN_CUSTOMIZE);
 			Player->GetSession()->SendNotification("Vous devez vous reconnecter pour changer votre race!");
 			Player->PlayerTalkClass->SendCloseGossip();
 			Player->CastSpell(Player, 14867, true);
 			break;
 		case 5:
 			if (RACE_PANDAREN_NEUTRAL)		{ Player->SetAtLoginFlag(AT_LOGIN_hordeverspanda); }
+			Player->SetAtLoginFlag(AT_LOGIN_CUSTOMIZE);
 			Player->GetSession()->SendNotification("Vous devez vous reconnecter pour changer votre race!");
 			Player->PlayerTalkClass->SendCloseGossip();
 			Player->CastSpell(Player, 14867, true);
