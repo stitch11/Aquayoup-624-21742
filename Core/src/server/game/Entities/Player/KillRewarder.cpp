@@ -152,12 +152,8 @@ inline void KillRewarder::_RewardXP(Player* player, float rate)
     if (xp)
     {
         // 4.2.2. Apply auras modifying rewarded XP (SPELL_AURA_MOD_XP_PCT and SPELL_AURA_MOD_XP_FROM_CREATURE_TYPE).
-
-//STITCH remet l'xp/drop au pet qui tape seul
-//        xp *= player->GetTotalAuraMultiplier(SPELL_AURA_MOD_XP_PCT);
-//        xp *= player->GetTotalAuraMultiplierByMiscValue(SPELL_AURA_MOD_XP_FROM_CREATURE_TYPE, int32(_victim->GetCreatureType()));
-		for (auto const& aura : player->GetAuraEffectsByType(SPELL_AURA_MOD_XP_PCT))
-			AddPct(xp, aura->GetAmount());
+        xp *= player->GetTotalAuraMultiplier(SPELL_AURA_MOD_XP_PCT);
+        xp *= player->GetTotalAuraMultiplierByMiscValue(SPELL_AURA_MOD_XP_FROM_CREATURE_TYPE, int32(_victim->GetCreatureType()));
 
         // 4.2.3. Give XP to player.
         player->GiveXP(xp, _victim, _groupRate);
