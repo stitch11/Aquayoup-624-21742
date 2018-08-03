@@ -52,8 +52,8 @@ Pet::Pet(Player* owner, PetType type) :
         m_unitTypeMask |= UNIT_MASK_CONTROLABLE_GUARDIAN;
         InitCharmInfo();
     }
-
     m_name = "Pet";
+
     m_focusRegenTimer = PET_FOCUS_REGEN_INTERVAL;
 }
 
@@ -215,14 +215,10 @@ bool Pet::LoadPetFromDB(Player* owner, uint32 petEntry, uint32 petnumber, bool c
         case SUMMON_PET:
             petlevel = owner->getLevel();
             
-//STITCH : MAGE par defaut - CLASS_ROGUE
+//STITCH : MAGE par defaut - apres 335 tous les pets utilisent l'energie plutot que le mana
             SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_CLASS, CLASS_ROGUE);
-            
             SetUInt32Value(UNIT_FIELD_FLAGS, UNIT_FLAG_PVP_ATTACKABLE); // this enables popup window (pet dismiss, cancel)
-
-//STITCH : rien par defaut - setPowerType(POWER_ENERGY);  - POWER_MANA -  POWER_FOCUS - POWER_RAGE - POWER_RUNIC_POWER - POWER_HOLY_POWER
-setPowerType(POWER_ENERGY);
-
+			setPowerType(POWER_ENERGY);
             break;
         case HUNTER_PET:
             SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_CLASS, CLASS_WARRIOR);
@@ -237,6 +233,8 @@ setPowerType(POWER_ENERGY);
                 TC_LOG_ERROR("entities.pet", "Pet have incorrect type (%u) for pet loading.", getPetType());
             break;
     }
+
+
 
     SetUInt32Value(UNIT_FIELD_PET_NAME_TIMESTAMP, uint32(time(NULL))); // cast can't be helped here
     SetCreatorGUID(owner->GetGUID());
@@ -653,11 +651,19 @@ void Creature::Regenerate(Powers power)
         case POWER_ENERGY:
         {
             // For deathknight's ghoul.
-//STITCH : regen Pet demo - Defaut 20
-            addvalue = 30;
-
+            addvalue = 50 ;//STITCH : regen Pet demo - Defaut 20
             break;
         }
+		case POWER_RAGE:
+		{
+			addvalue = 30;//STITCH : regen Pet 
+			break;
+		}
+		case POWER_MANA:
+		{
+			addvalue = 1500;//STITCH : regen Pet 
+			break;
+		}
         default:
             return;
     }
@@ -680,8 +686,8 @@ void Pet::Remove(PetSaveMode mode, bool returnreagent)
 
 void Pet::GivePetXP(uint32 xp)
 {
-    if (getPetType() != HUNTER_PET)
-        return;
+//    if (getPetType() != HUNTER_PET) //STITCH TMP
+//        return;
 
     if (xp < 1)
         return;
