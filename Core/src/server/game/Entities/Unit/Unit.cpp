@@ -14618,7 +14618,7 @@ uint32 Unit::GetModelForForm(ShapeshiftForm form) const
                     case RACE_NIGHTELF:
                         return 15374;
                     case RACE_TAUREN:
-                        return 15375;
+                        return 37174;  //15375
                     case RACE_WORGEN:
                         return 37173;
                     case RACE_TROLL:
@@ -14638,17 +14638,17 @@ uint32 Unit::GetModelForForm(ShapeshiftForm form) const
 						return 15374;
 						//
 					case RACE_ORC:
-						return 15375;
+						return 37174; //15375
 					case RACE_UNDEAD_PLAYER:
-						return 15375;
+						return 37174;//15375
 					case RACE_GOBLIN:
-						return 15375;
+						return 37174;//15375
 					case RACE_BLOODELF:
-						return 15375;
+						return 37174;//15375
 					case RACE_FEL_ORC:
-						return 15375;
+						return 37174;//15375
 					case RACE_PANDAREN_HORDE:
-						return 15375;
+						return 37174;//15375
 //---
                     default:
                         break;
