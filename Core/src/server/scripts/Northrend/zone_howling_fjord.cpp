@@ -221,8 +221,8 @@ public:
 ## npc_razael_and_lyana
 ######*/
 
-#define GOSSIP_RAZAEL_REPORT "High Executor Anselm wants a report on the situation."
-#define GOSSIP_LYANA_REPORT "High Executor Anselm requests your report."
+#define GOSSIP_RAZAEL_REPORT "Ecouter le rapport sur la situation du haut executeur Anselm "
+#define GOSSIP_LYANA_REPORT "Ecouter le rapport sur la situation du haut executeur Lyana "
 
 enum Razael
 {
@@ -277,10 +277,12 @@ public:
             case GOSSIP_ACTION_INFO_DEF + 1:
                 player->SEND_GOSSIP_MENU(GOSSIP_TEXTID_RAZAEL2, creature->GetGUID());
                 player->TalkedToCreature(NPC_RAZAEL, creature->GetGUID());
+				player->KilledMonsterCredit(NPC_RAZAEL, creature->GetGUID());//Stitch credit - quete Rapports de terrain 11221
                 break;
             case GOSSIP_ACTION_INFO_DEF + 2:
                 player->SEND_GOSSIP_MENU(GOSSIP_TEXTID_LYANA2, creature->GetGUID());
                 player->TalkedToCreature(NPC_LYANA, creature->GetGUID());
+				player->KilledMonsterCredit(NPC_LYANA, creature->GetGUID());//Stitch credit - quete Rapports de terrain 11221
                 break;
         }
         return true;
