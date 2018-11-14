@@ -900,8 +900,8 @@ public:
 
 void AddSC_zuldrak()
 {
-    new npc_drakuru_shackles();
-    new npc_captured_rageclaw();
+//    new npc_drakuru_shackles();
+//    new npc_captured_rageclaw();
     new npc_released_offspring_harkoa();
     new npc_crusade_recruit();
     new go_scourge_enclosure();
