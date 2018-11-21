@@ -516,7 +516,9 @@ void Loot::FillNotNormalLootFor(Player* player, bool presentAtLooting)
 
     // Process currency items
     uint32 max_slot = GetMaxSlotInLootFor(player);
-    LootItem const* item = NULL;
+
+    LootItem const* item = nullptr;
+
     uint32 itemsSize = uint32(items.size());
     for (uint32 i = 0; i < max_slot; ++i)
     {
@@ -548,7 +550,7 @@ QuestItemList* Loot::FillFFALoot(Player* player)
     if (ql->empty())
     {
         delete ql;
-        return NULL;
+		return nullptr;
     }
 
     PlayerFFAItems[player->GetGUID().GetCounter()] = ql;
@@ -558,7 +560,7 @@ QuestItemList* Loot::FillFFALoot(Player* player)
 QuestItemList* Loot::FillQuestLoot(Player* player)
 {
     if (items.size() == MAX_NR_LOOT_ITEMS)
-        return NULL;
+		return nullptr;
 
     QuestItemList* ql = new QuestItemList();
 
@@ -586,7 +588,7 @@ QuestItemList* Loot::FillQuestLoot(Player* player)
     if (ql->empty())
     {
         delete ql;
-        return NULL;
+		return nullptr;
     }
 
     PlayerQuestItems[player->GetGUID().GetCounter()] = ql;
@@ -618,7 +620,7 @@ QuestItemList* Loot::FillNonQuestNonFFAConditionalLoot(Player* player, bool pres
     if (ql->empty())
     {
         delete ql;
-        return NULL;
+        return nullptr;
     }
 
     PlayerNonQuestNonFFAConditionalItems[player->GetGUID().GetCounter()] = ql;
@@ -734,7 +736,7 @@ void Loot::DeleteLootMoneyFromContainerItemDB()
 
 LootItem* Loot::LootItemInSlot(uint32 lootSlot, Player* player, QuestItem* *qitem, QuestItem* *ffaitem, QuestItem* *conditem)
 {
-    LootItem* item = NULL;
+    LootItem* item = nullptr;
     bool is_looted = true;
     if (lootSlot >= items.size())
     {
@@ -790,7 +792,7 @@ LootItem* Loot::LootItemInSlot(uint32 lootSlot, Player* player, QuestItem* *qite
     }
 
     if (is_looted)
-        return NULL;
+        return nullptr;
 
     return item;
 }
