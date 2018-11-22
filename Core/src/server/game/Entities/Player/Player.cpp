@@ -7354,10 +7354,10 @@ void Player::_ApplyItemBonuses(Item* item, uint8 slot, bool apply)
             case ITEM_MOD_RESILIENCE_RATING:
                 ApplyRatingMod(CR_RESILIENCE_PLAYER_DAMAGE_TAKEN, int32(val), apply);
                 break;
-            case ITEM_MOD_HASTE_RATING:
-                ApplyRatingMod(CR_HASTE_MELEE, int32(val), apply);
-                ApplyRatingMod(CR_HASTE_RANGED, int32(val), apply);
-                ApplyRatingMod(CR_HASTE_SPELL, int32(val), apply);
+            case ITEM_MOD_HASTE_RATING:                                                  //Stitch rate Hate *2
+				ApplyRatingMod(CR_HASTE_MELEE, int32(val)*2, apply);
+				ApplyRatingMod(CR_HASTE_RANGED, int32(val)*2, apply);
+				ApplyRatingMod(CR_HASTE_SPELL, int32(val)*2, apply);
                 break;
             case ITEM_MOD_EXPERTISE_RATING:
                 ApplyRatingMod(CR_EXPERTISE, int32(val), apply);
