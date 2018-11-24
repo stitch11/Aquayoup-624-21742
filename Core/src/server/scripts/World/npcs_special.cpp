@@ -2625,9 +2625,9 @@ public:
 #define GOSSIP_CHOOSE_ALLIANCE		"Je voudrais rejoindre l'alliance"
 #define GOSSIP_CHOOSE_HORDE			"Je voudrais rejoindre la horde"
 
-#define GOSSIP_CHOOSE_FACTION		"Je suis prêt à choisir mon destin."
-#define GOSSIP_TP_STORMIND			"J'aimerais aller à Hurlevent"
-#define GOSSIP_TP_ORGRI				"J'aimerais aller à Orgrimmar"
+#define GOSSIP_CHOOSE_FACTION		"Je suis pret a choisir mon destin."
+#define GOSSIP_TP_STORMIND			"J'aimerais aller a Hurlevent"
+#define GOSSIP_TP_ORGRI				"J'aimerais aller a Orgrimmar"
 
 
 
