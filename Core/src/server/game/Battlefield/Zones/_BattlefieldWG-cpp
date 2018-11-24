@@ -94,7 +94,7 @@ bool BattlefieldWG::SetupBattlefield()
         m_isActive = false;
         m_Timer = m_RestartAfterCrash;
     }
-/*
+
     for (uint8 i = 0; i < BATTLEFIELD_WG_GRAVEYARD_MAX; i++)
     {
         BfGraveyardWG* graveyard = new BfGraveyardWG(this);
@@ -123,8 +123,6 @@ bool BattlefieldWG::SetupBattlefield()
         Workshops.insert(workshop);
     }
 
-
-
     // Spawn NPCs in the defender's keep, both Horde and Alliance
     for (uint8 i = 0; i < WG_MAX_KEEP_NPC; i++)
     {
@@ -150,6 +148,7 @@ bool BattlefieldWG::SetupBattlefield()
     for (uint8 i = WG_OUTSIDE_ALLIANCE_NPC; i < WG_MAX_OUTSIDE_NPC; i++)
         if (Creature* creature = SpawnCreature(WGOutsideNPC[i].entryAlliance, WGOutsideNPC[i].x, WGOutsideNPC[i].y, WGOutsideNPC[i].z, WGOutsideNPC[i].o, TEAM_ALLIANCE))
             OutsideCreature[TEAM_ALLIANCE].insert(creature->GetGUID());
+
     // Hide units outside the keep that are defenders
     for (GuidSet::const_iterator itr = OutsideCreature[GetDefenderTeam()].begin(); itr != OutsideCreature[GetDefenderTeam()].end(); ++itr)
         if (Creature* creature = GetCreature(*itr))
@@ -166,7 +165,6 @@ bool BattlefieldWG::SetupBattlefield()
         }
     }
 
-*/
     // Spawn all gameobjects
     for (uint8 i = 0; i < WG_MAX_OBJ; i++)
     {
