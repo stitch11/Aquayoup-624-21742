@@ -13171,7 +13171,7 @@ void Unit::Kill(Unit* victim, bool durabilityLoss)
                 if (hasLooterGuid)
                     group->SendLooter(creature, looter);
                 else
-                    group->SendLooter(creature, NULL);
+					group->SendLooter(creature, nullptr);
 
                 // Update round robin looter only if the creature had loot
                 if (!loot->empty())

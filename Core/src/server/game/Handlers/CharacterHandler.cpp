@@ -1726,7 +1726,7 @@ void WorldSession::HandleUseEquipmentSet(WorldPackets::EquipmentSet::UseEquipmen
                 _player->StoreItem(itemPosCountVec, uItem, true);
             }
             else
-                _player->SendEquipError(inventoryResult, uItem,  NULL);
+				_player->SendEquipError(inventoryResult, uItem, nullptr);
             continue;
         }
 
