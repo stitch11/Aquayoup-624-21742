@@ -1824,7 +1824,7 @@ void Player::RegenerateAll()
 		m_focusRegenTimerCount += m_regenTimer*2;//STITCH regen focus chasseur
 
     Regenerate(POWER_ENERGY);
-    Regenerate(POWER_MANA);
+	 Regenerate(POWER_MANA);
 
     // Runes act as cooldowns, and they don't need to send any data
     if (getClass() == CLASS_DEATH_KNIGHT)
@@ -2107,7 +2107,7 @@ void Player::ResetAllPowers()
     switch (getPowerType())
     {
         case POWER_MANA:
-            SetPower(POWER_MANA, GetMaxPower(POWER_MANA));
+			SetPower(POWER_MANA, GetMaxPower(POWER_MANA));
             break;
         case POWER_RAGE:
             SetPower(POWER_RAGE, 0);
@@ -21076,8 +21076,28 @@ void Player::InitDataForForm(bool reapplyMods)
         SetRegularAttackTime();
 
     switch (form)
-    {
-        case FORM_GHOUL:
+{
+
+//Stitch Changeform : PowerType
+	case FORM_VAMPIRE_BERSERKER:	//Stitch FORM_VAMPIRE_BERSERKER utilise POWER_FOCUS
+	{
+		uint32 m_maxfocus = 100;
+		if (getPowerType() != POWER_FOCUS)
+			setPowerType(POWER_FOCUS);
+			SetMaxPower(POWER_FOCUS, m_maxfocus);
+		break;
+	}
+	case FORM_VAMPIRE_ANCESTRAL:	//Stitch FORM_VAMPIRE_ANCESTRAL utilise POWER_DEMONIC_FURY
+	{
+		uint32 m_maxfury = 100;
+		if (getPowerType() != POWER_DEMONIC_FURY)
+			setPowerType(POWER_DEMONIC_FURY);
+			SetMaxPower(POWER_DEMONIC_FURY, m_maxfury);
+		break;
+	}
+
+
+		case FORM_GHOUL:
         case FORM_CAT_FORM:
         {
             if (getPowerType() != POWER_ENERGY)
@@ -21097,7 +21117,7 @@ void Player::InitDataForForm(bool reapplyMods)
                 setPowerType(Powers(cEntry->PowerType));
             break;
         }
-    }
+	}
 
     // update auras at form change, ignore this at mods reapply (.reset stats/etc) when form not change.
     if (!reapplyMods)

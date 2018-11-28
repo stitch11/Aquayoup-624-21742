@@ -293,7 +293,11 @@ enum ShapeshiftForm
     FORM_STEALTH                    = 30,
     FORM_MOONKIN_FORM               = 31,
     FORM_SPIRIT_OF_REDEMPTION       = 32,
-    FORM_GLADIATOR_STANCE           = 33
+    FORM_GLADIATOR_STANCE           = 33,
+	FORM_VAMPIRE_BERSERKER			= 67,	//Stitch definition SpellShapeshiftForm VAMPIRE BERSERKER ( changeform )
+	FORM_VAMPIRE_ANCESTRAL			= 68	//Stitch definition SpellShapeshiftForm VAMPIRE ANCESTRAL ( changeform )
+
+
 };
 
 // low byte (0 from 0..3) of UNIT_FIELD_BYTES_2
