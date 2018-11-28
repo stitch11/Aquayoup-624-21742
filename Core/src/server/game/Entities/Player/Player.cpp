@@ -1718,13 +1718,14 @@ void Player::AddToWorld()
     ///- Do not add/remove the player from the object storage
     ///- It will crash when updating the ObjectAccessor
     ///- The player should only be added when logging in
+	SetPower(POWER_SOUL_SHARDS, 0);						//STITCH RAZ POWER_SOUL_SHARDS a la connexion
+	SetPower(POWER_SHADOW_ORBS, 0);						//STITCH RAZ POWER_SHADOW_ORBS a la connexion sinon bug visuel
+	RemoveAura(300124);									//STITCH	retire VAMPIRE BERSERKER a la connexion sinon bug
+	RemoveAura(300125);									//STITCH	retire VAMPIRE ANCESTRAL a la connexion sinon bug
 
-	SetPower(POWER_SOUL_SHARDS, 0);//STITCH RAZ POWER_SOUL_SHARDS a la connexion
-	SetPower(POWER_SHADOW_ORBS, 0);//STITCH RAZ POWER_SHADOW_ORBS a la connexion sinon bug visuel
-
-	if (getPowerType() == POWER_MANA) 
+	if (getPowerType() == POWER_MANA)
 	{
-		SetPower(POWER_MANA, GetMaxPower(POWER_MANA)); //STITCH refresh max mana a la connexion 
+		SetPower(POWER_MANA, GetMaxPower(POWER_MANA));	//STITCH refresh max mana a la connexion 
 	}
 
 
@@ -21085,6 +21086,8 @@ void Player::InitDataForForm(bool reapplyMods)
 		if (getPowerType() != POWER_FOCUS)
 			setPowerType(POWER_FOCUS);
 			SetMaxPower(POWER_FOCUS, m_maxfocus);
+			SetMaxPower(POWER_ENERGY, 0);				//Desactive energie
+			SetMaxPower(POWER_DEMONIC_FURY, 0);			//Desactive Fureur démoniaque
 		break;
 	}
 	case FORM_VAMPIRE_ANCESTRAL:	//Stitch FORM_VAMPIRE_ANCESTRAL utilise POWER_DEMONIC_FURY
@@ -21093,6 +21096,8 @@ void Player::InitDataForForm(bool reapplyMods)
 		if (getPowerType() != POWER_DEMONIC_FURY)
 			setPowerType(POWER_DEMONIC_FURY);
 			SetMaxPower(POWER_DEMONIC_FURY, m_maxfury);
+			SetMaxPower(POWER_ENERGY, 0);				//Desactive energie
+			SetMaxPower(POWER_FOCUS, 0);				//Desactive Focus
 		break;
 	}
 
