@@ -295,8 +295,8 @@ enum ShapeshiftForm
     FORM_SPIRIT_OF_REDEMPTION       = 32,
     FORM_GLADIATOR_STANCE           = 33,
 	FORM_VAMPIRE_BERSERKER			= 67,	//Stitch definition SpellShapeshiftForm VAMPIRE BERSERKER ( changeform )
-	FORM_VAMPIRE_ANCESTRAL			= 68	//Stitch definition SpellShapeshiftForm VAMPIRE ANCESTRAL ( changeform )
-
+	FORM_VAMPIRE_ANCESTRAL			= 68,	//Stitch definition SpellShapeshiftForm VAMPIRE ANCESTRAL ( changeform )
+	FORM_VOL_VAMPIRE				= 69	//Stitch definition SpellShapeshiftForm Forme de vol du Vampire ( changeform )
 
 };
 
