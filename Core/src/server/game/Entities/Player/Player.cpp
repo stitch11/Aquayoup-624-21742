@@ -21083,6 +21083,7 @@ void Player::InitDataForForm(bool reapplyMods)
 	case FORM_VAMPIRE_BERSERKER:	//Stitch FORM_VAMPIRE_BERSERKER utilise POWER_FOCUS
 	{
 		uint32 m_maxfocus = 100;
+		SetDisplayId(GetNativeDisplayId());				//Pour retirer la forme de vol
 		if (getPowerType() != POWER_FOCUS)
 			setPowerType(POWER_FOCUS);
 			SetMaxPower(POWER_FOCUS, m_maxfocus);
@@ -21093,6 +21094,7 @@ void Player::InitDataForForm(bool reapplyMods)
 	case FORM_VAMPIRE_ANCESTRAL:	//Stitch FORM_VAMPIRE_ANCESTRAL utilise POWER_DEMONIC_FURY
 	{
 		uint32 m_maxfury = 100;
+		SetDisplayId(GetNativeDisplayId());				//Pour retirer la forme de vol
 		if (getPowerType() != POWER_DEMONIC_FURY)
 			setPowerType(POWER_DEMONIC_FURY);
 			SetMaxPower(POWER_DEMONIC_FURY, m_maxfury);
