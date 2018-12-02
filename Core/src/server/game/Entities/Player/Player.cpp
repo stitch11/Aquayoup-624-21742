@@ -2532,6 +2532,12 @@ void Player::GiveLevel(uint8 level)
         SetPower(POWER_RAGE, GetMaxPower(POWER_RAGE));
     SetPower(POWER_FOCUS, 0);
 
+	if (CLASS_ROGUE | POWER_DEMONIC_FURY)		//Stitch levelup bug de max Fureur démoniaque
+	{ 
+		setPowerType(POWER_DEMONIC_FURY);
+		SetMaxPower(POWER_DEMONIC_FURY, 100);
+	}
+
     // update level to hunter/summon pet
     if (Pet* pet = GetPet())
         pet->SynchronizeLevelWithOwner();
@@ -21084,11 +21090,11 @@ void Player::InitDataForForm(bool reapplyMods)
 	{
 		uint32 m_maxfocus = 100;
 		SetDisplayId(GetNativeDisplayId());				//Pour retirer la forme de vol
-		if (getPowerType() != POWER_FOCUS)
-			setPowerType(POWER_FOCUS);
-			SetMaxPower(POWER_FOCUS, m_maxfocus);
+		if (getPowerType() != POWER_DEMONIC_FURY)
+			setPowerType(POWER_DEMONIC_FURY);
+			SetMaxPower(POWER_DEMONIC_FURY, m_maxfocus);
 			SetMaxPower(POWER_ENERGY, 0);				//Desactive energie
-			SetMaxPower(POWER_DEMONIC_FURY, 0);			//Desactive Fureur démoniaque
+//			SetMaxPower(POWER_DEMONIC_FURY, 0);			//Desactive Fureur démoniaque
 		break;
 	}
 	case FORM_VAMPIRE_ANCESTRAL:	//Stitch FORM_VAMPIRE_ANCESTRAL utilise POWER_DEMONIC_FURY
