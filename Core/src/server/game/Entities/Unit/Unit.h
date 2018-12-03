@@ -293,10 +293,10 @@ enum ShapeshiftForm
     FORM_STEALTH                    = 30,
     FORM_MOONKIN_FORM               = 31,
     FORM_SPIRIT_OF_REDEMPTION       = 32,
-    FORM_GLADIATOR_STANCE           = 33,
-	FORM_VAMPIRE_BERSERKER			= 67,	//Stitch definition SpellShapeshiftForm VAMPIRE BERSERKER ( changeform )
-	FORM_VAMPIRE_ANCESTRAL			= 68,	//Stitch definition SpellShapeshiftForm VAMPIRE ANCESTRAL ( changeform )
-	FORM_VOL_VAMPIRE				= 69	//Stitch definition SpellShapeshiftForm Forme de vol du Vampire ( changeform )
+    FORM_GLADIATOR_STANCE           = 33,	//Stitch definition SpellShapeshiftForm Posture du gladiateur  ( changeform )
+	FORM_VAMPIRE_BERSERKER			= 61,	//Stitch definition SpellShapeshiftForm VAMPIRE BERSERKER ( changeform )
+	FORM_VAMPIRE_ANCESTRAL			= 62,	//Stitch definition SpellShapeshiftForm VAMPIRE ANCESTRAL ( changeform )
+	FORM_VOL_VAMPIRE				= 63	//Stitch definition SpellShapeshiftForm Forme de vol du Vampire ( changeform )
 
 };
 
