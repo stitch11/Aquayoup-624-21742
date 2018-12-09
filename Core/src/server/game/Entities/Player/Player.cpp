@@ -2532,10 +2532,24 @@ void Player::GiveLevel(uint8 level)
         SetPower(POWER_RAGE, GetMaxPower(POWER_RAGE));
     SetPower(POWER_FOCUS, 0);
 
-	if (CLASS_ROGUE | POWER_DEMONIC_FURY)		//Stitch levelup bug de max Fureur démoniaque
-	{ 
+//Stitch levelup bug de max Fureur démoniaque
+	if (ShapeshiftForm() == (FORM_VAMPIRE_BERSERKER))
+	{
 		setPowerType(POWER_DEMONIC_FURY);
 		SetMaxPower(POWER_DEMONIC_FURY, 100);
+	}
+	if (ShapeshiftForm() == (FORM_VAMPIRE_ANCESTRAL))
+	{
+		setPowerType(POWER_DEMONIC_FURY);
+		SetMaxPower(POWER_DEMONIC_FURY, 100);
+	}
+
+
+	if (ShapeshiftForm() == FORM_VAMPIRE_BERSERKER , FORM_VAMPIRE_ANCESTRAL)
+
+	{ 
+//		setPowerType(POWER_DEMONIC_FURY);
+//		SetMaxPower(POWER_DEMONIC_FURY, 100);
 	}
 
     // update level to hunter/summon pet
