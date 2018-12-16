@@ -2158,11 +2158,11 @@ void AuraEffect::HandleAuraTransform(AuraApplication const* aurApp, uint8 mode, 
                             case RACE_NIGHTELF:
                                 target->SetDisplayId(target->getGender() == GENDER_FEMALE ? 25038 : 25049);
                                 break;
-/*								// STITCH BROKEN new race
+/*								//STITCH BROKEN new race
 							case RACE_BROKEN:
 								target->SetDisplayId(target->getGender() == GENDER_FEMALE ? 25037 : 25048);
 								break;
-								// STITCH Fel Orc new race
+								//STITCH Fel Orc new race
 							case RACE_FEL_ORC:
 								target->SetDisplayId(target->getGender() == GENDER_FEMALE ? 25038 : 25049);
 								break;

@@ -1921,7 +1921,7 @@ void Player::Regenerate(Powers power)
 
         {
 
-			// STITCH regen mana
+			//STITCH regen mana
 			float ManaIncreaseRate = sWorld->getRate(RATE_POWER_MANA);
 
 			if (IsInCombat()) // Trinity Updates Mana in intervals of 2s, which is correct
@@ -2544,13 +2544,6 @@ void Player::GiveLevel(uint8 level)
 		SetMaxPower(POWER_DEMONIC_FURY, 100);
 	}
 
-
-	if (ShapeshiftForm() == FORM_VAMPIRE_BERSERKER , FORM_VAMPIRE_ANCESTRAL)
-
-	{ 
-//		setPowerType(POWER_DEMONIC_FURY);
-//		SetMaxPower(POWER_DEMONIC_FURY, 100);
-	}
 
     // update level to hunter/summon pet
     if (Pet* pet = GetPet())
