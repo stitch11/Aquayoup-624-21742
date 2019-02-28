@@ -26040,6 +26040,64 @@ void Player::DeleteGarrison()
     }
 }
 
+// Stitch
+void Player::ShowNeutralPlayerFactionSelectUI()
+{
+	WorldPacket data(SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI);
+	GetSession()->SendPacket(&data);
+}
+
+// Stitch SetPandaFactionAlliance
+void Player::SetPandaFactionAlliance()
+{
+	SetByteValue(UNIT_FIELD_BYTES_0, 0, RACE_PANDAREN_ALLIANCE);
+	setFactionForRace(RACE_PANDAREN_ALLIANCE);
+
+	WorldLocation location(0, -9071.62f, 419.10f, 93.0f, 0.20f);
+	WorldRelocate(location);
+
+	SetHomebind(location, 9);
+	SetSkill(98, 0, 300, 300);
+	SetSkill(905, 0, 300, 300);
+	SetSkill(906, 0, 300, 300);
+	SetSkill(899, 0, 300, 300);
+	LearnSpell(668, false);			// Language Common
+	LearnSpell(108127, false);		// Language Pandaren
+	LearnSpell(108130, false);		// Langue (pandaren - alliance)
+	LearnSpell(131701, false);		// Langues pandaren Racial
+	KilledMonsterCredit(64594);
+
+	SaveToDB();
+	GetSession()->LogoutPlayer(false);
+
+
+}
+
+// Stitch SetPandaFactionHorde
+void Player::SetPandaFactionHorde()
+{
+	SetByteValue(UNIT_FIELD_BYTES_0, 0, RACE_PANDAREN_HORDE);
+	setFactionForRace(RACE_PANDAREN_HORDE);
+
+	WorldLocation location(1, 1374.12f, -4379.48f, 26.20f, 0.13f);
+	WorldRelocate(location);
+	SetHomebind(location, 363);
+
+	SetSkill(109, 0, 300, 300);
+	SetSkill(905, 0, 300, 300);
+	SetSkill(907, 0, 300, 300);
+	SetSkill(899, 0, 300, 300);
+	LearnSpell(669, false);		// Language Orc
+	LearnSpell(108127, false);	// Language Pandaren
+	LearnSpell(131701, false);	// Langues pandaren Racial
+	LearnSpell(143368, false);	// Langue(pandaren - horde)
+	KilledMonsterCredit(64594);
+
+	SaveToDB();
+	GetSession()->LogoutPlayer(false);
+
+}
+
 void Player::SendMovementSetCollisionHeight(float height)
 {
     WorldPackets::Movement::MoveSetCollisionHeight setCollisionHeight;

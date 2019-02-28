@@ -2486,6 +2486,10 @@ class TC_GAME_API Player : public Unit, public GridObject<Player>
 
         bool IsAdvancedCombatLoggingEnabled() const { return _advancedCombatLoggingEnabled; }
         void SetAdvancedCombatLogging(bool enabled) { _advancedCombatLoggingEnabled = enabled; }
+// Stitch
+		void ShowNeutralPlayerFactionSelectUI();
+		void SetPandaFactionAlliance();
+		void SetPandaFactionHorde();
 
     protected:
         // Gamemaster whisper whitelist

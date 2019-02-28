@@ -2538,30 +2538,22 @@ public:
 
 		TeamId team = player->GetTeamId();
 		uint8 _level = player->getLevel();
+		uint8 _race = player->getRace();
 
 		player->ADD_GOSSIP_ITEM(4, "Changer de Race ", GOSSIP_SENDER_MAIN, 0);
 		player->ADD_GOSSIP_ITEM(4, "Changer de Faction (Avec TP)", GOSSIP_SENDER_MAIN, 1);
-//		if (team == TEAM_ALLIANCE)	{		pPlayer->ADD_GOSSIP_ITEM(4, "Changer ma Race en Broken MALE", GOSSIP_SENDER_MAIN, 3);		}
-//		if (team == TEAM_HORDE)		{		pPlayer->ADD_GOSSIP_ITEM(4, "Changer ma Race en Fel Orc MALE", GOSSIP_SENDER_MAIN, 3);	}
-		if (RACE_PANDAREN_NEUTRAL)	{ player->ADD_GOSSIP_ITEM(2, "Changer de Race en Panda de l'Alliance", GOSSIP_SENDER_MAIN, 4); }
-		if (RACE_PANDAREN_NEUTRAL)	{ player->ADD_GOSSIP_ITEM(2, "Changer de Race en Panda de la Horde", GOSSIP_SENDER_MAIN, 5); }
+		if (_race != RACE_PANDAREN_ALLIANCE)	{player->ADD_GOSSIP_ITEM(2, "Changer de Race en Panda de l'Alliance", GOSSIP_SENDER_MAIN, 4);}
+		if (_race != RACE_PANDAREN_HORDE)		{player->ADD_GOSSIP_ITEM(2, "Changer de Race en Panda de la Horde", GOSSIP_SENDER_MAIN, 5);}
+		if (_level < 30) { player->ADD_GOSSIP_ITEM(4, "Je voudrais commencer level 30", GOSSIP_SENDER_MAIN, 6); }
+		if (_level < 68) { player->ADD_GOSSIP_ITEM(4, "Je voudrais commencer level 68", GOSSIP_SENDER_MAIN, 7); }
+		if (_level < 80) { player->ADD_GOSSIP_ITEM(4, "Je voudrais commencer level 80", GOSSIP_SENDER_MAIN, 8); }
 		player->ADD_GOSSIP_ITEM(3, "Changer mon Apparence", GOSSIP_SENDER_MAIN, 9);	//sinon crash
 		player->ADD_GOSSIP_ITEM(4, "Effacer mes talents", GOSSIP_SENDER_MAIN, 10);
-		//		pPlayer->ADD_GOSSIP_ITEM(4, "Debug 1) Oublier tous mes spells", GOSSIP_SENDER_MAIN, 8); 
-		//		pPlayer->ADD_GOSSIP_ITEM(4, "Debug 2) Apprendre mes spells par defaut", GOSSIP_SENDER_MAIN, 9);
-		//		pPlayer->ADD_GOSSIP_ITEM(4, " Changer mon nom", GOSSIP_SENDER_MAIN, 10);  // Marche mais Retiré pour gameplay
-		if (_level < 30)
-		{
-			player->ADD_GOSSIP_ITEM(4, "Je voudrais commencer level 30", GOSSIP_SENDER_MAIN, 6);
-		}
-		if (_level < 68)
-		{
-			player->ADD_GOSSIP_ITEM(4, "Je voudrais commencer level 68", GOSSIP_SENDER_MAIN, 7);
-		}
-		if (_level < 80)
-		{
-			player->ADD_GOSSIP_ITEM(4, "Je voudrais commencer level 80", GOSSIP_SENDER_MAIN, 8);
-		}
+//		Player->ADD_GOSSIP_ITEM(4, "Debug 1) Oublier tous mes spells", GOSSIP_SENDER_MAIN, 8); 
+//		Player->ADD_GOSSIP_ITEM(4, "Debug 2) Apprendre mes spells par defaut", GOSSIP_SENDER_MAIN, 9);
+//		Player->ADD_GOSSIP_ITEM(4, " Changer mon nom", GOSSIP_SENDER_MAIN, 10);  // Marche mais Retiré pour gameplay
+
+
 		player->PlayerTalkClass->SendGossipMenu(9425, creature->GetGUID());
 		return true;
 	}
@@ -2578,69 +2570,63 @@ public:
 		uint8 _level = player->getLevel();
 		uint8 _race = player->getRace();
 
-		switch (uiAction)
-		{
+		player->PlayerTalkClass->SendCloseGossip();
 
-		case 0:
+		switch (uiAction)
+{
+
+		case 0:// Changer de Race
+			player->CastSpell(player, 14867, true);
 			player->SetAtLoginFlag(AT_LOGIN_CHANGE_RACE);
-			player->GetSession()->SendNotification("Vous devez vous reconnecter pour changer votre race!");
-			player->PlayerTalkClass->SendCloseGossip();
-			player->CastSpell(player, 14867, true);
+			player->SaveToDB();
+			player->GetSession()->LogoutPlayer(false);
+
 			break;
-		case 1:
+		case 1:// Changer de Faction(Avec TP)
+			player->CastSpell(player, 14867, true);
 			player->SetAtLoginFlag(AT_LOGIN_CHANGE_FACTION);
-			player->GetSession()->SendNotification("Vous devez vous reconnecter pour changer votre faction!");
-			player->PlayerTalkClass->SendCloseGossip();
-			player->CastSpell(player, 14867, true);
+			player->SaveToDB();
+			player->GetSession()->LogoutPlayer(false);
+
 			break;
-		case 3:
-			if (player->GetTeamId() == TEAM_ALLIANCE)	
+		case 4:// Changer de Race en Panda de l'Alliance
+			player->CastSpell(player, 14867, true);
+
+			if (_race == RACE_PANDAREN_NEUTRAL)
 			{
-//				player->SetAtLoginFlag(AT_LOGIN_CHANGEBROKEN);
+				player->SetAtLoginFlag(AT_LOGIN_allianceverspanda);
 			}
+			else if ( _race != RACE_PANDAREN_HORDE)
+			{ 
+				player->SetAtLoginFlag(AT_LOGIN_CUSTOMIZE);
+			}
+
+			player->SetPandaFactionAlliance();
 			
-			if (player->GetTeamId() == TEAM_HORDE)		
+			break;
+		case 5:// Changer de Race en Panda de la Horde
+			player->CastSpell(player, 14867, true);
+
+			if (_race == RACE_PANDAREN_NEUTRAL)
 			{
-//				player->SetAtLoginFlag(AT_LOGIN_CHANGEFELORC);
+				player->SetAtLoginFlag(AT_LOGIN_hordeverspanda);
 			}
-			
-			player->GetSession()->SendNotification("Vous devez vous reconnecter pour changer votre race!");
-			player->PlayerTalkClass->SendCloseGossip();
-			
-			break;
-		case 4:
-			if (RACE_PANDAREN_NEUTRAL)	
+			else if ( _race != RACE_PANDAREN_ALLIANCE )
 			{ 
-				player->SetAtLoginFlag(AT_LOGIN_allianceverspanda); 
+				player->SetAtLoginFlag(AT_LOGIN_CUSTOMIZE);
 			}
 			
-			player->SetAtLoginFlag(AT_LOGIN_CUSTOMIZE);
-			player->GetSession()->SendNotification("Vous devez vous reconnecter pour changer votre race!");
-			player->PlayerTalkClass->SendCloseGossip();
-			player->CastSpell(player, 14867, true);
-			
+			player->SetPandaFactionHorde();
+
 			break;
-		case 5:
-			if (RACE_PANDAREN_NEUTRAL)
-			{ 
-				player->SetAtLoginFlag(AT_LOGIN_hordeverspanda); 
-			}
-			
-			player->SetAtLoginFlag(AT_LOGIN_CUSTOMIZE);
-			player->GetSession()->SendNotification("Vous devez vous reconnecter pour changer votre race!");
-			player->PlayerTalkClass->SendCloseGossip();
-			player->CastSpell(player, 14867, true);
-			
-			break;
-		case 6:
+		case 6:// level 30
 			if (_level < 30)
 			{
 				player->SetLevel(30);
-				player->PlayerTalkClass->SendCloseGossip();
-				player->CastSpell(player, 14867, true); //Visuel
+
 				player->SetSkill(906, 0, 300, 300); //
 				player->LearnSpell(33388, true); //Apprenti cavalier lvl 20
-				player->LearnSpell(37719, true); //Zhévra rapide
+				player->LearnSpell(49322, true); //Zhévra rapide
 
 				if (_race == RACE_WORGEN)	//Worgen
 				{
@@ -2651,7 +2637,6 @@ public:
 					player->LearnSpell(69270, true); //Langue (gilnéen)
 					player->LearnSpell(68976, true); //Aberration
 					player->LearnSpell(68975, true); //Acharnement
-
 				}
 				if ((_class == CLASS_PRIEST) || (_class == CLASS_MAGE) || (_class == CLASS_WARLOCK))	//Tissu
 				{
@@ -2678,18 +2663,17 @@ public:
 				}
 			}
 			break;
-		case 7:
+		case 7:// level 68
 			if (_level < 68)
 			{ 
 				player->SetLevel(68);
-				player->PlayerTalkClass->SendCloseGossip();
-				player->CastSpell(player, 14867, true); //Visuel
+
 				player->LearnSpell(33388, true); //Apprenti cavalier lvl 20
 				player->LearnSpell(33391, true); //Compagnon cavalier lvl 40
 				player->LearnSpell(34090, true); //Expert cavalier 60
 				player->LearnSpell(54197, true); //Vol par temps froid lvl 68 
 				player->LearnSpell(90267, true); //Licence de maître de vol lvl 60 - Kalimdor et Tréfonds
-				player->LearnSpell(37719, true); //Zhévra rapide
+				player->LearnSpell(49322, true); //Zhévra rapide
 
 				if (_race == RACE_WORGEN)	//Worgen
 				{
@@ -2733,12 +2717,11 @@ public:
 				}
 			}
 			break;
-		case 8:
+		case 8:// level 80
 			if (_level <80)
 			{
 				player->SetLevel(80);
-				player->PlayerTalkClass->SendCloseGossip();
-				player->CastSpell(player, 14867, true); //Visuel
+
 				player->LearnSpell(33388, true); //Apprenti cavalier lvl 20
 				player->LearnSpell(33391, true); //Compagnon cavalier lvl 40
 				player->LearnSpell(34090, true); //Expert cavalier 60
@@ -2746,7 +2729,7 @@ public:
 				player->LearnSpell(90265, true); //Maître cavalier lvl 80 
 				player->LearnSpell(54197, true); //Vol par temps froid lvl 68 
 				player->LearnSpell(90267, true); //Licence de maître de vol lvl 60 - Kalimdor et Tréfonds
-				player->LearnSpell(37719, true); //Zhévra rapide
+				player->LearnSpell(49322, true); //Zhévra rapide
 
 				if (_race == RACE_WORGEN)	//Worgen
 				{
@@ -2788,21 +2771,19 @@ public:
 					player->AddItem(80721, 1);//Jambe
 					player->AddItem(80730, 1);//Pied
 				}
-
-
 			}
 			break;
-		case 9:
+		case 9:// Changer mon Apparence
+			player->CastSpell(player, 14867, true);
 			player->SetAtLoginFlag(AT_LOGIN_CUSTOMIZE);
-			player->GetSession()->SendNotification("Vous devez vous reconnecter pour changer votre apparence");
-			player->PlayerTalkClass->SendCloseGossip();
-			player->CastSpell(player, 14867, true);
+			player->SaveToDB();
+			player->GetSession()->LogoutPlayer(false);
 			break;
-		case 10:
-			player->SetAtLoginFlag(AT_LOGIN_RESET_TALENTS);
-			player->GetSession()->SendNotification("Vous devez vous reconnecter pour Oublier tous vos Talents");
-			player->PlayerTalkClass->SendCloseGossip();
+		case 10:// Effacer mes talents
 			player->CastSpell(player, 14867, true);
+			player->SetAtLoginFlag(AT_LOGIN_RESET_TALENTS);
+			player->SaveToDB();
+			player->GetSession()->LogoutPlayer(false);
 			break;
 		}
 		return true;
@@ -2832,6 +2813,9 @@ public:
 
 	bool OnGossipHello(Player* player, Creature* creature) override
 	{
+		if (!player)
+			return true;
+
 		if (player->GetQuestStatus(31450) == QUEST_STATUS_INCOMPLETE)
 		{
 			uint8 _Race = player->getRace();
@@ -2851,46 +2835,24 @@ public:
 
 	bool OnGossipSelect(Player* player, Creature* Creature, uint32 /*uiSender*/, uint32 uiAction) override
 	{
-//		if (player)
-//			return true;
+		if (!player)
+			return true;
 
 //		player->CLOSE_GOSSIP_MENU();
 
 		if (uiAction == GOSSIP_ACTION_INFO_DEF + 1)
 		{
-			player->SetByteValue(UNIT_FIELD_BYTES_0, 0, RACE_PANDAREN_ALLIANCE);
-			player->setFactionForRace(RACE_PANDAREN_ALLIANCE);
-			player->SaveToDB();
-			WorldLocation location(0, -9071.62f, 419.10f, 93.0f, 0.20f);
-			player->TeleportTo(location);
-			player->SetHomebind(location, 9);
-			player->SetSkill(98, 0, 300, 300);
-			player->SetSkill(905, 0, 300, 300);
-			player->SetSkill(906, 0, 300, 300);
-			player->SetSkill(899, 0, 300, 300);
-			player->LearnSpell(668, false);			// Language Common
-			player->LearnSpell(108127, false);		// Language Pandaren
-			player->LearnSpell(108130, false);		// Langue (pandaren - alliance)
-			player->LearnSpell(131701, false);		// Langues pandaren Racial
-			player->KilledMonsterCredit(64594);
+			player->ShowNeutralPlayerFactionSelectUI();
+			player->SetPandaFactionAlliance();
+
+			player->PlayerTalkClass->SendCloseGossip();
 		}
 		else if (uiAction == GOSSIP_ACTION_INFO_DEF + 2)
 		{
-			player->SetByteValue(UNIT_FIELD_BYTES_0, 0, RACE_PANDAREN_HORDE);
-			player->setFactionForRace(RACE_PANDAREN_HORDE);
-			player->SaveToDB();
-			WorldLocation location(1, 1374.12f, -4379.48f, 26.20f, 0.13f);
-			player->TeleportTo(location);
-			player->SetHomebind(location, 363);
-			player->SetSkill(109, 0, 300, 300);
-			player->SetSkill(905, 0, 300, 300);
-			player->SetSkill(907, 0, 300, 300);
-			player->SetSkill(899, 0, 300, 300);
-			player->LearnSpell(669, false);			// Language Orc
-			player->LearnSpell(108127, false);		// Language Pandaren
-			player->LearnSpell(131701, false);	// Langues pandaren Racial
-			player->LearnSpell(143368, false);	// Langue(pandaren - horde)
-			player->KilledMonsterCredit(64594);
+			player->ShowNeutralPlayerFactionSelectUI();
+			player->SetPandaFactionHorde();
+
+			player->PlayerTalkClass->SendCloseGossip();
 		}
 
 		return true;
