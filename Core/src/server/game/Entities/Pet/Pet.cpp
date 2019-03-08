@@ -931,6 +931,46 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
         {
             switch (GetEntry())
             {
+
+//STITCH power pour FAKEPLAYER
+			case 15000269: // Guerrier A2
+			{setPowerType(POWER_RAGE);} break;
+			case 15000270: // Guerrier H2
+			{setPowerType(POWER_RAGE); } break;
+			case 15000290: // Pretre A2
+			{setPowerType(POWER_MANA); } break;
+			case 15000291: // Pretre H2
+			{setPowerType(POWER_MANA); } break;
+			case 15000292: // DK H2
+			{setPowerType(POWER_RUNIC_POWER); } break;
+			case 15000293: // DK H2
+			{setPowerType(POWER_RUNIC_POWER); } break;
+			case 15000296: // Druide A2
+			{setPowerType(POWER_MANA); } break;
+			case 15000297: // Druide H2
+			{setPowerType(POWER_MANA); } break;
+			case 15000298: // Paladin A2
+			{setPowerType(POWER_MANA); } break;
+			case 15000299: // Paladin H2
+			{setPowerType(POWER_MANA); } break;
+			case 15000300: // Chaman H2
+			{setPowerType(POWER_MANA); } break;
+			case 15000301: // Chaman H2
+			{setPowerType(POWER_MANA); } break;
+			case 15000302: // Demo A2
+			{setPowerType(POWER_MANA); } break;
+			case 15000303: // Demo H2
+			{setPowerType(POWER_MANA); } break;
+			case 15000304: // Mage A2
+			{setPowerType(POWER_MANA); } break;
+			case 15000305: // Mage H2
+			{setPowerType(POWER_MANA); } break;
+			case 15000306: // 15000306 A2
+			{setPowerType(POWER_FOCUS); } break;
+			case 15000307: // 15000306 H2
+			{setPowerType(POWER_FOCUS); } break;
+
+
                 case 510: // mage Water Elemental
                 {
                     SetBonusDamage(int32(GetOwner()->SpellBaseDamageBonusDone(SPELL_SCHOOL_MASK_FROST) * 0.33f));
