@@ -1205,7 +1205,12 @@ void Player::Update(uint32 p_time)
             uint32 newzone, newarea;
             GetZoneAndAreaId(newzone, newarea);
 
-            if (m_zoneUpdateId != newzone)
+//Stitch Zone & Area
+			if (newzone==616 && !IsGameMaster()) 	{SetCanFly(false);	SetDisableGravity(false);} // Vol en Hyjal interdit
+
+			
+			
+			if (m_zoneUpdateId != newzone)
                 UpdateZone(newzone, newarea);                // also update area
             else
             {
