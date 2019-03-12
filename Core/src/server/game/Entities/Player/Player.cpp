@@ -1205,20 +1205,6 @@ void Player::Update(uint32 p_time)
             uint32 newzone, newarea;
             GetZoneAndAreaId(newzone, newarea);
 
-//Stitch Zone & Area
-
-if (newzone == 616 && !IsGameMaster()) {	SetCanFly(false);	SetDisableGravity(false);  } // Vol interdit en Hyjal
-if (newzone == 4395 && !IsGameMaster()){	SetCanFly(false);	SetDisableGravity(false);  } // Vol interdit en Dalaran
-if (newzone == 1519 && !IsGameMaster() && GetTeamId() == TEAM_HORDE) { SetCanFly(false);	SetDisableGravity(false); } // Vol interdit a Hurlevent
-if (newzone == 1537 && !IsGameMaster() && GetTeamId() == TEAM_HORDE) { SetCanFly(false);	SetDisableGravity(false); } // Vol interdit a Forgefer
-if (newzone == 1657 && !IsGameMaster() && GetTeamId() == TEAM_HORDE) { SetCanFly(false);	SetDisableGravity(false); } // Vol interdit a Darnassus
-if (newzone == 3557 && !IsGameMaster() && GetTeamId() == TEAM_HORDE) { SetCanFly(false);	SetDisableGravity(false); } // Vol interdit a Exodar
-if (newzone == 1638 && !IsGameMaster() && GetTeamId() == TEAM_ALLIANCE) { SetCanFly(false);	SetDisableGravity(false); } // Vol interdit a Piton du tonnerre
-if (newzone == 1637 && !IsGameMaster() && GetTeamId() == TEAM_ALLIANCE) { SetCanFly(false);	SetDisableGravity(false); } // Vol interdit a Orgrimmar
-if (newzone == 1497 && !IsGameMaster() && GetTeamId() == TEAM_ALLIANCE) { SetCanFly(false);	SetDisableGravity(false); } // Vol interdit a Fossoyeuse
-if (newzone == 3487 && !IsGameMaster() && GetTeamId() == TEAM_ALLIANCE) { SetCanFly(false);	SetDisableGravity(false); } // Vol interdit a Lune-d'Argent
-
-
 			if (m_zoneUpdateId != newzone)
                 UpdateZone(newzone, newarea);                // also update area
             else
@@ -1355,6 +1341,66 @@ if (newzone == 3487 && !IsGameMaster() && GetTeamId() == TEAM_ALLIANCE) { SetCan
     //because we don't want player's ghost teleported from graveyard
     if (IsHasDelayedTeleport() && IsAlive())
         TeleportTo(m_teleport_dest, m_teleport_options);
+
+
+
+
+
+//Stitch Zone & Area
+	if (IsFlying() && !IsGameMaster())
+	{
+		uint32 newzone, newarea;
+		GetZoneAndAreaId(newzone, newarea);
+
+		if (GetTeamId() == TEAM_HORDE)
+		{
+			switch (newzone)
+			{
+			case 616:  // Vol interdit en Hyjal
+			case 4395: // Vol interdit en Dalaran
+				SetCanFly(false);
+				SetDisableGravity(false);
+				CastSpell(this, 77404, true);
+				GetSession()->SendNotification("Vous survolez une zone interdite");
+				break;
+			case 1519: // Vol interdit a Hurlevent
+			case 1537: // Vol interdit a Forgefer
+			case 1657: // Vol interdit a Darnassus
+			case 3557: // Vol interdit a Exodar
+				SetCanFly(false);
+				SetDisableGravity(false);
+				CastSpell(this, 77404, true);
+				GetSession()->SendNotification("Vous survolez une zone interdite a la Horde");
+				break;
+			}
+		}
+		else
+		{
+			switch (newzone)
+			{
+			case 616:  // Vol interdit en Hyjal
+			case 4395: // Vol interdit en Dalaran
+				SetCanFly(false);
+				SetDisableGravity(false);
+				CastSpell(this, 77404, true);
+				GetSession()->SendNotification("Vous survolez une zone interdite");
+				break;
+			case 1638: // Vol interdit a Piton du tonnerre
+			case 1637: // Vol interdit a Orgrimmar
+			case 1497: // Vol interdit a Fossoyeuse
+			case 3487: // Vol interdit a Lune-d'Argent
+				SetCanFly(false);
+				SetDisableGravity(false);
+				CastSpell(this, 77404, true);
+				GetSession()->SendNotification("Vous survolez une zone interdite a l'Alliance");
+				break;
+			}
+		}
+
+
+	}
+
+
 
 }
 
