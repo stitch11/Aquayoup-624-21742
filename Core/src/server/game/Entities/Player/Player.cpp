@@ -1342,10 +1342,6 @@ void Player::Update(uint32 p_time)
     if (IsHasDelayedTeleport() && IsAlive())
         TeleportTo(m_teleport_dest, m_teleport_options);
 
-
-
-
-
 //Stitch Zone & Area
 	if (IsFlying() && !IsGameMaster())
 	{
@@ -1434,6 +1430,7 @@ void Player::setDeathState(DeathState s)
         // passive spell
         if (!ressSpellId)
             ressSpellId = GetResurrectionSpellId();
+
         UpdateCriteria(CRITERIA_TYPE_DEATH_AT_MAP, 1);
         UpdateCriteria(CRITERIA_TYPE_DEATH, 1);
         UpdateCriteria(CRITERIA_TYPE_DEATH_IN_DUNGEON, 1);
@@ -1725,6 +1722,7 @@ bool Player::TeleportToBGEntryPoint()
     ScheduleDelayedOperation(DELAYED_BG_MOUNT_RESTORE);
     ScheduleDelayedOperation(DELAYED_BG_TAXI_RESTORE);
     ScheduleDelayedOperation(DELAYED_BG_GROUP_RESTORE);
+
     return TeleportTo(m_bgData.joinPos);
 }
 
@@ -1787,8 +1785,6 @@ void Player::AddToWorld()
 	{
 		SetPower(POWER_MANA, GetMaxPower(POWER_MANA));	//STITCH refresh max mana a la connexion 
 	}
-
-
 
     Unit::AddToWorld();
 
@@ -1859,36 +1855,38 @@ bool Player::IsImmunedToSpellEffect(SpellInfo const* spellInfo, uint32 index) co
 }
 
 void Player::RegenerateAll()
-{	//STITCH Regen ( Heal & Power ) - defaut 500
+{	
+	uint8 _class = getClass();
+	//STITCH Regen ( Heal & Power ) - defaut 500
 
-	if (m_regenTimer <= 500 && (getClass() == CLASS_WARRIOR))    return; 
-	if (m_regenTimer <= 1000 && (getClass() == CLASS_PALADIN))    return; 
-	if (m_regenTimer <= 500 && (getClass() == CLASS_HUNTER))    return; 
-	if (m_regenTimer <= 1500 && (getClass() == CLASS_ROGUE))    return; 
-	if (m_regenTimer <= 10000 && (getClass() == CLASS_PRIEST))    return;
-	if (m_regenTimer <= 1500 && (getClass() == CLASS_DEATH_KNIGHT))    return; 
-	if (m_regenTimer <= 500 && (getClass() == CLASS_SHAMAN))    return; 
-	if (m_regenTimer <= 2000 && (getClass() == CLASS_MAGE))    return;
-	if (m_regenTimer <= 50000 && (getClass() == CLASS_WARLOCK))    return;
-	if (m_regenTimer <= 1000 && (getClass() == CLASS_MONK))    return; 
-	if (m_regenTimer <= 5000 && (getClass() == CLASS_DRUID))    return; 
+	if (m_regenTimer <= 500 && _class == CLASS_WARRIOR)    return;
+	if (m_regenTimer <= 1000 && _class == CLASS_PALADIN)    return;
+	if (m_regenTimer <= 500 && _class == CLASS_HUNTER)    return;
+	if (m_regenTimer <= 1500 && _class == CLASS_ROGUE)    return;
+	if (m_regenTimer <= 10000 && _class == CLASS_PRIEST)    return;
+	if (m_regenTimer <= 1500 && _class == CLASS_DEATH_KNIGHT)    return;
+	if (m_regenTimer <= 500 && _class == CLASS_SHAMAN)    return;
+	if (m_regenTimer <= 2000 && _class == CLASS_MAGE)    return;
+	if (m_regenTimer <= 50000 && _class == CLASS_WARLOCK)    return;
+	if (m_regenTimer <= 1000 && _class == CLASS_MONK)    return;
+	if (m_regenTimer <= 5000 && _class == CLASS_DRUID)    return;
 
 
 
     m_regenTimerCount += m_regenTimer;
 
-    if (getClass() == CLASS_PALADIN)
+	if (_class == CLASS_PALADIN)
         m_holyPowerRegenTimerCount += m_regenTimer;
 
-    if (getClass() == CLASS_HUNTER)
+	if (_class == CLASS_HUNTER)
 		//m_focusRegenTimerCount += m_regenTimer;
-		m_focusRegenTimerCount += m_regenTimer*2;//STITCH regen focus chasseur
+		m_focusRegenTimerCount += m_regenTimer * 2; // STITCH regen focus chasseur
 
     Regenerate(POWER_ENERGY);
-	 Regenerate(POWER_MANA);
+	Regenerate(POWER_MANA);
 
     // Runes act as cooldowns, and they don't need to send any data
-    if (getClass() == CLASS_DEATH_KNIGHT)
+	if (_class == CLASS_DEATH_KNIGHT)
     {
 /*        for (uint8 i = 0; i < MAX_RUNES; i += 2)
         {
@@ -1909,17 +1907,11 @@ void Player::RegenerateAll()
 
 //STITCH regen rune DK (version 335)
 		for (uint8 i = 0; i < MAX_RUNES; ++i)
-			if (uint32 cd = GetRuneCooldown(i)/2)
+			if (uint32 cd = GetRuneCooldown(i) / 2 )
 				SetRuneCooldown(i, (cd > m_regenTimer) ? cd - m_regenTimer : 0);
-
-
-
-
-
-
     }
 
-    if (m_focusRegenTimerCount >= 1000 && getClass() == CLASS_HUNTER)
+	 if (m_focusRegenTimerCount >= 1000 && _class == CLASS_HUNTER)
     {
         Regenerate(POWER_FOCUS);
         m_focusRegenTimerCount -= 1000;
@@ -1936,13 +1928,13 @@ void Player::RegenerateAll()
         }
 
         Regenerate(POWER_RAGE);
-        if (getClass() == CLASS_DEATH_KNIGHT)
+		if (_class == CLASS_DEATH_KNIGHT)
             Regenerate(POWER_RUNIC_POWER);
 
         m_regenTimerCount -= 2000;
     }
 
-	if (m_holyPowerRegenTimerCount >= 10000 && getClass() == CLASS_PALADIN)//STITCH compteur avant perte de 1 Puissance sacrée - defaut 10000
+	if (m_holyPowerRegenTimerCount >= 10000 && _class == CLASS_PALADIN) // STITCH compteur avant perte de 1 Puissance sacrée - defaut 10000
     {
         Regenerate(POWER_HOLY_POWER);
         m_holyPowerRegenTimerCount -= 105000; 
@@ -1980,24 +1972,18 @@ void Player::Regenerate(Powers power)
         case POWER_MANA:
 
         {
-
 			//STITCH regen mana
 			float ManaIncreaseRate = sWorld->getRate(RATE_POWER_MANA);
 
 			if (IsInCombat()) // Trinity Updates Mana in intervals of 2s, which is correct
-
 // 				addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER) *ManaIncreaseRate * ((0.001f * m_regenTimer) + CalculatePct(0.001f, spellHaste));
 				addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER) *ManaIncreaseRate /1.1 * ((0.001f * m_regenTimer) + CalculatePct(0.001f, spellHaste));
 			else
 // 				addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER) *  ManaIncreaseRate * ((0.001f * m_regenTimer) + CalculatePct(0.001f, spellHaste));
 				addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER) *  ManaIncreaseRate /1.1 * ((0.001f * m_regenTimer) + CalculatePct(0.001f, spellHaste));
 
-
+			break;
         }
-
-
-
-        break;
         case POWER_RAGE:                                                // Regenerate rage
         {
             if (!IsInCombat() && !HasAuraType(SPELL_AURA_INTERRUPT_REGEN))
@@ -2006,18 +1992,15 @@ void Player::Regenerate(Powers power)
                 addvalue += -25 * RageDecreaseRate / meleeHaste;                // 2.5 rage by tick (= 2 seconds => 1.25 rage/sec)
             }
 
-
-
 			//STITCH regen Rage
 //			if (IsInCombat()) 	{  addvalue += ((0.01f * m_regenTimer) + CalculatePct(0.01f, meleeHaste)*10) * sWorld->getRate(RATE_POWER_RAGE_INCOME);  }
-			if (IsInCombat()) 	{ 
+			if (IsInCombat()) 	
+			{ 
 				float RageDecreaseRate = sWorld->getRate(RATE_POWER_RAGE_LOSS);
-				addvalue += 125 * RageDecreaseRate / meleeHaste; }
-
-
-
-        }
-        break;
+				addvalue += 125 * RageDecreaseRate / meleeHaste; 
+			}
+			break;
+		}
         case POWER_FOCUS:
             addvalue += (6.0f + CalculatePct(6.0f, rangedHaste)) * sWorld->getRate(RATE_POWER_FOCUS);
             break;
@@ -2031,21 +2014,16 @@ void Player::Regenerate(Powers power)
                 float RunicPowerDecreaseRate = sWorld->getRate(RATE_POWER_RUNICPOWER_LOSS);
                 addvalue += -30 * RunicPowerDecreaseRate;         // 3 RunicPower by tick
             }
-        }
-        break;
+			break;
+		}
         case POWER_HOLY_POWER:                                          // Regenerate holy power
         {
             if (!IsInCombat())
                 addvalue += -1.0f;      // remove 1 every 10 sec, first one removed 20s after leaving combat
-        }
-        break;
-
-
-
-        case POWER_RUNES:
-            break;
-
-
+			break;
+		}
+        //case POWER_RUNES:
+        //    break;
         case POWER_HEALTH:
             return;
         default:
@@ -2182,9 +2160,6 @@ void Player::ResetAllPowers()
         case POWER_ECLIPSE:
             SetPower(POWER_ECLIPSE, 0);
             break;
-
-
-			
         default:
             break;
     }
@@ -2593,12 +2568,14 @@ void Player::GiveLevel(uint8 level)
     SetPower(POWER_FOCUS, 0);
 
 //Stitch levelup bug de max Fureur démoniaque
-	if (ShapeshiftForm() == (FORM_VAMPIRE_BERSERKER))
+	ShapeshiftForm _form = GetShapeshiftForm();
+
+	if (_form == (FORM_VAMPIRE_BERSERKER))
 	{
 		setPowerType(POWER_DEMONIC_FURY);
 		SetMaxPower(POWER_DEMONIC_FURY, 100);
 	}
-	if (ShapeshiftForm() == (FORM_VAMPIRE_ANCESTRAL))
+	else if (_form == (FORM_VAMPIRE_ANCESTRAL))
 	{
 		setPowerType(POWER_DEMONIC_FURY);
 		SetMaxPower(POWER_DEMONIC_FURY, 100);
@@ -4773,8 +4750,6 @@ void Player::RepopAtGraveyard()
 		TeleportTo(m_homebindMapId, m_homebindX, m_homebindY, m_homebindZ, GetOrientation());//TP pierre de foyer
 		ResurrectPlayer(0.5f);
 
-
-
 		if (isDead())                                        // not send if alive, because it used in TeleportTo()
         {
             WorldPackets::Misc::DeathReleaseLoc packet;
@@ -6447,7 +6422,7 @@ bool Player::RewardHonor(Unit* victim, uint32 groupsize, int32 honor, bool pvpto
     }
 
 	//honor_f *= sWorld->getRate(RATE_HONOR) ;
-    honor_f *= sWorld->getRate(RATE_HONOR)*10;//STITCH honneur rate
+    honor_f *= sWorld->getRate(RATE_HONOR) * 10;//STITCH honneur rate
 
 
     // Back to int now
@@ -7429,9 +7404,9 @@ void Player::_ApplyItemBonuses(Item* item, uint8 slot, bool apply)
                 ApplyRatingMod(CR_RESILIENCE_PLAYER_DAMAGE_TAKEN, int32(val), apply);
                 break;
             case ITEM_MOD_HASTE_RATING:                                                  //Stitch rate Hate *2
-				ApplyRatingMod(CR_HASTE_MELEE, int32(val)*2, apply);
-				ApplyRatingMod(CR_HASTE_RANGED, int32(val)*2, apply);
-				ApplyRatingMod(CR_HASTE_SPELL, int32(val)*2, apply);
+				ApplyRatingMod(CR_HASTE_MELEE, int32(val) * 2, apply);
+				ApplyRatingMod(CR_HASTE_RANGED, int32(val) * 2, apply);
+				ApplyRatingMod(CR_HASTE_SPELL, int32(val) * 2, apply);
                 break;
             case ITEM_MOD_EXPERTISE_RATING:
                 ApplyRatingMod(CR_EXPERTISE, int32(val), apply);
@@ -21150,53 +21125,55 @@ void Player::InitDataForForm(bool reapplyMods)
         SetRegularAttackTime();
 
     switch (form)
-{
+	{
 
 //Stitch Changeform : PowerType
-	case FORM_VAMPIRE_BERSERKER:	//Stitch FORM_VAMPIRE_BERSERKER utilise POWER_FOCUS
-	{
-		uint32 m_maxfocus = 100;
-		SetDisplayId(GetNativeDisplayId());				//Pour retirer la forme de vol
-		if (getPowerType() != POWER_DEMONIC_FURY)
-			setPowerType(POWER_DEMONIC_FURY);
+		case FORM_VAMPIRE_BERSERKER:	//Stitch FORM_VAMPIRE_BERSERKER utilise POWER_FOCUS
+		{
+			uint32 m_maxfocus = 100;
+			SetDisplayId(GetNativeDisplayId());				//Pour retirer la forme de vol
+
+			if (getPowerType() != POWER_DEMONIC_FURY)
+				setPowerType(POWER_DEMONIC_FURY);
+
 			SetMaxPower(POWER_DEMONIC_FURY, m_maxfocus);
 			SetMaxPower(POWER_ENERGY, 0);				//Desactive energie
 //			SetMaxPower(POWER_DEMONIC_FURY, 0);			//Desactive Fureur démoniaque
-		break;
-	}
-	case FORM_VAMPIRE_ANCESTRAL:	//Stitch FORM_VAMPIRE_ANCESTRAL utilise POWER_DEMONIC_FURY
-	{
-		uint32 m_maxfury = 100;
-		SetDisplayId(GetNativeDisplayId());				//Pour retirer la forme de vol
-		if (getPowerType() != POWER_DEMONIC_FURY)
-			setPowerType(POWER_DEMONIC_FURY);
-			SetMaxPower(POWER_DEMONIC_FURY, m_maxfury);
-			SetMaxPower(POWER_ENERGY, 0);				//Desactive energie
-			SetMaxPower(POWER_FOCUS, 0);				//Desactive Focus
-		break;
-	}
+		}
+			break;
+		case FORM_VAMPIRE_ANCESTRAL:	//Stitch FORM_VAMPIRE_ANCESTRAL utilise POWER_DEMONIC_FURY
+		{
+			uint32 m_maxfury = 100;
+			SetDisplayId(GetNativeDisplayId());				//Pour retirer la forme de vol
 
+			if (getPowerType() != POWER_DEMONIC_FURY)
+				setPowerType(POWER_DEMONIC_FURY);
 
+				SetMaxPower(POWER_DEMONIC_FURY, m_maxfury);
+				SetMaxPower(POWER_ENERGY, 0);				//Desactive energie
+				SetMaxPower(POWER_FOCUS, 0);				//Desactive Focus
+		}
+			break;
 		case FORM_GHOUL:
-        case FORM_CAT_FORM:
-        {
-            if (getPowerType() != POWER_ENERGY)
-                setPowerType(POWER_ENERGY);
-            break;
-        }
-        case FORM_BEAR_FORM:
-        {
-            if (getPowerType() != POWER_RAGE)
-                setPowerType(POWER_RAGE);
-            break;
-        }
-        default:                                            // 0, for example
-        {
-            ChrClassesEntry const* cEntry = sChrClassesStore.LookupEntry(getClass());
-            if (cEntry && cEntry->PowerType < MAX_POWERS && uint32(getPowerType()) != cEntry->PowerType)
-                setPowerType(Powers(cEntry->PowerType));
-            break;
-        }
+		case FORM_CAT_FORM:
+	    {
+			if (getPowerType() != POWER_ENERGY)
+				setPowerType(POWER_ENERGY);
+		}
+			break;
+
+		case FORM_BEAR_FORM:
+		{
+			if (getPowerType() != POWER_RAGE)
+				setPowerType(POWER_RAGE);
+		}
+			break;
+		default:                                            // 0, for example
+		{
+			ChrClassesEntry const* cEntry = sChrClassesStore.LookupEntry(getClass());
+			if (cEntry && cEntry->PowerType < MAX_POWERS && uint32(getPowerType()) != cEntry->PowerType)
+				setPowerType(Powers(cEntry->PowerType));
+		}
 	}
 
     // update auras at form change, ignore this at mods reapply (.reset stats/etc) when form not change.
@@ -23624,11 +23601,11 @@ uint32 Player::GetResurrectionSpellId() const
     if (prio < 1 && HasSpell(20608) && !GetSpellHistory()->HasCooldown(21169))
         spell_id = 21169;
 
-
 	if (spell_id == 0)
 	{
 		spell_id = 95750;//STITCH rez :  pierre de rez auto pour tous ( recharge 0s , cast 15s )
 	}
+
     return spell_id;
 }
 
@@ -24601,7 +24578,6 @@ void Player::StoreLootItem(uint8 lootSlot, Loot* loot)
         return;
     }
 
-
 	//STITCH bug loot item de quete
 	// dont allow protected item to be looted by someone else
 	if (!item->rollWinnerGUID.IsEmpty() && item->rollWinnerGUID != GetGUID())
@@ -24609,8 +24585,6 @@ void Player::StoreLootItem(uint8 lootSlot, Loot* loot)
 		SendLootRelease(GetLootGUID());
 		return;
 	}
-
-
 
     ItemPosCountVec dest;
     InventoryResult msg = CanStoreNewItem(NULL_BAG, NULL_SLOT, dest, item->itemid, item->count);
@@ -26129,8 +26103,6 @@ void Player::SetPandaFactionAlliance()
 
 	SaveToDB();
 	GetSession()->LogoutPlayer(false);
-
-
 }
 
 // Stitch SetPandaFactionHorde
@@ -26155,7 +26127,6 @@ void Player::SetPandaFactionHorde()
 
 	SaveToDB();
 	GetSession()->LogoutPlayer(false);
-
 }
 
 void Player::SendMovementSetCollisionHeight(float height)

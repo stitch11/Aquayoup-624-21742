@@ -376,7 +376,6 @@ LootItem::LootItem(LootStoreItem const& li)
 	//STITCH bug loot item de quete
 	rollWinnerGUID = ObjectGuid::Empty;
 
-
     canSave = true;
 }
 
@@ -916,7 +915,6 @@ void Loot::BuildLootResponse(WorldPackets::Loot::LootResponse& packet, Player* v
                         slot_type = LOOT_SLOT_TYPE_ALLOW_LOOT;
                     }
 
-
 //STITCH bug loot item de quete
 					else if (!items[i].rollWinnerGUID.IsEmpty())
 					{
@@ -925,10 +923,6 @@ void Loot::BuildLootResponse(WorldPackets::Loot::LootResponse& packet, Player* v
 						else
 							continue;
 					}
-
-
-
-
                     else
                         // item shall not be displayed.
                         continue;

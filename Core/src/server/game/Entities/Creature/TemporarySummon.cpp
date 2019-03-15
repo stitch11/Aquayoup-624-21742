@@ -334,7 +334,6 @@ Guardian::Guardian(SummonPropertiesEntry const* properties, Unit* owner, bool is
 
 	//if (properties && (properties->Type == SUMMON_TYPE_PET || properties->Type == SUMMON_TYPE_MINION)) //STITCH TMP pour Ajouter la barre de controle a tous les PET
 	if (properties && properties->Type == SUMMON_TYPE_PET)
-
     {
         m_unitTypeMask |= UNIT_MASK_CONTROLABLE_GUARDIAN;
         InitCharmInfo();

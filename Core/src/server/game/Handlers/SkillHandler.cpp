@@ -64,7 +64,9 @@ void WorldSession::HandleConfirmRespecWipeOpcode(WorldPackets::Talent::ConfirmRe
         GetPlayer()->SendRespecWipeConfirm(ObjectGuid::Empty, 0);
         return;
     }
+
 	Player* player = GetPlayer();
+
     _player->SendTalentsInfoData();
     unit->CastSpell(_player, 14867, true);                  //spell: "Untalent Visual Effect"
 	player->ResetTalentSpecialization();					//STITCH Talents specialisation

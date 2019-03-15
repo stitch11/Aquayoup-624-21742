@@ -1714,8 +1714,8 @@ public:
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_PET1, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
             if (player->GetPet() && player->GetPet()->getPetType() == HUNTER_PET)
  /*               player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_PET2, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);*/ //STITCH reset pet talents deja pris en compte
+				player->PlayerTalkClass->SendGossipMenu(TEXT_ISHUNTER, creature->GetGUID());
 
-            player->PlayerTalkClass->SendGossipMenu(TEXT_ISHUNTER, creature->GetGUID());
             return true;
         }
         player->PlayerTalkClass->SendGossipMenu(TEXT_NOTHUNTER, creature->GetGUID());
@@ -2542,17 +2542,18 @@ public:
 
 		player->ADD_GOSSIP_ITEM(4, "Changer de Race ", GOSSIP_SENDER_MAIN, 0);
 		player->ADD_GOSSIP_ITEM(4, "Changer de Faction (Avec TP)", GOSSIP_SENDER_MAIN, 1);
+
 		if (_race != RACE_PANDAREN_ALLIANCE)	{player->ADD_GOSSIP_ITEM(2, "Changer de Race en Panda de l'Alliance", GOSSIP_SENDER_MAIN, 4);}
 		if (_race != RACE_PANDAREN_HORDE)		{player->ADD_GOSSIP_ITEM(2, "Changer de Race en Panda de la Horde", GOSSIP_SENDER_MAIN, 5);}
 		if (_level < 30) { player->ADD_GOSSIP_ITEM(4, "Je voudrais commencer level 30", GOSSIP_SENDER_MAIN, 6); }
 		if (_level < 68) { player->ADD_GOSSIP_ITEM(4, "Je voudrais commencer level 68", GOSSIP_SENDER_MAIN, 7); }
 		if (_level < 80) { player->ADD_GOSSIP_ITEM(4, "Je voudrais commencer level 80", GOSSIP_SENDER_MAIN, 8); }
+
 		player->ADD_GOSSIP_ITEM(3, "Changer mon Apparence", GOSSIP_SENDER_MAIN, 9);	//sinon crash
 		player->ADD_GOSSIP_ITEM(4, "Effacer mes talents", GOSSIP_SENDER_MAIN, 10);
 //		Player->ADD_GOSSIP_ITEM(4, "Debug 1) Oublier tous mes spells", GOSSIP_SENDER_MAIN, 8); 
 //		Player->ADD_GOSSIP_ITEM(4, "Debug 2) Apprendre mes spells par defaut", GOSSIP_SENDER_MAIN, 9);
 //		Player->ADD_GOSSIP_ITEM(4, " Changer mon nom", GOSSIP_SENDER_MAIN, 10);  // Marche mais Retiré pour gameplay
-
 
 		player->PlayerTalkClass->SendGossipMenu(9425, creature->GetGUID());
 		return true;

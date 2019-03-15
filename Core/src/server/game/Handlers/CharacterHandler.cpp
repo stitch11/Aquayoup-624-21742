@@ -259,12 +259,11 @@ bool LoginQueryHolder::Initialize()
     stmt->setUInt64(0, lowGuid);
     res &= SetPreparedQuery(PLAYER_LOGIN_QUERY_LOAD_GARRISON_FOLLOWER_ABILITIES, stmt);
 
-
+	// a voir
 	CharacterDatabase.DirectExecute("UPDATE `characters` SET `race` = 25,`at_login`=0 WHERE `at_login` = 512 AND (`race` = 1 OR `race` = 3 OR `race` = 4 OR `race` = 7 OR `race` = 11 OR `race` = 22 OR `race`=24)") ; //STITCH a la connexion un joueur A2 deviens Panda A2 - AT_LOGIN_allianceverspanda OU NEUTRE
 	CharacterDatabase.DirectExecute("UPDATE `characters` SET `race` = 26,`at_login`=0 WHERE `at_login` = 1024 AND (`race` = 2 OR `race` = 5 OR `race` = 6 OR `race` = 8 OR `race` = 10 OR `race` = 9 OR `race`=24)") ; //STITCH a la connexion un joueur H2 deviens Panda H2 - AT_LOGIN_hordeverspanda
-
+	// a voir
 	CharacterDatabase.DirectExecute("UPDATE `characters` SET `at_login`=0 WHERE `at_login`!=1 AND `at_login`!=2 AND `at_login`!=4 AND `at_login`!=8 AND `at_login`!=16 AND `at_login`!=32 AND `at_login`!=64 AND `at_login`!=128 AND `at_login`!=256 AND `at_login`!=512 AND `at_login`!=1024 AND `at_login`!=2048 AND `at_login`!=4096"); //STITCH - en cas de choix multiple , risque de bug
-
 
 	return res;
 }

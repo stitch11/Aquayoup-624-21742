@@ -929,156 +929,248 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
         }
         default:
         {
-            switch (GetEntry())
-            {
+			switch (GetEntry())
+			{
 
-//STITCH power pour FAKEPLAYER InitCharmInfo();
-			case 15000269: // Guerrier A2
-			{setPowerType(POWER_RAGE); m_charmInfo->InitPetActionBar(); SetMaxPower(POWER_RAGE, GetMaxPower(POWER_RAGE)); } break;
-			case 15000270: // Guerrier H2
-			{setPowerType(POWER_RAGE); m_charmInfo->InitPetActionBar(); SetMaxPower(POWER_RAGE, GetMaxPower(POWER_RAGE)); } break;
-			case 15000290: // Pretre A2
-			{setPowerType(POWER_MANA); m_charmInfo->InitPetActionBar(); SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA)); } break;
-			case 15000291: // Pretre H2
-			{setPowerType(POWER_MANA); m_charmInfo->InitPetActionBar(); SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA)); } break;
-			case 15000292: // DK H2
-			{setPowerType(POWER_RUNIC_POWER); m_charmInfo->InitPetActionBar(); SetMaxPower(POWER_RUNIC_POWER, GetMaxPower(POWER_RUNIC_POWER)); } break;
-			case 15000293: // DK H2
-			{setPowerType(POWER_RUNIC_POWER); m_charmInfo->InitPetActionBar(); SetMaxPower(POWER_RUNIC_POWER, GetMaxPower(POWER_RUNIC_POWER)); } break;
-			case 15000296: // Druide A2
-			{setPowerType(POWER_MANA); m_charmInfo->InitPetActionBar(); } SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA)); break;
-			case 15000297: // Druide H2
-			{setPowerType(POWER_MANA); m_charmInfo->InitPetActionBar(); } SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA)); break;
-			case 15000298: // Paladin A2
-			{setPowerType(POWER_MANA); m_charmInfo->InitPetActionBar(); } SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA)); break;
-			case 15000299: // Paladin H2
-			{setPowerType(POWER_MANA); m_charmInfo->InitPetActionBar(); } SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA)); break;
-			case 15000300: // Chaman H2
-			{setPowerType(POWER_MANA); m_charmInfo->InitPetActionBar(); } SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA)); break;
-			case 15000301: // Chaman H2
-			{setPowerType(POWER_MANA); m_charmInfo->InitPetActionBar(); } SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA)); break;
-			case 15000302: // Demo A2
-			{setPowerType(POWER_MANA); m_charmInfo->InitPetActionBar(); } SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA)); break;
-			case 15000303: // Demo H2
-			{setPowerType(POWER_MANA); m_charmInfo->InitPetActionBar(); } SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA)); break;
-			case 15000304: // Mage A2
-			{setPowerType(POWER_MANA); m_charmInfo->InitPetActionBar(); } SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA)); break;
-			case 15000305: // Mage H2
-			{setPowerType(POWER_MANA); m_charmInfo->InitPetActionBar(); } SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA)); break;
-			case 15000306: // 15000306 A2
-			{setPowerType(POWER_FOCUS); m_charmInfo->InitPetActionBar(); SetMaxPower(POWER_FOCUS, 100); } break;
-			case 15000307: // 15000306 H2
-			{setPowerType(POWER_FOCUS); m_charmInfo->InitPetActionBar(); SetMaxPower(POWER_FOCUS, 100); } break;
+				//STITCH power pour FAKEPLAYER InitCharmInfo();
+				case 15000269: // Guerrier A2
+				{
+					setPowerType(POWER_RAGE);
+					m_charmInfo->InitPetActionBar();
+					SetMaxPower(POWER_RAGE, GetMaxPower(POWER_RAGE));
+					break;
+				}
+				case 15000270: // Guerrier H2
+				{
+					setPowerType(POWER_RAGE);
+					m_charmInfo->InitPetActionBar();
+					SetMaxPower(POWER_RAGE, GetMaxPower(POWER_RAGE));
+					break;
+				}
+				case 15000290: // Pretre A2
+				{
+					setPowerType(POWER_MANA);
+					m_charmInfo->InitPetActionBar();
+					SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA));
+					break;
+				}
+				case 15000291: // Pretre H2
+				{
+					setPowerType(POWER_MANA);
+					m_charmInfo->InitPetActionBar();
+					SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA));
+					break;
+				}
+				case 15000292: // DK H2
+				{
+					setPowerType(POWER_RUNIC_POWER);
+					m_charmInfo->InitPetActionBar();
+					SetMaxPower(POWER_RUNIC_POWER, GetMaxPower(POWER_RUNIC_POWER));
+					break;
+				}
+				case 15000293: // DK H2
+				{
+					setPowerType(POWER_RUNIC_POWER);
+					m_charmInfo->InitPetActionBar();
+					SetMaxPower(POWER_RUNIC_POWER, GetMaxPower(POWER_RUNIC_POWER));
+					break;
+				}
+				case 15000296: // Druide A2
+				{
+					setPowerType(POWER_MANA);
+					m_charmInfo->InitPetActionBar();
+					SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA));
+					break;
+				}
+				case 15000297: // Druide H2
+				{
+					setPowerType(POWER_MANA);
+					m_charmInfo->InitPetActionBar();
+					SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA));
+					break;
+				}
+				case 15000298: // Paladin A2
+				{
+					setPowerType(POWER_MANA);
+					m_charmInfo->InitPetActionBar();
+					SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA));
+					break;
+				}
+				case 15000299: // Paladin H2
+				{
+					setPowerType(POWER_MANA);
+					m_charmInfo->InitPetActionBar();
+					SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA));
+					break;
+				}
+				case 15000300: // Chaman H2
+				{
+					setPowerType(POWER_MANA);
+					m_charmInfo->InitPetActionBar();
+					SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA));
+					break;
+				}
+				case 15000301: // Chaman H2
+				{
+					setPowerType(POWER_MANA);
+					m_charmInfo->InitPetActionBar();
+					SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA));
+					break;
+				}
+				case 15000302: // Demo A2
+				{
+					setPowerType(POWER_MANA);
+					m_charmInfo->InitPetActionBar();
+					SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA));
+					break;
+				}
+				case 15000303: // Demo H2
+				{
+					setPowerType(POWER_MANA);
+					m_charmInfo->InitPetActionBar();
+					SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA));
+					break;
+				}
+				case 15000304: // Mage A2
+				{
+					setPowerType(POWER_MANA);
+					m_charmInfo->InitPetActionBar();
+					SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA));
+					break;
+				}
+				case 15000305: // Mage H2
+				{
+					setPowerType(POWER_MANA);
+					m_charmInfo->InitPetActionBar();
+					SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA));
+					break;
+				}
+				case 15000306: // 15000306 A2
+				{
+					setPowerType(POWER_FOCUS);
+					m_charmInfo->InitPetActionBar();
+					SetMaxPower(POWER_FOCUS, 100);
+					break;
+				}
+				case 15000307: // 15000306 H2
+				{
+					setPowerType(POWER_FOCUS);
+					m_charmInfo->InitPetActionBar();
+					SetMaxPower(POWER_FOCUS, 100);
+					break;
+				}
+				case 510: // mage Water Elemental
+				{
+					SetBonusDamage(int32(GetOwner()->SpellBaseDamageBonusDone(SPELL_SCHOOL_MASK_FROST) * 0.33f));
+					break;
+				}
+				case 1964: //force of nature
+				{
+					if (!pInfo)
+						SetCreateHealth(30 + 30 * petlevel);
 
+					float bonusDmg = GetOwner()->SpellBaseDamageBonusDone(SPELL_SCHOOL_MASK_NATURE) * 0.15f;
+					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 2.5f - (petlevel / 2) + bonusDmg));
+					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 2.5f + (petlevel / 2) + bonusDmg));
+					break;
+				}
+				case 15352: //earth elemental 36213
+				{
+					if (!pInfo)
+						SetCreateHealth(100 + 120 * petlevel);
 
-                case 510: // mage Water Elemental
-                {
-                    SetBonusDamage(int32(GetOwner()->SpellBaseDamageBonusDone(SPELL_SCHOOL_MASK_FROST) * 0.33f));
-                    break;
-                }
-                case 1964: //force of nature
-                {
-                    if (!pInfo)
-                        SetCreateHealth(30 + 30*petlevel);
-                    float bonusDmg = GetOwner()->SpellBaseDamageBonusDone(SPELL_SCHOOL_MASK_NATURE) * 0.15f;
-                    SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 2.5f - (petlevel / 2) + bonusDmg));
-                    SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 2.5f + (petlevel / 2) + bonusDmg));
-                    break;
-                }
-                case 15352: //earth elemental 36213
-                {
-                    if (!pInfo)
-                        SetCreateHealth(100 + 120*petlevel);
-                    SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel - (petlevel / 4)));
-                    SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel + (petlevel / 4)));
-                    break;
-                }
-                case 15438: //fire elemental
-                {
-                    if (!pInfo)
-                    {
-                        SetCreateHealth(40*petlevel);
-                        SetCreateMana(28 + 10*petlevel);
-                    }
-                    SetBonusDamage(int32(GetOwner()->SpellBaseDamageBonusDone(SPELL_SCHOOL_MASK_FIRE) * 0.5f));
-                    SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 4 - petlevel));
-                    SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 4 + petlevel));
-                    break;
-                }
-                case 19668: // Shadowfiend
-                {
-                    if (!pInfo)
-                    {
-                        SetCreateMana(28 + 10*petlevel);
-                        SetCreateHealth(28 + 30*petlevel);
-                    }
-                    int32 bonus_dmg = int32(GetOwner()->SpellBaseDamageBonusDone(SPELL_SCHOOL_MASK_SHADOW)* 0.3f);
-                    SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float((petlevel * 4 - petlevel) + bonus_dmg));
-                    SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float((petlevel * 4 + petlevel) + bonus_dmg));
+					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel - (petlevel / 4)));
+					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel + (petlevel / 4)));
+					break;
+				}
+				case 15438: //fire elemental
+				{
+					if (!pInfo)
+					{
+						SetCreateHealth(40 * petlevel);
+						SetCreateMana(28 + 10 * petlevel);
+					}
+					SetBonusDamage(int32(GetOwner()->SpellBaseDamageBonusDone(SPELL_SCHOOL_MASK_FIRE) * 0.5f));
+					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 4 - petlevel));
+					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 4 + petlevel));
+					break;
+				}
+				case 19668: // Shadowfiend
+				{
+					if (!pInfo)
+					{
+						SetCreateMana(28 + 10 * petlevel);
+						SetCreateHealth(28 + 30 * petlevel);
+					}
 
-                    break;
-                }
-                case 19833: //Snake Trap - Venomous Snake
-                {
-                    SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float((petlevel / 2) - 25));
-                    SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float((petlevel / 2) - 18));
-                    break;
-                }
-                case 19921: //Snake Trap - Viper
-                {
-                    SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel / 2 - 10));
-                    SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel / 2));
-                    break;
-                }
-                case 29264: // Feral Spirit
-                {
-                    if (!pInfo)
-                        SetCreateHealth(30*petlevel);
+					int32 bonus_dmg = int32(GetOwner()->SpellBaseDamageBonusDone(SPELL_SCHOOL_MASK_SHADOW)* 0.3f);
+					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float((petlevel * 4 - petlevel) + bonus_dmg));
+					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float((petlevel * 4 + petlevel) + bonus_dmg));
+					break;
+				}
+				case 19833: //Snake Trap - Venomous Snake
+				{
+					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float((petlevel / 2) - 25));
+					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float((petlevel / 2) - 18));
+					break;
+				}
+				case 19921: //Snake Trap - Viper
+				{
+					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel / 2 - 10));
+					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel / 2));
+					break;
+				}
+				case 29264: // Feral Spirit
+				{
+					if (!pInfo)
+						SetCreateHealth(30 * petlevel);
 
-                    // wolf attack speed is 1.5s
-                    SetAttackTime(BASE_ATTACK, cinfo->BaseAttackTime);
+					// wolf attack speed is 1.5s
+					SetAttackTime(BASE_ATTACK, cinfo->BaseAttackTime);
 
-                    SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float((petlevel * 4 - petlevel)));
-                    SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float((petlevel * 4 + petlevel)));
+					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float((petlevel * 4 - petlevel)));
+					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float((petlevel * 4 + petlevel)));
 
-                    SetModifierValue(UNIT_MOD_ARMOR, BASE_VALUE, float(GetOwner()->GetArmor()) * 0.35f);  // Bonus Armor (35% of player armor)
-                    SetModifierValue(UNIT_MOD_STAT_STAMINA, BASE_VALUE, float(GetOwner()->GetStat(STAT_STAMINA)) * 0.3f);  // Bonus Stamina (30% of player stamina)
-                    if (!HasAura(58877))//prevent apply twice for the 2 wolves
-                        AddAura(58877, this);//Spirit Hunt, passive, Spirit Wolves' attacks heal them and their master for 150% of damage done.
-                    break;
-                }
-                case 31216: // Mirror Image
-                {
-                    SetBonusDamage(int32(GetOwner()->SpellBaseDamageBonusDone(SPELL_SCHOOL_MASK_FROST) * 0.33f));
-                    SetDisplayId(GetOwner()->GetDisplayId());
-                    if (!pInfo)
-                    {
-                        SetCreateMana(28 + 30*petlevel);
-                        SetCreateHealth(28 + 10*petlevel);
-                    }
-                    break;
-                }
-                case 27829: // Ebon Gargoyle
-                {
-                    if (!pInfo)
-                    {
-                        SetCreateMana(28 + 10*petlevel);
-                        SetCreateHealth(28 + 30*petlevel);
-                    }
-                    SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK) * 0.5f));
-                    SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel - (petlevel / 4)));
-                    SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel + (petlevel / 4)));
-                    break;
-                }
-                case 28017: // Bloodworms
-                {
-                    SetCreateHealth(4 * petlevel);
-                    SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK) * 0.006f));
-                    SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel - 30 - (petlevel / 4)));
-                    SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel - 30 + (petlevel / 4)));
-                }
-            }
-            break;
+					SetModifierValue(UNIT_MOD_ARMOR, BASE_VALUE, float(GetOwner()->GetArmor()) * 0.35f);  // Bonus Armor (35% of player armor)
+					SetModifierValue(UNIT_MOD_STAT_STAMINA, BASE_VALUE, float(GetOwner()->GetStat(STAT_STAMINA)) * 0.3f);  // Bonus Stamina (30% of player stamina)
+
+					if (!HasAura(58877)) //prevent apply twice for the 2 wolves
+						AddAura(58877, this); //Spirit Hunt, passive, Spirit Wolves' attacks heal them and their master for 150% of damage done.
+
+					break;
+				}
+				case 31216: // Mirror Image
+				{
+					SetBonusDamage(int32(GetOwner()->SpellBaseDamageBonusDone(SPELL_SCHOOL_MASK_FROST) * 0.33f));
+					SetDisplayId(GetOwner()->GetDisplayId());
+					if (!pInfo)
+					{
+						SetCreateMana(28 + 30 * petlevel);
+						SetCreateHealth(28 + 10 * petlevel);
+					}
+					break;
+				}
+				case 27829: // Ebon Gargoyle
+				{
+					if (!pInfo)
+					{
+						SetCreateMana(28 + 10 * petlevel);
+						SetCreateHealth(28 + 30 * petlevel);
+					}
+					SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK) * 0.5f));
+					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel - (petlevel / 4)));
+					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel + (petlevel / 4)));
+					break;
+				}
+				case 28017: // Bloodworms
+				{
+					SetCreateHealth(4 * petlevel);
+					SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK) * 0.006f));
+					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel - 30 - (petlevel / 4)));
+					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel - 30 + (petlevel / 4)));
+					break;
+				}
+			}
         }
     }
 
@@ -1086,6 +1178,7 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 
     SetFullHealth();
     SetPower(POWER_MANA, GetMaxPower(POWER_MANA));
+
     return true;
 }
 
@@ -1109,18 +1202,19 @@ bool Pet::HaveInDiet(ItemTemplate const* item) const
 
 uint32 Pet::GetCurrentFoodBenefitLevel(uint32 itemlevel) const
 {
+	uint8 _level = getLevel();
     // -5 or greater food level
-    if (getLevel() <= itemlevel + 5)                         //possible to feed level 60 pet with level 55 level food for full effect
+	if (_level <= itemlevel + 5)                         //possible to feed level 60 pet with level 55 level food for full effect
         return 35000;
     // -10..-6
-    else if (getLevel() <= itemlevel + 10)                   //pure guess, but sounds good
+	else if (_level <= itemlevel + 10)                   //pure guess, but sounds good
         return 17000;
     // -14..-11
-    else if (getLevel() <= itemlevel + 14)                   //level 55 food gets green on 70, makes sense to me
+	else if (_level <= itemlevel + 14)                   //level 55 food gets green on 70, makes sense to me
         return 8000;
     // -15 or less
-    else
-        return 0;                                           //food too low level
+
+	return 0;                                           //food too low level
 }
 
 void Pet::_LoadSpellCooldowns()

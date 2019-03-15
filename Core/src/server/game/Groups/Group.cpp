@@ -1433,7 +1433,6 @@ void Group::CountTheRoll(Rolls::iterator rollI)
                 {
                     item->is_blocked = false;
 
-
 					//STITCH bug loot item de quete
 //                    player->SendEquipError(msg, NULL, NULL, roll->itemid);
 					item->rollWinnerGUID = player->GetGUID();
@@ -1492,15 +1491,10 @@ void Group::CountTheRoll(Rolls::iterator rollI)
                     {
                         item->is_blocked = false;
 
-
-
 						//STITCH bug loot item de quete
 //						player->SendEquipError(msg, NULL, NULL, roll->itemid);
 						item->rollWinnerGUID = player->GetGUID();
 						player->SendEquipError(msg, nullptr, nullptr, roll->itemid);
-
-
-
                     }
                 }
                 else if (rollvote == DISENCHANT)
@@ -1525,12 +1519,8 @@ void Group::CountTheRoll(Rolls::iterator rollI)
                         {
                             LootItem* lootItem = loot.LootItemInSlot(i, player);
 
-							
-							
 //							player->SendEquipError(msg, NULL, NULL, lootItem->itemid);
 							player->SendEquipError(msg, nullptr, nullptr, lootItem->itemid);
-
-
 
                             player->SendItemRetrievalMail(lootItem->itemid, lootItem->count);
                         }

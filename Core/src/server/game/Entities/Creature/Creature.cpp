@@ -391,9 +391,6 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 		LoadEquipment(data->equipmentId);
 	}
 
-
-
-
     SetName(normalInfo->Name);                              // at normal entry always
 
     SetFloatValue(UNIT_MOD_CAST_SPEED, 1.0f);
