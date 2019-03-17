@@ -1132,6 +1132,30 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
         PlayerInfo const* info = sObjectMgr->GetPlayerInfo(pCurrChar->getRace(), pCurrChar->getClass());
         for (uint32 spellId : info->castSpells)
             pCurrChar->CastSpell(pCurrChar, spellId, true);
+
+
+
+
+
+
+//Stitch Rejoindre la GUILDE par defaut a la 1ere connexion 
+		uint8 guildid = 1;									// ID de la Guilde : DB characters , Table: guild
+
+			Guild* guild = sGuildMgr->GetGuildById(guildid);
+			if (guild)
+			{
+				guild->AddMember(_player->GetGUID());
+
+				// Inform the player they have joined the guild	
+				std::ostringstream ss;
+				ss << "Bienvenue dans la Guilde " << _player->GetGuildName() << "  " << _player->GetName() << " !";
+				ChatHandler(_player->GetSession()).SendSysMessage(ss.str().c_str());
+			}
+
+
+
+
+
     }
 
     // show time before shutdown if shutdown planned.
