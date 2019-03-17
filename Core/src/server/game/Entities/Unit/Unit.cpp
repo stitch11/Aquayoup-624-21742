@@ -14838,7 +14838,8 @@ uint32 Unit::GetModelForTotem(PlayerTotemType totemType)
 				case SUMMON_TYPE_TOTEM_AIR:     // air
 					return 19071;
 				default:
-					break;
+					//	break;
+					return 19074;				// Pour le bug de modelid parfois renvoyé a 0
 			}
 			break;
 		}
