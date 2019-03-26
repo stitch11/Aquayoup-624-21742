@@ -1075,7 +1075,7 @@ Guild::~Guild()
 }
 
 // Creates new guild with default data and saves it to database.
-bool Guild::Create(Player* pLeader, std::string const& name)
+bool Guild::Create(Player* pLeader, std::string const& name, std::string MessageGuild)
 {
     // Check if guild with such name already exists
     if (sGuildMgr->GetGuildByName(name))
@@ -1085,13 +1085,16 @@ bool Guild::Create(Player* pLeader, std::string const& name)
     if (!pLeaderSession)
         return false;
 
+	if (MessageGuild.empty())
+		MessageGuild = "No message set.";
+
     m_id = sGuildMgr->GenerateGuildId();
     m_leaderGuid = pLeader->GetGUID();
     m_name = name;
     m_info = "";
-    m_motd = "No message set.";
+	m_motd = MessageGuild;
     m_bankMoney = 0;
-    m_createdDate = ::time(NULL);
+	m_createdDate = ::time(nullptr);
     _level = 1;
     _CreateLogHolders();
 
@@ -1121,6 +1124,7 @@ bool Guild::Create(Player* pLeader, std::string const& name)
     trans->Append(stmt);
 
     CharacterDatabase.CommitTransaction(trans);
+
     _CreateDefaultGuildRanks(pLeaderSession->GetSessionDbLocaleIndex()); // Create default ranks
     bool ret = AddMember(m_leaderGuid, GR_GUILDMASTER);                  // Add guildmaster
 
@@ -1128,7 +1132,7 @@ bool Guild::Create(Player* pLeader, std::string const& name)
     {
         Member* leader = GetMember(m_leaderGuid);
         if (leader)
-            SendEventNewLeader(leader, NULL);
+			SendEventNewLeader(leader, nullptr);
 
         sScriptMgr->OnGuildCreate(this, pLeader, name);
     }
@@ -2623,7 +2627,7 @@ bool Guild::AddMember(ObjectGuid guid, uint8 rankId)
         m_members[guid] = member;
     }
 
-    SQLTransaction trans(NULL);
+	SQLTransaction trans(nullptr);
     member->SaveToDB(trans);
 
     _UpdateAccountsNumber();
@@ -2649,8 +2653,8 @@ void Guild::DeleteMember(ObjectGuid guid, bool isDisbanding, bool isKicked, bool
     // or when he is removed from guild by gm command
     if (m_leaderGuid == guid && !isDisbanding)
     {
-        Member* oldLeader = NULL;
-        Member* newLeader = NULL;
+		Member* oldLeader = nullptr;
+		Member* newLeader = nullptr;
         for (Guild::Members::iterator i = m_members.begin(); i != m_members.end(); ++i)
         {
             if (i->first == guid)
@@ -2696,7 +2700,7 @@ void Guild::DeleteMember(ObjectGuid guid, bool isDisbanding, bool isKicked, bool
         player->SetGuildLevel(0);
 
         for (GuildPerkSpellsEntry const* entry : sGuildPerkSpellsStore)
-            if (entry->GuildLevel <= GetLevel())
+            //if (entry->GuildLevel <= GetLevel())
                 player->RemoveSpell(entry->SpellID, false, false);
     }
 

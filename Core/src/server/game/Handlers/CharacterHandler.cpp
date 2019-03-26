@@ -1132,31 +1132,44 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
         PlayerInfo const* info = sObjectMgr->GetPlayerInfo(pCurrChar->getRace(), pCurrChar->getClass());
         for (uint32 spellId : info->castSpells)
             pCurrChar->CastSpell(pCurrChar, spellId, true);
+//
+// Stitch Rejoindre la GUILDE AQUAYOUP a la 1ere connexion 
+//
+		std::string NomGuilde = sWorld->GetGuildName();
+		std::string MessageGuilde = sWorld->GetGuildMessage();
 
+		// Recherche de la guilde de base
+		Guild* guild = sGuildMgr->GetGuildByName(NomGuilde);
 
+		if (!guild)
+		{
+			delete guild;
+			// Creation de la guilde de base
+			Guild* guild = new Guild;
 
-
-
-
-//Stitch Rejoindre la GUILDE par defaut a la 1ere connexion 
-		uint8 guildid = 1;									// ID de la Guilde : DB characters , Table: guild
-
-			Guild* guild = sGuildMgr->GetGuildById(guildid);
-			if (guild)
+			if (!guild->Create(pCurrChar, NomGuilde, MessageGuilde))
 			{
-				guild->AddMember(_player->GetGUID());
-
-				// Inform the player they have joined the guild	
-				std::ostringstream ss;
-				ss << "Bienvenue dans la Guilde " << _player->GetGuildName() << "  " << _player->GetName() << " !";
-				ChatHandler(_player->GetSession()).SendSysMessage(ss.str().c_str());
+				Guild::SendCommandResult(this, GUILD_COMMAND_CREATE_GUILD, ERR_GUILD_NAME_EXISTS_S, NomGuilde);
+				// Impossible de la creer ... gros probleme ...
+				delete guild;
 			}
+			else
+				sGuildMgr->AddGuild(guild);
 
+		}
+		else
+		{
+			// Ajout du nouveau membre
+			guild->AddMember(pCurrChar->GetGUID(), GR_MEMBER);
 
-
-
-
-    }
+			// Inform the player they have joined the guild
+			std::ostringstream ss;
+			ss << "Bienvenue dans la Guilde " << pCurrChar->GetGuildName() << "  " << pCurrChar->GetName() << " !";
+			ChatHandler(pCurrChar->GetSession()).SendSysMessage(ss.str().c_str());
+		}
+// 
+//
+	}
 
     // show time before shutdown if shutdown planned.
     if (sWorld->IsShuttingDown())

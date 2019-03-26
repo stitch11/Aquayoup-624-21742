@@ -754,7 +754,7 @@ public:
     Guild();
     ~Guild();
 
-    bool Create(Player* pLeader, std::string const& name);
+	bool Create(Player* pLeader, std::string const& name, std::string MessageGuild = "");
     void Disband();
 
     void SaveToDB();

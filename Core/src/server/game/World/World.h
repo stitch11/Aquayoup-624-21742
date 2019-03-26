@@ -642,7 +642,13 @@ class TC_GAME_API World
         /// Get the path where data (dbc, maps) are stored on disk
         std::string const& GetDataPath() const { return m_dataPath; }
 
-        /// When server started?
+// Stitch
+		/// recuperation du nom de la guilde par defaut
+		std::string const& GetGuildName() const { return m_GuildName; }
+		/// recuperation du message de la guilde par defaut
+		std::string const& GetGuildMessage() const { return m_GuildMessage; }
+//
+		/// When server started?
         time_t const& GetStartTime() const { return m_startTime; }
         /// What time is it?
         time_t const& GetGameTime() const { return m_gameTime; }
@@ -857,6 +863,11 @@ class TC_GAME_API World
         bool m_allowMovement;
         std::vector<std::string> _motd;
         std::string m_dataPath;
+
+// Stitch
+		std::string m_GuildName;
+		std::string m_GuildMessage;
+//
 
         // for max speed access
         static float m_MaxVisibleDistanceOnContinents;

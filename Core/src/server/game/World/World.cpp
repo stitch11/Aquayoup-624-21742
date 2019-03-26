@@ -471,7 +471,17 @@ void World::LoadConfigSettings(bool reload)
     }
 
 
-    ///- Get string for new logins (newly created characters)
+// Stitch
+	/// recuperation du nom de la guilde par defaut
+	m_GuildName = (sConfigMgr->GetStringDefault("Stitch.Guild.Nom", "AquaYoup"));
+	TC_LOG_INFO("server.loading", "STITCH: Nom de la guilde de base : %s .", m_GuildName.c_str());
+
+	/// recuperation du message de la guilde par defaut
+	m_GuildMessage = (sConfigMgr->GetStringDefault("Stitch.Guild.Message", "Salutation du jour"));
+	TC_LOG_INFO("server.loading", "STITCH: Message de la guilde de base : %s .", m_GuildMessage.c_str());
+
+//
+		///- Get string for new logins (newly created characters)
     SetNewCharString(sConfigMgr->GetStringDefault("PlayerStart.String", ""));
 
     ///- Send server info on login?
