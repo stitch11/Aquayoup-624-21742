@@ -3,6 +3,21 @@
 ################################################
 [worldserver]
 
+##################################################
+#            STITCH CONFIGURATION                #
+##################################################
+MonsterSight = 50.000000
+GuarderSight = 50.000000
+Guild.SaveInterval = 15
+Guild.UndeletableLevel = 4
+
+# Nom de la guilde par defaut (Tout nouveau perso en fait partie)
+Stitch.Guild.Nom = "AquaYoup"
+
+# Message de la guilde.
+Stitch.Guild.Message = "Salutation du jour"
+
+
 ###################################################################################################
 # SECTION INDEX
 #
