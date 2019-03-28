@@ -1301,10 +1301,11 @@ void SmartScript::ProcessAction(SmartScriptHolder& e, Unit* unit, uint32 var0, u
 
             for (ObjectList::const_iterator itr = targets->begin(); itr != targets->end(); ++itr)
             {
-                if (!IsPlayer(*itr))
-                    continue;
+//                if (!IsPlayer(*itr))
+//                    continue;
+//                (*itr)->ToPlayer()->AddItem(e.action.item.entry, e.action.item.count);
+				(*itr)->ToPlayer()->AddItem(e.action.item.entry, e.action.item.count);//Stitch SMART_ACTION_ADD_ITEM
 
-                (*itr)->ToPlayer()->AddItem(e.action.item.entry, e.action.item.count);
             }
 
             delete targets;
