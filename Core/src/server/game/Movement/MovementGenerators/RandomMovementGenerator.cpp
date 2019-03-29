@@ -112,7 +112,7 @@ void RandomMovementGenerator<Creature>::_setRandomLocation(Creature* creature)
 //STITCH : temps entre 2 mouvements aleatoires des mobs 3000 a 5000 au lieu de 5000 10000
     {
         if (roll_chance_i(50))
-            i_nextMoveTime.Reset(urand(3000, 5000));
+            i_nextMoveTime.Reset(urand(3000, 10000));
         else
             i_nextMoveTime.Reset(urand(50, 400));
     }
