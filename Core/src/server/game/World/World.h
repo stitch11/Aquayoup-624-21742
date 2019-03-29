@@ -642,8 +642,7 @@ class TC_GAME_API World
         /// Get the path where data (dbc, maps) are stored on disk
         std::string const& GetDataPath() const { return m_dataPath; }
 
-// Stitch
-		/// recuperation du nom de la guilde par defaut
+//Stitch recuperation du nom de la guilde par defaut
 		std::string const& GetGuildName() const { return m_GuildName; }
 		/// recuperation du message de la guilde par defaut
 		std::string const& GetGuildMessage() const { return m_GuildMessage; }
@@ -864,10 +863,10 @@ class TC_GAME_API World
         std::vector<std::string> _motd;
         std::string m_dataPath;
 
-// Stitch
-		std::string m_GuildName;
+
+		std::string m_GuildName;								//Stitch
 		std::string m_GuildMessage;
-//
+
 
         // for max speed access
         static float m_MaxVisibleDistanceOnContinents;

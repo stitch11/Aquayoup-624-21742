@@ -471,8 +471,7 @@ void World::LoadConfigSettings(bool reload)
     }
 
 
-// Stitch
-	/// recuperation du nom de la guilde par defaut
+//Stitch recuperation du nom de la guilde par defaut
 	m_GuildName = (sConfigMgr->GetStringDefault("Stitch.Guild.Nom", "AquaYoup"));
 	TC_LOG_INFO("server.loading", "STITCH: Nom de la guilde de base : %s .", m_GuildName.c_str());
 

@@ -1133,7 +1133,7 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
         for (uint32 spellId : info->castSpells)
             pCurrChar->CastSpell(pCurrChar, spellId, true);
 //
-// Stitch Rejoindre la GUILDE AQUAYOUP a la 1ere connexion 
+//Stitch GUILDE AQUAYOUP a la 1ere connexion d'un nouveau perso
 //
 		std::string NomGuilde = sWorld->GetGuildName();
 		std::string MessageGuilde = sWorld->GetGuildMessage();

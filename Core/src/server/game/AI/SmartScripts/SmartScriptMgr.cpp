@@ -949,7 +949,7 @@ bool SmartAIMgr::IsEventValid(SmartScriptHolder& e)
                 return false;
 
 //
-// STITCH SmartAI : message log parce que le core préfere invoquer des mobs par spell plutot que ACTION_SUMMON_CREATURE
+//STITCH SmartAI : message log parce que le core préfere invoquer des mobs par spell plutot que ACTION_SUMMON_CREATURE
 //            CacheSpellContainerBounds sBounds = GetSummonCreatureSpellContainerBounds(e.action.summonCreature.creature);
 //            for (CacheSpellContainer::const_iterator itr = sBounds.first; itr != sBounds.second; ++itr)
 //                TC_LOG_ERROR("sql.sql", "SmartAIMgr: Entry " SI64FMTD " SourceType %u Event %u Action %u creature summon: There is a summon spell for creature entry %u (SpellId: %u, effect: %u)",
@@ -967,8 +967,8 @@ bool SmartAIMgr::IsEventValid(SmartScriptHolder& e)
             if (!IsCreatureValid(e, e.action.killedMonster.creature))
                 return false;
 
-// STITCH
-//           CacheSpellContainerBounds sBounds = GetKillCreditSpellContainerBounds(e.action.killedMonster.creature);
+
+//STITCH           CacheSpellContainerBounds sBounds = GetKillCreditSpellContainerBounds(e.action.killedMonster.creature);
 //           for (CacheSpellContainer::const_iterator itr = sBounds.first; itr != sBounds.second; ++itr)
 //               TC_LOG_ERROR("sql.sql", "SmartAIMgr: Entry " SI64FMTD " SourceType %u Event %u Action %u Kill Credit: There is a killcredit spell for creatureEntry %u (SpellId: %u effect: %u)",
 //                               e.entryOrGuid, e.GetScriptType(), e.event_id, e.GetActionType(), e.action.killedMonster.creature, itr->second.first, itr->second.second);
@@ -1026,7 +1026,7 @@ bool SmartAIMgr::IsEventValid(SmartScriptHolder& e)
             if (!NotNULL(e, e.action.item.count))
                 return false;
 //
-// STITCH SmartAI : message log parce que le core préfere invoquer des items par spell plutot que ACTION_ADD_ITEM
+//STITCH SmartAI : message log parce que le core préfere invoquer des items par spell plutot que ACTION_ADD_ITEM
 //
 //			CacheSpellContainerBounds sBounds = GetCreateItemSpellContainerBounds(e.action.item.entry);
 //            for (CacheSpellContainer::const_iterator itr = sBounds.first; itr != sBounds.second; ++itr)

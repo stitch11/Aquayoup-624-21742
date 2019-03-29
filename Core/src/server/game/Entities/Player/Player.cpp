@@ -1880,7 +1880,7 @@ void Player::RegenerateAll()
 
 	if (_class == CLASS_HUNTER)
 		//m_focusRegenTimerCount += m_regenTimer;
-		m_focusRegenTimerCount += m_regenTimer * 2; // STITCH regen focus chasseur
+		m_focusRegenTimerCount += m_regenTimer * 2;						//STITCH regen focus chasseur
 
     Regenerate(POWER_ENERGY);
 	Regenerate(POWER_MANA);
@@ -1934,7 +1934,7 @@ void Player::RegenerateAll()
         m_regenTimerCount -= 2000;
     }
 
-	if (m_holyPowerRegenTimerCount >= 10000 && _class == CLASS_PALADIN) // STITCH compteur avant perte de 1 Puissance sacrée - defaut 10000
+	if (m_holyPowerRegenTimerCount >= 10000 && _class == CLASS_PALADIN)		//STITCH compteur avant perte de 1 Puissance sacrée - defaut 10000
     {
         Regenerate(POWER_HOLY_POWER);
         m_holyPowerRegenTimerCount -= 105000; 
@@ -26074,14 +26074,14 @@ void Player::DeleteGarrison()
     }
 }
 
-// Stitch
-void Player::ShowNeutralPlayerFactionSelectUI()
+
+void Player::ShowNeutralPlayerFactionSelectUI()					//Stitch
 {
 	WorldPacket data(SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI);
 	GetSession()->SendPacket(&data);
 }
 
-// Stitch SetPandaFactionAlliance
+//Stitch SetPandaFactionAlliance
 void Player::SetPandaFactionAlliance()
 {
 	SetByteValue(UNIT_FIELD_BYTES_0, 0, RACE_PANDAREN_ALLIANCE);
@@ -26105,7 +26105,7 @@ void Player::SetPandaFactionAlliance()
 	GetSession()->LogoutPlayer(false);
 }
 
-// Stitch SetPandaFactionHorde
+//Stitch SetPandaFactionHorde
 void Player::SetPandaFactionHorde()
 {
 	SetByteValue(UNIT_FIELD_BYTES_0, 0, RACE_PANDAREN_HORDE);

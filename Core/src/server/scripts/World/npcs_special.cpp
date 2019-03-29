@@ -2794,7 +2794,7 @@ public:
 
 
 /*##############################################################################################
-#  //npc_ChangeFactionPanda();			//STITCH choix de faction des panda by monsieur Noc :p - npc 56013
+#  //npc_ChangeFactionPanda();			//STITCH choix de faction des panda by monsieur Noc :p - npc 56013 - Pour quete finale 31450
 ################################################################################################*/
 
 #define GOSSIP_TEXT_EXP1           15000049
