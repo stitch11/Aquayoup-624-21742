@@ -20,6 +20,7 @@
 namespace {
 
 class solocraft_player_instance_handler : public PlayerScript {
+
 public:
 	solocraft_player_instance_handler() : PlayerScript("solocraft_player_instance_handler") {
 		TC_LOG_INFO("scripts.solocraft.player.instance", "[Solocraft] solocraft_player_instance_handler Loaded");
@@ -79,23 +80,24 @@ private:
 
 
 			}
+
 */
-			player->HandleStatModifier(UnitMods(UNIT_MOD_MANA), TOTAL_PCT, float(difficulty * 75), true);// Total mana
-			player->HandleStatModifier(UnitMods(UNIT_MOD_HEALTH), TOTAL_PCT, float(difficulty * 75), true);
-
-			player->RemoveAurasDueToSpell(300047);// pour risque de doublon , retire toutes les auras 300047
-			player->AddAura(300047, player);
 
 
+			bool m_Solocraft = sConfigMgr->GetBoolDefault("Aquayoup.Solocraft", false);
+			if (m_Solocraft)
+			{
+				player->HandleStatModifier(UnitMods(UNIT_MOD_MANA), TOTAL_PCT, float(difficulty * 75), true);// Total mana
+				player->HandleStatModifier(UnitMods(UNIT_MOD_HEALTH), TOTAL_PCT, float(difficulty * 75), true);
 
+				player->RemoveAurasDueToSpell(300047);// pour risque de doublon , retire toutes les auras 300047
+				player->AddAura(300047, player);
 
+				player->SetFullHealth();
+				if (player->getPowerType() == POWER_MANA) {
+					player->SetPower(POWER_MANA, player->GetMaxPower(POWER_MANA));
 
-
-
-
-			player->SetFullHealth();
-			if (player->getPowerType() == POWER_MANA) {
-				player->SetPower(POWER_MANA, player->GetMaxPower(POWER_MANA));
+				}
 			}
 		}
 	}
@@ -114,10 +116,13 @@ private:
 				player->HandleStatModifier(UnitMods(UNIT_MOD_STAT_START + i), TOTAL_PCT, float(difficulty * 100), false);
 			}
 */
-
+			bool m_Solocraft = sConfigMgr->GetBoolDefault("Aquayoup.Solocraft", false);
+			if (m_Solocraft)
+			{
 			player->HandleStatModifier(UnitMods(UNIT_MOD_MANA), TOTAL_PCT, float(difficulty * 75), false);
 			player->HandleStatModifier(UnitMods(UNIT_MOD_HEALTH), TOTAL_PCT, float(difficulty * 75), false);
 			player->RemoveAurasDueToSpell(300047);// pour risque de doublon , retire toutes les auras 300047
+			}
 
 		}
 	}

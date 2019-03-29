@@ -17,6 +17,8 @@ Stitch.Guild.Nom = "AquaYoup"
 # Message de la guilde.
 Stitch.Guild.Message = "Salutation du jour"
 
+# Solocraft actif pour les instances (0 ou 1)
+Aquayoup.Solocraft = 1
 
 ###################################################################################################
 # SECTION INDEX
