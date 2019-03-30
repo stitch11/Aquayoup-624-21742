@@ -826,6 +826,10 @@ void Player::HandleDrowning(uint32 time_diff)
     if (!m_MirrorTimerFlags)
         return;
 
+
+	if (GetZoneId() == 4815) { return; }	//Stitch annuler fatigue
+
+
     // In water
     if (m_MirrorTimerFlags & UNDERWATER_INWATER)
     {
