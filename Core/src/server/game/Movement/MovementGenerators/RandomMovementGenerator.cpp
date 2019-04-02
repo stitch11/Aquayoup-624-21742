@@ -41,6 +41,7 @@ void RandomMovementGenerator<Creature>::_setRandomLocation(Creature* creature)
     //bool is_land_ok  = creature.CanWalk();                // not used?
 //    bool is_water_ok = creature.CanSwim();                // not used?
     bool is_air_ok = creature->CanFly();
+	bool is_water_ok = creature->CanSwim();					//Stitch mouvement aleatoire dans l'eau
 
     const float angle = float(rand_norm()) * static_cast<float>(M_PI*2.0f);
     const float range = float(rand_norm()) * wander_distance;
@@ -105,8 +106,8 @@ void RandomMovementGenerator<Creature>::_setRandomLocation(Creature* creature)
             }
         }
 	}
-
-    if (is_air_ok)
+	//if (is_air_ok)
+    if (is_air_ok | is_water_ok)			//Stitch mouvement aleatoire dans l'eau
         i_nextMoveTime.Reset(0);
     else
 //STITCH : temps entre 2 mouvements aleatoires des mobs 3000 a 5000 au lieu de 5000 10000
