@@ -2680,9 +2680,13 @@ void Creature::UpdateMovementFlags()
     if (!isInAir)
         SetFall(false);
 
-    SetSwim(GetCreatureTemplate()->InhabitType & INHABIT_WATER && IsInWater());
 
-
+	if (GetCreatureTemplate()->InhabitType & INHABIT_WATER && IsInWater())		//Stitch mouvement dans l'eau : pour ne pas sautiller en combat
+	{
+		SetDisableGravity(true);
+	}
+	
+	SetSwim(GetCreatureTemplate()->InhabitType & INHABIT_WATER && IsInWater());
 
 
 }

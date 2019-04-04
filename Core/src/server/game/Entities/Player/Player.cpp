@@ -827,7 +827,7 @@ void Player::HandleDrowning(uint32 time_diff)
         return;
 
 
-	if (GetZoneId() == 4815) { return; }	//Stitch annuler fatigue
+	if (GetZoneId() == 4815) { return; }	//Stitch annuler fatigue Vashj'ir
 
 
     // In water
