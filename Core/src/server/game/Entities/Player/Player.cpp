@@ -830,7 +830,8 @@ void Player::HandleDrowning(uint32 time_diff)
 	if (GetZoneId() == 4815) { return; }	//Stitch annuler fatigue Vashj'ir
 
 
-    // In water
+											
+											// In water
     if (m_MirrorTimerFlags & UNDERWATER_INWATER)
     {
         // Breath timer not activated - activate it
@@ -26091,10 +26092,13 @@ void Player::SetPandaFactionAlliance()
 	SetByteValue(UNIT_FIELD_BYTES_0, 0, RACE_PANDAREN_ALLIANCE);
 	setFactionForRace(RACE_PANDAREN_ALLIANCE);
 
-	WorldLocation location(0, -9071.62f, 419.10f, 93.0f, 0.20f);
-	WorldRelocate(location);
+	if (getClass() != CLASS_DEATH_KNIGHT)		//Stitch Change race Panda : pas de tp Hurlevent
+	{
+		WorldLocation location(0, -9071.62f, 419.10f, 93.0f, 0.20f);
+		WorldRelocate(location);
+		SetHomebind(location, 9);
+	}
 
-	SetHomebind(location, 9);
 	SetSkill(98, 0, 300, 300);
 	SetSkill(905, 0, 300, 300);
 	SetSkill(906, 0, 300, 300);
@@ -26115,9 +26119,13 @@ void Player::SetPandaFactionHorde()
 	SetByteValue(UNIT_FIELD_BYTES_0, 0, RACE_PANDAREN_HORDE);
 	setFactionForRace(RACE_PANDAREN_HORDE);
 
-	WorldLocation location(1, 1374.12f, -4379.48f, 26.20f, 0.13f);
-	WorldRelocate(location);
-	SetHomebind(location, 363);
+	if (getClass() != CLASS_DEATH_KNIGHT)		//Stitch Change race Panda : pas de tp Orgrimmar
+	{
+		WorldLocation location(1, 1374.12f, -4379.48f, 26.20f, 0.13f);
+		WorldRelocate(location);
+		SetHomebind(location, 363);
+	}
+
 
 	SetSkill(109, 0, 300, 300);
 	SetSkill(905, 0, 300, 300);
