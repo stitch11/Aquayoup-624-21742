@@ -1124,6 +1124,14 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
         SendNotification(LANG_RESET_TALENTS);
     }
 
+	if (pCurrChar->getRace() == RACE_PANDAREN_NEUTRAL)		//Stitch Change en Panda DK : message a la connexion
+	{
+		std::ostringstream ss;
+		ss << "|cffffffff|>>> Panda DK : Choisissez votre camp avec le PNJ Changix <<<";
+		ChatHandler(pCurrChar->GetSession()).SendSysMessage(ss.str().c_str());
+	}
+
+
     bool firstLogin = pCurrChar->HasAtLoginFlag(AT_LOGIN_FIRST);
     if (firstLogin)
     {
@@ -1132,6 +1140,7 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
         PlayerInfo const* info = sObjectMgr->GetPlayerInfo(pCurrChar->getRace(), pCurrChar->getClass());
         for (uint32 spellId : info->castSpells)
             pCurrChar->CastSpell(pCurrChar, spellId, true);
+
 //
 //Stitch GUILDE AQUAYOUP a la 1ere connexion d'un nouveau perso
 //
@@ -1164,7 +1173,7 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
 
 			// Inform the player they have joined the guild
 			std::ostringstream ss;
-			ss << "Bienvenue dans la Guilde " << pCurrChar->GetGuildName() << "  " << pCurrChar->GetName() << " !";
+			ss << "|cffffffff|>>> Bienvenue dans la Guilde " << pCurrChar->GetGuildName() << " , " << pCurrChar->GetName() << " ! <<<";
 			ChatHandler(pCurrChar->GetSession()).SendSysMessage(ss.str().c_str());
 		}
 // 
