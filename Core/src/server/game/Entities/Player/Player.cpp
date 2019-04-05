@@ -827,7 +827,9 @@ void Player::HandleDrowning(uint32 time_diff)
         return;
 
 
-	if (GetZoneId() == 4815) { return; }	//Stitch annuler fatigue Vashj'ir
+	if (GetZoneId() == 4815) { return; }	//Stitch annuler fatigue Vashj'ir - Foret de Varech'tar
+	if (GetZoneId() == 5144) { return; }	//Stitch annuler fatigue Vashj'ir - Etendues Chatoyantes
+	if (GetZoneId() == 5146) { return; }	//Stitch annuler fatigue Vashj'ir - Etendues Chatoyantes
 
 
 											
@@ -1346,6 +1348,18 @@ void Player::Update(uint32 p_time)
     //because we don't want player's ghost teleported from graveyard
     if (IsHasDelayedTeleport() && IsAlive())
         TeleportTo(m_teleport_dest, m_teleport_options);
+
+
+
+	//Stitch force fatigue pour interdire une zone - Vashj'ir
+	if (GetZoneId() == 5145)
+	{
+		SendMirrorTimer(BREATH_TIMER, m_MirrorTimer[BREATH_TIMER], m_MirrorTimer[BREATH_TIMER], -1);
+		EnvironmentalDamage(DAMAGE_DROWNING, GetMaxHealth() / 200);
+		GetSession()->SendNotification(">>>>>> ZONE INTERDITE BUG <<<<<<");
+		PlayDirectSound(114);
+	}
+
 
 //Stitch Zone & Area
 	if (IsFlying() && !IsGameMaster())
