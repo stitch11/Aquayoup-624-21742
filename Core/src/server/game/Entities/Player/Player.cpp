@@ -827,9 +827,10 @@ void Player::HandleDrowning(uint32 time_diff)
         return;
 
 
-	if (GetZoneId() == 4815) { return; }	//Stitch annuler fatigue Vashj'ir - Foret de Varech'tar
-	if (GetZoneId() == 5144) { return; }	//Stitch annuler fatigue Vashj'ir - Etendues Chatoyantes
-	if (GetZoneId() == 5146) { return; }	//Stitch annuler fatigue Vashj'ir - Etendues Chatoyantes
+	if (GetZoneId() == 4815) { return; }	//Stitch fatigue annulé Vashj'ir - Foret de Varech'tar
+	if (GetZoneId() == 5144) { return; }	//Stitch fatigue annulé Vashj'ir - Etendues Chatoyantes
+	if (GetZoneId() == 5146) { return; }	//Stitch fatigue annulé Vashj'ir - Etendues Chatoyantes
+	if (GetZoneId() == 214 && GetAreaId() == 214) { return; }	//Stitch fatigue annulé Vashj'ir - Etendues Chatoyantes
 
 
 											
