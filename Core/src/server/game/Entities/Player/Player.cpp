@@ -827,12 +827,12 @@ void Player::HandleDrowning(uint32 time_diff)
         return;
 
 
-	if (GetZoneId() == 4815) { return; }	//Stitch fatigue annulé Vashj'ir - Foret de Varech'tar
-	if (GetZoneId() == 5144) { return; }	//Stitch fatigue annulé Vashj'ir - Etendues Chatoyantes
-	if (GetZoneId() == 5146) { return; }	//Stitch fatigue annulé Vashj'ir - Etendues Chatoyantes
-	if (GetZoneId() == 214 && GetAreaId() == 214) { return; }	//Stitch fatigue annulé Vashj'ir - Etendues Chatoyantes
+	if (GetZoneId() == 4815) { StopMirrorTimer(BREATH_TIMER); StopMirrorTimer(FATIGUE_TIMER); return; }	//Stitch fatigue annulé Vashj'ir - Foret de Varech'tar
+	if (GetZoneId() == 5144) { StopMirrorTimer(BREATH_TIMER); StopMirrorTimer(FATIGUE_TIMER); return; }	//Stitch fatigue annulé Vashj'ir - Etendues Chatoyantes
+	if (GetZoneId() == 5146) { StopMirrorTimer(BREATH_TIMER); StopMirrorTimer(FATIGUE_TIMER); return; }	//Stitch fatigue annulé Vashj'ir - Etendues Chatoyantes
 
 
+	
 											
 											// In water
     if (m_MirrorTimerFlags & UNDERWATER_INWATER)
@@ -1352,8 +1352,8 @@ void Player::Update(uint32 p_time)
 
 
 
-	//Stitch force fatigue pour interdire une zone - Vashj'ir
-	if (GetZoneId() == 5145)
+	//Stitch fatigue forcé pour interdire une zone - Vashj'ir
+	if (GetZoneId() == 5145 || GetZoneId() == 214)
 	{
 		SendMirrorTimer(BREATH_TIMER, m_MirrorTimer[BREATH_TIMER], m_MirrorTimer[BREATH_TIMER], -1);
 		EnvironmentalDamage(DAMAGE_DROWNING, GetMaxHealth() / 200);
