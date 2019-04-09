@@ -2680,12 +2680,14 @@ void Creature::UpdateMovementFlags()
     if (!isInAir)
         SetFall(false);
 
-
-	if (GetCreatureTemplate()->InhabitType & INHABIT_WATER && IsInWater())		//Stitch mouvement dans l'eau : pour ne pas sautiller en combat
+//Stitch mouvement dans l'eau : pour ne pas sautiller en combat mais provoque la chute une fois mort - uniquement en Vashj'ir
+	if (GetCreatureTemplate()->InhabitType & INHABIT_WATER && IsInWater() && (GetZoneId() == 4815 || (GetZoneId() == 5144) || (GetZoneId() == 5146)))		
 	{
-		SetCanFly(true);
+		SetDisableGravity(true);
 	}
 	
+
+
 	SetSwim(GetCreatureTemplate()->InhabitType & INHABIT_WATER && IsInWater());
 
 
