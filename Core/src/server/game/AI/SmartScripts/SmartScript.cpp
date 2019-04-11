@@ -310,6 +310,7 @@ void SmartScript::ProcessAction(SmartScriptHolder& e, Unit* unit, uint32 var0, u
                     (*itr)->ToPlayer()->FailQuest(e.action.quest.quest);
                     TC_LOG_DEBUG("scripts.ai", "SmartScript::ProcessAction:: SMART_ACTION_FAIL_QUEST: Player %s fails quest %u",
                         (*itr)->GetGUID().ToString().c_str(), e.action.quest.quest);
+					(*itr)->ToPlayer()->GetSession()->SendNotification("Echec quete");//Stitch quete , affichage plein ecran ACTION_FAIL_QUEST
                 }
             }
 
