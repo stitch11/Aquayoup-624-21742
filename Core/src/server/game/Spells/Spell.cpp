@@ -5569,10 +5569,13 @@ SpellCastResult Spell::CheckCast(bool strict)
             }
             case SPELL_AURA_MOUNTED:
             {
-                if (m_caster->IsInWater())
+
+				// if (m_caster->IsInWater())
+				if (m_caster->IsInWater() && m_spellInfo->Id != 98718 && m_spellInfo->Id != 75207)		//Stitch Hippocampe abyssal & Hippocampe de Vashj’ir
                     return SPELL_FAILED_ONLY_ABOVEWATER;
 
-                // Ignore map check if spell have AreaId. AreaId already checked and this prevent special mount spells
+								
+								// Ignore map check if spell have AreaId. AreaId already checked and this prevent special mount spells
                 bool allowMount = !m_caster->GetMap()->IsDungeon() || m_caster->GetMap()->IsBattlegroundOrArena();
                 InstanceTemplate const* it = sObjectMgr->GetInstanceTemplate(m_caster->GetMapId());
                 if (it)
