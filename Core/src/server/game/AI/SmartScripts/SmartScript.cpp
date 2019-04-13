@@ -1227,7 +1227,11 @@ void SmartScript::ProcessAction(SmartScriptHolder& e, Unit* unit, uint32 var0, u
                     o += e.target.o;
                     if (Creature* summon = GetBaseObject()->SummonCreature(e.action.summonCreature.creature, x, y, z, o, (TempSummonType)e.action.summonCreature.type, e.action.summonCreature.duration))
                         if (e.action.summonCreature.attackInvoker)
-                            summon->AI()->AttackStart((*itr)->ToUnit());
+
+					//summon->AI()->AttackStart((*itr)->ToUnit());
+					me->CastSpell(summon, 50231, true);//Stitch SmartAI : ACTION_SUMMON_CREATURE : Attack invoker
+
+
                 }
 
                 delete targets;
