@@ -1169,10 +1169,18 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel - 30 - (petlevel / 4)));
 					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel - 30 + (petlevel / 4)));
 					break;
-				}
-			}
-        }
-    }
+				}	
+			}		// switch GetEntry
+
+
+//Stitch   Guardian non defini : Degat par defaut 
+			SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK)));
+			SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 12 ));
+			SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 15));
+
+
+        }	// default
+	}
 
     UpdateAllStats();
 
