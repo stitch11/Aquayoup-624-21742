@@ -914,6 +914,19 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
             SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel + (petlevel / 4)));
 
             //SetModifierValue(UNIT_MOD_ATTACK_POWER, BASE_VALUE, float(cinfo->attackpower));
+
+			if (GetEntry() == 15000312)		// Gronnlin Pet Demo
+			{
+				setPowerType(POWER_ENERGY);
+				m_charmInfo->InitPetActionBar();
+				SetMaxPower(POWER_ENERGY, 100);
+				SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK)));
+				SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 20));
+				SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 25));
+			}
+
+
+
             break;
         }
         case HUNTER_PET:
@@ -925,13 +938,24 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
             //damage range is then petlevel / 2
             SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel + (petlevel / 4)));
             //damage is increased afterwards as strength and pet scaling modify attack power
+
+			if (GetEntry() == 15000310)		// Raptor Chasseur
+			{
+				m_charmInfo->InitPetActionBar();
+				SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK)));
+				SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 20));
+				SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 25));
+			}
             break;
         }
         default:
         {
 			switch (GetEntry())
 			{
-
+			case 26125:		// // Goule DK
+				{
+					SetObjectScale(1.0f);
+				}
 				//STITCH power pour FAKEPLAYER InitCharmInfo();
 				case 15000269: // Guerrier A2
 				{
