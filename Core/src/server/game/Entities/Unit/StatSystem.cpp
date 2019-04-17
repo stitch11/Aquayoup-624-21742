@@ -189,11 +189,26 @@ void Player::UpdateSpellDamageAndHealingBonus()
 
 bool Player::UpdateAllStats()
 {
-    for (int8 i = STAT_STRENGTH; i < MAX_STATS; ++i)
+
+
+    for (int8 i = STAT_STRENGTH; i < MAX_STATS; ++i)	//Stitch : Stats a neutralisé pour classe Custom
     {
         float value = GetTotalStatValue(Stats(i));
         SetStat(Stats(i), int32(value));
     }
+
+
+/*
+	if (HasAura(123456789))								//Stitch Stats neutralisé pour classe Custom
+	{
+	SetStat(Stats(0), 50);
+	SetStat(Stats(1), 10);
+	SetStat(Stats(2), 20);
+	SetStat(Stats(3), 30);
+	SetStat(Stats(4), 40);
+	}
+*/
+
 
     UpdateArmor();
     // calls UpdateAttackPowerAndDamage() in UpdateArmor for SPELL_AURA_MOD_ATTACK_POWER_OF_ARMOR

@@ -2704,14 +2704,32 @@ void Player::InitStatsForLevel(bool reapplyMods)
     // reset size before reapply auras
     SetObjectScale(1.0f);
 
-    // save base values (bonuses already included in stored stats
+
+    // save base values (bonuses already included in stored stats  -  //Stitch : Stats a neutralisé pour classe Custom
     for (uint8 i = STAT_STRENGTH; i < MAX_STATS; ++i)
         SetCreateStat(Stats(i), info.stats[i]);
 
-    for (uint8 i = STAT_STRENGTH; i < MAX_STATS; ++i)
-        SetStat(Stats(i), info.stats[i]);
+
+		for (uint8 i = STAT_STRENGTH; i < MAX_STATS; ++i)
+			SetStat(Stats(i), info.stats[i]);
+
+
+
+/*																	//Stitch Stats neutralisé pour classe Custom  -  voir aussi void Player::Regenerate(Powers power)
+	if (HasAura(123456789))
+	{
+	SetCreateStat(Stats(0), 5);		// Force
+	SetCreateStat(Stats(1), 1);		// Agilité
+	SetCreateStat(Stats(2), 2);		// Endurance
+	SetCreateStat(Stats(3), 3);		// Intelligence
+	SetCreateStat(Stats(4), 4);		// Esprit
+	}
+*/
 
     SetCreateHealth(basehp);
+
+
+
 
     //set create powers
     SetCreateMana(basemana);
