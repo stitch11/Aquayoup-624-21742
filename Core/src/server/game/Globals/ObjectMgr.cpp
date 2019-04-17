@@ -8350,7 +8350,7 @@ void ObjectMgr::LoadGossipMenu()
 
         GossipMenus gMenu;
 
-        gMenu.entry             = fields[0].GetUInt32();
+        gMenu.entry             = fields[0].GetUInt32();//Stitch gossip_menu_option plus de limitation de l'ID a 65535
         gMenu.text_id           = fields[1].GetUInt32();
 
         if (!GetNpcText(gMenu.text_id))
@@ -8393,7 +8393,7 @@ void ObjectMgr::LoadGossipMenuItems()
 
         GossipMenuItems gMenuItem;
 
-        gMenuItem.MenuId                = fields[0].GetUInt32();
+        gMenuItem.MenuId                = fields[0].GetUInt32();//Stitch gossip_menu_option plus de limitation de l'ID a 65535
         gMenuItem.OptionIndex           = fields[1].GetUInt16();
         gMenuItem.OptionIcon            = fields[2].GetUInt32();
         gMenuItem.OptionText            = fields[3].GetString();
