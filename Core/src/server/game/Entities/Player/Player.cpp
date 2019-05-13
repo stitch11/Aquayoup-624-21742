@@ -1368,6 +1368,13 @@ void Player::Update(uint32 p_time)
 		}
 	}
 
+	if (GetZoneId() == 308) // La mer interdite
+	{
+			SendMirrorTimer(BREATH_TIMER, m_MirrorTimer[BREATH_TIMER], m_MirrorTimer[BREATH_TIMER], -1);
+			EnvironmentalDamage(DAMAGE_DROWNING, GetMaxHealth() / 250);
+			GetSession()->SendNotification(">>>>>> ZONE INTERDITE BUG <<<<<<");
+			PlayDirectSound(114);
+	}
 
 //Stitch Zone & Area
 	if (IsFlying() && !IsGameMaster())
