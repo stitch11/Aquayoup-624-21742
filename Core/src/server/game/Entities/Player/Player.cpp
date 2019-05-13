@@ -1354,8 +1354,8 @@ void Player::Update(uint32 p_time)
 
 	//Stitch fatigue forcé pour interdire une zone - Vashj'ir
 	//Pour le visuel utilisez :
-	//DELETE FROM `spell_area` WHERE  `spell_area`.`area` = 214  AND `spell_area`.`spell` = @ID;
-	//	INSERT INTO `spell_area` (`spell`, `area`, `quest_start`, `quest_end`, `aura_spell`, `racemask`, `gender`, `autocast`, `quest_start_status`, `quest_end_status`) VALUES (@ID, 214, 0, 0, 0, 0, 2, 1, 18, 1);	# WARNING FATIGUE
+	//DELETE FROM `spell_area` WHERE  `spell_area`.`area` = 214  AND `spell_area`.`spell` = 50224;
+	//INSERT INTO `spell_area` (`spell`, `area`, `quest_start`, `quest_end`, `aura_spell`, `racemask`, `gender`, `autocast`, `quest_start_status`, `quest_end_status`) VALUES (50224, 214, 0, 0, 0, 0, 2, 1, 18, 1);	# WARNING FATIGUE
 
 	if (GetZoneId() == 5145 || GetZoneId() == 214)
 	{
@@ -1371,7 +1371,7 @@ void Player::Update(uint32 p_time)
 	if (GetZoneId() == 308) // La mer interdite
 	{
 			SendMirrorTimer(BREATH_TIMER, m_MirrorTimer[BREATH_TIMER], m_MirrorTimer[BREATH_TIMER], -1);
-			EnvironmentalDamage(DAMAGE_DROWNING, GetMaxHealth() / 250);
+			EnvironmentalDamage(DAMAGE_DROWNING, GetMaxHealth() / 1000);
 			GetSession()->SendNotification(">>>>>> ZONE INTERDITE BUG <<<<<<");
 			PlayDirectSound(114);
 	}
