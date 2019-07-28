@@ -2638,7 +2638,7 @@ public:
 
 
 /*##############################################################################################
-#  //STITCH PNJ 15000386 : Choix du level de depart
+#  //STITCH PNJ 15000386 : Choix du level de depart et TP
 ################################################################################################*/
 class npc_level : public CreatureScript
 {
@@ -2651,12 +2651,14 @@ public:
 		TeamId team = player->GetTeamId();
 		uint8 _level = player->getLevel();
 		uint8 _race = player->getRace();
-		if (_level < 2) { player->ADD_GOSSIP_ITEM(4, "Commencer level 30", GOSSIP_SENDER_MAIN, 1); }
-		if (_level < 2) { player->ADD_GOSSIP_ITEM(4, "Commencer level 58 (Outreterre)", GOSSIP_SENDER_MAIN, 2); }
-		if (_level < 2) { player->ADD_GOSSIP_ITEM(4, "Commencer level 68 (Norfendre)", GOSSIP_SENDER_MAIN, 3); }
-		if (_level < 2) { player->ADD_GOSSIP_ITEM(4, "Commencer level 80 (Cataclysm)", GOSSIP_SENDER_MAIN, 4); }
-		if (_level < 2) { player->ADD_GOSSIP_ITEM(4, "Commencer level 85 (Pandarie)", GOSSIP_SENDER_MAIN, 5); }
-		if (_level < 2) { player->ADD_GOSSIP_ITEM(4, "Commencer level 90 (Draenor)", GOSSIP_SENDER_MAIN, 6); }
+		uint8 _class = player->getClass();
+		if (_level < 2) { player->ADD_GOSSIP_ITEM(4, "Commencer level 30 (Avec TP)", GOSSIP_SENDER_MAIN, 1); }
+		if (_level < 2) { player->ADD_GOSSIP_ITEM(4, "Commencer level 58 (Avec TP)", GOSSIP_SENDER_MAIN, 2); }
+		if (_level < 2 || (_class == CLASS_DEATH_KNIGHT)) { player->ADD_GOSSIP_ITEM(4, "Commencer level 68 (Avec TP)", GOSSIP_SENDER_MAIN, 3); }
+		if (_level < 2 || (_class == CLASS_DEATH_KNIGHT)) { player->ADD_GOSSIP_ITEM(4, "Commencer level 80 (Avec TP)", GOSSIP_SENDER_MAIN, 4); }
+		if (_level < 2 || (_class == CLASS_DEATH_KNIGHT)) { player->ADD_GOSSIP_ITEM(4, "Commencer level 85 (Avec TP)", GOSSIP_SENDER_MAIN, 5); }
+		if (_level < 2 || (_class == CLASS_DEATH_KNIGHT)) { player->ADD_GOSSIP_ITEM(4, "Commencer level 90 (Avec TP)", GOSSIP_SENDER_MAIN, 6); }
+
 
 		player->PlayerTalkClass->SendGossipMenu(9430, creature->GetGUID());
 		return true;
@@ -2667,6 +2669,7 @@ public:
 		if (!player)
 			return true;
 
+		TeamId team = player->GetTeamId();
 		uint8 _class = player->getClass();
 		uint8 _level = player->getLevel();
 		uint8 _race = player->getRace();
@@ -2680,7 +2683,7 @@ public:
 			if (_level < 30)
 			{
 				player->SetLevel(30);
-
+				player->AddItem(1710, 1);//Potion de soin
 				player->SetSkill(906, 0, 300, 300); //
 				player->LearnSpell(33388, true); //Apprenti cavalier lvl 20
 				player->LearnSpell(49322, true); //Zhévra rapide
@@ -2718,13 +2721,24 @@ public:
 					player->AddItem(6386, 1);//Jambe
 					player->AddItem(4076, 1);//Pied
 				}
+
+				if (team == TEAM_ALLIANCE)
+				{
+					player->TeleportTo(0, -8867.68f, 673.373f, 97.9034f, 0.0f);
+				}		//Stitch tp Hurlevent 
+
+				if (team == TEAM_HORDE)
+				{
+					player->TeleportTo(1, 1633.33f, -4439.11f, 17.7588f, 0.0f);
+				}	//Stitch tp Orgrimmar 
+
 			}
 			break;
 		case 2:// level 58
 			if (_level < 58)
 			{
 				player->SetLevel(58);
-
+				player->AddItem(22829, 1);//Potion de soin
 				player->SetSkill(906, 0, 300, 300); //
 				player->LearnSpell(33388, true); //Apprenti cavalier lvl 20
 				player->LearnSpell(33391, true); //Compagnon cavalier lvl 40
@@ -2749,27 +2763,44 @@ public:
 				}
 				if ((_class == CLASS_DRUID) || (_class == CLASS_ROGUE) || (_class == CLASS_MONK) || (_class == CLASS_HUNTER) || (_class == CLASS_SHAMAN))	//Cuir
 				{
+					
 					player->AddItem(25494, 1);//baton
 					player->AddItem(25101, 2);//dague x2
 					player->AddItem(15285, 1);//arc
 					player->AddItem(24703, 1);//Torce
 					player->AddItem(29939, 1);//Jambe
 					player->AddItem(24702, 1);//Pied
+					if ((_class == CLASS_HUNTER) || (_class == CLASS_SHAMAN))	//Cuir
+					{
+						player->SetSkill(413, 0, 300, 300); //    Maile
+					}
 				}
 				if ((_class == CLASS_WARRIOR) || (_class == CLASS_PALADIN) || (_class == CLASS_DEATH_KNIGHT))	//Mail
 				{
+					player->SetSkill(293, 0, 300, 300); //   Plate
 					player->AddItem(25157, 1);//epee 2 mains
 					player->AddItem(14751, 1);//Torce
 					player->AddItem(6386, 1);//Jambe
 					player->AddItem(4076, 1);//Pied
 				}
+
+				if (team == TEAM_ALLIANCE)
+				{
+					player->TeleportTo(0, -8867.68f, 673.373f, 97.9034f, 0.0f);
+				}		//Stitch tp Hurlevent 
+
+				if (team == TEAM_HORDE)
+				{
+					player->TeleportTo(1, 1633.33f, -4439.11f, 17.7588f, 0.0f);
+				}	//Stitch tp Orgrimmar 
+
 			}
 			break;
 		case 3:// level 68
 			if (_level < 68)
 			{
 				player->SetLevel(68);
-
+				player->AddItem(39671, 1);//Potion de soin
 				player->LearnSpell(33388, true); //Apprenti cavalier lvl 20
 				player->LearnSpell(33391, true); //Compagnon cavalier lvl 40
 				player->LearnSpell(34090, true); //Expert cavalier 60
@@ -2804,6 +2835,7 @@ public:
 				}
 				if ((_class == CLASS_HUNTER) || (_class == CLASS_SHAMAN))	//Mail
 				{
+					player->SetSkill(413, 0, 300, 300); //    Maile
 					player->AddItem(29910, 1);//Baton
 					player->AddItem(25247, 1);//arc
 					player->AddItem(24896, 1);//Torce
@@ -2812,18 +2844,30 @@ public:
 				}
 				if ((_class == CLASS_WARRIOR) || (_class == CLASS_PALADIN) || (_class == CLASS_DEATH_KNIGHT))	//Plaque
 				{
+					player->SetSkill(293, 0, 300, 300); //   Plate
 					player->AddItem(36529, 1);//epee 2 mains
 					player->AddItem(25008, 1);//Torce
 					player->AddItem(41763, 1);//Jambe
 					player->AddItem(24983, 1);//Pied
 				}
+
+				if (team == TEAM_ALLIANCE)
+				{
+					player->TeleportTo(0, -8867.68f, 673.373f, 97.9034f, 0.0f);
+				}		//Stitch tp Hurlevent 
+
+				if (team == TEAM_HORDE)
+				{
+					player->TeleportTo(1, 1633.33f, -4439.11f, 17.7588f, 0.0f);
+				}	//Stitch tp Orgrimmar 
+
 			}
 			break;
 		case 4:// level 80
 			if (_level <80)
 			{
 				player->SetLevel(80);
-
+				player->AddItem(76097, 1);//Potion de soin
 				player->LearnSpell(33388, true); //Apprenti cavalier lvl 20
 				player->LearnSpell(33391, true); //Compagnon cavalier lvl 40
 				player->LearnSpell(34090, true); //Expert cavalier 60
@@ -2860,6 +2904,7 @@ public:
 				}
 				if ((_class == CLASS_HUNTER) || (_class == CLASS_SHAMAN))	//Mail
 				{
+					player->SetSkill(413, 0, 300, 300); //    Maile
 					player->AddItem(25177, 1);//Baton
 					player->AddItem(36614, 1);//arc
 					player->AddItem(25657, 1);//Torce
@@ -2868,18 +2913,30 @@ public:
 				}
 				if ((_class == CLASS_WARRIOR) || (_class == CLASS_PALADIN) || (_class == CLASS_DEATH_KNIGHT))	//Plaque
 				{
+					player->SetSkill(293, 0, 300, 300); //   Plate
 					player->AddItem(25169, 1);//epee 2 mains
 					player->AddItem(80707, 1);//Torce
 					player->AddItem(80721, 1);//Jambe
 					player->AddItem(80730, 1);//Pied
 				}
+
+				if (team == TEAM_ALLIANCE)
+				{
+					player->TeleportTo(0, -8867.68f, 673.373f, 97.9034f, 0.0f);
+				}		//Stitch tp Hurlevent 
+
+				if (team == TEAM_HORDE)
+				{
+					player->TeleportTo(1, 1633.33f, -4439.11f, 17.7588f, 0.0f);
+				}	//Stitch tp Orgrimmar 
+
 			}
 			break;
 		case 5:// level 85
 			if (_level <85)
 			{
 				player->SetLevel(85);
-
+				player->AddItem(76097, 1);//Potion de soin
 				player->LearnSpell(33388, true); //Apprenti cavalier lvl 20
 				player->LearnSpell(33391, true); //Compagnon cavalier lvl 40
 				player->LearnSpell(34090, true); //Expert cavalier 60
@@ -2916,6 +2973,7 @@ public:
 				}
 				if ((_class == CLASS_HUNTER) || (_class == CLASS_SHAMAN))	//Mail
 				{
+					player->SetSkill(413, 0, 300, 300); //    Maile
 					player->AddItem(25177, 1);//Baton
 					player->AddItem(36614, 1);//arc
 					player->AddItem(25657, 1);//Torce
@@ -2924,18 +2982,30 @@ public:
 				}
 				if ((_class == CLASS_WARRIOR) || (_class == CLASS_PALADIN) || (_class == CLASS_DEATH_KNIGHT))	//Plaque
 				{
+					player->SetSkill(293, 0, 300, 300); //   Plate
 					player->AddItem(25169, 1);//epee 2 mains
 					player->AddItem(80707, 1);//Torce
 					player->AddItem(80721, 1);//Jambe
 					player->AddItem(80730, 1);//Pied
 				}
+
+				if (team == TEAM_ALLIANCE)
+				{
+					player->TeleportTo(0, -8867.68f, 673.373f, 97.9034f, 0.0f);
+				}		//Stitch tp Hurlevent 
+
+				if (team == TEAM_HORDE)
+				{
+					player->TeleportTo(1, 1633.33f, -4439.11f, 17.7588f, 0.0f);
+				}	//Stitch tp Orgrimmar 
 			}
 			break;
+
 		case 6:// level 90
 			if (_level <90)
 			{
 				player->SetLevel(90);
-
+				player->AddItem(109226, 1);//Potion de soin
 				player->LearnSpell(33388, true); //Apprenti cavalier lvl 20
 				player->LearnSpell(33391, true); //Compagnon cavalier lvl 40
 				player->LearnSpell(34090, true); //Expert cavalier 60
@@ -2972,6 +3042,7 @@ public:
 				}
 				if ((_class == CLASS_HUNTER) || (_class == CLASS_SHAMAN))	//Maile
 				{
+					player->SetSkill(413, 0, 300, 300); //    Maile
 					player->AddItem(25177, 1);//Baton
 					player->AddItem(36614, 1);//arc
 					player->AddItem(25657, 1);//Torce
@@ -2980,11 +3051,19 @@ public:
 				}
 				if ((_class == CLASS_WARRIOR) || (_class == CLASS_PALADIN) || (_class == CLASS_DEATH_KNIGHT))	//Plaque
 				{
+					player->SetSkill(293, 0, 300, 300); //   Plate
 					player->AddItem(25169, 1);//epee 2 mains
 					player->AddItem(80707, 1);//Torce
 					player->AddItem(80721, 1);//Jambe
 					player->AddItem(80730, 1);//Pied
 				}
+
+				if (team==TEAM_ALLIANCE)
+				{ player->TeleportTo(0, -8867.68f, 673.373f, 97.9034f, 0.0f); }		//Stitch tp Hurlevent 
+
+				if (team==TEAM_HORDE)
+				{ player->TeleportTo(1, 1633.33f, -4439.11f, 17.7588f, 0.0f); }	//Stitch tp Orgrimmar 
+
 			}
 			break;
 
