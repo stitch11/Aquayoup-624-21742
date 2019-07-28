@@ -2545,9 +2545,6 @@ public:
 
 		if (_race != RACE_PANDAREN_ALLIANCE)	{player->ADD_GOSSIP_ITEM(2, "Changer de Race en Panda de l'Alliance", GOSSIP_SENDER_MAIN, 4);}
 		if (_race != RACE_PANDAREN_HORDE)		{player->ADD_GOSSIP_ITEM(2, "Changer de Race en Panda de la Horde", GOSSIP_SENDER_MAIN, 5);}
-		if (_level < 30) { player->ADD_GOSSIP_ITEM(4, "Je voudrais commencer level 30", GOSSIP_SENDER_MAIN, 6); }
-		if (_level < 68) { player->ADD_GOSSIP_ITEM(4, "Je voudrais commencer level 68", GOSSIP_SENDER_MAIN, 7); }
-		if (_level < 80) { player->ADD_GOSSIP_ITEM(4, "Je voudrais commencer level 80", GOSSIP_SENDER_MAIN, 8); }
 
 		player->ADD_GOSSIP_ITEM(3, "Changer mon Apparence", GOSSIP_SENDER_MAIN, 9);	//sinon crash
 		player->ADD_GOSSIP_ITEM(4, "Effacer mes talents", GOSSIP_SENDER_MAIN, 10);
@@ -2620,7 +2617,66 @@ public:
 			player->SetPandaFactionHorde();
 
 			break;
-		case 6:// level 30
+		case 9:// Changer mon Apparence
+			player->CastSpell(player, 14867, true);
+			player->SetAtLoginFlag(AT_LOGIN_CUSTOMIZE);
+			player->SaveToDB();
+			player->GetSession()->LogoutPlayer(false);
+			break;
+		case 10:// Effacer mes talents
+			player->CastSpell(player, 14867, true);
+			player->SetAtLoginFlag(AT_LOGIN_RESET_TALENTS);
+			player->SaveToDB();
+			player->GetSession()->LogoutPlayer(false);
+			break;
+		}
+		return true;
+	}
+
+};
+
+
+
+/*##############################################################################################
+#  //STITCH PNJ 15000386 : Choix du level de depart
+################################################################################################*/
+class npc_level : public CreatureScript
+{
+public:
+	npc_level() : CreatureScript("npc_level") {}
+
+	bool OnGossipHello(Player* player, Creature* creature)
+	{
+
+		TeamId team = player->GetTeamId();
+		uint8 _level = player->getLevel();
+		uint8 _race = player->getRace();
+		if (_level < 2) { player->ADD_GOSSIP_ITEM(4, "Commencer level 30", GOSSIP_SENDER_MAIN, 1); }
+		if (_level < 2) { player->ADD_GOSSIP_ITEM(4, "Commencer level 58 (Outreterre)", GOSSIP_SENDER_MAIN, 2); }
+		if (_level < 2) { player->ADD_GOSSIP_ITEM(4, "Commencer level 68 (Norfendre)", GOSSIP_SENDER_MAIN, 3); }
+		if (_level < 2) { player->ADD_GOSSIP_ITEM(4, "Commencer level 80 (Cataclysm)", GOSSIP_SENDER_MAIN, 4); }
+		if (_level < 2) { player->ADD_GOSSIP_ITEM(4, "Commencer level 85 (Pandarie)", GOSSIP_SENDER_MAIN, 5); }
+		if (_level < 2) { player->ADD_GOSSIP_ITEM(4, "Commencer level 90 (Draenor)", GOSSIP_SENDER_MAIN, 6); }
+
+		player->PlayerTalkClass->SendGossipMenu(9430, creature->GetGUID());
+		return true;
+	}
+
+	bool OnGossipSelect(Player* player, Creature* creature, uint32 /*uiSender*/, uint32 uiAction)
+	{
+		if (!player)
+			return true;
+
+		uint8 _class = player->getClass();
+		uint8 _level = player->getLevel();
+		uint8 _race = player->getRace();
+
+		player->PlayerTalkClass->SendCloseGossip();
+
+		switch (uiAction)
+		{
+
+		case 1:// level 30
 			if (_level < 30)
 			{
 				player->SetLevel(30);
@@ -2664,9 +2720,54 @@ public:
 				}
 			}
 			break;
-		case 7:// level 68
+		case 2:// level 58
+			if (_level < 58)
+			{
+				player->SetLevel(58);
+
+				player->SetSkill(906, 0, 300, 300); //
+				player->LearnSpell(33388, true); //Apprenti cavalier lvl 20
+				player->LearnSpell(33391, true); //Compagnon cavalier lvl 40
+				player->LearnSpell(49322, true); //Zhévra rapide
+
+				if (_race == RACE_WORGEN)	//Worgen
+				{
+					player->LearnSpell(68996, true); //Deux formes
+					player->LearnSpell(94293, true); //Forme modifiée
+					player->LearnSpell(68992, true); //Sombre course
+					player->LearnSpell(68978, true); //Ecorcheur
+					player->LearnSpell(69270, true); //Langue (gilnéen)
+					player->LearnSpell(68976, true); //Aberration
+					player->LearnSpell(68975, true); //Acharnement
+				}
+				if ((_class == CLASS_PRIEST) || (_class == CLASS_MAGE) || (_class == CLASS_WARLOCK))	//Tissu
+				{
+					player->AddItem(25494, 1);//Baton
+					player->AddItem(14326, 1);//Torce
+					player->AddItem(14334, 1);//Jambe
+					player->AddItem(10247, 1);//Pied
+				}
+				if ((_class == CLASS_DRUID) || (_class == CLASS_ROGUE) || (_class == CLASS_MONK) || (_class == CLASS_HUNTER) || (_class == CLASS_SHAMAN))	//Cuir
+				{
+					player->AddItem(25494, 1);//baton
+					player->AddItem(25101, 2);//dague x2
+					player->AddItem(15285, 1);//arc
+					player->AddItem(24703, 1);//Torce
+					player->AddItem(29939, 1);//Jambe
+					player->AddItem(24702, 1);//Pied
+				}
+				if ((_class == CLASS_WARRIOR) || (_class == CLASS_PALADIN) || (_class == CLASS_DEATH_KNIGHT))	//Mail
+				{
+					player->AddItem(25157, 1);//epee 2 mains
+					player->AddItem(14751, 1);//Torce
+					player->AddItem(6386, 1);//Jambe
+					player->AddItem(4076, 1);//Pied
+				}
+			}
+			break;
+		case 3:// level 68
 			if (_level < 68)
-			{ 
+			{
 				player->SetLevel(68);
 
 				player->LearnSpell(33388, true); //Apprenti cavalier lvl 20
@@ -2718,7 +2819,7 @@ public:
 				}
 			}
 			break;
-		case 8:// level 80
+		case 4:// level 80
 			if (_level <80)
 			{
 				player->SetLevel(80);
@@ -2774,24 +2875,125 @@ public:
 				}
 			}
 			break;
-		case 9:// Changer mon Apparence
-			player->CastSpell(player, 14867, true);
-			player->SetAtLoginFlag(AT_LOGIN_CUSTOMIZE);
-			player->SaveToDB();
-			player->GetSession()->LogoutPlayer(false);
+		case 5:// level 85
+			if (_level <85)
+			{
+				player->SetLevel(85);
+
+				player->LearnSpell(33388, true); //Apprenti cavalier lvl 20
+				player->LearnSpell(33391, true); //Compagnon cavalier lvl 40
+				player->LearnSpell(34090, true); //Expert cavalier 60
+				player->LearnSpell(34091, true); //Artisan cavalier lvl 70 
+				player->LearnSpell(90265, true); //Maître cavalier lvl 80 
+				player->LearnSpell(54197, true); //Vol par temps froid lvl 68 
+				player->LearnSpell(90267, true); //Licence de maître de vol lvl 60 - Kalimdor et Tréfonds
+				player->LearnSpell(49322, true); //Zhévra rapide
+
+				if (_race == RACE_WORGEN)	//Worgen
+				{
+					player->LearnSpell(68996, true); //Deux formes
+					player->LearnSpell(94293, true); //Forme modifiée
+					player->LearnSpell(68992, true); //Sombre course
+					player->LearnSpell(68978, true); //Ecorcheur
+					player->LearnSpell(69270, true); //Langue (gilnéen)
+					player->LearnSpell(68976, true); //Aberration
+					player->LearnSpell(68975, true); //Acharnement
+				}
+				if ((_class == CLASS_PRIEST) || (_class == CLASS_MAGE) || (_class == CLASS_WARLOCK))	//Tissu
+				{
+					player->AddItem(25177, 1);//Baton
+					player->AddItem(80704, 1);//Torce
+					player->AddItem(80713, 1);//Jambe
+					player->AddItem(80722, 1);//Pied
+				}
+				if ((_class == CLASS_DRUID) || (_class == CLASS_ROGUE) || (_class == CLASS_MONK))	//Cuir
+				{
+					player->AddItem(25177, 1);//Baton
+					player->AddItem(84259, 1);//dague
+					player->AddItem(57318, 1);//Torce
+					player->AddItem(36168, 1);//Jambe
+					player->AddItem(59796, 1);//Pied
+				}
+				if ((_class == CLASS_HUNTER) || (_class == CLASS_SHAMAN))	//Mail
+				{
+					player->AddItem(25177, 1);//Baton
+					player->AddItem(36614, 1);//arc
+					player->AddItem(25657, 1);//Torce
+					player->AddItem(24867, 1);//Jambe
+					player->AddItem(24903, 1);//Pied
+				}
+				if ((_class == CLASS_WARRIOR) || (_class == CLASS_PALADIN) || (_class == CLASS_DEATH_KNIGHT))	//Plaque
+				{
+					player->AddItem(25169, 1);//epee 2 mains
+					player->AddItem(80707, 1);//Torce
+					player->AddItem(80721, 1);//Jambe
+					player->AddItem(80730, 1);//Pied
+				}
+			}
 			break;
-		case 10:// Effacer mes talents
-			player->CastSpell(player, 14867, true);
-			player->SetAtLoginFlag(AT_LOGIN_RESET_TALENTS);
-			player->SaveToDB();
-			player->GetSession()->LogoutPlayer(false);
+		case 6:// level 90
+			if (_level <90)
+			{
+				player->SetLevel(90);
+
+				player->LearnSpell(33388, true); //Apprenti cavalier lvl 20
+				player->LearnSpell(33391, true); //Compagnon cavalier lvl 40
+				player->LearnSpell(34090, true); //Expert cavalier 60
+				player->LearnSpell(34091, true); //Artisan cavalier lvl 70 
+				player->LearnSpell(90265, true); //Maître cavalier lvl 80 
+				player->LearnSpell(54197, true); //Vol par temps froid lvl 68 
+				player->LearnSpell(90267, true); //Licence de maître de vol lvl 60 - Kalimdor et Tréfonds
+				player->LearnSpell(49322, true); //Zhévra rapide
+
+				if (_race == RACE_WORGEN)	//Worgen
+				{
+					player->LearnSpell(68996, true); //Deux formes
+					player->LearnSpell(94293, true); //Forme modifiée
+					player->LearnSpell(68992, true); //Sombre course
+					player->LearnSpell(68978, true); //Ecorcheur
+					player->LearnSpell(69270, true); //Langue (gilnéen)
+					player->LearnSpell(68976, true); //Aberration
+					player->LearnSpell(68975, true); //Acharnement
+				}
+				if ((_class == CLASS_PRIEST) || (_class == CLASS_MAGE) || (_class == CLASS_WARLOCK))	//Tissu
+				{
+					player->AddItem(25177, 1);//Baton
+					player->AddItem(80704, 1);//Torce
+					player->AddItem(80713, 1);//Jambe
+					player->AddItem(80722, 1);//Pied
+				}
+				if ((_class == CLASS_DRUID) || (_class == CLASS_ROGUE) || (_class == CLASS_MONK))	//Cuir
+				{
+					player->AddItem(25177, 1);//Baton
+					player->AddItem(84259, 1);//dague
+					player->AddItem(57318, 1);//Torce
+					player->AddItem(36168, 1);//Jambe
+					player->AddItem(59796, 1);//Pied
+				}
+				if ((_class == CLASS_HUNTER) || (_class == CLASS_SHAMAN))	//Maile
+				{
+					player->AddItem(25177, 1);//Baton
+					player->AddItem(36614, 1);//arc
+					player->AddItem(25657, 1);//Torce
+					player->AddItem(24867, 1);//Jambe
+					player->AddItem(24903, 1);//Pied
+				}
+				if ((_class == CLASS_WARRIOR) || (_class == CLASS_PALADIN) || (_class == CLASS_DEATH_KNIGHT))	//Plaque
+				{
+					player->AddItem(25169, 1);//epee 2 mains
+					player->AddItem(80707, 1);//Torce
+					player->AddItem(80721, 1);//Jambe
+					player->AddItem(80730, 1);//Pied
+				}
+			}
 			break;
+
+
 		}
 		return true;
 	}
 
 };
-
 
 /*##############################################################################################
 #  //npc_ChangeFactionPanda();			//STITCH choix de faction des panda by monsieur Noc :p - npc 56013 - Pour quete finale 31450
@@ -2902,4 +3104,5 @@ void AddSC_npcs_special()
     new npc_train_wrecker();
 	new npc_changer();						//STITCH PNJ change race , faction , rename et custom 15000142
 	new npc_ChangeFactionPanda();			//STITCH choix de faction des panda by monsieur Noc :p
+	new npc_level();						//STITCH Choix du level et lieu de départ 
 }
