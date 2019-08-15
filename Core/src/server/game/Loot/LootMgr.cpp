@@ -337,9 +337,14 @@ bool LootStoreItem::IsValid(LootStore const& store, uint32 entry) const
     }
     else                                                    // if reference loot
     {
-        if (needs_quest)
-            TC_LOG_ERROR("sql.sql", "Table '%s' Entry %d Item %d: quest required will be ignored", store.GetName(), entry, itemid);
-        else if (chance == 0)                              // no chance for the reference
+
+		//Stitch faux log
+		//        if (needs_quest)
+		//            TC_LOG_ERROR("sql.sql", "Table '%s' Entry %d Item %d: quest required will be ignored", store.GetName(), entry, itemid);
+		//        else if (chance == 0)                              // no chance for the reference
+
+		if (chance == 0)
+
         {
             TC_LOG_ERROR("sql.sql", "Table '%s' Entry %d Item %d: zero chance is specified for a reference, skipped", store.GetName(), entry, itemid);
             return false;
