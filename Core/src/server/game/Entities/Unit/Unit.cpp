@@ -77,7 +77,7 @@ float baseMoveSpeed[MAX_MOVE_TYPE] =
     2.5f,                  // MOVE_WALK
     7.0f,                  // MOVE_RUN
     4.5f,                  // MOVE_RUN_BACK
-    4.722222f,             // MOVE_SWIM
+    3.0f,				   // MOVE_SWIM     4.722222f,			//Stitch vitesse de deplacement dans l'eau
     2.5f,                  // MOVE_SWIM_BACK
     3.141594f,             // MOVE_TURN_RATE
     7.0f,                  // MOVE_FLIGHT
