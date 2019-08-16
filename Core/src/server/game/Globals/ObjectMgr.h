@@ -380,6 +380,8 @@ TC_GAME_API extern ScriptMapMap sSpellScripts;
 TC_GAME_API extern ScriptMapMap sEventScripts;
 TC_GAME_API extern ScriptMapMap sWaypointScripts;
 
+std::string trimWhitespace(const std::string& s); // Stitch
+
 std::string GetScriptsTableNameByType(ScriptsType type);
 ScriptMapMap* GetScriptsMapByType(ScriptsType type);
 std::string GetScriptCommandName(ScriptCommands command);
@@ -432,7 +434,7 @@ typedef std::unordered_map<uint32, GameObjectLocale> GameObjectLocaleContainer;
 typedef std::unordered_map<uint32, QuestTemplateLocale> QuestTemplateLocaleContainer;
 typedef std::unordered_map<uint32, QuestObjectivesLocale> QuestObjectivesLocaleContainer;
 typedef std::unordered_map<uint32, PageTextLocale> PageTextLocaleContainer;
-typedef std::unordered_map<uint32, GossipMenuItemsLocale> GossipMenuItemsLocaleContainer;
+typedef std::unordered_map<uint64, GossipMenuItemsLocale> GossipMenuItemsLocaleContainer;
 typedef std::unordered_map<uint32, PointOfInterestLocale> PointOfInterestLocaleContainer;
 
 typedef std::unordered_map<uint32, TrinityString> TrinityStringContainer;
@@ -1193,7 +1195,7 @@ class TC_GAME_API ObjectMgr
             if (itr == _pageTextLocaleStore.end()) return NULL;
             return &itr->second;
         }
-        GossipMenuItemsLocale const* GetGossipMenuItemsLocale(uint32 entry) const
+        GossipMenuItemsLocale const* GetGossipMenuItemsLocale(uint64 entry) const
         {
             GossipMenuItemsLocaleContainer::const_iterator itr = _gossipMenuItemsLocaleStore.find(entry);
             if (itr == _gossipMenuItemsLocaleStore.end()) return NULL;

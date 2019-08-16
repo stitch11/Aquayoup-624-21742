@@ -129,6 +129,26 @@ std::string ScriptInfo::GetDebugInfo() const
     return std::string(sz);
 }
 
+std::string trimWhitespace(const std::string& s) 
+{
+	if (s.length() == 0) 
+		return s;
+
+	size_t left = 0;
+
+	// Trim from left
+	while ((left < s.length()) && iswspace(s[left]))
+		++left;
+
+	size_t right = s.length() - 1;
+	// Trim from right
+	while ((right > left) && iswspace(s[right]))
+		--right;
+
+	return s.substr(left, right - left + 1);
+
+}
+
 bool normalizePlayerName(std::string& name)
 {
     if (name.empty())
@@ -293,7 +313,9 @@ ObjectMgr::~ObjectMgr()
 
 void ObjectMgr::AddLocaleString(std::string const& value, LocaleConstant localeConstant, StringVector& data)
 {
-    if (!value.empty())
+	std::string strText = trimWhitespace(value);
+	
+	if ((!value.empty()) && (!strText.empty()))
     {
         if (data.size() <= size_t(localeConstant))
             data.resize(localeConstant + 1);
@@ -361,9 +383,9 @@ void ObjectMgr::LoadGossipMenuItemsLocales()
         Field* fields = result->Fetch();
 
         uint32 menuId   = fields[0].GetUInt32(); //Stitch locales_gossip_menu_option plus de limitation de l'ID a 65535
-        uint16 id       = fields[1].GetUInt16();
+        uint16 id       = fields[1].GetUInt32();
 
-        GossipMenuItemsLocale& data = _gossipMenuItemsLocaleStore[MAKE_PAIR32(menuId, id)];
+        GossipMenuItemsLocale& data = _gossipMenuItemsLocaleStore[MAKE_PAIR64(menuId, id)];
 
         for (uint8 i = OLD_TOTAL_LOCALES - 1; i > 0; --i)
         {
@@ -8394,7 +8416,7 @@ void ObjectMgr::LoadGossipMenuItems()
         GossipMenuItems gMenuItem;
 
         gMenuItem.MenuId                = fields[0].GetUInt32();//Stitch gossip_menu_option plus de limitation de l'ID a 65535
-        gMenuItem.OptionIndex           = fields[1].GetUInt16();
+        gMenuItem.OptionIndex           = fields[1].GetUInt32();
         gMenuItem.OptionIcon            = fields[2].GetUInt32();
         gMenuItem.OptionText            = fields[3].GetString();
         gMenuItem.OptionBroadcastTextId = fields[4].GetUInt32();
