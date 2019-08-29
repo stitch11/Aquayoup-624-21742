@@ -486,11 +486,14 @@ void WorldSession::HandleMirrorImageDataRequest(WorldPackets::Spells::GetMirrorI
     if (!unit)
         return;
 
-    if (!unit->HasAuraType(SPELL_AURA_CLONE_CASTER))
-        return;
+//    if (!unit->HasAuraType(SPELL_AURA_CLONE_CASTER))					//Stitch image miroir 
+//        return;
 
     // Get creator of the unit (SPELL_AURA_CLONE_CASTER does not stack)
     Unit* creator = unit->GetAuraEffectsByType(SPELL_AURA_CLONE_CASTER).front()->GetCaster();
+
+	unit->SetObjectScale(1.0f);											//Stitch image miroir : taille
+
     if (!creator)
         return;
 
