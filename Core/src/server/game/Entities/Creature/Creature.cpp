@@ -401,6 +401,86 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
     SetSpeedRate(MOVE_SWIM,   1.0f); // using 1.0 rate
     SetSpeedRate(MOVE_FLIGHT, 1.0f); // using 1.0 rate
 
+
+
+	//Stitch vitesse de deplacement des creatures par type & famille
+	//CreatureTemplate const* cinfo = nullptr;
+
+	uint16 Crtype = GetCreatureTemplate()->type;
+	uint16 Crfamily = GetCreatureTemplate()->family;
+	uint16 Crspeed = GetCreatureTemplate()->speed_walk;
+
+// TYPE
+	//elementaire, Geant 
+	if (Crspeed == 1.0f && (Crtype == CREATURE_TYPE_ELEMENTAL || Crtype == CREATURE_TYPE_GIANT))
+	{
+		SetSpeedRate(MOVE_WALK, 0.8f);				// hors combat
+		SetSpeedRate(MOVE_RUN, 1.2f);				// en combat
+	}
+	//Machine
+	if (Crspeed == 1.0f && (Crtype == CREATURE_TYPE_MECHANICAL))
+	{
+		SetSpeedRate(MOVE_WALK, 1.5f);				// hors combat
+		SetSpeedRate(MOVE_RUN, 2.0f);				// en combat
+	}
+
+
+// FAMILY
+	if (Crspeed == 1.0f)
+	{
+		//Rhinoceros, ours, Gorille, Hydre ,Infernal
+		if (Crfamily == CREATURE_FAMILY_RHINO || Crfamily == CREATURE_FAMILY_BEAR || Crfamily == CREATURE_FAMILY_GORILLA || Crfamily == CREATURE_FAMILY_HYDRA || Crfamily == CREATURE_FAMILY_INFERNAL)
+		{
+			SetSpeedRate(MOVE_WALK, 0.6f);				// hors combat
+			SetSpeedRate(MOVE_RUN, 1.3f);				// en combat
+		}
+		// Oiseau de proie,Chauve souris,	Serpent des vents, Faucon dragon, Papillon de nuit
+		if (Crfamily == CREATURE_FAMILY_BIRD_OF_PREY || Crfamily == CREATURE_FAMILY_BAT || Crfamily == CREATURE_FAMILY_WIND_SERPENT || Crfamily == CREATURE_FAMILY_DRAGONHAWK || Crfamily == CREATURE_FAMILY_MOTH)
+		{
+			SetSpeedRate(MOVE_WALK, 2.0);				// hors combat
+			SetSpeedRate(MOVE_RUN, 2.5);				// en combat
+		}
+		// Loup, felin, sanglier, Raptor, Hyene, Ravageur,Renard, Porc-epic, Serpent
+		if (Crfamily == CREATURE_FAMILY_WOLF || Crfamily == CREATURE_FAMILY_CAT || Crfamily == CREATURE_FAMILY_BOAR || Crfamily == CREATURE_FAMILY_RAPTOR || Crfamily == CREATURE_FAMILY_HYENA || Crfamily == CREATURE_FAMILY_RAVAGER || Crfamily == CREATURE_FAMILY_FOX || Crfamily == CREATURE_FAMILY_PORCUPINE || Crfamily == CREATURE_FAMILY_SERPENT)
+		{
+			SetSpeedRate(MOVE_WALK, 0.8f);				// hors combat
+			SetSpeedRate(MOVE_RUN, 1.3f);				// en combat
+		}
+		// crocodile, Crabe, Tortue, Serpent, Goule, Singe, Zombie, Basilic, Araignee
+		if (Crfamily == CREATURE_FAMILY_CROCOLISK || Crfamily == CREATURE_FAMILY_CRAB || Crfamily == CREATURE_FAMILY_TURTLE || Crfamily == CREATURE_FAMILY_SERPENT || Crfamily == CREATURE_FAMILY_GHOUL || Crfamily == CREATURE_FAMILY_MONKEY || Crfamily == CREATURE_FAMILY_ZOMBIE || Crfamily == CREATURE_FAMILY_BASILISK || Crfamily == CREATURE_FAMILY_SPIDER)
+		{
+			SetSpeedRate(MOVE_WALK, 0.5f);				// hors combat
+			SetSpeedRate(MOVE_RUN, 1.0f);				// en combat
+		}
+		//Scorpion, Chevre, Cerf
+		if (Crfamily == CREATURE_FAMILY_SCORPID || Crfamily == CREATURE_FAMILY_GOAT || Crfamily == CREATURE_FAMILY_STAG)
+		{
+			SetSpeedRate(MOVE_WALK, 0.8f);				// hors combat
+			SetSpeedRate(MOVE_RUN, 1.2f);				// en combat
+		}
+		//elementaire de feu, elem. de tempete
+		if (Crfamily == CREATURE_FAMILY_FIREELEMENTAL || Crfamily == CREATURE_FAMILY_STORMELEMENTAL)
+		{
+			SetSpeedRate(MOVE_WALK, 1.8f);				// hors combat
+			SetSpeedRate(MOVE_RUN, 1.8f);				// en combat
+		}
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // Will set UNIT_FIELD_BOUNDINGRADIUS and UNIT_FIELD_COMBATREACH
     SetObjectScale(cinfo->scale);
 
