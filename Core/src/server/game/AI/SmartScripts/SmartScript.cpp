@@ -491,7 +491,7 @@ void SmartScript::ProcessAction(SmartScriptHolder& e, Unit* unit, uint32 var0, u
                             // If cast flag SMARTCAST_COMBAT_MOVE is set combat movement will not be allowed
                             // unless target is outside spell range, out of mana, or LOS.
 
-                            bool _allowMove = false;
+                            bool _allowMove = true; //false
                             SpellInfo const* spellInfo = sSpellMgr->AssertSpellInfo(e.action.cast.spell);
                             std::vector<SpellInfo::CostData> costs = spellInfo->CalcPowerCost(me, spellInfo->GetSchoolMask());
                             bool hasPower = true;
