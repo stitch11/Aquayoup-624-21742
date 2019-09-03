@@ -446,8 +446,8 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			SetSpeedRate(MOVE_WALK, 0.8f);				// hors combat
 			SetSpeedRate(MOVE_RUN, 1.3f);				// en combat
 		}
-		// crocodile, Crabe, Tortue, Serpent, Goule, Singe, Zombie, Basilic, Araignee
-		if (Crfamily == CREATURE_FAMILY_CROCOLISK || Crfamily == CREATURE_FAMILY_CRAB || Crfamily == CREATURE_FAMILY_TURTLE || Crfamily == CREATURE_FAMILY_SERPENT || Crfamily == CREATURE_FAMILY_GHOUL || Crfamily == CREATURE_FAMILY_MONKEY || Crfamily == CREATURE_FAMILY_ZOMBIE || Crfamily == CREATURE_FAMILY_BASILISK || Crfamily == CREATURE_FAMILY_SPIDER)
+		// crocodile, Crabe, Tortue, Serpent, Goule, Singe, Zombie, Basilic, Araignee, chevre
+		if (Crfamily == CREATURE_FAMILY_CROCOLISK || Crfamily == CREATURE_FAMILY_CRAB || Crfamily == CREATURE_FAMILY_TURTLE || Crfamily == CREATURE_FAMILY_SERPENT || Crfamily == CREATURE_FAMILY_GHOUL || Crfamily == CREATURE_FAMILY_MONKEY || Crfamily == CREATURE_FAMILY_ZOMBIE || Crfamily == CREATURE_FAMILY_BASILISK || Crfamily == CREATURE_FAMILY_SPIDER || CREATURE_FAMILY_GOAT)
 		{
 			SetSpeedRate(MOVE_WALK, 0.5f);				// hors combat
 			SetSpeedRate(MOVE_RUN, 1.0f);				// en combat
