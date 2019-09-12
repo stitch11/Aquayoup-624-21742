@@ -1020,7 +1020,7 @@ public:
 
 void AddSC_sholazar_basin()
 {
-    new npc_vekjik();
+//    new npc_vekjik();
     new npc_avatar_of_freya();
     new npc_bushwhacker();
     new npc_engineer_helice();

@@ -437,8 +437,8 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 		// Oiseau de proie,Chauve souris,	Serpent des vents, Faucon dragon, Papillon de nuit
 		if (Crfamily == CREATURE_FAMILY_BIRD_OF_PREY || Crfamily == CREATURE_FAMILY_BAT || Crfamily == CREATURE_FAMILY_WIND_SERPENT || Crfamily == CREATURE_FAMILY_DRAGONHAWK || Crfamily == CREATURE_FAMILY_MOTH)
 		{
-			SetSpeedRate(MOVE_WALK, 2.0);				// hors combat
-			SetSpeedRate(MOVE_RUN, 2.5);				// en combat
+			SetSpeedRate(MOVE_WALK, 2.0f);				// hors combat
+			SetSpeedRate(MOVE_RUN, 2.5f);				// en combat
 		}
 		// Loup, felin, sanglier, Raptor, Hyene, Ravageur,Renard, Porc-epic, Serpent
 		if (Crfamily == CREATURE_FAMILY_WOLF || Crfamily == CREATURE_FAMILY_CAT || Crfamily == CREATURE_FAMILY_BOAR || Crfamily == CREATURE_FAMILY_RAPTOR || Crfamily == CREATURE_FAMILY_HYENA || Crfamily == CREATURE_FAMILY_RAVAGER || Crfamily == CREATURE_FAMILY_FOX || Crfamily == CREATURE_FAMILY_PORCUPINE || Crfamily == CREATURE_FAMILY_SERPENT)

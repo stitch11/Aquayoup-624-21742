@@ -792,8 +792,8 @@ void Player::UpdateManaRegen()
     // Set regen rate in cast state apply only on spirit based regen
     int32 modManaRegenInterrupt = GetTotalAuraModifier(SPELL_AURA_MOD_MANA_REGEN_INTERRUPT)/100;
 
-    SetStatFloatValue(UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER, (base_regen + CalculatePct(spirit_regen, modManaRegenInterrupt)/1));//REGEN MANA
-    SetStatFloatValue(UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER, (0.001f + spirit_regen + base_regen)/1);//REGEN MANA
+	SetStatFloatValue(UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER, (base_regen + CalculatePct(spirit_regen, modManaRegenInterrupt)/1));//REGEN MANA
+	SetStatFloatValue(UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER, (0.001f + spirit_regen + base_regen)/1);//REGEN MANA
 }
 
 void Player::UpdateRuneRegen(RuneType rune)
