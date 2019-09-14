@@ -72,6 +72,11 @@
 #include "PartyPackets.h"
 #include <cmath>
 
+ //Stitch FunRate
+#include "Config.h"
+uint32 m_FunSpeedCast;
+
+
 float baseMoveSpeed[MAX_MOVE_TYPE] =
 {
     2.5f,                  // MOVE_WALK
@@ -10541,6 +10546,10 @@ void Unit::ModSpellCastTime(SpellInfo const* spellInfo, int32 & castTime, Spell*
     if (!spellInfo || castTime < 0)
         return;
 
+//Stitch FunRate FunSpeedCast
+	m_FunSpeedCast = sConfigMgr->GetIntDefault("FunSpeedCast", 3);
+	castTime = castTime * m_FunSpeedCast ; 
+
     // called from caster
     if (Player* modOwner = GetSpellModOwner())
         modOwner->ApplySpellMod(spellInfo->Id, SPELLMOD_CASTING_TIME, castTime, spell);
@@ -10987,14 +10996,14 @@ float Unit::GetTotalAttackPowerValue(WeaponAttackType attType) const
         int32 ap = GetInt32Value(UNIT_FIELD_RANGED_ATTACK_POWER);
         if (ap < 0)
             return 0.0f;
-        return ap * (1.0f + GetFloatValue(UNIT_FIELD_RANGED_ATTACK_POWER_MULTIPLIER));
+        return ap * (1.0f + GetFloatValue(UNIT_FIELD_RANGED_ATTACK_POWER_MULTIPLIER));		//Stitch FunRate 
     }
     else
     {
         int32 ap = GetInt32Value(UNIT_FIELD_ATTACK_POWER);
         if (ap < 0)
             return 0.0f;
-        return ap * (1.0f + GetFloatValue(UNIT_FIELD_ATTACK_POWER_MULTIPLIER));
+        return ap * (1.0f + GetFloatValue(UNIT_FIELD_ATTACK_POWER_MULTIPLIER));				//Stitch FunRate 
     }
 }
 
@@ -11003,7 +11012,7 @@ float Unit::GetWeaponDamageRange(WeaponAttackType attType, WeaponDamageRange typ
     if (attType == OFF_ATTACK && !haveOffhandWeapon())
         return 0.0f;
 
-    return m_weaponDamage[attType][type];
+    return m_weaponDamage[attType][type];														//Stitch FunRate 
 }
 
 bool Unit::CanFreeMove() const
@@ -12523,7 +12532,7 @@ void Unit::ApplyCastTimePercentMod(float val, bool apply)
 {
     if (val > 0)
     {
-        ApplyPercentModFloatValue(UNIT_MOD_CAST_SPEED, val, !apply);
+        ApplyPercentModFloatValue(UNIT_MOD_CAST_SPEED, val , !apply);
         ApplyPercentModFloatValue(UNIT_MOD_CAST_HASTE, val, !apply);
         ApplyPercentModFloatValue(UNIT_FIELD_MOD_HASTE_REGEN, val, !apply);
     }

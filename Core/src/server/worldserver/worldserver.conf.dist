@@ -11,14 +11,28 @@ GuarderSight = 50.000000
 Guild.SaveInterval = 15
 Guild.UndeletableLevel = 4
 
-# Nom de la guilde par defaut (Tout nouveau perso en fait partie)
+# Guilde ###
+# Stitch.Guild.Nom : Nom de la guilde par defaut (Tout nouveau perso en fait partie)
+# Stitch.Guild.Message : Message de la guilde.
 Stitch.Guild.Nom = "AquaYoup"
-
-# Message de la guilde.
 Stitch.Guild.Message = "Salutation du jour"
 
 # Solocraft actif pour les instances (0 ou 1)
 Aquayoup.Solocraft = 1
+
+# FunRate ###  
+# FunAllStat 				- Defaut/Recommandé : 2/2	- Multiplicateur des stats joueur
+# FunDamageDefaut 	- Defaut/Recommandé : 1/2	- Multiplicateur de degat des armes fait par un joueur 
+# FunDamageSpell		- Defaut/Recommandé : 2/2		- Multiplicateur de degat des sorts fait par un joueur 
+# FunHealSpell			- Defaut/Recommandé : 2/2	- Multiplicateur de heal & Leech des sorts  fait par un joueur 
+# FunSpeedCast			- Defaut/Recommandé : 3/1	- Multiplicateur de temps pour lancer un sort (affichage non modifié)
+# FunArmor					- Defaut/Recommandé : 1/1	- Multiplicateur d'armure
+FunAllStat = 2
+FunDamageDefaut = 2
+FunDamageSpell = 2
+FunHealSpell = 2
+FunSpeedCast = 1
+FunArmor	= 1
 
 ###################################################################################################
 # SECTION INDEX

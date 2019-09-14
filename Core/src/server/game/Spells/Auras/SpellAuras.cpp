@@ -39,6 +39,7 @@
 #include "Vehicle.h"
 #include "Config.h"
 
+
 AuraApplication::AuraApplication(Unit* target, Unit* caster, Aura* aura, uint32 effMask):
 _target(target), _base(aura), _removeMode(AURA_REMOVE_NONE), _slot(MAX_AURAS),
 _flags(AFLAG_NONE), _effectsToApply(effMask), _needClientUpdate(false), _effectMask(0)
@@ -1589,6 +1590,12 @@ void Aura::HandleAuraSpecificPeriodics(AuraApplication const* aurApp, Unit* cast
     if (!caster || aurApp->GetRemoveMode())
         return;
 
+	//Stitch FunRate periodic damage & heal
+	uint32 m_FunDamageSpell;
+	uint32 m_FunHealSpell;
+	m_FunDamageSpell = sConfigMgr->GetIntDefault("FunDamageSpell", 2);
+	m_FunHealSpell = sConfigMgr->GetIntDefault("FunHealSpell", 2);
+
     for (AuraEffect* effect : GetAuraEffects())
     {
         if (!effect || effect->IsAreaAuraEffect() || effect->IsEffect(SPELL_EFFECT_PERSISTENT_AREA_AURA))
@@ -1606,6 +1613,15 @@ void Aura::HandleAuraSpecificPeriodics(AuraApplication const* aurApp, Unit* cast
                 // Script Hook For HandlePeriodicDamageAurasTick -- Allow scripts to change the Damage pre class mitigation calculations
                 sScriptMgr->ModifyPeriodicDamageAurasTick(target, caster, damage);
 
+
+				//Stitch FunRate FunDamageSpell
+				if (Player* player = caster->ToPlayer())
+				{
+					m_FunDamageSpell = sConfigMgr->GetIntDefault("FunDamageSpell", 2);
+					damage = damage / 2 * m_FunDamageSpell;
+				}
+
+
                 effect->SetDonePct(caster->SpellDamagePctDone(target, m_spellInfo, DOT)); // Calculate done percentage first!
                 effect->SetDamage(caster->SpellDamageBonusDone(target, m_spellInfo, damage, DOT, effect->GetSpellEffectInfo(), GetStackAmount()) * effect->GetDonePct());
                 effect->SetCritChance(caster->GetUnitSpellCriticalChance(target, m_spellInfo, m_spellInfo->GetSchoolMask()));
@@ -1619,6 +1635,13 @@ void Aura::HandleAuraSpecificPeriodics(AuraApplication const* aurApp, Unit* cast
 
                 // Script Hook For HandlePeriodicDamageAurasTick -- Allow scripts to change the Damage pre class mitigation calculations
                 sScriptMgr->ModifyPeriodicDamageAurasTick(target, caster, damage);
+
+				//Stitch FunRate FunHealSpell
+				if (Player* player = caster->ToPlayer())
+				{
+					m_FunHealSpell = sConfigMgr->GetIntDefault("FunHealSpell", 2);
+					damage = damage / 2 * m_FunHealSpell;
+				}
 
                 effect->SetDonePct(caster->SpellHealingPctDone(target, m_spellInfo)); // Calculate done percentage first!
                 effect->SetDamage(caster->SpellHealingBonusDone(target, m_spellInfo, damage, DOT, effect->GetSpellEffectInfo(), GetStackAmount()) * effect->GetDonePct());

@@ -62,6 +62,11 @@
 #include "MiscPackets.h"
 #include "SpellPackets.h"
 
+//Stitch FunRate
+#include "Config.h"
+uint32 m_FunHealSpell;
+uint32 m_FunDamageSpell;
+
 pEffect SpellEffects[TOTAL_SPELL_EFFECTS]=
 {
     &Spell::EffectNULL,                                     //  0
@@ -515,6 +520,7 @@ void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
                 }
                 break;
             }
+
         }
 
         if (m_originalCaster && apply_direct_bonus)
@@ -525,6 +531,13 @@ void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
         }
 
         m_damage += damage;
+
+		//Stitch FunRate FunDamageSpell
+		if (Player* player = m_caster->ToPlayer())
+		{
+			m_FunDamageSpell = sConfigMgr->GetIntDefault("FunDamageSpell", 2);
+			m_damage = damage / 2 * m_FunDamageSpell;//
+		}
     }
 }
 
@@ -1267,7 +1280,12 @@ void Spell::EffectHeal(SpellEffIndex /*effIndex*/)
         if (unitTarget->HasAura(48920) && (unitTarget->GetHealth() + addhealth >= unitTarget->GetMaxHealth()))
             unitTarget->RemoveAura(48920);
 
-        m_damage -= addhealth;
+
+        m_damage -= addhealth;		
+
+//Stitch FunRate m_FunHealSpell
+		m_FunHealSpell = sConfigMgr->GetIntDefault("FunHealSpell", 2);
+		m_damage = m_damage / 2 * m_FunHealSpell;
     }
 }
 
@@ -1285,8 +1303,8 @@ void Spell::EffectHealPct(SpellEffIndex /*effIndex*/)
 
     uint32 heal = m_originalCaster->SpellHealingBonusDone(unitTarget, m_spellInfo, unitTarget->CountPctFromMaxHealth(damage), HEAL, effectInfo);
     heal = unitTarget->SpellHealingBonusTaken(m_originalCaster, m_spellInfo, heal, HEAL, effectInfo);
-
     m_healing += heal;
+
 }
 
 void Spell::EffectHealMechanical(SpellEffIndex /*effIndex*/)
@@ -1319,7 +1337,17 @@ void Spell::EffectHealthLeech(SpellEffIndex /*effIndex*/)
     damage = bonus + uint32(bonus * variance);
     damage = unitTarget->SpellDamageBonusTaken(m_caster, m_spellInfo, uint32(damage), SPELL_DIRECT_DAMAGE, effectInfo);
 
-    TC_LOG_DEBUG("spells", "HealthLeech :%i", damage);
+
+
+//Stitch FunRate FunHealSpell Leech
+	if (Player* player = m_caster->ToPlayer())
+	{
+	m_FunHealSpell = sConfigMgr->GetIntDefault("FunHealSpell", 2);
+	damage = damage /2 * m_FunHealSpell;
+	}
+
+
+	TC_LOG_DEBUG("spells", "HealthLeech :%i", damage);
 
     float healMultiplier = effectInfo->CalcValueMultiplier(m_originalCaster, this);
 
@@ -3036,7 +3064,7 @@ void Spell::EffectWeaponDmg(SpellEffIndex effIndex)
             spell_bonus = int32(spell_bonus * weapon_total_pct);
     }
 
-    int32 weaponDamage = m_caster->CalculateDamage(m_attackType, normalized, true);
+    int32 weaponDamage = m_caster->CalculateDamage(m_attackType, normalized, true) ;
 
     // Sequence is important
     for (SpellEffectInfo const* effect : GetEffects())
@@ -3060,7 +3088,7 @@ void Spell::EffectWeaponDmg(SpellEffIndex effIndex)
     }
 
     if (spell_bonus)
-        weaponDamage += spell_bonus;
+        weaponDamage += spell_bonus ;
 
     if (totalDamagePercentMod != 1.0f)
         weaponDamage = int32(weaponDamage* totalDamagePercentMod);
@@ -3072,6 +3100,13 @@ void Spell::EffectWeaponDmg(SpellEffIndex effIndex)
     uint32 damageBonusDone = m_caster->MeleeDamageBonusDone(unitTarget, eff_damage, m_attackType, m_spellInfo);
 
     m_damage += unitTarget->MeleeDamageBonusTaken(m_caster, damageBonusDone, m_attackType, m_spellInfo);
+
+	//Stitch FunRate FunDamageSpell
+	if (Player* player = m_caster->ToPlayer())
+	{
+		m_FunDamageSpell = sConfigMgr->GetIntDefault("FunDamageSpell", 2);
+		m_damage = m_damage / 2 * m_FunDamageSpell;//
+	}
 }
 
 void Spell::EffectThreat(SpellEffIndex /*effIndex*/)

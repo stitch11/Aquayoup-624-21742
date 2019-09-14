@@ -25,6 +25,15 @@
 #include "SpellAuraEffects.h"
 #include "World.h"
 
+
+ //Stitch FunRate
+#include "Config.h"
+uint32 m_FunDamageDefaut = sConfigMgr->GetIntDefault("FunDamageDefaut", 1);
+uint32 m_FunAllStat = sConfigMgr->GetIntDefault("FunAllStat", 2);
+uint32 m_FunArmor;
+
+
+
 inline bool _ModifyUInt32(bool apply, uint32& baseValue, int32& amount)
 {
     // If amount is negative, change sign and value of apply.
@@ -194,7 +203,10 @@ bool Player::UpdateAllStats()
     for (int8 i = STAT_STRENGTH; i < MAX_STATS; ++i)	//Stitch : Stats a neutralisé pour classe Custom
     {
         float value = GetTotalStatValue(Stats(i));
-        SetStat(Stats(i), int32(value));
+
+//Stitch FunRate m_FunAllStat
+//		SetStat(Stats(i), int32(value));				
+		SetStat(Stats(i), int32(value) /2 * m_FunAllStat);
     }
 
 
@@ -273,7 +285,9 @@ void Player::UpdateArmor()
 
     value *= GetModifierValue(unitMod, TOTAL_PCT);
 
-    SetArmor(int32(value));
+//Stitch FunRate FunArmor
+	m_FunArmor = sConfigMgr->GetIntDefault("FunArmor", 1);
+    SetArmor(int32(value)*m_FunArmor);		
 
     Pet* pet = GetPet();
     if (pet)
@@ -446,13 +460,17 @@ void Player::CalculateMinMaxDamage(WeaponAttackType attType, bool normalized, bo
 
         if (GetShapeshiftForm() == FORM_CAT_FORM)
         {
-            weaponMinDamage = weaponMinDamage / weaponSpeed;
-            weaponMaxDamage = weaponMaxDamage / weaponSpeed;
+//            weaponMinDamage = weaponMinDamage / weaponSpeed;
+//            weaponMaxDamage = weaponMaxDamage / weaponSpeed;
+			weaponMinDamage = weaponMinDamage * (m_FunDamageDefaut +4);
+			weaponMaxDamage = weaponMaxDamage * (m_FunDamageDefaut +4);
         }
         else if (GetShapeshiftForm() == FORM_BEAR_FORM)
         {
-            weaponMinDamage = weaponMinDamage / weaponSpeed + weaponMinDamage / 2.5;
-            weaponMaxDamage = weaponMinDamage / weaponSpeed + weaponMaxDamage / 2.5;
+//            weaponMinDamage = weaponMinDamage / weaponSpeed + weaponMinDamage / 2.5;
+//            weaponMaxDamage = weaponMinDamage / weaponSpeed + weaponMaxDamage / 2.5;
+			weaponMinDamage = weaponMinDamage * (m_FunDamageDefaut + 5);
+			weaponMaxDamage = weaponMinDamage * (m_FunDamageDefaut + 5);
         }
     }
     else if (!CanUseAttackType(attType)) // check if player not in form but still can't use (disarm case)
@@ -475,8 +493,11 @@ void Player::CalculateMinMaxDamage(WeaponAttackType attType, bool normalized, bo
         weaponMaxDamage += GetAmmoDPS() * attackSpeedMod;
     }*/
 
-    minDamage = ((weaponMinDamage + baseValue) * basePct + totalValue) * totalPct;
-    maxDamage = ((weaponMaxDamage + baseValue) * basePct + totalValue) * totalPct;
+	//Stitch FunRate m_FunDamageDefaut
+//	minDamage = ((weaponMinDamage + baseValue) * basePct + totalValue) * totalPct;
+//	maxDamage = ((weaponMaxDamage + baseValue) * basePct + totalValue) * totalPct;
+	minDamage = ((weaponMinDamage + baseValue) * basePct + totalValue) * totalPct /2 * m_FunDamageDefaut;
+	maxDamage = ((weaponMaxDamage + baseValue) * basePct + totalValue) * totalPct /2 * m_FunDamageDefaut;
 }
 
 void Player::UpdateBlockPercentage()
