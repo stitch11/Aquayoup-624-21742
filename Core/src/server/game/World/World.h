@@ -863,9 +863,11 @@ class TC_GAME_API World
         std::vector<std::string> _motd;
         std::string m_dataPath;
 
-
-		std::string m_GuildName;								//Stitch
+//Stitch Guilde Auto
+		std::string m_GuildName;								
 		std::string m_GuildMessage;
+
+
 
 
         // for max speed access

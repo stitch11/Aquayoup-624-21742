@@ -148,6 +148,6 @@ class npc_pet_shaman_fire_elemental : public CreatureScript
 
 void AddSC_shaman_pet_scripts()
 {
-    new npc_pet_shaman_earth_elemental();
+//    new npc_pet_shaman_earth_elemental();
     new npc_pet_shaman_fire_elemental();
 }

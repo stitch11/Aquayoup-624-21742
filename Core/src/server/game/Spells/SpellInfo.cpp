@@ -28,6 +28,7 @@
 #include "Pet.h"
 #include "InstanceScript.h"
 
+
 uint32 GetTargetFlagMask(SpellTargetObjectTypes objType)
 {
     switch (objType)
@@ -2493,7 +2494,8 @@ uint32 SpellInfo::CalcCastTime(uint8 level, Spell* spell /*= NULL*/) const
             castTime = Scaling.CastTimeMin + int32(level - 1) * (Scaling.CastTimeMax - Scaling.CastTimeMin) / (Scaling.CastTimeMaxLevel - 1);
     }
     else if (CastTimeEntry)
-        castTime = CastTimeEntry->CastTime;
+
+		castTime = CastTimeEntry->CastTime;
 
     if (!castTime)
         return 0;
