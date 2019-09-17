@@ -34,6 +34,7 @@ uint32 m_FunArmor;
 
 
 
+
 inline bool _ModifyUInt32(bool apply, uint32& baseValue, int32& amount)
 {
     // If amount is negative, change sign and value of apply.
@@ -800,21 +801,27 @@ void Player::ApplyHealthRegenBonus(int32 amount, bool apply)
 
 void Player::UpdateManaRegen()
 {
-    // Mana regen from spirit
+
+	// Mana regen from spirit
     float spirit_regen = OCTRegenMPPerSpirit();
     // Apply PCT bonus from SPELL_AURA_MOD_POWER_REGEN_PERCENT aura on spirit base regen
     spirit_regen *= GetTotalAuraMultiplierByMiscValue(SPELL_AURA_MOD_POWER_REGEN_PERCENT, POWER_MANA);
 
-    // CombatRegen = 5% of Base Mana
-//    float base_regen = GetCreateMana() * 0.02f + GetTotalAuraModifierByMiscValue(SPELL_AURA_MOD_POWER_REGEN, POWER_MANA) / 5.0f;
-	float base_regen = GetCreateMana() * 0.009f + GetTotalAuraModifierByMiscValue(SPELL_AURA_MOD_POWER_REGEN, POWER_MANA) / 5.0f; //REGEN MANA
+	//Stitch regen mana (pour affichage)
+	// CombatRegen = 5% of Base Mana
+	//	float base_regen = GetCreateMana() * 0.009f + GetTotalAuraModifierByMiscValue(SPELL_AURA_MOD_POWER_REGEN, POWER_MANA); //REGEN MANA / 5.0f  //Stitch
+	float base_regen = GetCreateMana() * 0.02f + GetTotalAuraModifierByMiscValue(SPELL_AURA_MOD_POWER_REGEN, POWER_MANA) /1.0f;
 
 
     // Set regen rate in cast state apply only on spirit based regen
-    int32 modManaRegenInterrupt = GetTotalAuraModifier(SPELL_AURA_MOD_MANA_REGEN_INTERRUPT)/100;
+    int32 modManaRegenInterrupt = GetTotalAuraModifier(SPELL_AURA_MOD_MANA_REGEN_INTERRUPT);
 
-	SetStatFloatValue(UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER, (base_regen + CalculatePct(spirit_regen, modManaRegenInterrupt)/1));//REGEN MANA
-	SetStatFloatValue(UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER, (0.001f + spirit_regen + base_regen)/1);//REGEN MANA
+	//Stitch regen mana (pour affichage)
+	SetStatFloatValue(UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER, (base_regen + CalculatePct(spirit_regen, modManaRegenInterrupt))/10);
+	SetStatFloatValue(UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER, (0.001f + spirit_regen + base_regen) / 10); 
+
+
+
 }
 
 void Player::UpdateRuneRegen(RuneType rune)

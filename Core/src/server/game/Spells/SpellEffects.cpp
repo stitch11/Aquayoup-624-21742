@@ -1286,6 +1286,7 @@ void Spell::EffectHeal(SpellEffIndex /*effIndex*/)
 //Stitch FunRate m_FunHealSpell
 		m_FunHealSpell = sConfigMgr->GetIntDefault("FunHealSpell", 2);
 		m_damage = m_damage / 2 * m_FunHealSpell;
+
     }
 }
 
