@@ -210,7 +210,7 @@ class spell_warl_conflagrate : public SpellScriptLoader
 class spell_warl_create_healthstone : public SpellScriptLoader
 {
     public:
-        spell_warl_create_healthstone() : SpellScriptLoader("//") { }
+        spell_warl_create_healthstone() : SpellScriptLoader("spell_warl_create_healthstone") { }
 
         class spell_warl_create_healthstone_SpellScript : public SpellScript
         {
@@ -1440,7 +1440,7 @@ void AddSC_warlock_spell_scripts()
 //    new spell_warl_bane_of_doom();
     new spell_warl_banish();
     new spell_warl_conflagrate();
-    new spell_warl_create_healthstone();
+//    new spell_warl_create_healthstone();
     new spell_warl_demonic_circle_summon();
     new spell_warl_demonic_circle_teleport();
 //    new spell_warl_demonic_empowerment();

@@ -64,4 +64,5 @@ private:
 
 #define sConfigMgr ConfigMgr::instance()
 
+
 #endif
