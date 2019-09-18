@@ -1903,7 +1903,7 @@ void Player::RegenerateAll()
 	    return;					//
 
 	//Stitch FunRate FunPowerRegen
-	m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 1);
+	m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 3);
 
 	if (m_FunPowerRegen > 5)
 	{
@@ -2000,7 +2000,7 @@ void Player::Regenerate(Powers power)
 
 
 	//Stitch FunRate FunPowerRegen mana
-m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 1);
+m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 3);
 	if (m_FunPowerRegen > 5)
 	{
 		m_FunPowerRegen = 5;
@@ -24458,7 +24458,11 @@ uint32 Player::GetRuneTypeBaseCooldown(RuneType runeType) const
     cooldown *=  1.0f - (hastePct / 100.0f);
 
 	//Stitch FunRate FunPowerRegen Rune
-	m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 1);
+	m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 3);
+	if (m_FunPowerRegen > 5)
+	{
+		m_FunPowerRegen = 5;
+	}
 	cooldown = cooldown / (m_FunPowerRegen *3);
 
 
