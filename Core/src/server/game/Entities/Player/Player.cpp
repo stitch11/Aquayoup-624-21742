@@ -2071,12 +2071,22 @@ m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 3);
 		}
 	}
 	break;
+
 	case POWER_HOLY_POWER:                                          // Regenerate holy power
 	{
 		if (!IsInCombat())
 			addvalue += -1.0f;      // remove 1 every 10 sec, first one removed 20s after leaving combat
 	}
 	break;
+
+
+	case POWER_BURNING_EMBERS:                                          // Stitch Braise ardente
+	{
+			addvalue += -10.0f;      // remove 1 every 10 sec, first one removed 20s after leaving combat
+	}
+	break;
+
+
 	case POWER_RUNES:
 		break;
 	case POWER_HEALTH:
