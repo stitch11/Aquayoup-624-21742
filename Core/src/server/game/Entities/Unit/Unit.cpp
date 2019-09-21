@@ -14745,7 +14745,8 @@ uint32 Unit::GetModelForTotem(PlayerTotemType totemType)
 				case SUMMON_TYPE_TOTEM_AIR:     // air
 					return 30760;
 				default:
-					break;
+					//	break;
+					return 30760;				// Pour le bug de modelid parfois renvoyé a 0
 			}
 			break;
 		}
@@ -14762,7 +14763,8 @@ uint32 Unit::GetModelForTotem(PlayerTotemType totemType)
 				case SUMMON_TYPE_TOTEM_AIR:     // air
 					return 30760;
 				default:
-					break;
+					//	break;
+					return 30760;				// Pour le bug de modelid parfois renvoyé a 0
 			}
 			break;
 		}
@@ -14779,7 +14781,8 @@ uint32 Unit::GetModelForTotem(PlayerTotemType totemType)
 				case SUMMON_TYPE_TOTEM_AIR:     // air
 					return 30760;
 				default:
-					break;
+					//	break;
+					return 30760;				// Pour le bug de modelid parfois renvoyé a 0
 			}
 			break;
 		}
@@ -14796,7 +14799,8 @@ uint32 Unit::GetModelForTotem(PlayerTotemType totemType)
 				case SUMMON_TYPE_TOTEM_AIR:     // air
 					return 30760;
 				default:
-					break;
+					//	break;
+					return 30760;				// Pour le bug de modelid parfois renvoyé a 0
 			}
 			break;
 		}
@@ -14804,16 +14808,17 @@ uint32 Unit::GetModelForTotem(PlayerTotemType totemType)
 		{
 			switch (totemType)
 			{
-				case SUMMON_TYPE_TOTEM_FIRE:    // fire
-					return 19074;
-				case SUMMON_TYPE_TOTEM_EARTH:   // earth
-					return 19073;
-				case SUMMON_TYPE_TOTEM_WATER:   // water
-					return 19075;
-				case SUMMON_TYPE_TOTEM_AIR:     // air
-					return 19071;
-				default:
-					break;
+			case SUMMON_TYPE_TOTEM_FIRE:    // fire
+				return 19074;
+			case SUMMON_TYPE_TOTEM_EARTH:   // earth
+				return 19073;
+			case SUMMON_TYPE_TOTEM_WATER:   // water
+				return 19075;
+			case SUMMON_TYPE_TOTEM_AIR:     // air
+				return 19071;
+			default:
+				//	break;
+				return 19074;				// Pour le bug de modelid parfois renvoyé a 0
 			}
 			break;
 		}
@@ -14830,7 +14835,8 @@ uint32 Unit::GetModelForTotem(PlayerTotemType totemType)
 				case SUMMON_TYPE_TOTEM_AIR:     // air
 					return 19071;
 				default:
-					break;
+					//	break;
+					return 19074;				// Pour le bug de modelid parfois renvoyé a 0
 			}
 			break;
 		}
@@ -14865,7 +14871,8 @@ uint32 Unit::GetModelForTotem(PlayerTotemType totemType)
 				case SUMMON_TYPE_TOTEM_AIR:     // air
 					return 19071;
 				default:
-					break;
+					//	break;
+					return 19074;				// Pour le bug de modelid parfois renvoyé a 0
 			}
 			break;
 		}
@@ -14882,7 +14889,8 @@ uint32 Unit::GetModelForTotem(PlayerTotemType totemType)
 				case SUMMON_TYPE_TOTEM_AIR:     // air
 					return 19071;
 				default:
-					break;
+					//	break;
+					return 19074;				// Pour le bug de modelid parfois renvoyé a 0
 			}
 			break;
 		}
@@ -14899,7 +14907,8 @@ uint32 Unit::GetModelForTotem(PlayerTotemType totemType)
 				case SUMMON_TYPE_TOTEM_AIR:     // air
 					return 19071;
 				default:
-					break;
+					//	break;
+					return 19074;				// Pour le bug de modelid parfois renvoyé a 0
 			}
 			break;
 		}
@@ -14916,7 +14925,8 @@ uint32 Unit::GetModelForTotem(PlayerTotemType totemType)
 				case SUMMON_TYPE_TOTEM_AIR:     // air
 					return 30760;
 				default:
-					break;
+					//	break;
+					return 30760;				// Pour le bug de modelid parfois renvoyé a 0
 			}
 			break;
 		}
@@ -14934,7 +14944,8 @@ uint32 Unit::GetModelForTotem(PlayerTotemType totemType)
                 case SUMMON_TYPE_TOTEM_AIR:     // air
                     return 30756;
 				default:
-					break;
+					//	break;
+					return 30760;				// Pour le bug de modelid parfois renvoyé a 0
 			}
             break;
         }
@@ -14951,7 +14962,8 @@ uint32 Unit::GetModelForTotem(PlayerTotemType totemType)
                 case SUMMON_TYPE_TOTEM_AIR:     // air
                     return 30736;
 				default:
-					break;
+					//	break;
+					return 19074;				// Pour le bug de modelid parfois renvoyé a 0
 			}
             break;
         }
@@ -14968,7 +14980,8 @@ uint32 Unit::GetModelForTotem(PlayerTotemType totemType)
                 case SUMMON_TYPE_TOTEM_AIR:     // air
                     return 30760;
 				default:
-					break;
+					//	break;
+					return 30760;				// Pour le bug de modelid parfois renvoyé a 0
 			}
             break;
         }
@@ -14985,7 +14998,8 @@ uint32 Unit::GetModelForTotem(PlayerTotemType totemType)
                 case SUMMON_TYPE_TOTEM_AIR:     // air
                     return 4590;
 				default:
-					break;
+					//	break;
+					return 30760;				// Pour le bug de modelid parfois renvoyé a 0
 			}
             break;
         }
@@ -15002,7 +15016,8 @@ uint32 Unit::GetModelForTotem(PlayerTotemType totemType)
                 case SUMMON_TYPE_TOTEM_AIR:     // air
                     return 19071;
 				default:
-					break;
+					//	break;
+					return 19074;				// Pour le bug de modelid parfois renvoyé a 0
 			}
             break;
         }
@@ -15019,13 +15034,14 @@ uint32 Unit::GetModelForTotem(PlayerTotemType totemType)
                 case SUMMON_TYPE_TOTEM_AIR:     // air
                     return 30781;
 				default:
-					break;
+					//	break;
+					return 30760;				// Pour le bug de modelid parfois renvoyé a 0
 			}
             break;
         }
     }
 
-    return 0;
+    return 30760;
 }
 
 void Unit::JumpTo(float speedXY, float speedZ, bool forward)
