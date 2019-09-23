@@ -2638,7 +2638,7 @@ public:
 
 
 /*##############################################################################################
-#  //STITCH PNJ 15000386 : Choix du level de depart et TP
+#  //STITCH PNJ 15000386 : Options de depart et TP
 ################################################################################################*/
 class npc_level : public CreatureScript
 {
@@ -2652,12 +2652,33 @@ public:
 		uint8 _level = player->getLevel();
 		uint8 _race = player->getRace();
 		uint8 _class = player->getClass();
-		if (_level < 2) { player->ADD_GOSSIP_ITEM(4, "Commencer level 30 (Avec TP)", GOSSIP_SENDER_MAIN, 1); }
-		if (_level < 2) { player->ADD_GOSSIP_ITEM(4, "Commencer level 58 (Avec TP)", GOSSIP_SENDER_MAIN, 2); }
-		if (_level < 2 || (_class == CLASS_DEATH_KNIGHT)) { player->ADD_GOSSIP_ITEM(4, "Commencer level 68 (Avec TP)", GOSSIP_SENDER_MAIN, 3); }
-		if (_level < 2 || (_class == CLASS_DEATH_KNIGHT)) { player->ADD_GOSSIP_ITEM(4, "Commencer level 80 (Avec TP)", GOSSIP_SENDER_MAIN, 4); }
-		if (_level < 2 || (_class == CLASS_DEATH_KNIGHT)) { player->ADD_GOSSIP_ITEM(4, "Commencer level 85 (Avec TP)", GOSSIP_SENDER_MAIN, 5); }
-		if (_level < 2 || (_class == CLASS_DEATH_KNIGHT)) { player->ADD_GOSSIP_ITEM(4, "Commencer level 90 (Avec TP)", GOSSIP_SENDER_MAIN, 6); }
+
+		if (_level < 2) { player->ADD_GOSSIP_ITEM(4, "Commencer level 30 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 1); }
+		if (_level < 2) { player->ADD_GOSSIP_ITEM(4, "Commencer level 58 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 2); }
+		if (_level < 2 || (_class == CLASS_DEATH_KNIGHT)) { player->ADD_GOSSIP_ITEM(4, "Commencer level 68 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 3); }
+		if (_level < 2 || (_class == CLASS_DEATH_KNIGHT)) { player->ADD_GOSSIP_ITEM(4, "Commencer level 80 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 4); }
+		if (_level < 2 || (_class == CLASS_DEATH_KNIGHT)) { player->ADD_GOSSIP_ITEM(4, "Commencer level 85 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 5); }
+		if (_level < 2 || (_class == CLASS_DEATH_KNIGHT)) { player->ADD_GOSSIP_ITEM(4, "Commencer level 90 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 6); }
+
+		if (_level < 2) { player->ADD_GOSSIP_ITEM(4, " ", GOSSIP_SENDER_MAIN, 0); }
+
+		if (team == TEAM_ALLIANCE && _class != CLASS_DEATH_KNIGHT && _race != RACE_PANDAREN_NEUTRAL && _race != RACE_WORGEN )
+		{
+			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(4, "Commencer chez les Humains", GOSSIP_SENDER_MAIN, 7); }	// Humain
+			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(4, "Commencer chez les Nains", GOSSIP_SENDER_MAIN, 8); }	// Nain
+			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(4, "Commencer chez les Elfes de la nuit", GOSSIP_SENDER_MAIN, 9); }	// Elfe de la nuit
+			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(4, "Commencer chez les Gnomes", GOSSIP_SENDER_MAIN, 10); }	// Gnome
+			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(4, "Commencer chez les Draeneis", GOSSIP_SENDER_MAIN, 11); }	// Draenei
+		}
+		if (team == TEAM_HORDE && _class != CLASS_DEATH_KNIGHT && _class != RACE_PANDAREN_NEUTRAL )
+		{
+			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(4, "Commencer chez les Orcs", GOSSIP_SENDER_MAIN, 7); }	// Orc
+			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(4, "Commencer chez les Mort Vivant", GOSSIP_SENDER_MAIN, 8); }	// Mort Vivant
+			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(4, "Commencer chez les Taurens", GOSSIP_SENDER_MAIN, 9); }	// Tauren
+			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(4, "Commencer chez les Trolls", GOSSIP_SENDER_MAIN, 10); }	// Troll
+			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(4, "Commencer chez les Elfes de sang", GOSSIP_SENDER_MAIN, 11); }	// Elfe de Sang
+			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(4, "Commencer chez les Goblins", GOSSIP_SENDER_MAIN, 12); }	// Goblin
+		}
 
 
 		player->PlayerTalkClass->SendGossipMenu(9430, creature->GetGUID());
@@ -3059,12 +3080,68 @@ public:
 				}
 
 				if (team==TEAM_ALLIANCE)
-				{ player->TeleportTo(0, -8867.68f, 673.373f, 97.9034f, 0.0f); }		//Stitch tp Hurlevent 
+				{ player->TeleportTo(0, -8867.68f, 673.373f, 97.9034f, 0.0f); }			//Stitch tp Hurlevent 
 
 				if (team==TEAM_HORDE)
-				{ player->TeleportTo(1, 1633.33f, -4439.11f, 17.7588f, 0.0f); }	//Stitch tp Orgrimmar 
+				{ player->TeleportTo(1, 1633.33f, -4439.11f, 17.7588f, 0.0f); }			//Stitch tp Orgrimmar 
 
 			}
+			break;
+
+
+
+			//Stitch : Choix du lieu de depart
+		case 7:
+			if (team == TEAM_ALLIANCE)
+			{ 
+				player->TeleportTo(0, -8914.57f, -133.909f, 80.5378f, 5.13806f);		// Humain
+			}	
+			else
+				player->TeleportTo(1, -618.518f, -4251.67f, 38.718f, 4.72222f);			// Orc	
+			break;
+
+		case 8:
+			if (team == TEAM_ALLIANCE)
+			{
+				player->TeleportTo(0, -6230.42f, 330.232f, 383.105f, 6.17716f);			// Nain
+			}	
+			else
+				player->TeleportTo(0, 1699.85f, 1706.56f, 135.928f, 4.88839f);			// Mort Vivant	
+
+			break;
+
+		case 9:
+			if (team == TEAM_ALLIANCE)
+			{
+				player->TeleportTo(1, 10311.3f, 831.463f, 1326.57f, 5.69632f);			// Elfe de la nuit
+			}	
+			else
+				player->TeleportTo(1, -2915.55f, -257.347f, 59.2693f, 0.302378f);		// Tauren	
+			break;
+
+		case 10:
+			if (team == TEAM_ALLIANCE)
+			{
+				player->TeleportTo(0, -4983.42f, 877.7f, 274.31f, 3.06393f);			// Gnome
+			}			
+			else
+				player->TeleportTo(1, -1171.45f, -5263.65f, 0.847728f, 5.78945f);		// Troll	
+			break;
+
+		case 11:
+			if (team == TEAM_ALLIANCE)
+			{
+				player->TeleportTo(530, -3961.64f, -13931.2f, 100.615f, 2.08364f);		// Draenei
+			}	
+			else
+				player->TeleportTo(530, 10349.6f, -6357.29f, 33.4026f, 5.31605f);		// Elfe de Sang	
+			break;
+
+		case 12:
+			if (team == TEAM_HORDE)
+			{ 
+				player->TeleportTo(648, -8423.81f, 1361.3f, 104.671f, 1.55428f);		// Goblin
+			}	
 			break;
 
 
