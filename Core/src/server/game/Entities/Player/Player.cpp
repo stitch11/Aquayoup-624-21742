@@ -2154,13 +2154,13 @@ m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 3);
 	{
 		maxValue = 6;
 		SetMaxPower(POWER_CHI, maxValue);
-		ModifyPower(POWER_CHI, maxValue);
+		ModifyPower(POWER_CHI, 0);
 	}
 	if (!ToPlayer()->HasAura(115396) && CLASS_MONK)
 	{
 		maxValue = 4;
 		SetMaxPower(POWER_CHI, maxValue);
-		ModifyPower(POWER_CHI, maxValue);
+		ModifyPower(POWER_CHI, 0);
 	}
 
 
