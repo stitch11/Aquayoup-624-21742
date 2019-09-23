@@ -2540,11 +2540,11 @@ public:
 		uint8 _level = player->getLevel();
 		uint8 _race = player->getRace();
 
-		player->ADD_GOSSIP_ITEM(4, "Changer de Race ", GOSSIP_SENDER_MAIN, 0);
 		player->ADD_GOSSIP_ITEM(4, "Changer de Faction (Avec TP)", GOSSIP_SENDER_MAIN, 1);
+		player->ADD_GOSSIP_ITEM(4, "Changer de Race (Sauf Panda)", GOSSIP_SENDER_MAIN, 0);
 
-		if (_race != RACE_PANDAREN_ALLIANCE)	{player->ADD_GOSSIP_ITEM(2, "Changer de Race en Panda de l'Alliance", GOSSIP_SENDER_MAIN, 4);}
-		if (_race != RACE_PANDAREN_HORDE)		{player->ADD_GOSSIP_ITEM(2, "Changer de Race en Panda de la Horde", GOSSIP_SENDER_MAIN, 5);}
+		if (_race != RACE_PANDAREN_ALLIANCE && team != TEAM_HORDE)	{player->ADD_GOSSIP_ITEM(2, "Changer de Race en Panda de l'Alliance", GOSSIP_SENDER_MAIN, 4);}
+		if (_race != RACE_PANDAREN_HORDE && team != TEAM_ALLIANCE)		{player->ADD_GOSSIP_ITEM(2, "Changer de Race en Panda de la Horde", GOSSIP_SENDER_MAIN, 5);}
 
 		player->ADD_GOSSIP_ITEM(3, "Changer mon Apparence", GOSSIP_SENDER_MAIN, 9);	//sinon crash
 		player->ADD_GOSSIP_ITEM(4, "Effacer mes talents", GOSSIP_SENDER_MAIN, 10);
