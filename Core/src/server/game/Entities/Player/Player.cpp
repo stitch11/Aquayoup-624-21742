@@ -2149,6 +2149,21 @@ m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 3);
 			m_powerFraction[powerIndex] = addvalue - integerValue;
 	}
 
+//Stitch Talent moine : Ascension (Max Chi+2)
+	if (ToPlayer()->HasAura(115396)) 
+	{
+		maxValue = 6;
+		SetMaxPower(POWER_CHI, maxValue);
+		ModifyPower(POWER_CHI, maxValue);
+	}
+	if (!ToPlayer()->HasAura(115396) && CLASS_MONK)
+	{
+		maxValue = 4;
+		SetMaxPower(POWER_CHI, maxValue);
+		ModifyPower(POWER_CHI, maxValue);
+	}
+
+
 	if (m_regenTimerCount >= 2000)
 		SetPower(power, curValue);
 	else
