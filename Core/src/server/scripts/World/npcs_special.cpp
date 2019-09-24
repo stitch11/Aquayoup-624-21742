@@ -2540,17 +2540,15 @@ public:
 		uint8 _level = player->getLevel();
 		uint8 _race = player->getRace();
 
-		player->ADD_GOSSIP_ITEM(4, "Changer de Faction (Avec TP)", GOSSIP_SENDER_MAIN, 1);
-		player->ADD_GOSSIP_ITEM(4, "Changer de Race (Sauf Panda)", GOSSIP_SENDER_MAIN, 0);
+		player->ADD_GOSSIP_ITEM(2, "Changer de Faction (Avec TP)", GOSSIP_SENDER_MAIN, 1);
+		player->ADD_GOSSIP_ITEM(8, "Changer de Race (Sauf Panda)", GOSSIP_SENDER_MAIN, 0);
 
-		if (_race != RACE_PANDAREN_ALLIANCE && team != TEAM_HORDE)	{player->ADD_GOSSIP_ITEM(2, "Changer de Race en Panda de l'Alliance", GOSSIP_SENDER_MAIN, 4);}
-		if (_race != RACE_PANDAREN_HORDE && team != TEAM_ALLIANCE)		{player->ADD_GOSSIP_ITEM(2, "Changer de Race en Panda de la Horde", GOSSIP_SENDER_MAIN, 5);}
+		if (_race != RACE_PANDAREN_ALLIANCE && team != TEAM_HORDE)	{player->ADD_GOSSIP_ITEM(8, "Changer de Race en Panda de l'Alliance", GOSSIP_SENDER_MAIN, 4);}
+		if (_race != RACE_PANDAREN_HORDE && team != TEAM_ALLIANCE)		{player->ADD_GOSSIP_ITEM(8, "Changer de Race en Panda de la Horde", GOSSIP_SENDER_MAIN, 5);}
 
 		player->ADD_GOSSIP_ITEM(3, "Changer mon Apparence", GOSSIP_SENDER_MAIN, 9);	//sinon crash
-		player->ADD_GOSSIP_ITEM(4, "Effacer mes talents", GOSSIP_SENDER_MAIN, 10);
-//		Player->ADD_GOSSIP_ITEM(4, "Debug 1) Oublier tous mes spells", GOSSIP_SENDER_MAIN, 8); 
-//		Player->ADD_GOSSIP_ITEM(4, "Debug 2) Apprendre mes spells par defaut", GOSSIP_SENDER_MAIN, 9);
-//		Player->ADD_GOSSIP_ITEM(4, " Changer mon nom", GOSSIP_SENDER_MAIN, 10);  // Marche mais Retiré pour gameplay
+		player->ADD_GOSSIP_ITEM(3, "Effacer mes talents", GOSSIP_SENDER_MAIN, 10);
+
 
 		player->PlayerTalkClass->SendGossipMenu(9425, creature->GetGUID());
 		return true;
@@ -2653,35 +2651,35 @@ public:
 		uint8 _race = player->getRace();
 		uint8 _class = player->getClass();
 
-		if (_level < 2) { player->ADD_GOSSIP_ITEM(4, "Commencer level 30 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 1); }
-		if (_level < 2) { player->ADD_GOSSIP_ITEM(4, "Commencer level 58 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 2); }
-		if (_level < 2 || (_class == CLASS_DEATH_KNIGHT)) { player->ADD_GOSSIP_ITEM(4, "Commencer level 68 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 3); }
-		if (_level < 2 || (_class == CLASS_DEATH_KNIGHT)) { player->ADD_GOSSIP_ITEM(4, "Commencer level 80 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 4); }
-		if (_level < 2 || (_class == CLASS_DEATH_KNIGHT)) { player->ADD_GOSSIP_ITEM(4, "Commencer level 85 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 5); }
-		if (_level < 2 || (_class == CLASS_DEATH_KNIGHT)) { player->ADD_GOSSIP_ITEM(4, "Commencer level 90 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 6); }
+		if (_level < 2) { player->ADD_GOSSIP_ITEM(3, "Commencer level 30 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 1); }
+		if (_level < 2) { player->ADD_GOSSIP_ITEM(3, "Commencer level 58 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 2); }
+		if (_level < 2 || (_class == CLASS_DEATH_KNIGHT)) { player->ADD_GOSSIP_ITEM(3, "Commencer level 68 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 3); }
+		if (_level < 2 || (_class == CLASS_DEATH_KNIGHT)) { player->ADD_GOSSIP_ITEM(3, "Commencer level 80 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 4); }
+		if (_level < 2 || (_class == CLASS_DEATH_KNIGHT)) { player->ADD_GOSSIP_ITEM(3, "Commencer level 85 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 5); }
+		if (_level < 2 || (_class == CLASS_DEATH_KNIGHT)) { player->ADD_GOSSIP_ITEM(3, "Commencer level 90 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 6); }
 
-		if (_level < 2) { player->ADD_GOSSIP_ITEM(4, " ", GOSSIP_SENDER_MAIN, 0); }
+		if (_level < 2) { player->ADD_GOSSIP_ITEM(9, " ", GOSSIP_SENDER_MAIN, -1); }
 
 		if (team == TEAM_ALLIANCE && _class != CLASS_DEATH_KNIGHT && _race != RACE_PANDAREN_NEUTRAL && _race != RACE_WORGEN )
 		{
-			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(4, "Commencer chez les Humains", GOSSIP_SENDER_MAIN, 7); }	// Humain
-			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(4, "Commencer chez les Nains", GOSSIP_SENDER_MAIN, 8); }	// Nain
-			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(4, "Commencer chez les Elfes de la nuit", GOSSIP_SENDER_MAIN, 9); }	// Elfe de la nuit
-			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(4, "Commencer chez les Gnomes", GOSSIP_SENDER_MAIN, 10); }	// Gnome
-			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(4, "Commencer chez les Draeneis", GOSSIP_SENDER_MAIN, 11); }	// Draenei
+			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(2, "Commencer chez les Humains", GOSSIP_SENDER_MAIN, 7); }	// Humain
+			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(2, "Commencer chez les Nains", GOSSIP_SENDER_MAIN, 8); }	// Nain
+			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(2, "Commencer chez les Elfes de la nuit", GOSSIP_SENDER_MAIN, 9); }	// Elfe de la nuit
+			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(2, "Commencer chez les Gnomes", GOSSIP_SENDER_MAIN, 10); }	// Gnome
+			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(2, "Commencer chez les Draeneis", GOSSIP_SENDER_MAIN, 11); }	// Draenei
 		}
 		if (team == TEAM_HORDE && _class != CLASS_DEATH_KNIGHT && _class != RACE_PANDAREN_NEUTRAL )
 		{
-			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(4, "Commencer chez les Orcs", GOSSIP_SENDER_MAIN, 7); }	// Orc
-			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(4, "Commencer chez les Mort Vivant", GOSSIP_SENDER_MAIN, 8); }	// Mort Vivant
-			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(4, "Commencer chez les Taurens", GOSSIP_SENDER_MAIN, 9); }	// Tauren
-			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(4, "Commencer chez les Trolls", GOSSIP_SENDER_MAIN, 10); }	// Troll
-			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(4, "Commencer chez les Elfes de sang", GOSSIP_SENDER_MAIN, 11); }	// Elfe de Sang
-			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(4, "Commencer chez les Goblins", GOSSIP_SENDER_MAIN, 12); }	// Goblin
+			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(2, "Commencer chez les Orcs", GOSSIP_SENDER_MAIN, 7); }	// Orc
+			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(2, "Commencer chez les Mort Vivant", GOSSIP_SENDER_MAIN, 8); }	// Mort Vivant
+			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(2, "Commencer chez les Taurens", GOSSIP_SENDER_MAIN, 9); }	// Tauren
+			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(2, "Commencer chez les Trolls", GOSSIP_SENDER_MAIN, 10); }	// Troll
+			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(2, "Commencer chez les Elfes de sang", GOSSIP_SENDER_MAIN, 11); }	// Elfe de Sang
+			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(2, "Commencer chez les Goblins", GOSSIP_SENDER_MAIN, 12); }	// Goblin
 		}
 
 
-		player->PlayerTalkClass->SendGossipMenu(65503, creature->GetGUID());
+		player->PlayerTalkClass->SendGossipMenu(65503, creature->GetGUID());	// NPC_txt pointant sur BroadcastText
 		return true;
 	}
 
@@ -3180,11 +3178,11 @@ public:
 			uint8 _Race = player->getRace();
 			if (_Race == RACE_PANDAREN_HORDE || _Race == RACE_PANDAREN_NEUTRAL)
 			{
-				player->ADD_GOSSIP_ITEM(4, GOSSIP_CHOOSE_ALLIANCE, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
+				player->ADD_GOSSIP_ITEM(0, GOSSIP_CHOOSE_ALLIANCE, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
 			}
 			if (_Race == RACE_PANDAREN_ALLIANCE || _Race == RACE_PANDAREN_NEUTRAL)
 			{
-				player->ADD_GOSSIP_ITEM(4, GOSSIP_CHOOSE_HORDE, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
+				player->ADD_GOSSIP_ITEM(0, GOSSIP_CHOOSE_HORDE, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
 			}
 
 			player->PlayerTalkClass->SendGossipMenu(GOSSIP_TEXT_EXP1, creature->GetGUID());
