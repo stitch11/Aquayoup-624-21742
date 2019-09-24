@@ -2681,7 +2681,7 @@ public:
 		}
 
 
-		player->PlayerTalkClass->SendGossipMenu(9430, creature->GetGUID());
+		player->PlayerTalkClass->SendGossipMenu(65503, creature->GetGUID());
 		return true;
 	}
 
