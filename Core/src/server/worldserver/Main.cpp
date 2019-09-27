@@ -153,7 +153,7 @@ extern int main(int argc, char** argv)
 	TC_LOG_INFO("server.worldserver", "xx * Pet & FakePlayers donnent de l'XP et sont plus efficace                      xx");
 	TC_LOG_INFO("server.worldserver", "xx * Guilde par defaut a la création d'un perso                                   xx");
 	TC_LOG_INFO("server.worldserver", "xx                                                                                xx");
-	TC_LOG_INFO("server.worldserver", "xx * Diveres majs & debugs                                                        xx");
+	TC_LOG_INFO("server.worldserver", "xx * Diverse majs & debugs                                                        xx");
 	TC_LOG_INFO("server.worldserver", "xx * Un grand Merci a Noc & Scade pour leurs aides                                xx");
     TC_LOG_INFO("server.worldserver", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     TC_LOG_INFO("server.worldserver", " ");

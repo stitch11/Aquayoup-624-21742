@@ -2541,10 +2541,12 @@ public:
 		uint8 _race = player->getRace();
 
 		player->ADD_GOSSIP_ITEM(2, "Changer de Faction (Avec TP)", GOSSIP_SENDER_MAIN, 1);
-		player->ADD_GOSSIP_ITEM(8, "Changer de Race (Sauf Panda)", GOSSIP_SENDER_MAIN, 0);
+		player->ADD_GOSSIP_ITEM(8, "Changer de Race", GOSSIP_SENDER_MAIN, 0);
 
-		if (_race != RACE_PANDAREN_ALLIANCE && team != TEAM_HORDE)	{player->ADD_GOSSIP_ITEM(8, "Changer de Race en Panda de l'Alliance", GOSSIP_SENDER_MAIN, 4);}
-		if (_race != RACE_PANDAREN_HORDE && team != TEAM_ALLIANCE)		{player->ADD_GOSSIP_ITEM(8, "Changer de Race en Panda de la Horde", GOSSIP_SENDER_MAIN, 5);}
+//		if (_race != RACE_PANDAREN_ALLIANCE && team != TEAM_HORDE)	{player->ADD_GOSSIP_ITEM(8, "Changer de Race en Panda de l'Alliance", GOSSIP_SENDER_MAIN, 4);}
+//		if (_race != RACE_PANDAREN_HORDE && team != TEAM_ALLIANCE)		{player->ADD_GOSSIP_ITEM(8, "Changer de Race en Panda de la Horde", GOSSIP_SENDER_MAIN, 5);}
+		if (_race == RACE_PANDAREN_NEUTRAL  || team == TEAM_ALLIANCE) { player->ADD_GOSSIP_ITEM(8, "Changer en race Panda Alliance (TP)", GOSSIP_SENDER_MAIN, 4); }
+		if (_race == RACE_PANDAREN_NEUTRAL || team == TEAM_HORDE) { player->ADD_GOSSIP_ITEM(8, "Changer en race Panda Horde (TP)", GOSSIP_SENDER_MAIN, 5); }
 
 		player->ADD_GOSSIP_ITEM(3, "Changer mon Apparence", GOSSIP_SENDER_MAIN, 9);	//sinon crash
 		player->ADD_GOSSIP_ITEM(3, "Effacer mes talents", GOSSIP_SENDER_MAIN, 10);
@@ -2651,16 +2653,16 @@ public:
 		uint8 _race = player->getRace();
 		uint8 _class = player->getClass();
 
-		if (_level < 2) { player->ADD_GOSSIP_ITEM(3, "Commencer level 30 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 1); }
-		if (_level < 2) { player->ADD_GOSSIP_ITEM(3, "Commencer level 58 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 2); }
-		if (_level < 2 || (_class == CLASS_DEATH_KNIGHT)) { player->ADD_GOSSIP_ITEM(3, "Commencer level 68 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 3); }
-		if (_level < 2 || (_class == CLASS_DEATH_KNIGHT)) { player->ADD_GOSSIP_ITEM(3, "Commencer level 80 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 4); }
-		if (_level < 2 || (_class == CLASS_DEATH_KNIGHT)) { player->ADD_GOSSIP_ITEM(3, "Commencer level 85 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 5); }
-		if (_level < 2 || (_class == CLASS_DEATH_KNIGHT)) { player->ADD_GOSSIP_ITEM(3, "Commencer level 90 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 6); }
+		if ((_level < 2) && _race != RACE_PANDAREN_NEUTRAL) { player->ADD_GOSSIP_ITEM(3, "Commencer level 30 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 1); }
+		if ((_level < 2) && _race != RACE_PANDAREN_NEUTRAL) { player->ADD_GOSSIP_ITEM(3, "Commencer level 58 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 2); }
+		if ((_level < 2 || (_class == CLASS_DEATH_KNIGHT)) && _race != RACE_PANDAREN_NEUTRAL) { player->ADD_GOSSIP_ITEM(3, "Commencer level 68 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 3); }
+		if ((_level < 2 || (_class == CLASS_DEATH_KNIGHT)) && _race != RACE_PANDAREN_NEUTRAL) { player->ADD_GOSSIP_ITEM(3, "Commencer level 80 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 4); }
+		if ((_level < 2 || (_class == CLASS_DEATH_KNIGHT)) && _race != RACE_PANDAREN_NEUTRAL) { player->ADD_GOSSIP_ITEM(3, "Commencer level 85 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 5); }
+		if ((_level < 2 || (_class == CLASS_DEATH_KNIGHT)) && _race != RACE_PANDAREN_NEUTRAL) { player->ADD_GOSSIP_ITEM(3, "Commencer level 90 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 6); }
 
 		if (_level < 2) { player->ADD_GOSSIP_ITEM(9, " ", GOSSIP_SENDER_MAIN, -1); }
 
-		if (team == TEAM_ALLIANCE && _class != CLASS_DEATH_KNIGHT && _race != RACE_PANDAREN_NEUTRAL && _race != RACE_WORGEN )
+		if (team == TEAM_ALLIANCE && _race!= RACE_PANDAREN_NEUTRAL)
 		{
 			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(2, "Commencer chez les Humains", GOSSIP_SENDER_MAIN, 7); }	// Humain
 			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(2, "Commencer chez les Nains", GOSSIP_SENDER_MAIN, 8); }	// Nain
@@ -2668,7 +2670,7 @@ public:
 			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(2, "Commencer chez les Gnomes", GOSSIP_SENDER_MAIN, 10); }	// Gnome
 			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(2, "Commencer chez les Draeneis", GOSSIP_SENDER_MAIN, 11); }	// Draenei
 		}
-		if (team == TEAM_HORDE && _class != CLASS_DEATH_KNIGHT && _class != RACE_PANDAREN_NEUTRAL )
+		if (team == TEAM_HORDE && _race != RACE_PANDAREN_NEUTRAL)
 		{
 			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(2, "Commencer chez les Orcs", GOSSIP_SENDER_MAIN, 7); }	// Orc
 			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(2, "Commencer chez les Mort Vivant", GOSSIP_SENDER_MAIN, 8); }	// Mort Vivant
@@ -2789,11 +2791,12 @@ public:
 					player->AddItem(24703, 1);//Torce
 					player->AddItem(29939, 1);//Jambe
 					player->AddItem(24702, 1);//Pied
-					if ((_class == CLASS_HUNTER) || (_class == CLASS_SHAMAN))	//Cuir
+
+				if ((_class == CLASS_HUNTER) || (_class == CLASS_SHAMAN))	//Cuir
 					{
 						player->SetSkill(413, 0, 300, 300); //    Maile
 					}
-				}
+			}
 				if ((_class == CLASS_WARRIOR) || (_class == CLASS_PALADIN) || (_class == CLASS_DEATH_KNIGHT))	//Mail
 				{
 					player->SetSkill(293, 0, 300, 300); //   Plate
@@ -2803,6 +2806,10 @@ public:
 					player->AddItem(4076, 1);//Pied
 				}
 
+				if (_class == CLASS_DEATH_KNIGHT)
+				{
+					player->LearnSpell(53428, true); //Runeforge
+				}
 				if (team == TEAM_ALLIANCE)
 				{
 					player->TeleportTo(0, -8867.68f, 673.373f, 97.9034f, 0.0f);
@@ -2868,6 +2875,10 @@ public:
 					player->AddItem(25008, 1);//Torce
 					player->AddItem(41763, 1);//Jambe
 					player->AddItem(24983, 1);//Pied
+				}
+				if (_class == CLASS_DEATH_KNIGHT)
+				{
+					player->LearnSpell(53428, true); //Runeforge
 				}
 
 				if (team == TEAM_ALLIANCE)
@@ -2938,6 +2949,10 @@ public:
 					player->AddItem(80721, 1);//Jambe
 					player->AddItem(80730, 1);//Pied
 				}
+				if (_class == CLASS_DEATH_KNIGHT)
+				{
+					player->LearnSpell(53428, true); //Runeforge
+				}
 
 				if (team == TEAM_ALLIANCE)
 				{
@@ -3006,6 +3021,10 @@ public:
 					player->AddItem(80707, 1);//Torce
 					player->AddItem(80721, 1);//Jambe
 					player->AddItem(80730, 1);//Pied
+				}
+				if (_class == CLASS_DEATH_KNIGHT)
+				{
+					player->LearnSpell(53428, true); //Runeforge
 				}
 
 				if (team == TEAM_ALLIANCE)
@@ -3076,6 +3095,10 @@ public:
 					player->AddItem(80721, 1);//Jambe
 					player->AddItem(80730, 1);//Pied
 				}
+				if (_class == CLASS_DEATH_KNIGHT)
+				{
+					player->LearnSpell(53428, true); //Runeforge
+				}
 
 				if (team==TEAM_ALLIANCE)
 				{ player->TeleportTo(0, -8867.68f, 673.373f, 97.9034f, 0.0f); }			//Stitch tp Hurlevent 
@@ -3092,18 +3115,56 @@ public:
 		case 7:
 			if (team == TEAM_ALLIANCE)
 			{ 
+				if (_race = RACE_WORGEN)
+				{
+					player->LearnSpell(68996, true); //Deux formes
+					player->LearnSpell(94293, true); //Forme modifiée
+					player->LearnSpell(68992, true); //Sombre course
+					player->LearnSpell(68978, true); //Ecorcheur
+					player->LearnSpell(69270, true); //Langue (gilnéen)
+					player->LearnSpell(68976, true); //Aberration
+					player->LearnSpell(68975, true); //Acharnement
+				}
+				if (_class == CLASS_DEATH_KNIGHT)
+				{
+					player->LearnSpell(53428, true); //Runeforge
+				}
 				player->TeleportTo(0, -8914.57f, -133.909f, 80.5378f, 5.13806f);		// Humain
+				break;
 			}	
-			else
+			else 
+			if (_class == CLASS_DEATH_KNIGHT)
+			{
+				player->LearnSpell(53428, true); //Runeforge
+			}
 				player->TeleportTo(1, -618.518f, -4251.67f, 38.718f, 4.72222f);			// Orc	
 			break;
 
 		case 8:
 			if (team == TEAM_ALLIANCE)
 			{
+				if (_race = RACE_WORGEN)
+				{
+					player->LearnSpell(68996, true); //Deux formes
+					player->LearnSpell(94293, true); //Forme modifiée
+					player->LearnSpell(68992, true); //Sombre course
+					player->LearnSpell(68978, true); //Ecorcheur
+					player->LearnSpell(69270, true); //Langue (gilnéen)
+					player->LearnSpell(68976, true); //Aberration
+					player->LearnSpell(68975, true); //Acharnement
+				}
+				if (_class == CLASS_DEATH_KNIGHT)
+				{
+					player->LearnSpell(53428, true); //Runeforge
+				}
 				player->TeleportTo(0, -6230.42f, 330.232f, 383.105f, 6.17716f);			// Nain
+				break;
 			}	
 			else
+			if (_class == CLASS_DEATH_KNIGHT)
+			{
+				player->LearnSpell(53428, true); //Runeforge
+			}
 				player->TeleportTo(0, 1699.85f, 1706.56f, 135.928f, 4.88839f);			// Mort Vivant	
 
 			break;
@@ -3111,33 +3172,94 @@ public:
 		case 9:
 			if (team == TEAM_ALLIANCE)
 			{
+				if (_race = RACE_WORGEN)
+				{
+					player->LearnSpell(68996, true); //Deux formes
+					player->LearnSpell(94293, true); //Forme modifiée
+					player->LearnSpell(68992, true); //Sombre course
+					player->LearnSpell(68978, true); //Ecorcheur
+					player->LearnSpell(69270, true); //Langue (gilnéen)
+					player->LearnSpell(68976, true); //Aberration
+					player->LearnSpell(68975, true); //Acharnement
+				}
+				if (_class == CLASS_DEATH_KNIGHT)
+				{
+					player->LearnSpell(53428, true); //Runeforge
+				}
 				player->TeleportTo(1, 10311.3f, 831.463f, 1326.57f, 5.69632f);			// Elfe de la nuit
+				break;
 			}	
 			else
+			if (_class == CLASS_DEATH_KNIGHT)
+			{
+				player->LearnSpell(53428, true); //Runeforge
+			}
 				player->TeleportTo(1, -2915.55f, -257.347f, 59.2693f, 0.302378f);		// Tauren	
 			break;
 
 		case 10:
 			if (team == TEAM_ALLIANCE)
 			{
+				if (_race = RACE_WORGEN)
+				{
+					player->LearnSpell(68996, true); //Deux formes
+					player->LearnSpell(94293, true); //Forme modifiée
+					player->LearnSpell(68992, true); //Sombre course
+					player->LearnSpell(68978, true); //Ecorcheur
+					player->LearnSpell(69270, true); //Langue (gilnéen)
+					player->LearnSpell(68976, true); //Aberration
+					player->LearnSpell(68975, true); //Acharnement
+				}
+				if (_class == CLASS_DEATH_KNIGHT)
+				{
+					player->LearnSpell(53428, true); //Runeforge
+				}
 				player->TeleportTo(0, -4983.42f, 877.7f, 274.31f, 3.06393f);			// Gnome
-			}			
+				break;
+			}		
 			else
+			if (_class == CLASS_DEATH_KNIGHT)
+			{
+				player->LearnSpell(53428, true); //Runeforge
+			}
 				player->TeleportTo(1, -1171.45f, -5263.65f, 0.847728f, 5.78945f);		// Troll	
 			break;
 
 		case 11:
 			if (team == TEAM_ALLIANCE)
 			{
+				if (_race = RACE_WORGEN)
+				{
+					player->LearnSpell(68996, true); //Deux formes
+					player->LearnSpell(94293, true); //Forme modifiée
+					player->LearnSpell(68992, true); //Sombre course
+					player->LearnSpell(68978, true); //Ecorcheur
+					player->LearnSpell(69270, true); //Langue (gilnéen)
+					player->LearnSpell(68976, true); //Aberration
+					player->LearnSpell(68975, true); //Acharnement
+				}
+				if (_class == CLASS_DEATH_KNIGHT)
+				{
+					player->LearnSpell(53428, true); //Runeforge
+				}
 				player->TeleportTo(530, -3961.64f, -13931.2f, 100.615f, 2.08364f);		// Draenei
+				break;
 			}	
 			else
+			if (_class == CLASS_DEATH_KNIGHT)
+			{
+				player->LearnSpell(53428, true); //Runeforge
+			}
 				player->TeleportTo(530, 10349.6f, -6357.29f, 33.4026f, 5.31605f);		// Elfe de Sang	
 			break;
 
 		case 12:
 			if (team == TEAM_HORDE)
 			{ 
+				if (_class == CLASS_DEATH_KNIGHT)
+				{
+					player->LearnSpell(53428, true); //Runeforge
+				}
 				player->TeleportTo(648, -8423.81f, 1361.3f, 104.671f, 1.55428f);		// Goblin
 			}	
 			break;
