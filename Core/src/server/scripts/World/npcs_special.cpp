@@ -2680,6 +2680,9 @@ public:
 			if (_level < 2 ) { player->ADD_GOSSIP_ITEM(2, "Commencer chez les Goblins", GOSSIP_SENDER_MAIN, 12); }	// Goblin
 		}
 
+		if (_level < 2) { player->ADD_GOSSIP_ITEM(9, " ", GOSSIP_SENDER_MAIN, -1); }
+		if (_level < 10) { player->ADD_GOSSIP_ITEM(2, ">>> TEST worgen des neiges <<<", GOSSIP_SENDER_MAIN, 13); }	// 
+
 
 		player->PlayerTalkClass->SendGossipMenu(65503, creature->GetGUID());	// NPC_txt pointant sur BroadcastText
 		return true;
@@ -3262,6 +3265,44 @@ public:
 				}
 				player->TeleportTo(648, -8423.81f, 1361.3f, 104.671f, 1.55428f);		// Goblin
 			}	
+			break;
+
+		case 13:
+			uint8 reputworgendesneiges = 0;
+
+if (player->GetReputation(942) != reputworgendesneiges) { player->SetReputation(942, reputworgendesneiges); }
+if (player->GetReputation(935) != reputworgendesneiges) { player->SetReputation(935, reputworgendesneiges); }
+if (player->GetReputation(936) != reputworgendesneiges) { player->SetReputation(936, reputworgendesneiges); }
+if (player->GetReputation(1011) != reputworgendesneiges) { player->SetReputation(1011, reputworgendesneiges); }
+if (player->GetReputation(970) != reputworgendesneiges) { player->SetReputation(970, reputworgendesneiges); }
+if (player->GetReputation(967) != reputworgendesneiges) { player->SetReputation(967, reputworgendesneiges); }
+if (player->GetReputation(989) != reputworgendesneiges) { player->SetReputation(989, reputworgendesneiges); }
+if (player->GetReputation(932) != reputworgendesneiges) { player->SetReputation(932, reputworgendesneiges); }
+if (player->GetReputation(934) != reputworgendesneiges) { player->SetReputation(934, reputworgendesneiges); }
+if (player->GetReputation(1038) != reputworgendesneiges) { player->SetReputation(1038, reputworgendesneiges); }
+if (player->GetReputation(1077) != reputworgendesneiges) { player->SetReputation(1077, reputworgendesneiges); }
+
+// ALLIANCE
+if (player->GetReputation(72) != 0) { player->SetReputation(72, 0); }				//Hurlevent
+if (player->GetReputation(47) != 0) { player->SetReputation(47, 0); } 
+if (player->GetReputation(69) != 0) { player->SetReputation(69, 0); } 
+if (player->GetReputation(930) != 0) { player->SetReputation(930, 0); } 
+if (player->GetReputation(730) != 0) { player->SetReputation(730, 0); } 
+if (player->GetReputation(978) != 0) { player->SetReputation(978, 0); } 
+if (player->GetReputation(54) != 0) { player->SetReputation(54, 0); } 
+if (player->GetReputation(946) != 0) { player->SetReputation(946, 0); } 
+
+//HORDE
+if (player->GetReputation(76) != 0) { player->SetReputation(76, 0); } 
+if (player->GetReputation(68) != 0) { player->SetReputation(68, 0); } 
+if (player->GetReputation(81) != 0) { player->SetReputation(81, 0); } 
+if (player->GetReputation(911) != 0) { player->SetReputation(911, 0); } 
+if (player->GetReputation(729) != 0) { player->SetReputation(729, 0); } 
+if (player->GetReputation(941) != 0) { player->SetReputation(941, 0); } 
+if (player->GetReputation(530) != 0) { player->SetReputation(530, 0); } 
+if (player->GetReputation(947) != 0) { player->SetReputation(947, 0); } 
+
+			player->LearnSpell(300172, true); //Worgen des neiges
 			break;
 
 
