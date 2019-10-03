@@ -3283,24 +3283,24 @@ if (player->GetReputation(1038) != reputworgendesneiges) { player->SetReputation
 if (player->GetReputation(1077) != reputworgendesneiges) { player->SetReputation(1077, reputworgendesneiges); }
 
 // ALLIANCE
-if (player->GetReputation(72) != 0) { player->SetReputation(72, 0); }				//Hurlevent
-if (player->GetReputation(47) != 0) { player->SetReputation(47, 0); } 
-if (player->GetReputation(69) != 0) { player->SetReputation(69, 0); } 
-if (player->GetReputation(930) != 0) { player->SetReputation(930, 0); } 
-if (player->GetReputation(730) != 0) { player->SetReputation(730, 0); } 
-if (player->GetReputation(978) != 0) { player->SetReputation(978, 0); } 
-if (player->GetReputation(54) != 0) { player->SetReputation(54, 0); } 
-if (player->GetReputation(946) != 0) { player->SetReputation(946, 0); } 
+if (player->GetReputation(72) != reputworgendesneiges) { player->SetReputation(72, reputworgendesneiges); }				//Hurlevent
+if (player->GetReputation(47) != reputworgendesneiges) { player->SetReputation(47, reputworgendesneiges); }
+if (player->GetReputation(69) != reputworgendesneiges) { player->SetReputation(69, reputworgendesneiges); }
+if (player->GetReputation(930) != reputworgendesneiges) { player->SetReputation(930, reputworgendesneiges); }
+if (player->GetReputation(730) != reputworgendesneiges) { player->SetReputation(730, reputworgendesneiges); }
+if (player->GetReputation(978) != reputworgendesneiges) { player->SetReputation(978, reputworgendesneiges); }
+if (player->GetReputation(54) != reputworgendesneiges) { player->SetReputation(54, reputworgendesneiges); }
+if (player->GetReputation(946) != reputworgendesneiges) { player->SetReputation(946, reputworgendesneiges); }
 
 //HORDE
-if (player->GetReputation(76) != 0) { player->SetReputation(76, 0); } 
-if (player->GetReputation(68) != 0) { player->SetReputation(68, 0); } 
-if (player->GetReputation(81) != 0) { player->SetReputation(81, 0); } 
-if (player->GetReputation(911) != 0) { player->SetReputation(911, 0); } 
-if (player->GetReputation(729) != 0) { player->SetReputation(729, 0); } 
-if (player->GetReputation(941) != 0) { player->SetReputation(941, 0); } 
-if (player->GetReputation(530) != 0) { player->SetReputation(530, 0); } 
-if (player->GetReputation(947) != 0) { player->SetReputation(947, 0); } 
+if (player->GetReputation(76) != reputworgendesneiges) { player->SetReputation(76, reputworgendesneiges); }
+if (player->GetReputation(68) != reputworgendesneiges) { player->SetReputation(68, reputworgendesneiges); }
+if (player->GetReputation(81) != reputworgendesneiges) { player->SetReputation(81, reputworgendesneiges); }
+if (player->GetReputation(911) != reputworgendesneiges) { player->SetReputation(911, reputworgendesneiges); }
+if (player->GetReputation(729) != reputworgendesneiges) { player->SetReputation(729, reputworgendesneiges); }
+if (player->GetReputation(941) != reputworgendesneiges) { player->SetReputation(941, reputworgendesneiges); }
+if (player->GetReputation(530) != reputworgendesneiges) { player->SetReputation(530, reputworgendesneiges); }
+if (player->GetReputation(947) != reputworgendesneiges) { player->SetReputation(947, reputworgendesneiges); }
 
 			player->LearnSpell(300172, true); //Worgen des neiges
 			break;
