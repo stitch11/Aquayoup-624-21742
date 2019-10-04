@@ -2646,6 +2646,69 @@ void Player::GiveLevel(uint8 level)
         SetPower(POWER_RAGE, GetMaxPower(POWER_RAGE));
     SetPower(POWER_FOCUS, 0);
 
+
+
+	//Stitch apprentissage spell 
+	uint8 _race = getRace();
+	uint8 _class = getClass();
+	uint8 _level = getLevel();
+
+	switch (_class)
+	{
+	case CLASS_WARRIOR:
+		break;
+	case CLASS_PALADIN:
+		break;
+	case CLASS_HUNTER:
+		break;
+	case CLASS_ROGUE:	//vampire
+		if (_level >= 2)
+		{
+			LearnSpell(300124, true);					//	Vampire Berseker
+			LearnSpell(300126, true);					//	Frappe sanglante				(Berseker)
+		}
+		if (_level >= 3) { LearnSpell(300127, true); }	// Frappe sauvage					(Berseker)
+		if (_level >= 4) { LearnSpell(300132, true); }	// Morsure vivifiante				(Berseker)
+		if (_level >= 6) { LearnSpell(300127, true); }	// Frappe sauvage					(Berseker)
+		if (_level >= 10) { LearnSpell(300129, true); }	// Esprit vif						(Berseker/Ancestral)
+		if (_level >= 14) {
+			LearnSpell(300125, true);					//	Vampire Ancestral
+			LearnSpell(300139, true);					//	Brûlure démoniaque								(Ancestral)
+			LearnSpell(300142, true);					//	Contamination démoniaque						(Ancestral)
+		}
+		if (_level >= 16) { LearnSpell(300130, true); }	//	Griffure sanglante				(Berseker)
+		if (_level >= 18) { LearnSpell(300144, true); }	//	Touché démoniaque				(Ancestral)		
+		if (_level >= 20) { LearnSpell(300128, true); }	//	Enchaînement Sanglant			(Berseker)
+		if (_level >= 22) { LearnSpell(300140, true); }	//	Absorption sanguine				(Ancestral)	
+		if (_level >= 24) { LearnSpell(300131, true); }	//	Griffure bondissante			(Berseker)
+		if (_level >= 26) { LearnSpell(300145, true); }	//	Déchaînement de sang			(Ancestral)
+		if (_level >= 28) { LearnSpell(300133, true); }	//	Cri perçant						(Berseker/Ancestral)
+		if (_level >= 30) { LearnSpell(300136, true); }	//	Coeur de vampire Ancestral		(Berseker/Ancestral)
+		if (_level >= 32) { LearnSpell(300145, true); }	//	Déchaînement de sang			(Ancestral)
+		if (_level >= 34) { LearnSpell(300143, true); }	//	Regard hypnotique				(Ancestral)
+		if (_level >= 40) { LearnSpell(300134, true); }	//	Dévorer sa proie				(Berseker/Ancestral)
+		if (_level >= 50) { LearnSpell(300137, true); }	//	Peau de demon					(Berseker/Ancestral)
+		if (_level >= 60) { LearnSpell(300138, true); }	//	Forme de vol du vampire			(Berseker/Ancestral)
+		break;
+	case CLASS_PRIEST:
+		break;
+	case CLASS_DEATH_KNIGHT:
+		break;
+	case CLASS_SHAMAN:
+		break;
+	case CLASS_MAGE:
+		break;
+	case CLASS_WARLOCK:
+		break;
+	case CLASS_MONK:
+		break;
+	case CLASS_DRUID:
+		break;
+	}
+
+
+
+
 //Stitch levelup bug de max Fureur démoniaque
 	ShapeshiftForm _form = GetShapeshiftForm();
 
