@@ -6129,8 +6129,13 @@ bool Player::IsActionButtonDataValid(uint8 button, uint32 action, uint8 type) co
 
 ActionButton* Player::AddActionButton(uint8 button, uint32 action, uint8 type)
 {
+
+	//Stitch Barre d'action conserve les spells customs
+	/*
     if (!IsActionButtonDataValid(button, action, type))
         return nullptr;
+	*/
+
 
     // it create new button (NEW state) if need or return existing
     ActionButton& ab = m_actionButtons[button];
