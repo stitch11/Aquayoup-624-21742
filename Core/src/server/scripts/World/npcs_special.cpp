@@ -3270,39 +3270,42 @@ public:
 		case 13:
 			uint8 reputworgendesneiges = 0;
 
-if (player->GetReputation(942) != reputworgendesneiges) { player->SetReputation(942, reputworgendesneiges); }
-if (player->GetReputation(935) != reputworgendesneiges) { player->SetReputation(935, reputworgendesneiges); }
-if (player->GetReputation(936) != reputworgendesneiges) { player->SetReputation(936, reputworgendesneiges); }
-if (player->GetReputation(1011) != reputworgendesneiges) { player->SetReputation(1011, reputworgendesneiges); }
-if (player->GetReputation(970) != reputworgendesneiges) { player->SetReputation(970, reputworgendesneiges); }
-if (player->GetReputation(967) != reputworgendesneiges) { player->SetReputation(967, reputworgendesneiges); }
-if (player->GetReputation(989) != reputworgendesneiges) { player->SetReputation(989, reputworgendesneiges); }
-if (player->GetReputation(932) != reputworgendesneiges) { player->SetReputation(932, reputworgendesneiges); }
-if (player->GetReputation(934) != reputworgendesneiges) { player->SetReputation(934, reputworgendesneiges); }
-if (player->GetReputation(1038) != reputworgendesneiges) { player->SetReputation(1038, reputworgendesneiges); }
-if (player->GetReputation(1077) != reputworgendesneiges) { player->SetReputation(1077, reputworgendesneiges); }
+if (player->GetReputation(942) != reputworgendesneiges) { player->SetReputation(942, reputworgendesneiges); }		//Expedition cenarienne
+if (player->GetReputation(935) != reputworgendesneiges) { player->SetReputation(935, reputworgendesneiges); }		//Les Sha tar
+if (player->GetReputation(936) != reputworgendesneiges) { player->SetReputation(936, reputworgendesneiges); }		//Shattrath
+if (player->GetReputation(1011) != reputworgendesneiges) { player->SetReputation(1011, reputworgendesneiges); }		//Ville basse
+if (player->GetReputation(970) != reputworgendesneiges) { player->SetReputation(970, reputworgendesneiges); }		//Sporeggar
+if (player->GetReputation(967) != reputworgendesneiges) { player->SetReputation(967, reputworgendesneiges); }		//L oeil pourpre
+if (player->GetReputation(989) != reputworgendesneiges) { player->SetReputation(989, reputworgendesneiges); }		//Gardiens du Temps
+if (player->GetReputation(932) != reputworgendesneiges) { player->SetReputation(932, reputworgendesneiges); }		//L Aldor
+if (player->GetReputation(934) != reputworgendesneiges) { player->SetReputation(934, reputworgendesneiges); }		//Les Clairvoyants
+if (player->GetReputation(1038) != reputworgendesneiges) { player->SetReputation(1038, reputworgendesneiges); }		//Ogri la
+if (player->GetReputation(1077) != reputworgendesneiges) { player->SetReputation(1077, reputworgendesneiges); }		//Operation Soleil brise
 
 // ALLIANCE
-if (player->GetReputation(72) != reputworgendesneiges) { player->SetReputation(72, reputworgendesneiges); }				//Hurlevent
-if (player->GetReputation(47) != reputworgendesneiges) { player->SetReputation(47, reputworgendesneiges); }
-if (player->GetReputation(69) != reputworgendesneiges) { player->SetReputation(69, reputworgendesneiges); }
-if (player->GetReputation(930) != reputworgendesneiges) { player->SetReputation(930, reputworgendesneiges); }
-if (player->GetReputation(730) != reputworgendesneiges) { player->SetReputation(730, reputworgendesneiges); }
-if (player->GetReputation(978) != reputworgendesneiges) { player->SetReputation(978, reputworgendesneiges); }
-if (player->GetReputation(54) != reputworgendesneiges) { player->SetReputation(54, reputworgendesneiges); }
-if (player->GetReputation(946) != reputworgendesneiges) { player->SetReputation(946, reputworgendesneiges); }
+if (player->GetReputation(72) != reputworgendesneiges) { player->SetReputation(72, reputworgendesneiges); }			//Hurlevent
+if (player->GetReputation(47) != reputworgendesneiges) { player->SetReputation(47, reputworgendesneiges); }			//Forgefer
+if (player->GetReputation(69) != reputworgendesneiges) { player->SetReputation(69, reputworgendesneiges); }			//Darnassus
+if (player->GetReputation(930) != reputworgendesneiges) { player->SetReputation(930, reputworgendesneiges); }		//Exodar
+if (player->GetReputation(54) != reputworgendesneiges) { player->SetReputation(54, reputworgendesneiges); }			//Gnomeregan
+if (player->GetReputation(730) != reputworgendesneiges) { player->SetReputation(730, reputworgendesneiges); }		//Garde Foudrepique
+if (player->GetReputation(978) != reputworgendesneiges) { player->SetReputation(978, reputworgendesneiges); }		//Kurenai
+if (player->GetReputation(946) != reputworgendesneiges) { player->SetReputation(946, reputworgendesneiges); }		//Bastion de l Honneur
+if (player->GetReputation(1352) != reputworgendesneiges) { player->SetReputation(1352, reputworgendesneiges); }		//Pandarens huojin
 
 //HORDE
-if (player->GetReputation(76) != reputworgendesneiges) { player->SetReputation(76, reputworgendesneiges); }
-if (player->GetReputation(68) != reputworgendesneiges) { player->SetReputation(68, reputworgendesneiges); }
-if (player->GetReputation(81) != reputworgendesneiges) { player->SetReputation(81, reputworgendesneiges); }
-if (player->GetReputation(911) != reputworgendesneiges) { player->SetReputation(911, reputworgendesneiges); }
-if (player->GetReputation(729) != reputworgendesneiges) { player->SetReputation(729, reputworgendesneiges); }
-if (player->GetReputation(941) != reputworgendesneiges) { player->SetReputation(941, reputworgendesneiges); }
-if (player->GetReputation(530) != reputworgendesneiges) { player->SetReputation(530, reputworgendesneiges); }
-if (player->GetReputation(947) != reputworgendesneiges) { player->SetReputation(947, reputworgendesneiges); }
+if (player->GetReputation(76) != reputworgendesneiges) { player->SetReputation(76, reputworgendesneiges); }			//Orgrimmar
+if (player->GetReputation(68) != reputworgendesneiges) { player->SetReputation(68, reputworgendesneiges); }			//Fossoyeuse
+if (player->GetReputation(81) != reputworgendesneiges) { player->SetReputation(81, reputworgendesneiges); }			//Pitons-du-Tonnerre
+if (player->GetReputation(911) != reputworgendesneiges) { player->SetReputation(911, reputworgendesneiges); }		//Lune-d Argent
+if (player->GetReputation(530) != reputworgendesneiges) { player->SetReputation(530, reputworgendesneiges); }		//Trolls sombrelances
+if (player->GetReputation(729) != reputworgendesneiges) { player->SetReputation(729, reputworgendesneiges); }		//Clan Loup-de-givre
+if (player->GetReputation(941) != reputworgendesneiges) { player->SetReputation(941, reputworgendesneiges); }		//Mag har
+if (player->GetReputation(947) != reputworgendesneiges) { player->SetReputation(947, reputworgendesneiges); }		//Thrallmar
+if (player->GetReputation(1353) != reputworgendesneiges) { player->SetReputation(1353, reputworgendesneiges); }		//Pandarens tushui
 
 			player->LearnSpell(300172, true); //Worgen des neiges
+			player->SaveToDB();
 			break;
 
 

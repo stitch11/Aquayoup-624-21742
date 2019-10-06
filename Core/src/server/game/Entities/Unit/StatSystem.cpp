@@ -214,11 +214,11 @@ bool Player::UpdateAllStats()
 /*
 	if (HasAura(123456789))								//Stitch Stats neutralisé pour classe Custom
 	{
-	SetStat(Stats(0), 50);
-	SetStat(Stats(1), 10);
-	SetStat(Stats(2), 20);
-	SetStat(Stats(3), 30);
-	SetStat(Stats(4), 40);
+	SetStat(Stats(0), 50);	// Force
+	SetStat(Stats(1), 10);	// Agilité
+	SetStat(Stats(2), 20);	// Endurance
+	SetStat(Stats(3), 30);	// Intelligence
+	SetStat(Stats(4), 40);	// Esprit
 	}
 */
 
