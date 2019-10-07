@@ -307,7 +307,7 @@ float Player::GetHealthBonusFromStamina()
     float stamina = GetStat(STAT_STAMINA);
 
 //    return stamina * ratio;
-	return stamina * (ratio * 0.75); //STITCH item rate bonus PV
+	return stamina * (ratio * 0.75); //Stitch item rate bonus PV
 }
 
 void Player::UpdateMaxHealth()
@@ -1180,7 +1180,7 @@ void Guardian::UpdateMaxPower(Powers power)
 {
     UnitMods unitMod = UnitMods(UNIT_MOD_POWER_START + power);
 
-//STITCH Affichage energie=100 des pet - Defaut : float addValue = (power == POWER_MANA) ? GetStat(STAT_INTELLECT) - GetCreateStat(STAT_INTELLECT) : 0.0f;
+//Stitch Affichage energie=100 des pet - Defaut : float addValue = (power == POWER_MANA) ? GetStat(STAT_INTELLECT) - GetCreateStat(STAT_INTELLECT) : 0.0f;
 	float addValue = (power == POWER_ENERGY) ? GetStat(STAT_INTELLECT) - GetCreateStat(STAT_INTELLECT) : 0.0f;
 
 	float multiplicator = 15.0f;

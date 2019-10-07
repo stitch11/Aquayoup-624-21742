@@ -68,7 +68,7 @@ void Totem::InitStats(uint32 duration)
 
         // set display id depending on caster's race
 		SetDisplayId(owner->GetModelForTotem(PlayerTotemType(m_Properties->ID)));
-		//SetDisplayId(modelId); //STITCH Totem modelId 
+		//SetDisplayId(modelId); //Stitch Totem modelId 
     }
 
     Minion::InitStats(duration);

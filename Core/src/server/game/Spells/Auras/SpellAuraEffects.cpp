@@ -2093,10 +2093,10 @@ void AuraEffect::HandleAuraTransform(AuraApplication const* aurApp, uint8 mode, 
                             case RACE_NIGHTELF:
                                 target->SetDisplayId(target->getGender() == GENDER_FEMALE ? 10144 : 10143);
                                 break;
-/*							case RACE_BROKEN: //STITCH new race
+/*							case RACE_BROKEN: //Stitch new race
 								target->SetDisplayId(target->getGender() == GENDER_FEMALE ? 17828 : 17827);
 								break;
-							case RACE_FEL_ORC: //STITCH new race
+							case RACE_FEL_ORC: //Stitch new race
 								target->SetDisplayId(target->getGender() == GENDER_FEMALE ? 17828 : 17827);
 								break;*/
 							default:
@@ -2158,11 +2158,11 @@ void AuraEffect::HandleAuraTransform(AuraApplication const* aurApp, uint8 mode, 
                             case RACE_NIGHTELF:
                                 target->SetDisplayId(target->getGender() == GENDER_FEMALE ? 25038 : 25049);
                                 break;
-/*								//STITCH BROKEN new race
+/*								//Stitch BROKEN new race
 							case RACE_BROKEN:
 								target->SetDisplayId(target->getGender() == GENDER_FEMALE ? 25037 : 25048);
 								break;
-								//STITCH Fel Orc new race
+								//Stitch Fel Orc new race
 							case RACE_FEL_ORC:
 								target->SetDisplayId(target->getGender() == GENDER_FEMALE ? 25038 : 25049);
 								break;

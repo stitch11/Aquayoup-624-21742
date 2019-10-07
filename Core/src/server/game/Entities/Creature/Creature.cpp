@@ -369,7 +369,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
     SetNativeDisplayId(displayID);
     SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_GENDER, minfo->gender);
 
-//STITCH creature equipé au spawn
+//Stitch creature equipé au spawn
     // Load creature equipment
 
 

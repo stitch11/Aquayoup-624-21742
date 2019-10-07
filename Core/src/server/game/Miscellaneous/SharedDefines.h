@@ -110,9 +110,9 @@ enum Races
     RACE_GOBLIN             = 9,
     RACE_BLOODELF           = 10,
     RACE_DRAENEI            = 11,
-	RACE_FEL_ORC = 12,									//STITCH new race
+	RACE_FEL_ORC = 12,									//Stitch new race
     //RACE_NAGA               = 13,
-	RACE_BROKEN				= 14,						//STITCH new race
+	RACE_BROKEN				= 14,						//Stitch new race
     //RACE_SKELETON           = 15,
     //RACE_VRYKUL             = 16,
     //RACE_TUSKARR            = 17,
@@ -128,7 +128,7 @@ enum Races
 };
 
 // max+1 for player race
-#define MAX_RACES         29 			//STITCH new race par defaut 27
+#define MAX_RACES         29 			//Stitch new race par defaut 27
 
 #define RACEMASK_ALL_PLAYABLE      \
     ((1<<(RACE_HUMAN-1))         | \

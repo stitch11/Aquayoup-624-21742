@@ -215,7 +215,7 @@ bool Pet::LoadPetFromDB(Player* owner, uint32 petEntry, uint32 petnumber, bool c
         case SUMMON_PET:
             petlevel = owner->getLevel();
             
-//STITCH : MAGE par defaut - apres 335 tous les pets utilisent l'energie plutot que le mana
+//Stitch : MAGE par defaut - apres 335 tous les pets utilisent l'energie plutot que le mana
             SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_CLASS, CLASS_ROGUE);
             SetUInt32Value(UNIT_FIELD_FLAGS, UNIT_FLAG_PVP_ATTACKABLE); // this enables popup window (pet dismiss, cancel)
 			setPowerType(POWER_ENERGY);
@@ -651,17 +651,17 @@ void Creature::Regenerate(Powers power)
         case POWER_ENERGY:
         {
             // For deathknight's ghoul.
-            addvalue = 50 ;//STITCH : regen Pet demo - Defaut 20
+            addvalue = 50 ;//Stitch : regen Pet demo - Defaut 20
             break;
         }
 		case POWER_RAGE:
 		{
-			addvalue = 30;//STITCH : regen Pet 
+			addvalue = 30;//Stitch : regen Pet 
 			break;
 		}
 		case POWER_MANA:
 		{
-			addvalue = 1500;//STITCH : regen Pet 
+			addvalue = 1500;//Stitch : regen Pet 
 			break;
 		}
         default:
@@ -686,7 +686,7 @@ void Pet::Remove(PetSaveMode mode, bool returnreagent)
 
 void Pet::GivePetXP(uint32 xp)
 {
-//    if (getPetType() != HUNTER_PET) //STITCH TMP
+//    if (getPetType() != HUNTER_PET) //Stitch TMP
 //        return;
 
     if (xp < 1)
@@ -956,7 +956,7 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 				{
 					SetObjectScale(1.0f);
 				}
-				//STITCH power pour FAKEPLAYER InitCharmInfo();
+				//Stitch power pour FAKEPLAYER InitCharmInfo();
 				case 15000269: // Guerrier A2
 				{
 					setPowerType(POWER_RAGE);

@@ -14646,7 +14646,7 @@ uint32 Unit::GetModelForForm(ShapeshiftForm form) const
 
 				return 21244;
 			}
-	//STITCH toutes les classes pour toutes les races change form MOONKIN
+	//Stitch Toutes les classes pour toutes les races changeform MOONKIN
 			case FORM_MOONKIN_FORM:
 			{
 				switch (_race)
@@ -14731,7 +14731,7 @@ uint32 Unit::GetModelForTotem(PlayerTotemType totemType)
 {
     switch (getRace())
     {
-//STITCH Totem
+//Stitch Totem
 		case RACE_UNDEAD_PLAYER:
 		{
 			switch (totemType)

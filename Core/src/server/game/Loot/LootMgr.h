@@ -165,7 +165,7 @@ struct TC_GAME_API LootItem
     GuidSet allowedGUIDs;
 
 
-//STITCH bug loot item de quete
+//Stitch bug loot item de quete
 	ObjectGuid rollWinnerGUID;									 // Stores the guid of person who won loot, if his bags are full only he can see the item in loot list!
 
 

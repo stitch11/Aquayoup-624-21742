@@ -32,11 +32,11 @@ enum MonkSpells
     SPELL_MONK_CRACKLING_JADE_LIGHTNING_CHI_PROC = 123333,
 	SPELL_MONK_CRACKLING_JADE_LIGHTNING_KNOCKBACK = 117962,
     SPELL_MONK_CRACKLING_JADE_LIGHTNING_KNOCKBACK_CD = 117953,
-	SPELL_MONK_PROVOKE_SINGLE_TARGET = 116189,	//STITCH Spell Monk
-	SPELL_MONK_PROVOKE_AOE = 118635,			//STITCH Spell Monk
+	SPELL_MONK_PROVOKE_SINGLE_TARGET = 116189,	//Stitch Spell Monk
+	SPELL_MONK_PROVOKE_AOE = 118635,			//Stitch Spell Monk
 	SPELL_MONK_STANCE_OF_THE_SPIRITED_CRANE = 154436,
-	SPELL_MONK_SOOTHING_MIST = 115175,			//STITCH Spell Monk
-	SPELL_MONK_SURGING_MIST_HEAL = 116995,		//STITCH Spell Monk
+	SPELL_MONK_SOOTHING_MIST = 115175,			//Stitch Spell Monk
+	SPELL_MONK_SURGING_MIST_HEAL = 116995,		//Stitch Spell Monk
 };
 
 // 117952 - Crackling Jade Lightning
@@ -232,7 +232,7 @@ class spell_monk_surging_mist : public SpellScriptLoader
 		}
 };
 
-// 123273 - Surging Mist (Glyphed)	//STITCH Spell Monk
+// 123273 - Surging Mist (Glyphed)	//Stitch Spell Monk
 class spell_monk_surging_mist_glyphed : public SpellScriptLoader
 {
 public:
@@ -298,7 +298,7 @@ void AddSC_monk_spell_scripts()
 {
     new spell_monk_crackling_jade_lightning();
     new spell_monk_crackling_jade_lightning_knockback_proc_aura();
-	new spell_monk_provoke();				//STITCH Spell Monk
-	new spell_monk_surging_mist();			//STITCH Spell Monk
-	new spell_monk_surging_mist_glyphed();	//STITCH Spell Monk
+	new spell_monk_provoke();				//Stitch Spell Monk
+	new spell_monk_surging_mist();			//Stitch Spell Monk
+	new spell_monk_surging_mist_glyphed();	//Stitch Spell Monk
 }

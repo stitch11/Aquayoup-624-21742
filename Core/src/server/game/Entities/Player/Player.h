@@ -660,10 +660,10 @@ enum AtLoginFlags
     AT_LOGIN_CHANGE_FACTION				= 0x040,	//64
     AT_LOGIN_CHANGE_RACE				= 0x080,	//128
     AT_LOGIN_RESURRECT					= 0x100,	//256
-	AT_LOGIN_allianceverspanda			= 0x200,	//STITCH : nouvelle valeur : ajouter un 0 binaire puis convertir en hexa - 512
-	AT_LOGIN_hordeverspanda				= 0x400,	//STITCH : nouvelle valeur : ajouter un 0 binaire puis convertir en hexa - 1024
-	AT_LOGIN_pandaneutreversalliance	= 0x800,	//STITCH : panda 24 vers panda 25 (alliance) - 2048
-	AT_LOGIN_pandaneutrevershorde		= 0x1000	//STITCH : panda 24 vers panda 26 (horde) - 4096
+	AT_LOGIN_allianceverspanda			= 0x200,	//Stitch : nouvelle valeur : ajouter un 0 binaire puis convertir en hexa - 512
+	AT_LOGIN_hordeverspanda				= 0x400,	//Stitch : nouvelle valeur : ajouter un 0 binaire puis convertir en hexa - 1024
+	AT_LOGIN_pandaneutreversalliance	= 0x800,	//Stitch : panda 24 vers panda 25 (alliance) - 2048
+	AT_LOGIN_pandaneutrevershorde		= 0x1000	//Stitch : panda 24 vers panda 26 (horde) - 4096
 };
 
 typedef std::map<uint32, QuestStatusData> QuestStatusMap;

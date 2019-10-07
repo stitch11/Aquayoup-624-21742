@@ -386,7 +386,7 @@ void LoadDBCStores(const std::string& dataPath, uint32 defaultLocale)
     for (uint32 i = 0; i < sCharSectionsStore.GetNumRows(); ++i)
         if (CharSectionsEntry const* entry = sCharSectionsStore.LookupEntry(i))
           if (entry->Race && ((1 << (entry->Race - 1)) & RACEMASK_ALL_PLAYABLE) != 0) //ignore Nonplayable races
-              sCharSectionMap.insert({ entry->GenType | (entry->Gender << 8) | (entry->Race << 18), entry });//STITCH MAX_RACES - entry->Race << 16 par defaut
+              sCharSectionMap.insert({ entry->GenType | (entry->Gender << 8) | (entry->Race << 18), entry });//Stitch MAX_RACES - entry->Race << 16 par defaut
 
     memset(sChrSpecializationByIndexStore, 0, sizeof(sChrSpecializationByIndexStore));
     for (ChrSpecializationEntry const* chrSpec : sChrSpecializationStore)
@@ -814,7 +814,7 @@ uint32 GetLiquidFlags(uint32 liquidType)
 
 CharSectionsEntry const* GetCharSectionEntry(uint8 race, CharSectionType genType, uint8 gender, uint8 type, uint8 color)
 {
-	std::pair<CharSectionsMap::const_iterator, CharSectionsMap::const_iterator> eqr = sCharSectionMap.equal_range(uint32(genType) | uint32(gender << 8) | uint32(race << 18));//STITCH MAX_RACES - entry->Race << 16 par defaut
+	std::pair<CharSectionsMap::const_iterator, CharSectionsMap::const_iterator> eqr = sCharSectionMap.equal_range(uint32(genType) | uint32(gender << 8) | uint32(race << 18));//Stitch MAX_RACES - entry->Race << 16 par defaut
     for (CharSectionsMap::const_iterator itr = eqr.first; itr != eqr.second; ++itr)
     {
         if (itr->second->Type == type && itr->second->Color == color)

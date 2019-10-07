@@ -21,13 +21,13 @@ Stitch.Guild.Message = "Salutation du jour"
 Aquayoup.Solocraft = 1
 
 # FunRate ###  
-# FunAllStat 				- Defaut/Recommandé : 2/2	- Multiplicateur des stats joueur
-# FunDamageDefaut 	- Defaut/Recommandé : 1/2	- Multiplicateur de degat des armes fait par un joueur 
-# FunDamageSpell		- Defaut/Recommandé : 2/2		- Multiplicateur de degat des sorts fait par un joueur 
-# FunHealSpell			- Defaut/Recommandé : 2/2	- Multiplicateur de heal & Leech des sorts  fait par un joueur 
-# FunSpeedCast			- Defaut/Recommandé : 3/1	- Multiplicateur de temps pour lancer un sort (affichage non modifié)
-# FunArmor					- Defaut/Recommandé : 1/1	- Multiplicateur d'armure
-# FunPowerRegen 		- Defaut/Recommandé : 1/3	- Ralentisseur du regen (de 1 a 5) de mana , energie , focus , Fureur démoniaque , runes
+# FunAllStat 				- Defaut/Arcade : 2/2	- Multiplicateur des stats joueur
+# FunDamageDefaut 	- Defaut/Arcade : 1/2	- Multiplicateur de degat des armes fait par un joueur 
+# FunDamageSpell		- Defaut/Arcade : 2/2	- Multiplicateur de degat des sorts fait par un joueur 
+# FunHealSpell			- Defaut/Arcade : 2/2	- Multiplicateur de heal & Leech des sorts  fait par un joueur 
+# FunSpeedCast			- Defaut/Arcade : 3/1	- Multiplicateur de temps pour lancer un sort (affichage non modifié)
+# FunArmor					- Defaut/Arcade : 1/1	- Multiplicateur d'armure
+# FunPowerRegen 		- Defaut/Arcade : 1/3	- Ralentisseur du regen (de 1:lent a 5:rapide) de mana , energie , focus , Fureur démoniaque , runes
 
 FunAllStat = 2
 FunDamageDefaut = 1

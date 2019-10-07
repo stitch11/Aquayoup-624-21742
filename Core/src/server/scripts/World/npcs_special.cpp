@@ -1713,7 +1713,7 @@ public:
         {
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_PET1, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
             if (player->GetPet() && player->GetPet()->getPetType() == HUNTER_PET)
- /*               player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_PET2, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);*/ //STITCH reset pet talents deja pris en compte
+ /*               player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_PET2, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);*/ //Stitch reset pet talents deja pris en compte
 				player->PlayerTalkClass->SendGossipMenu(TEXT_ISHUNTER, creature->GetGUID());
 
             return true;
@@ -2517,7 +2517,7 @@ class npc_train_wrecker : public CreatureScript
 };
 
 /*##############################################################################################
-#  //STITCH PNJ 15000142 : change race , faction , apparence gratuitement - npc_changer
+#  //Stitch change race , faction , apparence gratuitement - npc_changer PNJ 15000142
 ################################################################################################*/
 enum  defines
 {
@@ -2638,7 +2638,7 @@ public:
 
 
 /*##############################################################################################
-#  //STITCH PNJ 15000386 : Options de depart et TP
+#  //Stitch Options de depart et TP - npc_level PNJ 15000386
 ################################################################################################*/
 class npc_level : public CreatureScript
 {
@@ -3316,7 +3316,7 @@ if (player->GetReputation(1353) != reputworgendesneiges) { player->SetReputation
 };
 
 /*##############################################################################################
-#  //npc_ChangeFactionPanda();			//STITCH choix de faction des panda by monsieur Noc :p - npc 56013 - Pour quete finale 31450
+//Stitch choix de faction des panda by monsieur Noc :p - npc 56013 - Pour quete finale 31450 //npc_ChangeFactionPanda();	
 ################################################################################################*/
 
 #define GOSSIP_TEXT_EXP1           15000049
@@ -3422,7 +3422,7 @@ void AddSC_npcs_special()
     new npc_spring_rabbit();
     new npc_imp_in_a_ball();
     new npc_train_wrecker();
-	new npc_changer();						//STITCH PNJ change race , faction , rename et custom 15000142
-	new npc_ChangeFactionPanda();			//STITCH choix de faction des panda by monsieur Noc :p
-	new npc_level();						//STITCH Choix du level et lieu de départ 
+	new npc_changer();						//Stitch PNJ change race , faction , rename et custom 15000142
+	new npc_ChangeFactionPanda();			//Stitch choix de faction des panda by monsieur Noc :p
+	new npc_level();						//Stitch Choix du level et lieu de départ 
 }
