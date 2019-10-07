@@ -102,7 +102,6 @@
 #include "WorldSession.h"
 #include "WorldStatePackets.h"
 #include "DBCStructure.h"
-
 #define ZONE_UPDATE_INTERVAL (1*IN_MILLISECONDS)
 
  //Stitch FunRate FunPowerRegen mana
@@ -114,7 +113,7 @@ uint32 m_FunPowerRegen;
 // corpse reclaim times
 #define DEATH_EXPIRE_STEP (5*MINUTE)
 #define MAX_DEATH_COUNT 3
-//STITCH temps pour rez
+//Stitch temps pour rez
 static uint32 copseReclaimDelay[MAX_DEATH_COUNT] = { 10, 15, 20 };
 
 uint64 const MAX_MONEY_AMOUNT = 9999999999ULL;
@@ -586,6 +585,7 @@ bool Player::Create(ObjectGuid::LowType guidlow, WorldPackets::Character::Charac
         SetPower(POWER_RUNIC_POWER, 0);
         SetMaxPower(POWER_RUNIC_POWER, 1000);
     }
+
 
     // original spells
     LearnDefaultSkills();
@@ -1827,7 +1827,7 @@ void Player::AddToWorld()
 	
 	if (getPowerType() == POWER_MANA)
 	{
-		SetPower(POWER_MANA, GetMaxPower(POWER_MANA));	//STITCH refresh max mana a la connexion 
+		SetPower(POWER_MANA, GetMaxPower(POWER_MANA));	//Stitch refresh max mana a la connexion 
 	}
 
 	Unit::AddToWorld();
@@ -1840,6 +1840,8 @@ void Player::AddToWorld()
 	uint8 _race = getRace();
 	uint8 _class = getClass();
 	uint8 _level = getLevel();
+	uint32 _spec = GetSpecId(GetActiveTalentGroup());
+	ShapeshiftForm _form = GetShapeshiftForm();
 
 	switch (_class)
 	{
@@ -1852,43 +1854,46 @@ void Player::AddToWorld()
 		SetPower(POWER_FOCUS, 100);
 		break;
 	case CLASS_ROGUE:	//vampire
-		SetPower(POWER_SOUL_SHARDS, 0);						//STITCH RAZ POWER_SOUL_SHARDS a la connexion
-		SetPower(POWER_SHADOW_ORBS, 0);						//STITCH RAZ POWER_SHADOW_ORBS a la connexion sinon bug visuel
-		RemoveAura(300124);									//STITCH	retire VAMPIRE BERSERKER a la connexion sinon bug
-		RemoveAura(300125);									//STITCH	retire VAMPIRE ANCESTRAL a la connexion sinon bug
 
-
-		if (_level >= 2)
+		if (GetUInt32Value(PLAYER_FIELD_CURRENT_SPEC_ID) == 563)		//Si Branche talent vampire - 563 correspond a ID de ChrSpecialization.dbc
 		{
-			
-			LearnSpell(300124, true);					//	Vampire Berseker
-			LearnSpell(300126, true);					//	Frappe sanglante				(Berseker)
+			if (_level >= 10)
+			{
+				LearnSpell(300124, true); 					// Vampire Berseker	
+				LearnSpell(300126, true); 					// Frappe sanglante					(Berseker)
+				LearnSpell(300132, true);					// Morsure vivifiante				(Berseker)
+				LearnSpell(300129, true); 					// Esprit vif						(Berseker/Ancestral)
+			}
+			if (_level >= 12) { LearnSpell(300127, true); }	// Frappe sauvage					(Berseker)
+			if (_level >= 14) { LearnSpell(300128, true); }	// Enchaînement Sanglant			(Berseker)
+			if (_level >= 16)
+			{
+				LearnSpell(300125, true);					//	Vampire Ancestral
+				LearnSpell(300139, true);					//	Brûlure démoniaque				(Ancestral)
+				LearnSpell(300142, true);					//	Contamination démoniaque		(Ancestral)
+			}
+			if (_level >= 18) { LearnSpell(300144, true); }	//	Touché démoniaque				(Ancestral)	
+			if (_level >= 20) { LearnSpell(300140, true); }	//	Absorption sanguine				(Ancestral)	
+			if (_level >= 22) { LearnSpell(300130, true); }	//	Griffure sanglante				(Berseker)
+			if (_level >= 24) { LearnSpell(300145, true); }	//	Déchaînement de sang			(Ancestral)
+			if (_level >= 26) { LearnSpell(300131, true); }	//	Griffure bondissante			(Berseker)
+			if (_level >= 28) { LearnSpell(300133, true); }	//	Cri perçant						(Berseker/Ancestral)
+			if (_level >= 30) { LearnSpell(300136, true); }	//	Coeur de vampire Ancestral		(Berseker/Ancestral)
+			if (_level >= 32) { LearnSpell(300134, true); }	//	Dévorer sa proie				(Berseker/Ancestral)
+			if (_level >= 34) { LearnSpell(300143, true); }	//	Regard hypnotique				(Ancestral)
+			if (_level >= 40) { LearnSpell(300137, true); }	//	Peau de demon					(Berseker/Ancestral)
+			if (_level >= 60) { LearnSpell(300138, true); }	//	Forme de vol du vampire			(Berseker/Ancestral)
+
+			if (_form == (FORM_VAMPIRE_BERSERKER | FORM_VAMPIRE_ANCESTRAL))
+			{
+				setPowerType(POWER_DEMONIC_FURY);
+				SetMaxPower(POWER_DEMONIC_FURY, 100);
+			}
+			SaveToDB();
 		}
-		if (_level >= 3) { LearnSpell(300127, true); }	// Frappe sauvage					(Berseker)
-		if (_level >= 4) { LearnSpell(300132, true); }	// Morsure vivifiante				(Berseker)
-		if (_level >= 6) { LearnSpell(300127, true); }	// Frappe sauvage					(Berseker)
-		if (_level >= 10) { LearnSpell(300129, true); }	// Esprit vif						(Berseker/Ancestral)
-		if (_level >= 14) {
-			LearnSpell(300125, true);					//	Vampire Ancestral
-			LearnSpell(300139, true);					//	Brûlure démoniaque				(Ancestral)
-			LearnSpell(300142, true);					//	Contamination démoniaque		(Ancestral)
-		}
-		if (_level >= 16) { LearnSpell(300130, true); }	//	Griffure sanglante				(Berseker)
-		if (_level >= 18) { LearnSpell(300144, true); }	//	Touché démoniaque				(Ancestral)		
-		if (_level >= 20) { LearnSpell(300128, true); }	//	Enchaînement Sanglant			(Berseker)
-		if (_level >= 22) { LearnSpell(300140, true); }	//	Absorption sanguine				(Ancestral)	
-		if (_level >= 24) { LearnSpell(300131, true); }	//	Griffure bondissante			(Berseker)
-		if (_level >= 26) { LearnSpell(300145, true); }	//	Déchaînement de sang			(Ancestral)
-		if (_level >= 28) { LearnSpell(300133, true); }	//	Cri perçant						(Berseker/Ancestral)
-		if (_level >= 30) { LearnSpell(300136, true); }	//	Coeur de vampire Ancestral		(Berseker/Ancestral)
-		if (_level >= 32) { LearnSpell(300145, true); }	//	Déchaînement de sang			(Ancestral)
-		if (_level >= 34) { LearnSpell(300143, true); }	//	Regard hypnotique				(Ancestral)
-		if (_level >= 40) { LearnSpell(300134, true); }	//	Dévorer sa proie				(Berseker/Ancestral)
-		if (_level >= 50) { LearnSpell(300137, true); }	//	Peau de demon					(Berseker/Ancestral)
-		if (_level >= 60) { LearnSpell(300138, true); }	//	Forme de vol du vampire			(Berseker/Ancestral)
-		SaveToDB();
 		break;
 	case CLASS_PRIEST:
+		SetPower(POWER_SHADOW_ORBS, 0);						//STITCH RAZ POWER_SHADOW_ORBS a la connexion sinon bug visuel
 		break;
 	case CLASS_DEATH_KNIGHT:
 		break;
@@ -1897,6 +1902,7 @@ void Player::AddToWorld()
 	case CLASS_MAGE:
 		break;
 	case CLASS_WARLOCK:
+		SetPower(POWER_SOUL_SHARDS, 0);						//STITCH RAZ POWER_SOUL_SHARDS a la connexion
 		break;
 	case CLASS_MONK:
 		break;
@@ -1905,7 +1911,7 @@ void Player::AddToWorld()
 
 
 	}
-
+	
 
 
 
@@ -2315,6 +2321,9 @@ void Player::ResetAllPowers()
         case POWER_ECLIPSE:
             SetPower(POWER_ECLIPSE, 0);
             break;
+		case POWER_DEMONIC_FURY:
+			SetPower(POWER_DEMONIC_FURY, GetMaxPower(POWER_DEMONIC_FURY));
+			break;
         default:
             break;
     }
@@ -2730,6 +2739,8 @@ void Player::GiveLevel(uint8 level)
 	uint8 _race = getRace();
 	uint8 _class = getClass();
 	uint8 _level = getLevel();
+	uint32 _spec = GetSpecId(GetActiveTalentGroup());
+	ShapeshiftForm _form = GetShapeshiftForm();
 
 	switch (_class)
 	{
@@ -2742,36 +2753,46 @@ void Player::GiveLevel(uint8 level)
 		SetPower(POWER_FOCUS, 100);
 		break;
 	case CLASS_ROGUE:	//vampire
-		if (_level >= 2)
+
+		if (GetUInt32Value(PLAYER_FIELD_CURRENT_SPEC_ID) == 563)		//Si Branche talent vampire - 563 correspond a ID de ChrSpecialization.dbc
 		{
-			LearnSpell(300124, true);					//	Vampire Berseker
-			LearnSpell(300126, true);					//	Frappe sanglante				(Berseker)
+			if (_level >= 10)
+			{
+				LearnSpell(300124, true); 					// Vampire Berseker	
+				LearnSpell(300126, true); 					// Frappe sanglante					(Berseker)
+				LearnSpell(300132, true);					// Morsure vivifiante				(Berseker)
+				LearnSpell(300129, true); 					// Esprit vif						(Berseker/Ancestral)
+			}
+			if (_level >= 12) { LearnSpell(300127, true); }	// Frappe sauvage					(Berseker)
+			if (_level >= 14) { LearnSpell(300128, true); }	// Enchaînement Sanglant			(Berseker)
+			if (_level >= 16)
+			{
+				LearnSpell(300125, true);					//	Vampire Ancestral
+				LearnSpell(300139, true);					//	Brûlure démoniaque				(Ancestral)
+				LearnSpell(300142, true);					//	Contamination démoniaque		(Ancestral)
+			}
+			if (_level >= 18) { LearnSpell(300144, true); }	//	Touché démoniaque				(Ancestral)	
+			if (_level >= 20) { LearnSpell(300140, true); }	//	Absorption sanguine				(Ancestral)	
+			if (_level >= 22) { LearnSpell(300130, true); }	//	Griffure sanglante				(Berseker)
+			if (_level >= 24) { LearnSpell(300145, true); }	//	Déchaînement de sang			(Ancestral)
+			if (_level >= 26) { LearnSpell(300131, true); }	//	Griffure bondissante			(Berseker)
+			if (_level >= 28) { LearnSpell(300133, true); }	//	Cri perçant						(Berseker/Ancestral)
+			if (_level >= 30) { LearnSpell(300136, true); }	//	Coeur de vampire Ancestral		(Berseker/Ancestral)
+			if (_level >= 32) { LearnSpell(300134, true); }	//	Dévorer sa proie				(Berseker/Ancestral)
+			if (_level >= 34) { LearnSpell(300143, true); }	//	Regard hypnotique				(Ancestral)
+			if (_level >= 40) { LearnSpell(300137, true); }	//	Peau de demon					(Berseker/Ancestral)
+			if (_level >= 60) { LearnSpell(300138, true); }	//	Forme de vol du vampire			(Berseker/Ancestral)
+
+			if (_form == (FORM_VAMPIRE_BERSERKER | FORM_VAMPIRE_ANCESTRAL))
+			{
+				setPowerType(POWER_DEMONIC_FURY);
+				SetMaxPower(POWER_DEMONIC_FURY, 100);
+			}
+			SaveToDB();
 		}
-		if (_level >= 3) { LearnSpell(300127, true); }	// Frappe sauvage					(Berseker)
-		if (_level >= 4) { LearnSpell(300132, true); }	// Morsure vivifiante				(Berseker)
-		if (_level >= 6) { LearnSpell(300127, true); }	// Frappe sauvage					(Berseker)
-		if (_level >= 10) { LearnSpell(300129, true); }	// Esprit vif						(Berseker/Ancestral)
-		if (_level >= 14) {
-			LearnSpell(300125, true);					//	Vampire Ancestral
-			LearnSpell(300139, true);					//	Brûlure démoniaque				(Ancestral)
-			LearnSpell(300142, true);					//	Contamination démoniaque		(Ancestral)
-		}
-		if (_level >= 16) { LearnSpell(300130, true); }	//	Griffure sanglante				(Berseker)
-		if (_level >= 18) { LearnSpell(300144, true); }	//	Touché démoniaque				(Ancestral)		
-		if (_level >= 20) { LearnSpell(300128, true); }	//	Enchaînement Sanglant			(Berseker)
-		if (_level >= 22) { LearnSpell(300140, true); }	//	Absorption sanguine				(Ancestral)	
-		if (_level >= 24) { LearnSpell(300131, true); }	//	Griffure bondissante			(Berseker)
-		if (_level >= 26) { LearnSpell(300145, true); }	//	Déchaînement de sang			(Ancestral)
-		if (_level >= 28) { LearnSpell(300133, true); }	//	Cri perçant						(Berseker/Ancestral)
-		if (_level >= 30) { LearnSpell(300136, true); }	//	Coeur de vampire Ancestral		(Berseker/Ancestral)
-		if (_level >= 32) { LearnSpell(300145, true); }	//	Déchaînement de sang			(Ancestral)
-		if (_level >= 34) { LearnSpell(300143, true); }	//	Regard hypnotique				(Ancestral)
-		if (_level >= 40) { LearnSpell(300134, true); }	//	Dévorer sa proie				(Berseker/Ancestral)
-		if (_level >= 50) { LearnSpell(300137, true); }	//	Peau de demon					(Berseker/Ancestral)
-		if (_level >= 60) { LearnSpell(300138, true); }	//	Forme de vol du vampire			(Berseker/Ancestral)
-		SaveToDB();
 		break;
 	case CLASS_PRIEST:
+		SetPower(POWER_SHADOW_ORBS, 0);						//Stitch RAZ POWER_SHADOW_ORBS a la connexion sinon bug visuel
 		break;
 	case CLASS_DEATH_KNIGHT:
 		break;
@@ -2780,6 +2801,7 @@ void Player::GiveLevel(uint8 level)
 	case CLASS_MAGE:
 		break;
 	case CLASS_WARLOCK:
+		SetPower(POWER_SOUL_SHARDS, 0);						//Stitch RAZ POWER_SOUL_SHARDS a la connexion
 		break;
 	case CLASS_MONK:
 		break;
@@ -2791,19 +2813,7 @@ void Player::GiveLevel(uint8 level)
 
 
 
-//Stitch levelup bug de max Fureur démoniaque
-	ShapeshiftForm _form = GetShapeshiftForm();
 
-	if (_form == (FORM_VAMPIRE_BERSERKER))
-	{
-		setPowerType(POWER_DEMONIC_FURY);
-		SetMaxPower(POWER_DEMONIC_FURY, 100);
-	}
-	else if (_form == (FORM_VAMPIRE_ANCESTRAL))
-	{
-		setPowerType(POWER_DEMONIC_FURY);
-		SetMaxPower(POWER_DEMONIC_FURY, 100);
-	}
 
 
     // update level to hunter/summon pet
@@ -4985,7 +4995,7 @@ void Player::RepopAtGraveyard()
     // and don't show spirit healer location
     if (ClosestGrave)
     {
-		//STITCH rez : Pour ne pas etre TP au cimetiere mais sur la pierre de foyer + rez
+		//Stitch rez : Pour ne pas etre TP au cimetiere mais sur la pierre de foyer + rez
 		//        TeleportTo(ClosestGrave->MapID, ClosestGrave->Loc.X, ClosestGrave->Loc.Y, ClosestGrave->Loc.Z, (ClosestGrave->Facing * M_PI) / 180); // Orientation is initially in degrees
 
 		// TeleportTo(1, 16311.113281, 16246.466797, 24.634960, 0); // TP ile des gm subzone 876
@@ -6669,7 +6679,7 @@ bool Player::RewardHonor(Unit* victim, uint32 groupsize, int32 honor, bool pvpto
     }
 
 	//honor_f *= sWorld->getRate(RATE_HONOR) ;
-    honor_f *= sWorld->getRate(RATE_HONOR) * 10;//STITCH honneur rate
+    honor_f *= sWorld->getRate(RATE_HONOR) * 10;//Stitch honneur rate
 
 
     // Back to int now
@@ -16784,7 +16794,7 @@ bool Player::LoadFromDB(ObjectGuid guid, SQLQueryHolder *holder)
     SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_CLASS, fields[4].GetUInt8());	//	Classe
     SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_GENDER, gender);
 
-    // check if race/class combination is valid - //STITCH	
+    // check if race/class combination is valid - //Stitch	
     PlayerInfo const* info = sObjectMgr->GetPlayerInfo(getRace(), getClass());
     if (!info)
     {
@@ -21375,30 +21385,18 @@ void Player::InitDataForForm(bool reapplyMods)
 	{
 
 //Stitch Changeform : PowerType
-		case FORM_VAMPIRE_BERSERKER:	//Stitch FORM_VAMPIRE_BERSERKER utilise POWER_FOCUS
+		case FORM_VAMPIRE_BERSERKER:	//Stitch FORM_VAMPIRE_BERSERKER utilise POWER_DEMONIC_FURY
 		{
-			uint32 m_maxfocus = 100;
 			SetDisplayId(GetNativeDisplayId());				//Pour retirer la forme de vol
-
-			if (getPowerType() != POWER_DEMONIC_FURY)
-				setPowerType(POWER_DEMONIC_FURY);
-
-			SetMaxPower(POWER_DEMONIC_FURY, m_maxfocus);
-			SetMaxPower(POWER_ENERGY, 0);				//Desactive energie
-//			SetMaxPower(POWER_DEMONIC_FURY, 0);			//Desactive Fureur démoniaque
+			setPowerType(POWER_DEMONIC_FURY);
+			SetMaxPower(POWER_DEMONIC_FURY, 100);
 		}
 			break;
 		case FORM_VAMPIRE_ANCESTRAL:	//Stitch FORM_VAMPIRE_ANCESTRAL utilise POWER_DEMONIC_FURY
 		{
-			uint32 m_maxfury = 100;
 			SetDisplayId(GetNativeDisplayId());				//Pour retirer la forme de vol
-
-			if (getPowerType() != POWER_DEMONIC_FURY)
-				setPowerType(POWER_DEMONIC_FURY);
-
-				SetMaxPower(POWER_DEMONIC_FURY, m_maxfury);
-				SetMaxPower(POWER_ENERGY, 0);				//Desactive energie
-				SetMaxPower(POWER_FOCUS, 0);				//Desactive Focus
+			setPowerType(POWER_DEMONIC_FURY);
+			SetMaxPower(POWER_DEMONIC_FURY, 100); 
 		}
 			break;
 		case FORM_GHOUL:
@@ -23850,7 +23848,7 @@ uint32 Player::GetResurrectionSpellId() const
 
 	if (spell_id == 0)
 	{
-		spell_id = 95750;//STITCH rez :  pierre de rez auto pour tous ( recharge 0s , cast 15s )
+		spell_id = 95750;//Stitch rez :  pierre de rez auto pour tous ( recharge 0s , cast 15s )
 	}
 
     return spell_id;
@@ -24834,7 +24832,7 @@ void Player::StoreLootItem(uint8 lootSlot, Loot* loot)
         return;
     }
 
-	//STITCH bug loot item de quete
+	//Stitch bug loot item de quete
 	// dont allow protected item to be looted by someone else
 	if (!item->rollWinnerGUID.IsEmpty() && item->rollWinnerGUID != GetGUID())
 	{
@@ -25311,6 +25309,33 @@ void Player::ResetTalentSpecialization()
             if (sTalentByPos[class_][t][c].size() > 1)
                 for (TalentEntry const* talent : sTalentByPos[class_][t][c])
                     RemoveTalent(talent);
+
+	//Stitch Vampire reset spells
+	//ToPlayer()->
+		RemoveSpell(300124);
+	RemoveSpell(300125);
+	RemoveSpell(300126);
+	RemoveSpell(300127);
+	RemoveSpell(300128);
+	RemoveSpell(300129);
+	RemoveSpell(300130);
+	RemoveSpell(300131);
+	RemoveSpell(300132);
+	RemoveSpell(300133);
+	RemoveSpell(300134);
+	RemoveSpell(300136);
+	RemoveSpell(300137);
+	RemoveSpell(300138);
+	RemoveSpell(300139);
+	RemoveSpell(300140);
+	RemoveSpell(300141);
+	RemoveSpell(300142);
+	RemoveSpell(300143);
+	RemoveSpell(300144);
+	RemoveSpell(300145);
+
+
+
 
     RemoveSpecializationSpells();
     SendTalentsInfoData();
@@ -26306,7 +26331,7 @@ VoidStorageItem* Player::GetVoidStorageItem(uint64 id, uint8& slot) const
 
 void Player::OnCombatExit()
 {
-	ClearComboPoints();//STITCH RAZ Combo a la fin d'un combat
+	ClearComboPoints();//Stitch combo : RAZ a la fin d'un combat
 
 
     UpdatePotionCooldown();
