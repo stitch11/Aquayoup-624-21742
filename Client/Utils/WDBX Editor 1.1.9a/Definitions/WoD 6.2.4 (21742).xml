@@ -701,7 +701,7 @@
   </Table>
   <Table Name="ChrClasses" Build="21742">
     <Field Name="m_ID" Type="int" IsIndex="true" />
-    <Field Name="m_DisplayPower" Type="int" />
+    <Field Name="PowerType" Type="int" />
     <Field Name="m_petNameToken" Type="string" />
     <Field Name="m_Name_lang" Type="string" />
     <Field Name="m_Name_female_lang" Type="string" />
@@ -1679,8 +1679,9 @@
   </Table>
   <Table Name="GarrFollowerXAbility" Build="21742">
     <Field Name="m_ID" Type="int" IsIndex="true" />
-    <Field Name="Field4" Type="int" />
-    <Field Name="Field8" Type="int" />
+    <Field Name="GarrFollowerID" Type="int" />
+    <Field Name="GarrAbilityID" Type="int" />
+    <Field Name="FactionIndex" Type="int" />
   </Table>
   <Table Name="GarrFollSupportSpell" Build="21742">
     <Field Name="m_ID" Type="int" IsIndex="true" />
@@ -2212,7 +2213,8 @@
   </Table>
   <Table Name="ItemAppearance" Build="21742">
     <Field Name="m_ID" Type="int" IsIndex="true" />
-    <Field Name="Field4" Type="int" />
+    <Field Name="DisplayID" Type="int" />
+    <Field Name="IconFileDataID" Type="int" />
   </Table>
   <Table Name="ItemAppearanceXUiCamera" Build="21742">
     <Field Name="m_ID" Type="int" IsIndex="true" />
@@ -2243,10 +2245,10 @@
   </Table>
   <Table Name="ItemBonus" Build="21742">
     <Field Name="m_ID" Type="int" IsIndex="true" />
-    <Field Name="Field4" Type="int" />
-    <Field Name="Field8" Type="int" />
-    <Field Name="FieldC" Type="int" ArraySize="2" />
-    <Field Name="Field14" Type="int" />
+    <Field Name="BonusListID" Type="int" />
+    <Field Name="Type" Type="int" />
+    <Field Name="Value[2]" Type="int" ArraySize="2" />
+    <Field Name="Index" Type="int" />
   </Table>
   <Table Name="ItemBonusListLevelDelta" Build="21742">
     <Field Name="Field00" Type="ushort" />
@@ -2254,10 +2256,10 @@
   </Table>
   <Table Name="ItemBonusTreeNode" Build="21742">
     <Field Name="m_ID" Type="int" IsIndex="true" />
-    <Field Name="Field00" Type="ushort" />
-    <Field Name="Field02" Type="ushort" />
-    <Field Name="Field04" Type="ushort" />
-    <Field Name="Field06" Type="byte" />
+    <Field Name="BonusTreeID" Type="uint" />
+    <Field Name="BonusTreeModID" Type="uint" />
+    <Field Name="SubTreeID" Type="uint" />
+    <Field Name="BonusListID" Type="uint" />
   </Table>
   <Table Name="ItemChildEquipment" Build="21742">
     <Field Name="m_ID" Type="int" IsIndex="true" />
@@ -2781,7 +2783,7 @@
   </Table>
   <Table Name="Light" Build="21742">
     <Field Name="m_ID" Type="int" IsIndex="true" />
-    <Field Name="m_continentID" Type="int" />
+    <Field Name="MapID" Type="int" />
     <Field Name="m_x" Type="float" />
     <Field Name="m_y" Type="float" />
     <Field Name="m_z" Type="float" />
@@ -3349,21 +3351,6 @@
     <Field Name="m_powerType" Type="int" />
     <Field Name="m_powerTypeComp" Type="int" />
     <Field Name="m_powerTypeValue" Type="int" />
-    <Field Name="ClassMask" Type="int" />
-    <Field Name="LanguageID" Type="int" />
-    <Field Name="MinFactionID" Type="int" ArraySize="3" />
-    <Field Name="SpellID" Type="int" ArraySize="4" />
-    <Field Name="ItemID" Type="int" ArraySize="4" />
-    <Field Name="ItemCount" Type="int" ArraySize="4" />
-    <Field Name="LfgLogic" Type="int" />
-    <Field Name="LfgValue" Type="int" ArraySize="4" />
-    <Field Name="CurrencyLogic" Type="int" />
-    <Field Name="CurrencyID" Type="int" ArraySize="4" />
-    <Field Name="QuestKillMonster" Type="int" ArraySize="6" />
-    <Field Name="PhaseGroupID" Type="int" />
-    <Field Name="MinAvgItemLevel" Type="int" />
-    <Field Name="MaxAvgItemLevel" Type="int" />
-    <Field Name="Unknown700" Type="int" ArraySize="2" />
   </Table>
   <Table Name="Positioner" Build="21742">
     <Field Name="m_ID" Type="int" IsIndex="true" />
@@ -4189,9 +4176,9 @@
   </Table>
   <Table Name="SpellCastTimes" Build="21742">
     <Field Name="m_ID" Type="int" IsIndex="true" />
-    <Field Name="m_base" Type="int" />
-    <Field Name="m_perLevel" Type="int" />
-    <Field Name="m_minimum" Type="int" />
+    <Field Name="CastTime" Type="int" />
+    <Field Name="CastTimePerLevel" Type="int" />
+    <Field Name="MinCastTime" Type="int" />
   </Table>
   <Table Name="SpellCategories" Build="21742">
     <Field Name="m_ID" Type="int" IsIndex="true" />
@@ -4263,9 +4250,12 @@
   </Table>
   <Table Name="SpellClassOptions" Build="21742">
     <Field Name="m_ID" Type="int" IsIndex="true" />
-    <Field Name="Field4" Type="int" />
-    <Field Name="Field8" Type="int" ArraySize="4" />
-    <Field Name="Field18" Type="int" />
+    <Field Name="ModalNextSpell" Type="int" />
+    <Field Name="SpellClassMask1" Type="int" />
+		<Field Name="SpellClassMask2" Type="int" />
+		<Field Name="SpellClassMask3" Type="int" />
+		<Field Name="SpellClassMask4" Type="int" />
+    <Field Name="SpellClassSet" Type="int" />
   </Table>
   <Table Name="SpellCooldowns" Build="21742">
     <Field Name="m_ID" Type="int" IsIndex="true" />
@@ -4422,8 +4412,8 @@
   <Table Name="SpellLearnSpell" Build="21742">
     <Field Name="m_ID" Type="int" IsIndex="true" />
     <Field Name="m_learnSpellID" Type="int" />
-    <Field Name="m_overridesSpellID" Type="int" />
-    <Field Name="m_spellID" Type="int" />
+    <Field Name="SpellID" Type="int" />
+    <Field Name="OverridesSpellID" Type="int" />
   </Table>
   <Table Name="SpellLevels" Build="21742">
     <Field Name="m_ID" Type="int" IsIndex="true" />
@@ -4480,23 +4470,24 @@
   </Table>
   <Table Name="SpellPower" Build="21742">
     <Field Name="m_ID" Type="int" IsIndex="true" />
-    <Field Name="Field4" Type="int" />
-    <Field Name="Field8" Type="int" />
-    <Field Name="FieldC" Type="int" />
-    <Field Name="Field10" Type="int" />
-    <Field Name="Field14" Type="int" />
-    <Field Name="Field18" Type="int" />
-    <Field Name="Field1C" Type="int" />
-    <Field Name="Field20" Type="int" />
-    <Field Name="Field24" Type="float" />
-    <Field Name="Field28" Type="float" />
-    <Field Name="Field2C" Type="int" />
-    <Field Name="Field30" Type="float" />
+    <Field Name="SpellID" Type="int" />
+    <Field Name="PowerIndex" Type="int" />
+    <Field Name="PowerType" Type="int" />
+    <Field Name="ManaCost" Type="int" />
+    <Field Name="ManaCostPerLevel" Type="int" />
+    <Field Name="ManaCostPerSecond" Type="int" />
+    <Field Name="ManaCostAdditional" Type="int" />
+    <Field Name="PowerDisplayID" Type="int" />
+    <Field Name="UnitPowerBarID" Type="float" />
+    <Field Name="ManaCostPercentage" Type="float" />
+    <Field Name="ManaCostPercentagePerSecond" Type="int" />
+    <Field Name="RequiredAura" Type="float" />
+    <Field Name="HealthCostPercentage" Type="float" />
   </Table>
   <Table Name="SpellPowerDifficulty" Build="21742">
-    <Field Name="m_ID" Type="int" IsIndex="true" />
-    <Field Name="Field4" Type="int" />
-    <Field Name="Field8" Type="int" />
+    <Field Name="SpellPowerID" Type="int" IsIndex="true" />
+    <Field Name="DifficultyID" Type="int" />
+    <Field Name="PowerIndex" Type="int" />
   </Table>
   <Table Name="SpellProceduralEffect" Build="21742">
     <Field Name="Field00" Type="float" ArraySize="4" />
@@ -4524,11 +4515,13 @@
   </Table>
   <Table Name="SpellRange" Build="21742">
     <Field Name="m_ID" Type="int" IsIndex="true" />
-    <Field Name="m_rangeMin" Type="float" ArraySize="2" />
-    <Field Name="m_rangeMax" Type="float" ArraySize="2" />
-    <Field Name="m_flags" Type="int" />
-    <Field Name="m_displayName_lang" Type="string" />
-    <Field Name="m_displayNameShort_lang" Type="string" />
+    <Field Name="MinRangeHostile" Type="float" />
+    <Field Name="MinRangeFriend" Type="float" />
+    <Field Name="MaxRangeHostile" Type="float" />
+    <Field Name="MaxRangeFriend" Type="float" />
+    <Field Name="Flags" Type="uint" />   
+    <Field Name="DisplayName" Type="string" />
+    <Field Name="DisplayNameShort" Type="string" />
   </Table>
   <Table Name="SpellReagents" Build="21742">
     <Field Name="m_ID" Type="int" IsIndex="true" />
@@ -4734,12 +4727,12 @@
   </Table>
   <Table Name="SpellXSpellVisual" Build="21742">
     <Field Name="m_ID" Type="int" IsIndex="true" />
-    <Field Name="Unk620" Type="float" />
+    <Field Name="SpellID" Type="uint" />
+    <Field Name="DifficultyID" Type="uint" />  
     <Field Name="SpellVisualID" Type="ushort" ArraySize="2" />
-    <Field Name="PlayerConditionID" Type="ushort" />
-    <Field Name="DifficultyID" Type="byte" />
-    <Field Name="Flags" Type="byte" />
-    <Field Name="SpellID" Type="int" />
+    <Field Name="Unk620" Type="float" />
+    <Field Name="PlayerConditionID" Type="uint" />
+    <Field Name="Flags" Type="uint" />
   </Table>
   <Table Name="Startup_strings" Build="21742">
     <Field Name="m_ID" Type="int" IsIndex="true" />
@@ -4786,7 +4779,7 @@
   </Table>
   <Table Name="TaxiNodes" Build="21742">
     <Field Name="m_ID" Type="int" IsIndex="true" />
-    <Field Name="m_ContinentID" Type="int" />
+    <Field Name="MapID" Type="int" />
     <Field Name="m_pos" Type="float" ArraySize="3" />
     <Field Name="m_Name_lang" Type="string" />
     <Field Name="m_MountCreatureID" Type="int" ArraySize="2" />
@@ -4805,7 +4798,7 @@
     <Field Name="m_ID" Type="int" IsIndex="true" />
     <Field Name="m_PathID" Type="int" />
     <Field Name="m_NodeIndex" Type="int" />
-    <Field Name="m_ContinentID" Type="int" />
+    <Field Name="MapID" Type="int" />
     <Field Name="m_loc" Type="float" ArraySize="3" />
     <Field Name="m_flags" Type="int" />
     <Field Name="m_delay" Type="int" />
@@ -4919,7 +4912,7 @@
     <Field Name="m_ID" Type="int" IsIndex="true" />
     <Field Name="m_GameObjectsID" Type="int" />
     <Field Name="m_TimeIndex" Type="int" />
-    <Field Name="m_Rot" Type="float" ArraySize="4" />
+    <Field Name="m_Rot xyzw" Type="float" ArraySize="4" />
   </Table>
   <Table Name="Trophy" Build="21742">
     <Field Name="m_ID" Type="int" IsIndex="true" />
