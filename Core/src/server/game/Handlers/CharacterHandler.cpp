@@ -1127,7 +1127,7 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
 	if (pCurrChar->getRace() == RACE_PANDAREN_NEUTRAL)		//Stitch Change en Panda DK : message a la connexion
 	{
 		std::ostringstream ss;
-		ss << "|cffffffff|>>> Panda DK : Choisissez votre camp avec le PNJ Changix <<<";
+		ss << "|cffffffff|>>> Panda DK : Choisissez votre camp avec le PNJ Changix ou faites les quetes d'initiations<<<";
 		ChatHandler(pCurrChar->GetSession()).SendSysMessage(ss.str().c_str());
 	}
 
