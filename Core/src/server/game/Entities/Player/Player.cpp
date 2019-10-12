@@ -1015,6 +1015,18 @@ void Player::Update(uint32 p_time)
     if (!IsInWorld())
         return;
 
+//Stitch UpdatePlayer : talent Afflux de venin (Voleur & Vampire)
+			if (HasSpell(152152) && getPowerType() == POWER_ENERGY)							
+			{
+				SetMaxPower(POWER_ENERGY, 120);
+			}
+
+			if (HasSpell(152152) && getPowerType() == POWER_DEMONIC_FURY)	
+			{
+				SetMaxPower(POWER_DEMONIC_FURY, 120);
+			}
+
+
     // undelivered mail
     if (m_nextMailDelivereTime && m_nextMailDelivereTime <= time(nullptr))
     {
@@ -1868,9 +1880,10 @@ void Player::AddToWorld()
 				setPowerType(POWER_ENERGY);
 				SetMaxPower(POWER_ENERGY, 100);
 			}
-
-			_player->SaveToDB();
 		}
+
+		_player->SaveToDB();
+
 		break;
 	case CLASS_PRIEST:
 		SetPower(POWER_SHADOW_ORBS, 0);						//STITCH RAZ POWER_SHADOW_ORBS a la connexion sinon bug visuel
@@ -2773,9 +2786,10 @@ void Player::GiveLevel(uint8 level)
 				setPowerType(POWER_ENERGY);
 				SetMaxPower(POWER_ENERGY, 100);
 			}
+		}
 
 			_player->SaveToDB();
-		}
+
 		break;
 	case CLASS_PRIEST:
 		SetPower(POWER_SHADOW_ORBS, 0);						//Stitch RAZ POWER_SHADOW_ORBS a la connexion sinon bug visuel
@@ -25297,28 +25311,30 @@ void Player::ResetTalentSpecialization()
                     RemoveTalent(talent);
 
 	//Stitch Vampire reset spells
-	RemoveSpell(300124);
-	RemoveSpell(300125);
-	RemoveSpell(300126);
-	RemoveSpell(300127);
-	RemoveSpell(300128);
-	RemoveSpell(300129);
-	RemoveSpell(300130);
-	RemoveSpell(300131);
-	RemoveSpell(300132);
-	RemoveSpell(300133);
-	RemoveSpell(300134);
-	RemoveSpell(300136);
-	RemoveSpell(300137);
-	RemoveSpell(300138);
-	RemoveSpell(300139);
-	RemoveSpell(300140);
-	RemoveSpell(300141);
-	RemoveSpell(300142);
-	RemoveSpell(300143);
-	RemoveSpell(300144);
-	RemoveSpell(300145);
-
+	if (GetUInt32Value(PLAYER_FIELD_CURRENT_SPEC_ID) == 538)		//Si Branche talent vampire (538) correspond a ID de ChrSpecialization.dbc
+	{
+		RemoveSpell(300124);
+		RemoveSpell(300125);
+		RemoveSpell(300126);
+		RemoveSpell(300127);
+		RemoveSpell(300128);
+		RemoveSpell(300129);
+		RemoveSpell(300130);
+		RemoveSpell(300131);
+		RemoveSpell(300132);
+		RemoveSpell(300133);
+		RemoveSpell(300134);
+		RemoveSpell(300136);
+		RemoveSpell(300137);
+		RemoveSpell(300138);
+		RemoveSpell(300139);
+		RemoveSpell(300140);
+		RemoveSpell(300141);
+		RemoveSpell(300142);
+		RemoveSpell(300143);
+		RemoveSpell(300144);
+		RemoveSpell(300145);
+	}
 
 
 
