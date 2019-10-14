@@ -1228,7 +1228,7 @@ void AddSC_paladin_spell_scripts()
     new spell_pal_glyph_of_holy_light();
 //    new spell_pal_grand_crusader();
     new spell_pal_hand_of_sacrifice();
-    new spell_pal_holy_shock();
+//    new spell_pal_holy_shock();
 //    new spell_pal_improved_aura_effect("spell_pal_improved_concentraction_aura_effect");
 //    new spell_pal_improved_aura_effect("spell_pal_improved_devotion_aura_effect");
 //    new spell_pal_improved_aura_effect("spell_pal_sanctified_retribution_effect");
