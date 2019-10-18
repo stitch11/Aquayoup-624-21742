@@ -110,6 +110,7 @@ void RandomMovementGenerator<Creature>::_setRandomLocation(Creature* creature)
     if (is_air_ok | is_water_ok)			//Stitch mouvement aleatoire dans l'eau
         i_nextMoveTime.Reset(0);
     else
+
 //Stitch : temps entre 2 mouvements aleatoires des mobs 3000 a 5000 au lieu de 5000 10000
     {
         if (roll_chance_i(50))

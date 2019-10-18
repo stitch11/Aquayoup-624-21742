@@ -823,7 +823,8 @@ public:
         if (newlevel < 1)
             newlevel = 1;
 
-		if (newlevel > MAX_LEVEL)									//Stitch fix command level MAX_LEVEL
+//Stitch fix command level MAX_LEVEL
+		if (newlevel > MAX_LEVEL)									
 			newlevel = MAX_LEVEL;
 
         if (newlevel > STRONG_MAX_LEVEL)                         // hardcoded maximum level

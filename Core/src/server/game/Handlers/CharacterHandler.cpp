@@ -1124,10 +1124,11 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
         SendNotification(LANG_RESET_TALENTS);
     }
 
-	if (pCurrChar->getRace() == RACE_PANDAREN_NEUTRAL)		//Stitch Change en Panda DK : message a la connexion
+	//Stitch Change en Panda DK : message a la connexion
+	if (pCurrChar->getRace() == RACE_PANDAREN_NEUTRAL)		
 	{
 		std::ostringstream ss;
-		ss << "|cffffffff|>>> Panda DK : Choisissez votre camp avec le PNJ Changix ou faites les quetes d'initiations<<<";
+		ss << "|cffffffff|>>> Panda DK : Choisissez votre camp avec le PNJ Changix ou faites les quetes d'initiations <<<";
 		ChatHandler(pCurrChar->GetSession()).SendSysMessage(ss.str().c_str());
 	}
 

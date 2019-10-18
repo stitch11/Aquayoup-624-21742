@@ -32,9 +32,6 @@ uint32 m_FunDamageDefaut = sConfigMgr->GetIntDefault("FunDamageDefaut", 1);
 uint32 m_FunAllStat = sConfigMgr->GetIntDefault("FunAllStat", 2);
 uint32 m_FunArmor;
 
-
-
-
 inline bool _ModifyUInt32(bool apply, uint32& baseValue, int32& amount)
 {
     // If amount is negative, change sign and value of apply.
@@ -306,8 +303,11 @@ float Player::GetHealthBonusFromStamina()
 
     float stamina = GetStat(STAT_STAMINA);
 
+	//Stitch item rate PV bonus 
 //    return stamina * ratio;
-	return stamina * (ratio * 0.75); //Stitch item rate bonus PV
+	return stamina * (ratio * 0.75);
+
+
 }
 
 void Player::UpdateMaxHealth()
@@ -807,16 +807,16 @@ void Player::UpdateManaRegen()
     // Apply PCT bonus from SPELL_AURA_MOD_POWER_REGEN_PERCENT aura on spirit base regen
     spirit_regen *= GetTotalAuraMultiplierByMiscValue(SPELL_AURA_MOD_POWER_REGEN_PERCENT, POWER_MANA);
 
-	//Stitch regen mana (pour affichage)
+//Stitch regen mana (pour affichage)
 	// CombatRegen = 5% of Base Mana
-	//	float base_regen = GetCreateMana() * 0.009f + GetTotalAuraModifierByMiscValue(SPELL_AURA_MOD_POWER_REGEN, POWER_MANA); //REGEN MANA / 5.0f  //Stitch
+	//	float base_regen = GetCreateMana() * 0.009f + GetTotalAuraModifierByMiscValue(SPELL_AURA_MOD_POWER_REGEN, POWER_MANA); //REGEN MANA / 5.0f
 	float base_regen = GetCreateMana() * 0.02f + GetTotalAuraModifierByMiscValue(SPELL_AURA_MOD_POWER_REGEN, POWER_MANA) /1.0f;
 
 
     // Set regen rate in cast state apply only on spirit based regen
     int32 modManaRegenInterrupt = GetTotalAuraModifier(SPELL_AURA_MOD_MANA_REGEN_INTERRUPT);
 
-	//Stitch regen mana (pour affichage)
+//Stitch regen mana (pour affichage)
 	SetStatFloatValue(UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER, (base_regen + CalculatePct(spirit_regen, modManaRegenInterrupt))/10);
 	SetStatFloatValue(UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER, (0.001f + spirit_regen + base_regen) / 10); 
 
@@ -1180,7 +1180,8 @@ void Guardian::UpdateMaxPower(Powers power)
 {
     UnitMods unitMod = UnitMods(UNIT_MOD_POWER_START + power);
 
-//Stitch Affichage energie=100 des pet - Defaut : float addValue = (power == POWER_MANA) ? GetStat(STAT_INTELLECT) - GetCreateStat(STAT_INTELLECT) : 0.0f;
+//Stitch Affichage pet : energie=100 
+	//float addValue = (power == POWER_MANA) ? GetStat(STAT_INTELLECT) - GetCreateStat(STAT_INTELLECT) : 0.0f;
 	float addValue = (power == POWER_ENERGY) ? GetStat(STAT_INTELLECT) - GetCreateStat(STAT_INTELLECT) : 0.0f;
 
 	float multiplicator = 15.0f;

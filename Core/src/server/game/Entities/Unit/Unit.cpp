@@ -6151,7 +6151,8 @@ bool Unit::HandleAuraProc(Unit* /*victim*/, uint32 /*damage*/, Aura* triggeredBy
                 // Bone Shield cooldown
                 case 49222:
                 {
- /*          //STITCH DK-bouclier d os : retiré pour cause de crash
+//Stitch DK-bouclier d os : retiré pour cause de crash
+ /*          
 
 					*handled = true;
                     if (cooldown && GetTypeId() == TYPEID_PLAYER)
@@ -14646,7 +14647,7 @@ uint32 Unit::GetModelForForm(ShapeshiftForm form) const
 
 				return 21244;
 			}
-	//Stitch Toutes les classes pour toutes les races changeform MOONKIN
+//Stitch Toutes les classes pour toutes les races changeform MOONKIN
 			case FORM_MOONKIN_FORM:
 			{
 				switch (_race)
@@ -15473,9 +15474,9 @@ void Unit::RewardRage(uint32 baseRage)
 	//Stitch FunRate m_FunPowerRegen rage ours
 //    ModifyPower(POWER_RAGE, uint32(addRage * 1));
 	uint32 m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 3);
-	if (m_FunPowerRegen > 5)
+	if (m_FunPowerRegen > 5 || m_FunPowerRegen < 1)
 	{
-		m_FunPowerRegen = 5;
+		m_FunPowerRegen = 3;
 	}
 	ModifyPower(POWER_RAGE, uint32(addRage * m_FunPowerRegen * 35));
 }

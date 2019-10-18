@@ -1713,7 +1713,10 @@ public:
         {
             player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_PET1, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
             if (player->GetPet() && player->GetPet()->getPetType() == HUNTER_PET)
- /*               player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_PET2, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);*/ //Stitch reset pet talents deja pris en compte
+
+//Stitch reset pet talents deja pris en compte
+              // player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GOSSIP_PET2, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2); 
+
 				player->PlayerTalkClass->SendGossipMenu(TEXT_ISHUNTER, creature->GetGUID());
 
             return true;
@@ -2516,9 +2519,9 @@ class npc_train_wrecker : public CreatureScript
         }
 };
 
-/*##############################################################################################
-#  //STITCH PNJ 15000142 : change race , faction , apparence gratuitement - npc_changer
-################################################################################################*/
+//##############################################################################################
+//Stitch PNJ 15000142 : change race , faction , apparence gratuitement - npc_changer
+//################################################################################################
 enum  defines
 {
 	faction_token = 100,	// Faction Change Token
@@ -2646,9 +2649,9 @@ public:
 
 };
 
-/*##############################################################################################
-#  //STITCH PNJ 15000386 : Options de depart et TP
-################################################################################################*/
+//##############################################################################################
+//Stitch PNJ 15000386 : Options de depart et TP
+//################################################################################################
 class npc_level : public CreatureScript
 {
 public:
@@ -2784,9 +2787,9 @@ public:
 
 			// Teleportation
 			if (team == TEAM_ALLIANCE)
-				player->TeleportTo(0, -8867.68f, 673.373f, 97.9034f, 0.0f); // Stitch tp Hurlevent 
+				player->TeleportTo(0, -8867.68f, 673.373f, 97.9034f, 0.0f); // tp Hurlevent 
 			else
-				player->TeleportTo(1, 1633.33f, -4439.11f, 17.7588f, 0.0f); // Stitch tp Orgrimmar 
+				player->TeleportTo(1, 1633.33f, -4439.11f, 17.7588f, 0.0f); // tp Orgrimmar 
 
 			break;
 		case 2: // level 58
@@ -2836,9 +2839,9 @@ public:
 			SetSkill_Death_Knight(player, _class);
 			// Teleportation
 			if (team == TEAM_ALLIANCE)
-				player->TeleportTo(0, -8867.68f, 673.373f, 97.9034f, 0.0f); // Stitch tp Hurlevent 
+				player->TeleportTo(0, -8867.68f, 673.373f, 97.9034f, 0.0f); // tp Hurlevent 
 			else
-				player->TeleportTo(1, 1633.33f, -4439.11f, 17.7588f, 0.0f); // Stitch tp Orgrimmar 
+				player->TeleportTo(1, 1633.33f, -4439.11f, 17.7588f, 0.0f); // tp Orgrimmar 
 
 			break;
 		case 3: // level 68
@@ -2893,9 +2896,9 @@ public:
 			SetSkill_Death_Knight(player, _class);
 			// Teleportation
 			if (team == TEAM_ALLIANCE)
-				player->TeleportTo(0, -8867.68f, 673.373f, 97.9034f, 0.0f); // Stitch tp Hurlevent 
+				player->TeleportTo(0, -8867.68f, 673.373f, 97.9034f, 0.0f); // tp Hurlevent 
 			else
-				player->TeleportTo(1, 1633.33f, -4439.11f, 17.7588f, 0.0f); // Stitch tp Orgrimmar 
+				player->TeleportTo(1, 1633.33f, -4439.11f, 17.7588f, 0.0f); // tp Orgrimmar 
 
 			break;
 		case 4: // level 80
@@ -2952,9 +2955,9 @@ public:
 			SetSkill_Death_Knight(player, _class);
 			// Teleportation
 			if (team == TEAM_ALLIANCE)
-				player->TeleportTo(0, -8867.68f, 673.373f, 97.9034f, 0.0f); // Stitch tp Hurlevent 
+				player->TeleportTo(0, -8867.68f, 673.373f, 97.9034f, 0.0f); // tp Hurlevent 
 			else
-				player->TeleportTo(1, 1633.33f, -4439.11f, 17.7588f, 0.0f); // Stitch tp Orgrimmar 
+				player->TeleportTo(1, 1633.33f, -4439.11f, 17.7588f, 0.0f); // tp Orgrimmar 
 
 			break;
 		case 5: // level 85
@@ -3011,9 +3014,9 @@ public:
 			SetSkill_Death_Knight(player, _class);
 			// Teleportation
 			if (team == TEAM_ALLIANCE)
-				player->TeleportTo(0, -8867.68f, 673.373f, 97.9034f, 0.0f); // Stitch tp Hurlevent 
+				player->TeleportTo(0, -8867.68f, 673.373f, 97.9034f, 0.0f); // tp Hurlevent 
 			else
-				player->TeleportTo(1, 1633.33f, -4439.11f, 17.7588f, 0.0f); // Stitch tp Orgrimmar 
+				player->TeleportTo(1, 1633.33f, -4439.11f, 17.7588f, 0.0f); // tp Orgrimmar 
 
 			break;
 
@@ -3071,13 +3074,13 @@ public:
 			SetSkill_Death_Knight(player, _class);
 			// Teleportation
 			if (team == TEAM_ALLIANCE)
-				player->TeleportTo(0, -8867.68f, 673.373f, 97.9034f, 0.0f);	// Stitch tp Hurlevent 		
+				player->TeleportTo(0, -8867.68f, 673.373f, 97.9034f, 0.0f);	// tp Hurlevent 		
 			else
-				player->TeleportTo(1, 1633.33f, -4439.11f, 17.7588f, 0.0f);	//Stitch tp Orgrimmar 
+				player->TeleportTo(1, 1633.33f, -4439.11f, 17.7588f, 0.0f);	// tp Orgrimmar 
 
 			break;
 
-			//Stitch : Choix du lieu de depart
+//Stitch : Choix du lieu de depart
 		case 7:
 			SetSkill_Death_Knight(player, _class);
 
@@ -3185,7 +3188,8 @@ public:
 			if (player->GetReputation(1077) != reputworgendesneiges) { player->SetReputation(1077, reputworgendesneiges); }
 
 			// ALLIANCE 
-			if (player->GetReputation(72) != reputworgendesneiges) { player->SetReputation(72, reputworgendesneiges); }
+			if (player->GetReputation(72) != reputworgendesneiges) { player->SetReputation(72, reputworgendesneiges); }
+
 			// Hurlevent
 			if (player->GetReputation(47) != reputworgendesneiges) { player->SetReputation(47, reputworgendesneiges); }
 			if (player->GetReputation(69) != reputworgendesneiges) { player->SetReputation(69, reputworgendesneiges); }

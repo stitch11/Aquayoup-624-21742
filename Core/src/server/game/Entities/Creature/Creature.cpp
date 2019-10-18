@@ -403,7 +403,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 
 
 
-	//Stitch vitesse de deplacement des creatures par type & famille
+//Stitch vitesse de deplacement des creatures par type & famille
 	//CreatureTemplate const* cinfo = nullptr;
 
 	uint16 Crtype = GetCreatureTemplate()->type;

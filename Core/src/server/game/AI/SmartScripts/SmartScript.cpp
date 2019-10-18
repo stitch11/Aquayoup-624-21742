@@ -310,7 +310,9 @@ void SmartScript::ProcessAction(SmartScriptHolder& e, Unit* unit, uint32 var0, u
                     (*itr)->ToPlayer()->FailQuest(e.action.quest.quest);
                     TC_LOG_DEBUG("scripts.ai", "SmartScript::ProcessAction:: SMART_ACTION_FAIL_QUEST: Player %s fails quest %u",
                         (*itr)->GetGUID().ToString().c_str(), e.action.quest.quest);
-					(*itr)->ToPlayer()->GetSession()->SendNotification("Echec quete");//Stitch SmartAI : quete , affichage plein ecran ACTION_FAIL_QUEST
+
+//Stitch SmartAI : quete , affichage plein ecran ACTION_FAIL_QUEST
+					(*itr)->ToPlayer()->GetSession()->SendNotification("Echec quete");
                 }
             }
 
@@ -1228,8 +1230,9 @@ void SmartScript::ProcessAction(SmartScriptHolder& e, Unit* unit, uint32 var0, u
                     if (Creature* summon = GetBaseObject()->SummonCreature(e.action.summonCreature.creature, x, y, z, o, (TempSummonType)e.action.summonCreature.type, e.action.summonCreature.duration))
                         if (e.action.summonCreature.attackInvoker)
 
+//Stitch SmartAI : ACTION_SUMMON_CREATURE : Attack invoker
 					//summon->AI()->AttackStart((*itr)->ToUnit());
-					me->CastSpell(summon, 50231, true);//Stitch SmartAI : ACTION_SUMMON_CREATURE : Attack invoker
+					me->CastSpell(summon, 50231, true);
 
 
                 }
@@ -1306,11 +1309,13 @@ void SmartScript::ProcessAction(SmartScriptHolder& e, Unit* unit, uint32 var0, u
 
             for (ObjectList::const_iterator itr = targets->begin(); itr != targets->end(); ++itr)
             {
-//                if (!IsPlayer(*itr))
-//                    continue;
-//                (*itr)->ToPlayer()->AddItem(e.action.item.entry, e.action.item.count);
+
+//Stitch SmartAI : SMART_ACTION_ADD_ITEM
+			// if (!IsPlayer(*itr))
+			// continue;
+			// (*itr)->ToPlayer()->AddItem(e.action.item.entry, e.action.item.count);
 				if (IsPlayer(*itr) && me)
-				(*itr)->ToPlayer()->AddItem(e.action.item.entry, e.action.item.count);//Stitch SmartAI : SMART_ACTION_ADD_ITEM
+				(*itr)->ToPlayer()->AddItem(e.action.item.entry, e.action.item.count);
 
             }
 

@@ -213,7 +213,7 @@ enum UnitClass
 
 #define PLAYER_MAX_BATTLEGROUND_QUEUES 2
 
-// Stitch
+//Stitch
 #define PLAYER_SPEC_ID_VAMPIRE 538
 
 enum ReputationRank

@@ -25,7 +25,7 @@ bool WorldPackets::Auth::EarlyProcessClientPacket::ReadNoThrow()
         Read();
         return true;
     }
-	//catch (ByteBufferPositionException const& ex) //Stitch petite erreur compil
+	//catch (ByteBufferPositionException const& ex) //Stitch INFO petite erreur compil
     catch (ByteBufferPositionException const& /*ex*/)
     {
     }

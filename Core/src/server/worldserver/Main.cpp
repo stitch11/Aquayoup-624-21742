@@ -74,7 +74,7 @@ char serviceDescription[] = "TrinityCore World of Warcraft emulator world servic
  *  1 - running
  *  2 - paused
  */
-//Stitch : int m_ServiceStatus = -1; =1
+//Stitch INFO: int m_ServiceStatus = -1; =1
 int m_ServiceStatus = -1;
 #endif
 
@@ -230,7 +230,9 @@ extern int main(int argc, char** argv)
     // Launch CliRunnable thread
     std::thread* cliThread = nullptr;
 #ifdef _WIN32
-   if (sConfigMgr->GetBoolDefault("Console.Enable", true) && (m_ServiceStatus == -1)/* need disable console in service mode*/)//Stitch console activé
+//Stitch console activé
+   if (sConfigMgr->GetBoolDefault("Console.Enable", true) && (m_ServiceStatus == -1)/* need disable console in service mode*/)
+
 #else
     if (sConfigMgr->GetBoolDefault("Console.Enable", true))
 #endif

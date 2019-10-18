@@ -277,12 +277,18 @@ public:
             case GOSSIP_ACTION_INFO_DEF + 1:
                 player->SEND_GOSSIP_MENU(GOSSIP_TEXTID_RAZAEL2, creature->GetGUID());
                 player->TalkedToCreature(NPC_RAZAEL, creature->GetGUID());
-				player->KilledMonsterCredit(NPC_RAZAEL, creature->GetGUID());//Stitch credit - quete Rapports de terrain 11221
+
+//Stitch credit - quete Rapports de terrain 11221
+				player->KilledMonsterCredit(NPC_RAZAEL, creature->GetGUID());
+
                 break;
             case GOSSIP_ACTION_INFO_DEF + 2:
                 player->SEND_GOSSIP_MENU(GOSSIP_TEXTID_LYANA2, creature->GetGUID());
                 player->TalkedToCreature(NPC_LYANA, creature->GetGUID());
-				player->KilledMonsterCredit(NPC_LYANA, creature->GetGUID());//Stitch credit - quete Rapports de terrain 11221
+
+//Stitch credit - quete Rapports de terrain 11221
+				player->KilledMonsterCredit(NPC_LYANA, creature->GetGUID());
+
                 break;
         }
         return true;

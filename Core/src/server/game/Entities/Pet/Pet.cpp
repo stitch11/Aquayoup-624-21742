@@ -214,8 +214,9 @@ bool Pet::LoadPetFromDB(Player* owner, uint32 petEntry, uint32 petnumber, bool c
     {
         case SUMMON_PET:
             petlevel = owner->getLevel();
-            
-//Stitch : MAGE par defaut - apres 335 tous les pets utilisent l'energie plutot que le mana
+
+			
+//Stitch : Type de power utilisé par les pet . tous les pets utilisent l'energie plutot que le mana apres 335
             SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_CLASS, CLASS_ROGUE);
             SetUInt32Value(UNIT_FIELD_FLAGS, UNIT_FLAG_PVP_ATTACKABLE); // this enables popup window (pet dismiss, cancel)
 			setPowerType(POWER_ENERGY);
@@ -640,6 +641,8 @@ void Creature::Regenerate(Powers power)
 
     float addvalue = 0.0f;
 
+
+//Stitch : regen Power Pet demo - "case POWER_xxx " - Defaut 20
     switch (power)
     {
         case POWER_FOCUS:
@@ -651,17 +654,17 @@ void Creature::Regenerate(Powers power)
         case POWER_ENERGY:
         {
             // For deathknight's ghoul.
-            addvalue = 50 ;//Stitch : regen Pet demo - Defaut 20
+            addvalue = 50 ;
             break;
         }
 		case POWER_RAGE:
 		{
-			addvalue = 30;//Stitch : regen Pet 
+			addvalue = 30;
 			break;
 		}
 		case POWER_MANA:
 		{
-			addvalue = 1500;//Stitch : regen Pet 
+			addvalue = 1500;
 			break;
 		}
         default:
@@ -686,7 +689,9 @@ void Pet::Remove(PetSaveMode mode, bool returnreagent)
 
 void Pet::GivePetXP(uint32 xp)
 {
-//    if (getPetType() != HUNTER_PET) //Stitch TMP
+
+//Stitch Tous les pet donnent de l'xp
+//    if (getPetType() != HUNTER_PET) 
 //        return;
 
     if (xp < 1)
@@ -956,7 +961,8 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 				{
 					SetObjectScale(1.0f);
 				}
-				//Stitch power pour FAKEPLAYER InitCharmInfo();
+
+//Stitch type de Power pour FAKEPLAYER & autres - Par ID -  InitCharmInfo();
 				case 15000269: // Guerrier A2
 				{
 					setPowerType(POWER_RAGE);
@@ -1197,7 +1203,7 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 			}		// switch GetEntry
 
 
-//Stitch   Guardian non defini : Degat par defaut 
+//Stitch Degat par defaut des Guardian 
 			SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK)));
 			SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 12 ));
 			SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 15));

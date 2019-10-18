@@ -480,6 +480,8 @@ void World::LoadConfigSettings(bool reload)
 	TC_LOG_INFO("server.loading", "STITCH: Message de la guilde de base : %s .", m_GuildMessage.c_str());
 
 //
+
+
 		///- Get string for new logins (newly created characters)
     SetNewCharString(sConfigMgr->GetStringDefault("PlayerStart.String", ""));
 

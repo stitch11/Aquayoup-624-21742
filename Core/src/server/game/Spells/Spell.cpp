@@ -5571,7 +5571,10 @@ SpellCastResult Spell::CheckCast(bool strict)
             {
 
 				// if (m_caster->IsInWater())
-				if (m_caster->IsInWater() && m_spellInfo->Id != 98718 && m_spellInfo->Id != 75207)		//Stitch Hippocampe abyssal & Hippocampe de Vashj’ir
+
+				//Stitch Hippocampe abyssal & Hippocampe de Vashj’ir
+				//if (m_caster->IsInWater() && m_spellInfo->Id != 98718)
+				if (m_caster->IsInWater() && m_spellInfo->Id != 98718 && m_spellInfo->Id != 75207)
                     return SPELL_FAILED_ONLY_ABOVEWATER;
 
 								

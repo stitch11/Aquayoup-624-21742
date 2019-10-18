@@ -1590,11 +1590,14 @@ void Aura::HandleAuraSpecificPeriodics(AuraApplication const* aurApp, Unit* cast
     if (!caster || aurApp->GetRemoveMode())
         return;
 
-	//Stitch FunRate periodic damage & heal
-	uint32 m_FunDamageSpell;
-	uint32 m_FunHealSpell;
-	m_FunDamageSpell = sConfigMgr->GetIntDefault("FunDamageSpell", 2);
-	m_FunHealSpell = sConfigMgr->GetIntDefault("FunHealSpell", 2);
+//Stitch FunRate periodic damage & heal
+	//uint32 m_FunDamageSpell;
+	//uint32 m_FunHealSpell;
+	uint32 m_FunDamageSpell = sConfigMgr->GetIntDefault("FunDamageSpell", 2);
+	uint32 m_FunHealSpell = sConfigMgr->GetIntDefault("FunHealSpell", 2);
+
+	if (m_FunDamageSpell < 1)	{		m_FunDamageSpell = 1;	}
+	if (m_FunHealSpell < 1)		{ m_FunHealSpell = 1; }
 
     for (AuraEffect* effect : GetAuraEffects())
     {
@@ -1614,10 +1617,11 @@ void Aura::HandleAuraSpecificPeriodics(AuraApplication const* aurApp, Unit* cast
                 sScriptMgr->ModifyPeriodicDamageAurasTick(target, caster, damage);
 
 
-				//Stitch FunRate FunDamageSpell
+//Stitch FunRate FunDamageSpell
 				if (Player* player = caster->ToPlayer())
 				{
 					m_FunDamageSpell = sConfigMgr->GetIntDefault("FunDamageSpell", 2);
+					if (m_FunDamageSpell < 1) { m_FunDamageSpell = 1;}
 					damage = damage / 2 * m_FunDamageSpell;
 				}
 
@@ -1640,6 +1644,7 @@ void Aura::HandleAuraSpecificPeriodics(AuraApplication const* aurApp, Unit* cast
 				if (Player* player = caster->ToPlayer())
 				{
 					m_FunHealSpell = sConfigMgr->GetIntDefault("FunHealSpell", 2);
+					if (m_FunHealSpell < 1) { m_FunHealSpell = 1; }
 					damage = damage / 2 * m_FunHealSpell;
 				}
 

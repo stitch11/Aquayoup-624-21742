@@ -113,6 +113,7 @@ uint32 m_FunPowerRegen;
 // corpse reclaim times
 #define DEATH_EXPIRE_STEP (5*MINUTE)
 #define MAX_DEATH_COUNT 3
+
 //Stitch temps pour rez
 static uint32 copseReclaimDelay[MAX_DEATH_COUNT] = { 10, 15, 20 };
 
@@ -835,10 +836,10 @@ void Player::HandleDrowning(uint32 time_diff)
     if (!m_MirrorTimerFlags)
         return;
 
-
-	if (GetZoneId() == 4815) { StopMirrorTimer(BREATH_TIMER); StopMirrorTimer(FATIGUE_TIMER); return; }	//Stitch fatigue annulé Vashj'ir - Foret de Varech'tar
-	if (GetZoneId() == 5144) { StopMirrorTimer(BREATH_TIMER); StopMirrorTimer(FATIGUE_TIMER); return; }	//Stitch fatigue annulé Vashj'ir - Etendues Chatoyantes
-	if (GetZoneId() == 5146) { StopMirrorTimer(BREATH_TIMER); StopMirrorTimer(FATIGUE_TIMER); return; }	//Stitch fatigue annulé Vashj'ir - Etendues Chatoyantes
+//Stitch fatigue annulé en Vashj'ir
+	if (GetZoneId() == 4815) { StopMirrorTimer(BREATH_TIMER); StopMirrorTimer(FATIGUE_TIMER); return; }	// Foret de Varech'tar
+	if (GetZoneId() == 5144) { StopMirrorTimer(BREATH_TIMER); StopMirrorTimer(FATIGUE_TIMER); return; }	// Etendues Chatoyantes
+	if (GetZoneId() == 5146) { StopMirrorTimer(BREATH_TIMER); StopMirrorTimer(FATIGUE_TIMER); return; }	// Etendues Chatoyantes
 
 
 	
@@ -1373,7 +1374,7 @@ void Player::Update(uint32 p_time)
 
 
 
-	//Stitch fatigue forcé pour interdire une zone - Vashj'ir
+//Stitch fatigue forcé pour interdire une zone - Vashj'ir
 	//Pour le visuel utilisez :
 	//DELETE FROM `spell_area` WHERE  `spell_area`.`area` = 214  AND `spell_area`.`spell` = 50224;
 	//INSERT INTO `spell_area` (`spell`, `area`, `quest_start`, `quest_end`, `aura_spell`, `racemask`, `gender`, `autocast`, `quest_start_status`, `quest_end_status`) VALUES (50224, 214, 0, 0, 0, 0, 2, 1, 18, 1);	# WARNING FATIGUE
@@ -1397,7 +1398,7 @@ void Player::Update(uint32 p_time)
 			PlayDirectSound(114);
 	}
 
-//Stitch Zone & Area
+//Stitch Zone & Area - vol interdit , etc
 	if (IsFlying() && !IsGameMaster())
 	{
 		uint32 newzone, newarea;
@@ -1832,18 +1833,22 @@ void Player::AddToWorld()
     ///- It will crash when updating the ObjectAccessor
     ///- The player should only be added when logging in
 
+
+//Stitch refresh max mana a la connexion
 	if (getPowerType() == POWER_MANA)
 	{
-		SetPower(POWER_MANA, GetMaxPower(POWER_MANA));	// Stitch refresh max mana a la connexion 
+		SetPower(POWER_MANA, GetMaxPower(POWER_MANA));	 
 	}
+
 
 	Unit::AddToWorld();
 	for (uint8 i = PLAYER_SLOT_START; i < PLAYER_SLOT_END; ++i)
 		if (m_items[i])
 			m_items[i]->AddToWorld();
 
-	// Stitch apprentissage spell a la connexion
+//Stitch apprentissage spell a la connexion
 	ApprendLesSpells();
+
 }
 
 void Player::RemoveFromWorld()
@@ -1915,9 +1920,9 @@ void Player::RegenerateAll()
 	//Stitch FunRate FunPowerRegen
 	m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 3);
 
-	if (m_FunPowerRegen > 5)
+	if (m_FunPowerRegen > 5 || m_FunPowerRegen < 1)
 	{
-		m_FunPowerRegen = 5;
+		m_FunPowerRegen = 3;
 	}
 
 
@@ -2009,11 +2014,11 @@ void Player::Regenerate(Powers power)
 	float spellHaste = GetFloatValue(UNIT_MOD_CAST_SPEED);
 
 
-	// Stitch FunRate FunPowerRegen mana
+	//Stitch FunRate FunPowerRegen mana 
 	m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 3);
-	if (m_FunPowerRegen > 5)
+	if (m_FunPowerRegen > 5 || m_FunPowerRegen < 1)
 	{
-		m_FunPowerRegen = 5;
+		m_FunPowerRegen = 3;
 	}
 
 
@@ -2025,13 +2030,13 @@ void Player::Regenerate(Powers power)
 
 		if (IsInCombat()) // Trinity Updates Mana in intervals of 2s, which is correct
 		{
-			// Stitch FunRate FunPowerRegen mana
+			//Stitch FunRate FunPowerRegen mana
 			//			addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER) *  ManaIncreaseRate * ((0.001f * m_regenTimer) + CalculatePct(0.001f, spellHaste));
 			addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER) *  ManaIncreaseRate * ((0.003f * m_regenTimer * m_FunPowerRegen) + CalculatePct(0.001f, spellHaste));
 		}
 		else
 		{ 
-			// Stitch FunRate FunPowerRegen mana
+			//Stitch FunRate FunPowerRegen mana
 //			addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER) *  ManaIncreaseRate * ((0.001f * m_regenTimer) + CalculatePct(0.001f, spellHaste));
 			addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER) *  ManaIncreaseRate * ((0.005f * m_regenTimer * m_FunPowerRegen) + CalculatePct(0.001f, spellHaste));
 		}
@@ -2039,6 +2044,7 @@ void Player::Regenerate(Powers power)
 
 	}
 	break;
+	//Stitch FunRate FunPowerRegen : Type de Power "case POWER_xxx:"
 	case POWER_RAGE:	// Regenerate rage
 	{
 		if (!IsInCombat() && !HasAuraType(SPELL_AURA_INTERRUPT_REGEN))
@@ -2050,23 +2056,17 @@ void Player::Regenerate(Powers power)
 	break;
 	case POWER_FOCUS:
 		//addvalue += (6.0f + CalculatePct(6.0f, rangedHaste)) * sWorld->getRate(RATE_POWER_FOCUS);
-
-		// Stitch FunRate m_FunPowerRegen focus
 		addvalue += ((0.5f * m_FunPowerRegen+2) + CalculatePct((0.50f * m_FunPowerRegen+2), rangedHaste)) * sWorld->getRate(RATE_POWER_FOCUS) * m_FunPowerRegen;
 		break;
 
 	case POWER_ENERGY:	// Regenerate energy (rogue)
 		//addvalue += (0.01f + CalculatePct(0.01f, meleeHaste)) * sWorld->getRate(RATE_POWER_ENERGY);
-
-		// Stitch FunRate m_FunPowerRegen energie
 		meleeHaste = meleeHaste * (m_FunPowerRegen * 4);
 		addvalue += ((0.01f * m_regenTimer ) + CalculatePct(0.01f, meleeHaste)) * sWorld->getRate(RATE_POWER_ENERGY) * m_FunPowerRegen;
 
 		break;
 
-
-	case POWER_DEMONIC_FURY:                                             
-		// Stitch FunRate  m_FunPowerRegen Fureur démoniaque (Vampire)
+	case POWER_DEMONIC_FURY:              // Fureur démoniaque (Vampire)                              
 		addvalue += m_FunPowerRegen;
 		break;
 
@@ -2088,7 +2088,7 @@ void Player::Regenerate(Powers power)
 	break;
 
 
-	case POWER_BURNING_EMBERS:                                          // Stitch Braise ardente
+	case POWER_BURNING_EMBERS:                                          //Stitch Braise ardente
 	{
 			addvalue += -10.0f;      // remove 1 every 10 sec, first one removed 20s after leaving combat
 	}
@@ -2157,6 +2157,7 @@ void Player::Regenerate(Powers power)
 			m_powerFraction[powerIndex] = addvalue - integerValue;
 	}
 
+
 //Stitch Talent moine : Ascension (Max Chi+2)
 	if (ToPlayer()->HasAura(115396)) 
 	{
@@ -2170,6 +2171,7 @@ void Player::Regenerate(Powers power)
 		SetMaxPower(POWER_CHI, maxValue);
 		ModifyPower(POWER_CHI, 0);
 	}
+
 
 
 	if (m_regenTimerCount >= 2000)
@@ -2630,8 +2632,8 @@ void Player::GiveLevel(uint8 level)
 
     SetLevel(level);
 
-	//Stitch Vampire nettoyage spells avant levelup
-	if (GetUInt32Value(PLAYER_FIELD_CURRENT_SPEC_ID) == PLAYER_SPEC_ID_VAMPIRE)		// Si Branche talent vampire (538) correspond a ID de ChrSpecialization.dbc
+//Stitch Vampire Unlearn spells avant levelup - PLAYER_SPEC_ID_VAMPIRE = 538 correspond a ID de ChrSpecialization.dbc
+	if (GetUInt32Value(PLAYER_FIELD_CURRENT_SPEC_ID) == PLAYER_SPEC_ID_VAMPIRE)
 	{
 		RemoveSpell(300124);
 		RemoveSpell(300125);
@@ -2787,7 +2789,8 @@ void Player::InitStatsForLevel(bool reapplyMods)
     SetObjectScale(1.0f);
 
 
-    // save base values (bonuses already included in stored stats  -  //Stitch : Stats a neutralisé pour classe Custom
+//Stitch INFO: Stats a neutralisé pour classe Custom
+    // save base values (bonuses already included in stored stats  -  
     for (uint8 i = STAT_STRENGTH; i < MAX_STATS; ++i)
         SetCreateStat(Stats(i), info.stats[i]);
 
@@ -2797,7 +2800,7 @@ void Player::InitStatsForLevel(bool reapplyMods)
 
 
 
-/*																	//Stitch INFO Stats neutralisé pour classe Custom  -  voir aussi void Player::Regenerate(Powers power)
+/*	//Stitch INFO Stats neutralisé pour classe Custom  -  voir aussi void Player::Regenerate(Powers power)
 	if (HasAura(123456789))
 	{
 	SetCreateStat(Stats(0), 5);		// Force
@@ -4870,12 +4873,14 @@ void Player::RepopAtGraveyard()
     // and don't show spirit healer location
     if (ClosestGrave)
     {
-		//Stitch rez : Pour ne pas etre TP au cimetiere mais sur la pierre de foyer + rez
-		//        TeleportTo(ClosestGrave->MapID, ClosestGrave->Loc.X, ClosestGrave->Loc.Y, ClosestGrave->Loc.Z, (ClosestGrave->Facing * M_PI) / 180); // Orientation is initially in degrees
 
+
+//Stitch rez : Pour ne pas etre TP au cimetiere mais sur la pierre de foyer + rez
+		//        TeleportTo(ClosestGrave->MapID, ClosestGrave->Loc.X, ClosestGrave->Loc.Y, ClosestGrave->Loc.Z, (ClosestGrave->Facing * M_PI) / 180); // Orientation is initially in degrees
 		// TeleportTo(1, 16311.113281, 16246.466797, 24.634960, 0); // TP ile des gm subzone 876
 		TeleportTo(m_homebindMapId, m_homebindX, m_homebindY, m_homebindZ, GetOrientation());//TP pierre de foyer
 		ResurrectPlayer(0.5f);
+
 
 		if (isDead())                                        // not send if alive, because it used in TeleportTo()
         {
@@ -6015,7 +6020,7 @@ bool Player::IsActionButtonDataValid(uint8 button, uint32 action, uint8 type) co
 ActionButton* Player::AddActionButton(uint8 button, uint32 action, uint8 type)
 {
 
-	//Stitch Barre d'action conserve les spells customs
+//Stitch INFO Barre d'action conserve les spells customs
 	/**/
     if (!IsActionButtonDataValid(button, action, type))
         return nullptr;
@@ -6553,8 +6558,9 @@ bool Player::RewardHonor(Unit* victim, uint32 groupsize, int32 honor, bool pvpto
         AddPct(honor_f, GetMaxPositiveAuraModifier(SPELL_AURA_MOD_HONOR_GAIN_PCT));
     }
 
-	//honor_f *= sWorld->getRate(RATE_HONOR) ;
-    honor_f *= sWorld->getRate(RATE_HONOR) * 10;//Stitch honneur rate
+	//Stitch INFO : honneur rate
+	honor_f *= sWorld->getRate(RATE_HONOR) ;
+
 
 
     // Back to int now
@@ -7535,11 +7541,15 @@ void Player::_ApplyItemBonuses(Item* item, uint8 slot, bool apply)
             case ITEM_MOD_RESILIENCE_RATING:
                 ApplyRatingMod(CR_RESILIENCE_PLAYER_DAMAGE_TAKEN, int32(val), apply);
                 break;
-            case ITEM_MOD_HASTE_RATING:                                                  //Stitch rate Hate *2
-				ApplyRatingMod(CR_HASTE_MELEE, int32(val) * 2, apply);
-				ApplyRatingMod(CR_HASTE_RANGED, int32(val) * 2, apply);
-				ApplyRatingMod(CR_HASTE_SPELL, int32(val) * 2, apply);
+
+//Stitch rate Item Hate *1.332 : 10 item = 1% stat
+            case ITEM_MOD_HASTE_RATING:                                                  
+				ApplyRatingMod(CR_HASTE_MELEE, int32(val) * 1.332, apply);
+				ApplyRatingMod(CR_HASTE_RANGED, int32(val) * 1.332, apply);
+				ApplyRatingMod(CR_HASTE_SPELL, int32(val) * 1.332, apply);
                 break;
+
+
             case ITEM_MOD_EXPERTISE_RATING:
                 ApplyRatingMod(CR_EXPERTISE, int32(val), apply);
                 break;
@@ -16669,7 +16679,7 @@ bool Player::LoadFromDB(ObjectGuid guid, SQLQueryHolder *holder)
     SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_CLASS, fields[4].GetUInt8());	//	Classe
     SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_GENDER, gender);
 
-    // check if race/class combination is valid - //Stitch	
+//Stitch INFO    // check if race/class combination is valid - 
     PlayerInfo const* info = sObjectMgr->GetPlayerInfo(getRace(), getClass());
     if (!info)
     {
@@ -21260,16 +21270,16 @@ void Player::InitDataForForm(bool reapplyMods)
 	{
 
 //Stitch Changeform : PowerType
-		case FORM_VAMPIRE_BERSERKER:	//Stitch FORM_VAMPIRE_BERSERKER utilise POWER_DEMONIC_FURY
+		case FORM_VAMPIRE_BERSERKER:	// FORM_VAMPIRE_BERSERKER utilise POWER_DEMONIC_FURY
 		{
-			SetDisplayId(GetNativeDisplayId());				//Pour retirer la forme de vol
+			SetDisplayId(GetNativeDisplayId());				// retirer la forme de vol
 			setPowerType(POWER_DEMONIC_FURY);
 			SetMaxPower(POWER_DEMONIC_FURY, 100);
 		}
 			break;
-		case FORM_VAMPIRE_ANCESTRAL:	//Stitch FORM_VAMPIRE_ANCESTRAL utilise POWER_DEMONIC_FURY
+		case FORM_VAMPIRE_ANCESTRAL:	// FORM_VAMPIRE_ANCESTRAL utilise POWER_DEMONIC_FURY
 		{
-			SetDisplayId(GetNativeDisplayId());				//Pour retirer la forme de vol
+			SetDisplayId(GetNativeDisplayId());				// retirer la forme de vol
 			setPowerType(POWER_DEMONIC_FURY);
 			SetMaxPower(POWER_DEMONIC_FURY, 100); 
 		}
@@ -23721,9 +23731,10 @@ uint32 Player::GetResurrectionSpellId() const
     if (prio < 1 && HasSpell(20608) && !GetSpellHistory()->HasCooldown(21169))
         spell_id = 21169;
 
+//Stitch rez :  Pierre de rez auto pour tous ( recharge 0s , cast 15s )
 	if (spell_id == 0)
 	{
-		spell_id = 95750;//Stitch rez :  pierre de rez auto pour tous ( recharge 0s , cast 15s )
+		spell_id = 95750;
 	}
 
     return spell_id;
@@ -24505,11 +24516,11 @@ uint32 Player::GetRuneTypeBaseCooldown(RuneType runeType) const
 
     cooldown *=  1.0f - (hastePct / 100.0f);
 
-	//Stitch FunRate FunPowerRegen Rune
+//Stitch FunRate FunPowerRegen Rune
 	m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 3);
-	if (m_FunPowerRegen > 5)
+	if (m_FunPowerRegen > 5 || m_FunPowerRegen < 1)
 	{
-		m_FunPowerRegen = 5;
+		m_FunPowerRegen = 3;
 	}
 	cooldown = cooldown *2 / (m_FunPowerRegen *3);
 
@@ -24707,7 +24718,7 @@ void Player::StoreLootItem(uint8 lootSlot, Loot* loot)
         return;
     }
 
-	//Stitch bug loot item de quete
+//Stitch bug loot item de quete
 	// dont allow protected item to be looted by someone else
 	if (!item->rollWinnerGUID.IsEmpty() && item->rollWinnerGUID != GetGUID())
 	{
@@ -26207,7 +26218,9 @@ VoidStorageItem* Player::GetVoidStorageItem(uint64 id, uint8& slot) const
 
 void Player::OnCombatExit()
 {
-	ClearComboPoints();//Stitch combo : RAZ a la fin d'un combat
+
+//Stitch combo : RAZ a la fin d'un combat
+	ClearComboPoints();
 
 
     UpdatePotionCooldown();
@@ -26804,10 +26817,9 @@ uint32 Player::DoRandomRoll(uint32 minimum, uint32 maximum)
 }
 
 // ***********************************
-// *             Stitch              *
+//Stitch void Player::ApprendLesSpells()
 // ***********************************
 
-// Apprentissage des spells
 void Player::ApprendLesSpells()
 {
 	uint8 _class = getClass();
@@ -26867,7 +26879,7 @@ void Player::ShowNeutralPlayerFactionSelectUI()
 	GetSession()->SendPacket(&data);
 }
 
-// SetPandaFactionAlliance
+//Stitch SetPandaFactionAlliance
 void Player::SetPandaFactionAlliance()
 {
 	SetByteValue(UNIT_FIELD_BYTES_0, 0, RACE_PANDAREN_ALLIANCE);
@@ -26886,8 +26898,8 @@ void Player::SetPandaFactionAlliance()
 	SetSkill(899, 0, 300, 300);
 	LearnSpell(668, false);			// Language Common
 	LearnSpell(108127, false);		// Language Pandaren
-	LearnSpell(108130, false);		// Langue (pandaren - alliance)
-	LearnSpell(131701, false);		// Langues pandaren Racial
+	LearnSpell(131701, false);		// Language pandaren Racial
+	LearnSpell(108130, false);		// Language (pandaren - alliance)
 	KilledMonsterCredit(64594);
 
 	SaveToDB();
@@ -26914,8 +26926,8 @@ void Player::SetPandaFactionHorde()
 	SetSkill(899, 0, 300, 300);
 	LearnSpell(669, false);		// Language Orc
 	LearnSpell(108127, false);	// Language Pandaren
-	LearnSpell(131701, false);	// Langues pandaren Racial
-	LearnSpell(143368, false);	// Langue(pandaren - horde)
+	LearnSpell(131701, false);	// Language pandaren Racial
+	LearnSpell(143368, false);	// Language (pandaren - horde)
 	KilledMonsterCredit(64594);
 
 	SaveToDB();

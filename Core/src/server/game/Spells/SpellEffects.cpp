@@ -536,6 +536,7 @@ void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
 		if (Player* player = m_caster->ToPlayer())
 		{
 			m_FunDamageSpell = sConfigMgr->GetIntDefault("FunDamageSpell", 2);
+			if (m_FunDamageSpell < 1) { m_FunDamageSpell = 1; }
 			m_damage = damage / 2 * m_FunDamageSpell;//
 		}
     }
@@ -1285,6 +1286,7 @@ void Spell::EffectHeal(SpellEffIndex /*effIndex*/)
 
 //Stitch FunRate m_FunHealSpell
 		m_FunHealSpell = sConfigMgr->GetIntDefault("FunHealSpell", 2);
+		if (m_FunHealSpell < 1) { m_FunHealSpell = 1; }
 		m_damage = m_damage / 2 * m_FunHealSpell;
 
     }
@@ -1344,6 +1346,7 @@ void Spell::EffectHealthLeech(SpellEffIndex /*effIndex*/)
 	if (Player* player = m_caster->ToPlayer())
 	{
 	m_FunHealSpell = sConfigMgr->GetIntDefault("FunHealSpell", 2);
+	if (m_FunHealSpell < 1) { m_FunHealSpell = 1; }
 	damage = damage /2 * m_FunHealSpell;
 	}
 
@@ -3106,6 +3109,7 @@ void Spell::EffectWeaponDmg(SpellEffIndex effIndex)
 	if (Player* player = m_caster->ToPlayer())
 	{
 		m_FunDamageSpell = sConfigMgr->GetIntDefault("FunDamageSpell", 2);
+		if (m_FunDamageSpell < 1) { m_FunDamageSpell = 1; }
 		m_damage = m_damage / 2 * m_FunDamageSpell;//
 	}
 }

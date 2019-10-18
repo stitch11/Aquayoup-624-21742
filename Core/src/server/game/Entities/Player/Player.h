@@ -648,6 +648,8 @@ enum PlayerExtraFlags
 };
 
 // 2^n values
+
+//Stitch AT_LOGIN
 enum AtLoginFlags
 {
     AT_LOGIN_NONE						= 0x000,
@@ -660,10 +662,10 @@ enum AtLoginFlags
     AT_LOGIN_CHANGE_FACTION				= 0x040,	//64
     AT_LOGIN_CHANGE_RACE				= 0x080,	//128
     AT_LOGIN_RESURRECT					= 0x100,	//256
-	AT_LOGIN_allianceverspanda			= 0x200,	//Stitch : nouvelle valeur : ajouter un 0 binaire puis convertir en hexa - 512
-	AT_LOGIN_hordeverspanda				= 0x400,	//Stitch : nouvelle valeur : ajouter un 0 binaire puis convertir en hexa - 1024
-	AT_LOGIN_pandaneutreversalliance	= 0x800,	//Stitch : panda 24 vers panda 25 (alliance) - 2048
-	AT_LOGIN_pandaneutrevershorde		= 0x1000	//Stitch : panda 24 vers panda 26 (horde) - 4096
+	AT_LOGIN_allianceverspanda			= 0x200,	// nouvelle valeur : ajouter un 0 binaire puis convertir en hexa - 512
+	AT_LOGIN_hordeverspanda				= 0x400,	// nouvelle valeur : ajouter un 0 binaire puis convertir en hexa - 1024
+	AT_LOGIN_pandaneutreversalliance	= 0x800,	// panda 24 vers panda 25 (alliance) - 2048
+	AT_LOGIN_pandaneutrevershorde		= 0x1000	// panda 24 vers panda 26 (horde) - 4096
 };
 
 typedef std::map<uint32, QuestStatusData> QuestStatusMap;
@@ -1147,7 +1149,8 @@ struct ResurrectionData
     uint32 Aura;
 };
 
-static uint32 const DefaultTalentRowLevels[MAX_TALENT_TIERS] = { 15, 30, 45, 60, 75, 90, 100 };
+//Stitch INFO lvl des talents
+static uint32 const DefaultTalentRowLevels[MAX_TALENT_TIERS] = { 15, 30, 45, 60, 75, 90, 100 };	
 static uint32 const DKTalentRowLevels[MAX_TALENT_TIERS] = { 57, 58, 59, 60, 75, 90, 100 };
 
 struct TC_GAME_API PlayerTalentInfo

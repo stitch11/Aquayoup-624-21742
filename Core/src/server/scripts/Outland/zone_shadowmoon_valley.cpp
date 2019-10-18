@@ -288,8 +288,9 @@ public:
 
                                 me->GetMotionMaster()->MoveIdle();
                                 me->StopMoving();
-								
-								me->DespawnOrUnsummon(20000); //Stitch - despawn drake quete 10804 " Un peu de gentillesse "
+						
+//Stitch - despawn drake quete 10804 " Un peu de gentillesse "
+								me->DespawnOrUnsummon(20000); 
 
                                 me->GetMotionMaster()->MovePoint(POINT_ID, go->GetPositionX(), go->GetPositionY(), go->GetPositionZ());
                             }
@@ -398,7 +399,8 @@ public:
                 me->setFaction(FACTION_FRIENDLY);
                 DoCast(caster, SPELL_FORCE_OF_NELTHARAKU, true);
 
-				me->DespawnOrUnsummon(20000); //Stitch - despawn drake quete 10854 " La force de Neltharaku "
+//Stitch - despawn drake quete 10854 " La force de Neltharaku " 
+				me->DespawnOrUnsummon(20000); 
 
                 Unit* Dragonmaw = me->FindNearestCreature(NPC_DRAGONMAW_SUBJUGATOR, 50);
                 if (Dragonmaw)
