@@ -1828,87 +1828,22 @@ void Player::ProcessDelayedOperations()
 
 void Player::AddToWorld()
 {
-
-
     ///- Do not add/remove the player from the object storage
     ///- It will crash when updating the ObjectAccessor
     ///- The player should only be added when logging in
 
-
-
-	
 	if (getPowerType() == POWER_MANA)
 	{
-		SetPower(POWER_MANA, GetMaxPower(POWER_MANA));	//Stitch refresh max mana a la connexion 
+		SetPower(POWER_MANA, GetMaxPower(POWER_MANA));	// Stitch refresh max mana a la connexion 
 	}
-
 
 	Unit::AddToWorld();
 	for (uint8 i = PLAYER_SLOT_START; i < PLAYER_SLOT_END; ++i)
 		if (m_items[i])
 			m_items[i]->AddToWorld();
 
-
-	//Stitch apprentissage spell  a la connexion 
-	uint8 _race = getRace();
-	uint8 _class = getClass();
-	uint8 _level = getLevel();
-	uint32 _spec = GetUInt32Value(PLAYER_FIELD_CURRENT_SPEC_ID);	//Branche Vampire
-	Player* _player = GetSession()->GetPlayer();
-
-	switch (_class)
-	{
-	case CLASS_WARRIOR:
-		break;
-	case CLASS_PALADIN:
-		break;
-	case CLASS_HUNTER:
-		setPowerType(POWER_FOCUS);
-		SetPower(POWER_FOCUS, 100);
-		break;
-	case CLASS_ROGUE:	//vampire
-
-		if (GetUInt32Value(PLAYER_FIELD_CURRENT_SPEC_ID) == 538)		//Si Branche talent vampire - 538 correspond a ID de ChrSpecialization.dbc
-		{
-			if (_player->HasAura(300124) | _player->HasAura(300125))
-			{
-				setPowerType(POWER_DEMONIC_FURY);
-				SetMaxPower(POWER_DEMONIC_FURY, 100);
-			}
-			else
-			{
-				setPowerType(POWER_ENERGY);
-				SetMaxPower(POWER_ENERGY, 100);
-			}
-		}
-
-		_player->SaveToDB();
-
-		break;
-	case CLASS_PRIEST:
-		SetPower(POWER_SHADOW_ORBS, 0);						//STITCH RAZ POWER_SHADOW_ORBS a la connexion sinon bug visuel
-		break;
-	case CLASS_DEATH_KNIGHT:
-		break;
-	case CLASS_SHAMAN:
-		break;
-	case CLASS_MAGE:
-		break;
-	case CLASS_WARLOCK:
-		SetPower(POWER_SOUL_SHARDS, 0);						//STITCH RAZ POWER_SOUL_SHARDS a la connexion
-		break;
-	case CLASS_MONK:
-		break;
-	case CLASS_DRUID:
-		break;
-
-
-	}
-	
-
-
-
-
+	// Stitch apprentissage spell a la connexion
+	ApprendLesSpells();
 }
 
 void Player::RemoveFromWorld()
@@ -2074,8 +2009,8 @@ void Player::Regenerate(Powers power)
 	float spellHaste = GetFloatValue(UNIT_MOD_CAST_SPEED);
 
 
-	//Stitch FunRate FunPowerRegen mana
-m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 3);
+	// Stitch FunRate FunPowerRegen mana
+	m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 3);
 	if (m_FunPowerRegen > 5)
 	{
 		m_FunPowerRegen = 5;
@@ -2090,13 +2025,13 @@ m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 3);
 
 		if (IsInCombat()) // Trinity Updates Mana in intervals of 2s, which is correct
 		{
-			//Stitch FunRate FunPowerRegen mana
+			// Stitch FunRate FunPowerRegen mana
 			//			addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER) *  ManaIncreaseRate * ((0.001f * m_regenTimer) + CalculatePct(0.001f, spellHaste));
 			addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER) *  ManaIncreaseRate * ((0.003f * m_regenTimer * m_FunPowerRegen) + CalculatePct(0.001f, spellHaste));
 		}
 		else
 		{ 
-			//Stitch FunRate FunPowerRegen mana
+			// Stitch FunRate FunPowerRegen mana
 //			addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER) *  ManaIncreaseRate * ((0.001f * m_regenTimer) + CalculatePct(0.001f, spellHaste));
 			addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER) *  ManaIncreaseRate * ((0.005f * m_regenTimer * m_FunPowerRegen) + CalculatePct(0.001f, spellHaste));
 		}
@@ -2104,9 +2039,7 @@ m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 3);
 
 	}
 	break;
-
-
-	case POWER_RAGE:                                                // Regenerate rage
+	case POWER_RAGE:	// Regenerate rage
 	{
 		if (!IsInCombat() && !HasAuraType(SPELL_AURA_INTERRUPT_REGEN))
 		{
@@ -2118,14 +2051,14 @@ m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 3);
 	case POWER_FOCUS:
 		//addvalue += (6.0f + CalculatePct(6.0f, rangedHaste)) * sWorld->getRate(RATE_POWER_FOCUS);
 
-		//Stitch FunRate m_FunPowerRegen focus
+		// Stitch FunRate m_FunPowerRegen focus
 		addvalue += ((0.5f * m_FunPowerRegen+2) + CalculatePct((0.50f * m_FunPowerRegen+2), rangedHaste)) * sWorld->getRate(RATE_POWER_FOCUS) * m_FunPowerRegen;
 		break;
 
-	case POWER_ENERGY:                                              // Regenerate energy (rogue)
+	case POWER_ENERGY:	// Regenerate energy (rogue)
 		//addvalue += (0.01f + CalculatePct(0.01f, meleeHaste)) * sWorld->getRate(RATE_POWER_ENERGY);
 
-		//Stitch FunRate m_FunPowerRegen energie
+		// Stitch FunRate m_FunPowerRegen energie
 		meleeHaste = meleeHaste * (m_FunPowerRegen * 4);
 		addvalue += ((0.01f * m_regenTimer ) + CalculatePct(0.01f, meleeHaste)) * sWorld->getRate(RATE_POWER_ENERGY) * m_FunPowerRegen;
 
@@ -2133,7 +2066,7 @@ m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 3);
 
 
 	case POWER_DEMONIC_FURY:                                             
-//Stitch FunRate  m_FunPowerRegen Fureur démoniaque (Vampire)
+		// Stitch FunRate  m_FunPowerRegen Fureur démoniaque (Vampire)
 		addvalue += m_FunPowerRegen;
 		break;
 
@@ -2698,7 +2631,7 @@ void Player::GiveLevel(uint8 level)
     SetLevel(level);
 
 	//Stitch Vampire nettoyage spells avant levelup
-	if (GetUInt32Value(PLAYER_FIELD_CURRENT_SPEC_ID) == 538)		//Si Branche talent vampire (538) correspond a ID de ChrSpecialization.dbc
+	if (GetUInt32Value(PLAYER_FIELD_CURRENT_SPEC_ID) == PLAYER_SPEC_ID_VAMPIRE)		// Si Branche talent vampire (538) correspond a ID de ChrSpecialization.dbc
 	{
 		RemoveSpell(300124);
 		RemoveSpell(300125);
@@ -2749,72 +2682,14 @@ void Player::GiveLevel(uint8 level)
     SetFullHealth();
     SetPower(POWER_MANA, GetMaxPower(POWER_MANA));
     SetPower(POWER_ENERGY, GetMaxPower(POWER_ENERGY));
-    if (GetPower(POWER_RAGE) > GetMaxPower(POWER_RAGE))
+    
+	if (GetPower(POWER_RAGE) > GetMaxPower(POWER_RAGE))
         SetPower(POWER_RAGE, GetMaxPower(POWER_RAGE));
-    SetPower(POWER_FOCUS, 0);
-
-
+    
+	SetPower(POWER_FOCUS, 0);
 
 	//Stitch apprentissage spell au levelup
-	uint8 _race = getRace();
-	uint8 _class = getClass();
-	uint8 _level = getLevel();
-	uint32 _spec = GetUInt32Value(PLAYER_FIELD_CURRENT_SPEC_ID);	//branche Vampire
-	Player* _player = GetSession()->GetPlayer();
-
-	switch (_class)
-	{
-	case CLASS_WARRIOR:
-		break;
-	case CLASS_PALADIN:
-		break;
-	case CLASS_HUNTER:
-		setPowerType(POWER_FOCUS);
-		SetPower(POWER_FOCUS, 100);
-		break;
-	case CLASS_ROGUE:	//vampire
-
-		if (GetUInt32Value(PLAYER_FIELD_CURRENT_SPEC_ID) == 538)		//Si Branche talent vampire - 538 correspond a ID de ChrSpecialization.dbc
-		{
-			if (_player->HasAura(300124) | _player->HasAura(300125))
-			{
-				setPowerType(POWER_DEMONIC_FURY);
-				SetMaxPower(POWER_DEMONIC_FURY, 100);
-			}
-			else
-			{
-				setPowerType(POWER_ENERGY);
-				SetMaxPower(POWER_ENERGY, 100);
-			}
-		}
-
-			_player->SaveToDB();
-
-		break;
-	case CLASS_PRIEST:
-		SetPower(POWER_SHADOW_ORBS, 0);						//Stitch RAZ POWER_SHADOW_ORBS a la connexion sinon bug visuel
-		break;
-	case CLASS_DEATH_KNIGHT:
-		break;
-	case CLASS_SHAMAN:
-		break;
-	case CLASS_MAGE:
-		break;
-	case CLASS_WARLOCK:
-		SetPower(POWER_SOUL_SHARDS, 0);						//Stitch RAZ POWER_SOUL_SHARDS a la connexion
-		break;
-	case CLASS_MONK:
-		break;
-	case CLASS_DRUID:
-		break;
-
-
-	}
-
-
-
-
-
+	ApprendLesSpells();
 
     // update level to hunter/summon pet
     if (Pet* pet = GetPet())
@@ -25311,7 +25186,7 @@ void Player::ResetTalentSpecialization()
                     RemoveTalent(talent);
 
 	//Stitch Vampire reset spells
-	if (GetUInt32Value(PLAYER_FIELD_CURRENT_SPEC_ID) == 538)		//Si Branche talent vampire (538) correspond a ID de ChrSpecialization.dbc
+	if (GetUInt32Value(PLAYER_FIELD_CURRENT_SPEC_ID) == PLAYER_SPEC_ID_VAMPIRE)		//Si Branche talent vampire (538) correspond a ID de ChrSpecialization.dbc
 	{
 		RemoveSpell(300124);
 		RemoveSpell(300125);
@@ -26356,68 +26231,6 @@ void Player::DeleteGarrison()
     }
 }
 
-
-void Player::ShowNeutralPlayerFactionSelectUI()					//Stitch
-{
-	WorldPacket data(SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI);
-	GetSession()->SendPacket(&data);
-}
-
-//Stitch SetPandaFactionAlliance
-void Player::SetPandaFactionAlliance()
-{
-	SetByteValue(UNIT_FIELD_BYTES_0, 0, RACE_PANDAREN_ALLIANCE);
-	setFactionForRace(RACE_PANDAREN_ALLIANCE);
-
-	if (getClass() != CLASS_DEATH_KNIGHT)		//Stitch Change race Panda : pas de tp Hurlevent
-	{
-		WorldLocation location(0, -9071.62f, 419.10f, 93.0f, 0.20f);
-		WorldRelocate(location);
-		SetHomebind(location, 9);
-	}
-
-	SetSkill(98, 0, 300, 300);
-	SetSkill(905, 0, 300, 300);
-	SetSkill(906, 0, 300, 300);
-	SetSkill(899, 0, 300, 300);
-	LearnSpell(668, false);			// Language Common
-	LearnSpell(108127, false);		// Language Pandaren
-	LearnSpell(108130, false);		// Langue (pandaren - alliance)
-	LearnSpell(131701, false);		// Langues pandaren Racial
-	KilledMonsterCredit(64594);
-
-	SaveToDB();
-	GetSession()->LogoutPlayer(false);
-}
-
-//Stitch SetPandaFactionHorde
-void Player::SetPandaFactionHorde()
-{
-	SetByteValue(UNIT_FIELD_BYTES_0, 0, RACE_PANDAREN_HORDE);
-	setFactionForRace(RACE_PANDAREN_HORDE);
-
-	if (getClass() != CLASS_DEATH_KNIGHT)		//Stitch Change race Panda : pas de tp Orgrimmar
-	{
-		WorldLocation location(1, 1374.12f, -4379.48f, 26.20f, 0.13f);
-		WorldRelocate(location);
-		SetHomebind(location, 363);
-	}
-
-
-	SetSkill(109, 0, 300, 300);
-	SetSkill(905, 0, 300, 300);
-	SetSkill(907, 0, 300, 300);
-	SetSkill(899, 0, 300, 300);
-	LearnSpell(669, false);		// Language Orc
-	LearnSpell(108127, false);	// Language Pandaren
-	LearnSpell(131701, false);	// Langues pandaren Racial
-	LearnSpell(143368, false);	// Langue(pandaren - horde)
-	KilledMonsterCredit(64594);
-
-	SaveToDB();
-	GetSession()->LogoutPlayer(false);
-}
-
 void Player::SendMovementSetCollisionHeight(float height)
 {
     WorldPackets::Movement::MoveSetCollisionHeight setCollisionHeight;
@@ -26988,4 +26801,123 @@ uint32 Player::DoRandomRoll(uint32 minimum, uint32 maximum)
         SendDirectMessage(randomRoll.Write());
 
     return roll;
+}
+
+// ***********************************
+// *             Stitch              *
+// ***********************************
+
+// Apprentissage des spells
+void Player::ApprendLesSpells()
+{
+	uint8 _class = getClass();
+
+	switch (_class)
+	{
+	case CLASS_WARRIOR:
+		break;
+	case CLASS_PALADIN:
+		break;
+	case CLASS_HUNTER:
+		setPowerType(POWER_FOCUS);
+		SetPower(POWER_FOCUS, 100);
+		break;
+	case CLASS_ROGUE:	// Vampire
+		if (GetUInt32Value(PLAYER_FIELD_CURRENT_SPEC_ID) == PLAYER_SPEC_ID_VAMPIRE) //Si Branche talent vampire - 538 correspond a ID de ChrSpecialization.dbc
+		{
+			if (HasAura(300124) || HasAura(300125))
+			{
+				setPowerType(POWER_DEMONIC_FURY);
+				SetMaxPower(POWER_DEMONIC_FURY, 100);
+			}
+			else
+			{
+				setPowerType(POWER_ENERGY);
+				SetMaxPower(POWER_ENERGY, 100);
+			}
+		}
+		break;
+	case CLASS_PRIEST:
+		// RAZ POWER_SHADOW_ORBS a la connexion sinon bug visuel
+		SetPower(POWER_SHADOW_ORBS, 0);	
+		break;
+	case CLASS_DEATH_KNIGHT:
+		break;
+	case CLASS_SHAMAN:
+		break;
+	case CLASS_MAGE:
+		break;
+	case CLASS_WARLOCK:
+		// RAZ POWER_SOUL_SHARDS a la connexion
+		SetPower(POWER_SOUL_SHARDS, 0);
+		break;
+	case CLASS_MONK:
+		break;
+	case CLASS_DRUID:
+		break;
+	}
+	
+	SaveToDB();
+}
+
+// ShowNeutralPlayerFactionSelectUI
+void Player::ShowNeutralPlayerFactionSelectUI()
+{
+	WorldPacket data(SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI);
+	GetSession()->SendPacket(&data);
+}
+
+// SetPandaFactionAlliance
+void Player::SetPandaFactionAlliance()
+{
+	SetByteValue(UNIT_FIELD_BYTES_0, 0, RACE_PANDAREN_ALLIANCE);
+	setFactionForRace(RACE_PANDAREN_ALLIANCE);
+
+	if (getClass() != CLASS_DEATH_KNIGHT)		// Change race Panda : pas de tp Hurlevent
+	{
+		WorldLocation location(0, -9071.62f, 419.10f, 93.0f, 0.20f);
+		WorldRelocate(location);
+		SetHomebind(location, 9);
+	}
+
+	SetSkill(98, 0, 300, 300);
+	SetSkill(905, 0, 300, 300);
+	SetSkill(906, 0, 300, 300);
+	SetSkill(899, 0, 300, 300);
+	LearnSpell(668, false);			// Language Common
+	LearnSpell(108127, false);		// Language Pandaren
+	LearnSpell(108130, false);		// Langue (pandaren - alliance)
+	LearnSpell(131701, false);		// Langues pandaren Racial
+	KilledMonsterCredit(64594);
+
+	SaveToDB();
+	GetSession()->LogoutPlayer(false);
+}
+
+//Stitch SetPandaFactionHorde
+void Player::SetPandaFactionHorde()
+{
+	SetByteValue(UNIT_FIELD_BYTES_0, 0, RACE_PANDAREN_HORDE);
+	setFactionForRace(RACE_PANDAREN_HORDE);
+
+	if (getClass() != CLASS_DEATH_KNIGHT)		// Change race Panda : pas de tp Orgrimmar
+	{
+		WorldLocation location(1, 1374.12f, -4379.48f, 26.20f, 0.13f);
+		WorldRelocate(location);
+		SetHomebind(location, 363);
+	}
+
+
+	SetSkill(109, 0, 300, 300);
+	SetSkill(905, 0, 300, 300);
+	SetSkill(907, 0, 300, 300);
+	SetSkill(899, 0, 300, 300);
+	LearnSpell(669, false);		// Language Orc
+	LearnSpell(108127, false);	// Language Pandaren
+	LearnSpell(131701, false);	// Langues pandaren Racial
+	LearnSpell(143368, false);	// Langue(pandaren - horde)
+	KilledMonsterCredit(64594);
+
+	SaveToDB();
+	GetSession()->LogoutPlayer(false);
 }
