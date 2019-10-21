@@ -87,8 +87,8 @@ private:
 			bool m_Solocraft = sConfigMgr->GetBoolDefault("Aquayoup.Solocraft", false);
 			if (m_Solocraft)
 			{
-				player->HandleStatModifier(UnitMods(UNIT_MOD_MANA), TOTAL_PCT, float(difficulty * 75), true);// Total mana
-				player->HandleStatModifier(UnitMods(UNIT_MOD_HEALTH), TOTAL_PCT, float(difficulty * 75), true);
+				player->HandleStatModifier(UnitMods(UNIT_MOD_MANA), TOTAL_PCT, float(difficulty * 50), true);// Total mana
+				player->HandleStatModifier(UnitMods(UNIT_MOD_HEALTH), TOTAL_PCT, float(difficulty * 50), true);
 
 				player->RemoveAurasDueToSpell(300047);// pour risque de doublon , retire toutes les auras 300047
 				player->AddAura(300047, player);
@@ -119,8 +119,8 @@ private:
 			bool m_Solocraft = sConfigMgr->GetBoolDefault("Aquayoup.Solocraft", false);
 			if (m_Solocraft)
 			{
-			player->HandleStatModifier(UnitMods(UNIT_MOD_MANA), TOTAL_PCT, float(difficulty * 75), false);
-			player->HandleStatModifier(UnitMods(UNIT_MOD_HEALTH), TOTAL_PCT, float(difficulty * 75), false);
+			player->HandleStatModifier(UnitMods(UNIT_MOD_MANA), TOTAL_PCT, float(difficulty * 50), false);
+			player->HandleStatModifier(UnitMods(UNIT_MOD_HEALTH), TOTAL_PCT, float(difficulty * 50), false);
 			player->RemoveAurasDueToSpell(300047);// pour risque de doublon , retire toutes les auras 300047
 			}
 
