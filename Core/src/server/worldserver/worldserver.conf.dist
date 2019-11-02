@@ -13,9 +13,9 @@ Guild.UndeletableLevel = 4
 
 # Guilde ###
 # Stitch.Guild.Nom : Nom de la guilde par defaut (Tout nouveau perso en fait partie)
-# Stitch.Guild.Message : Message de la guilde.
+# Stitch.Guild.Message : Guilde par defaut , /gquit pour la quiter , voir worldserver.conf pour changer le nom.
 Stitch.Guild.Nom = "AquaYoup"
-Stitch.Guild.Message = "Salutation du jour"
+Stitch.Guild.Message = "Guilde par defaut , /gquit pour la quiter , voir worldserver.conf pour changer le nom"
 
 # Solocraft actif pour les instances (0 ou 1)
 Aquayoup.Solocraft = 1
@@ -159,7 +159,7 @@ HotfixDatabaseInfo    = "127.0.0.1;3306;trinity;trinity;hotfixes"
 #                     1 - (HotfixDatabase.WorkerThreads)
 
 LoginDatabase.WorkerThreads     = 1
-WorldDatabase.WorkerThreads     = 1
+WorldDatabase.WorkerThreads     = 6
 CharacterDatabase.WorkerThreads = 1
 HotfixDatabase.WorkerThreads    = 1
 
@@ -174,7 +174,7 @@ HotfixDatabase.WorkerThreads    = 1
 #                     1 - (HotfixDatabase.WorkerThreads)
 
 LoginDatabase.SynchThreads     = 1
-WorldDatabase.SynchThreads     = 1
+WorldDatabase.SynchThreads     = 6
 CharacterDatabase.SynchThreads = 2
 HotfixDatabase.SynchThreads    = 1
 
@@ -516,7 +516,7 @@ AddonChannel = 1
 #        Description: Number of threads to update maps.
 #        Default:     1
 
-MapUpdate.Threads = 1
+MapUpdate.Threads = 6
 
 #
 #    CleanCharacterDB
