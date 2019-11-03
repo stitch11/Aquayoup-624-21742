@@ -23711,6 +23711,9 @@ uint32 Player::GetResurrectionSpellId() const
     uint32 prio = 0;
     uint32 spell_id = 0;
     AuraEffectList const& dummyAuras = GetAuraEffectsByType(SPELL_AURA_DUMMY);
+
+
+
     for (AuraEffectList::const_iterator itr = dummyAuras.begin(); itr != dummyAuras.end(); ++itr)
     {
         // Soulstone Resurrection                           // prio: 3 (max, non death persistent)
@@ -23719,18 +23722,21 @@ uint32 Player::GetResurrectionSpellId() const
             spell_id =  3026;
             prio = 3;
         }
-        // Twisting Nether                                  // prio: 2 (max)
+/*
+	// Twisting Nether                                  // prio: 2 (max)
         else if ((*itr)->GetId() == 23701 && roll_chance_i(10))
         {
             prio = 2;
             spell_id = 23700;
         }
+*/
+
     }
 
     // Reincarnation (passive spell)  // prio: 1
-    if (prio < 1 && HasSpell(20608) && !GetSpellHistory()->HasCooldown(21169))
-        spell_id = 21169;
-
+//    if (prio < 1 && HasSpell(20608) && !GetSpellHistory()->HasCooldown(21169))
+//        spell_id = 21169;
+		
 //Stitch rez :  Pierre de rez auto pour tous ( recharge 0s , cast 15s )
 	if (spell_id == 0)
 	{
