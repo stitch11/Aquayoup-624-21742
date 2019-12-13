@@ -423,7 +423,12 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 		SetSpeedRate(MOVE_WALK, 1.5f);				// hors combat
 		SetSpeedRate(MOVE_RUN, 2.0f);				// en combat
 	}
-
+	// Bestiole , Mascotte pacifique , Mascotte sauvage , Nuage de gaz
+	if (Crspeed == 1.0f && (Crtype == CREATURE_TYPE_CRITTER || Crtype == CREATURE_TYPE_NON_COMBAT_PET || Crtype == CREATURE_TYPE_WILD_PET || Crtype == CREATURE_TYPE_GAS_CLOUD))
+	{
+		SetSpeedRate(MOVE_WALK, 0.3f);				// hors combat
+		SetSpeedRate(MOVE_RUN, 1.0f);				// en combat
+	}
 
 // FAMILY
 	if (Crspeed == 1.0f)
@@ -449,8 +454,8 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			SetSpeedRate(MOVE_RUN, 1.3f);				// en combat
 			SetSpeedRate(MOVE_SWIM, 0.5f);			// en nageant
 		}
-		// crocodile, Crabe, Tortue, Serpent, Goule, Singe, Zombie, Basilic, Araignee, 
-		if (Crfamily == CREATURE_FAMILY_CROCOLISK || Crfamily == CREATURE_FAMILY_CRAB || Crfamily == CREATURE_FAMILY_TURTLE || Crfamily == CREATURE_FAMILY_SERPENT || Crfamily == CREATURE_FAMILY_GHOUL || Crfamily == CREATURE_FAMILY_MONKEY || Crfamily == CREATURE_FAMILY_ZOMBIE || Crfamily == CREATURE_FAMILY_BASILISK || Crfamily == CREATURE_FAMILY_SPIDER )
+		// crocodile, Crabe, Tortue, Serpent, Goule, Singe, Zombie, Basilic, Araignee, Grue
+		if (Crfamily == CREATURE_FAMILY_CROCOLISK || Crfamily == CREATURE_FAMILY_CRAB || Crfamily == CREATURE_FAMILY_TURTLE || Crfamily == CREATURE_FAMILY_SERPENT || Crfamily == CREATURE_FAMILY_GHOUL || Crfamily == CREATURE_FAMILY_MONKEY || Crfamily == CREATURE_FAMILY_ZOMBIE || Crfamily == CREATURE_FAMILY_BASILISK || Crfamily == CREATURE_FAMILY_SPIDER || Crfamily == CREATURE_FAMILY_CRANE)
 		{
 			SetSpeedRate(MOVE_WALK, 0.4f);				// hors combat
 			SetSpeedRate(MOVE_RUN, 1.0f);				// en combat
