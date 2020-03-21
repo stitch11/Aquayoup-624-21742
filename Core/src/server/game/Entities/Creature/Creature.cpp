@@ -428,8 +428,8 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 	//Machine
 	if (Crspeed == 1.0f && (Crtype == CREATURE_TYPE_MECHANICAL))
 	{
-		SetSpeedRate(MOVE_WALK, 1.5f);				// hors combat
-		SetSpeedRate(MOVE_RUN, 2.0f);				// en combat
+		SetSpeedRate(MOVE_WALK, 0.65f);				// hors combat
+		SetSpeedRate(MOVE_RUN, 1.0f);				// en combat
 	}
 	// Bestiole , Mascotte pacifique , Mascotte sauvage , Nuage de gaz
 	if (Crspeed == 1.0f && (Crtype == CREATURE_TYPE_CRITTER || Crtype == CREATURE_TYPE_NON_COMBAT_PET || Crtype == CREATURE_TYPE_WILD_PET || Crtype == CREATURE_TYPE_GAS_CLOUD))
