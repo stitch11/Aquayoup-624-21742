@@ -412,9 +412,9 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 
 // TYPE
 	//elementaire 
-	if (Crspeed == 1.0f && (Crtype == CREATURE_TYPE_ELEMENTAL))
+	if (Crspeed == 1.0f && (Crtype == CREATURE_TYPE_ELEMENTAL || Crtype == CREATURE_TYPE_UNDEAD))
 	{
-		SetSpeedRate(MOVE_WALK, 0.4f);				// hors combat
+		SetSpeedRate(MOVE_WALK, 0.5f);				// hors combat
 		SetSpeedRate(MOVE_RUN, 1.0f);				// en combat
 		SetSpeedRate(MOVE_SWIM, 0.4f);				// en nageant
 	}
