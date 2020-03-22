@@ -410,6 +410,11 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 	uint16 Crfamily = GetCreatureTemplate()->family;
 	uint16 Crspeed = GetCreatureTemplate()->speed_walk;
 
+	if (Crtype == CREATURE_TYPE_BEAST) // Pas d'equipement pour les betes
+	{
+	LoadEquipment(0, true);
+	}
+
 // TYPE
 	//elementaire 
 	if (Crspeed == 1.0f && (Crtype == CREATURE_TYPE_ELEMENTAL || Crtype == CREATURE_TYPE_UNDEAD))
