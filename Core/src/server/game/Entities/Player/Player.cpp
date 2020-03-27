@@ -841,8 +841,7 @@ void Player::HandleDrowning(uint32 time_diff)
 	if (GetZoneId() == 5144) { StopMirrorTimer(BREATH_TIMER); StopMirrorTimer(FATIGUE_TIMER); return; }	// Etendues Chatoyantes
 	if (GetZoneId() == 5146) { StopMirrorTimer(BREATH_TIMER); StopMirrorTimer(FATIGUE_TIMER); return; }	// Etendues Chatoyantes
 
-
-	
+	if (GetMapId() == 646) { StopMirrorTimer(BREATH_TIMER); StopMirrorTimer(FATIGUE_TIMER); return; } // fatigue annulé en Trefonds
 											
 											// In water
     if (m_MirrorTimerFlags & UNDERWATER_INWATER)
