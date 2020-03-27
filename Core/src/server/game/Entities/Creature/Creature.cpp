@@ -417,14 +417,14 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 
 // TYPE
 	//elementaire 
-	if (Crspeed == 1.0f && (Crtype == CREATURE_TYPE_ELEMENTAL || Crtype == CREATURE_TYPE_UNDEAD))
+	if (Crspeed == 1.0f && (Crtype == CREATURE_TYPE_UNDEAD))
 	{
 		SetSpeedRate(MOVE_WALK, 0.5f);				// hors combat
 		SetSpeedRate(MOVE_RUN, 1.0f);				// en combat
 		SetSpeedRate(MOVE_SWIM, 0.4f);				// en nageant
 	}
 	// Geant 
-	if (Crspeed == 1.0f && (Crtype == CREATURE_TYPE_GIANT))
+	if (Crspeed == 1.0f && (Crtype == CREATURE_TYPE_GIANT || Crtype == CREATURE_TYPE_ELEMENTAL))
 	{
 		SetSpeedRate(MOVE_WALK, 0.8f);				// hors combat
 		SetSpeedRate(MOVE_RUN, 1.2f);				// en combat
@@ -498,7 +498,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 		//Serpent des vents,Succube,Doomguard,Raie du Neant,Guepe,Seigneur du Vide
 		if (Crfamily == CREATURE_FAMILY_WIND_SERPENT || Crfamily == CREATURE_FAMILY_SUCCUBUS || Crfamily == CREATURE_FAMILY_DOOMGUARD || Crfamily == CREATURE_FAMILY_NETHER_RAY || Crfamily == CREATURE_FAMILY_WASP || Crfamily == CREATURE_FAMILY_VOIDLORD)
 		{
-			SetSpeedRate(MOVE_WALK, 0.6f);				// hors combat
+			SetSpeedRate(MOVE_WALK, 0.75f);				// hors combat
 			SetSpeedRate(MOVE_RUN, 1.0f);				// en combat
 			SetSpeedRate(MOVE_SWIM, 0.8f);				// en nageant
 		}
