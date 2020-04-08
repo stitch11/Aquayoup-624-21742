@@ -383,7 +383,7 @@ void ObjectMgr::LoadGossipMenuItemsLocales()
         Field* fields = result->Fetch();
 
         uint32 menuId   = fields[0].GetUInt32(); //Stitch locales_gossip_menu_option plus de limitation de l'ID a 65535
-        uint16 id       = fields[1].GetUInt32();
+        uint32 id       = fields[1].GetUInt32();
 
         GossipMenuItemsLocale& data = _gossipMenuItemsLocaleStore[MAKE_PAIR64(menuId, id)];
 
