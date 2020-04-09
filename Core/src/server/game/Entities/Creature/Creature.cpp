@@ -416,7 +416,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 	}
 
 // TYPE
-	//elementaire 
+	//elementaire ,	Mort-vivant
 	if (Crspeed == 1.0f && (Crtype == CREATURE_TYPE_UNDEAD || Crtype == CREATURE_TYPE_ELEMENTAL))
 	{
 		SetSpeedRate(MOVE_WALK, 0.5f);				// hors combat
@@ -435,6 +435,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 	{
 		SetSpeedRate(MOVE_WALK, 0.65f);				// hors combat
 		SetSpeedRate(MOVE_RUN, 1.0f);				// en combat
+		SetSpeedRate(MOVE_SWIM, 0.65f);				// en nageant
 	}
 	// Bestiole , Mascotte pacifique , Mascotte sauvage , Nuage de gaz
 	if (Crspeed == 1.0f && (Crtype == CREATURE_TYPE_CRITTER || Crtype == CREATURE_TYPE_NON_COMBAT_PET || Crtype == CREATURE_TYPE_WILD_PET || Crtype == CREATURE_TYPE_GAS_CLOUD))
@@ -443,6 +444,14 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 		SetSpeedRate(MOVE_RUN, 1.0f);				// en combat
 		SetSpeedRate(MOVE_SWIM, 0.5f);				// en nageant
 	}
+	// Humanoide , Non specifie , 
+		if (Crspeed == 1.0f && (Crtype == CREATURE_TYPE_HUMANOID || Crtype == CREATURE_TYPE_NOT_SPECIFIED ))
+		{
+		SetSpeedRate(MOVE_WALK, 0.6f);				// hors combat
+	    SetSpeedRate(MOVE_RUN, 1.0f);				// en combat
+	    SetSpeedRate(MOVE_SWIM, 0.6f);				// en nageant
+	}
+
 
 // FAMILY
 	if (Crspeed == 1.0f)
