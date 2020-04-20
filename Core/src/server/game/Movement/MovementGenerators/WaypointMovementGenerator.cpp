@@ -257,9 +257,7 @@ uint32 FlightPathMovementGenerator::GetPathAtMapEnd() const
     return i_path.size();
 }
 
-// #define SKIP_SPLINE_POINT_DISTANCE_SQ (40.0f * 40.0f)
-#define SKIP_SPLINE_POINT_DISTANCE_SQ (10.0f * 10.0f) //Stitch Pathfinder , distance entre 2 points (En test)
-
+#define SKIP_SPLINE_POINT_DISTANCE_SQ (40.0f * 40.0f)
 
 
 bool IsNodeIncludedInShortenedPath(TaxiPathNodeEntry const* p1, TaxiPathNodeEntry const* p2)
