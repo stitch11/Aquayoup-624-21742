@@ -369,7 +369,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
     SetNativeDisplayId(displayID);
     SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_GENDER, minfo->gender);
 
-//Stitch creature equipé au spawn
+//Stitch mobs equipé au spawn
     // Load creature equipment
 
 
@@ -444,7 +444,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 		SetSpeedRate(MOVE_RUN, 1.0f);				// en combat
 		SetSpeedRate(MOVE_SWIM, 0.5f);				// en nageant
 	}
-	// Humanoide , Non specifie , 
+	// Humanoide , Non specifié  
 		if (Crspeed == 1.0f && (Crtype == CREATURE_TYPE_HUMANOID || Crtype == CREATURE_TYPE_NOT_SPECIFIED ))
 		{
 		SetSpeedRate(MOVE_WALK, 0.6f);				// hors combat
