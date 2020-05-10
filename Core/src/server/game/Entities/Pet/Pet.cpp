@@ -1089,8 +1089,10 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 					SetMaxPower(POWER_FOCUS, 100);
 					break;
 				}
-				case 510: // mage Water Elemental
+				case 510: // mage Elémentaire d'eau
 				{
+					setPowerType(POWER_MANA);
+					SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA));
 					SetBonusDamage(int32(GetOwner()->SpellBaseDamageBonusDone(SPELL_SCHOOL_MASK_FROST) * 0.33f));
 					break;
 				}
