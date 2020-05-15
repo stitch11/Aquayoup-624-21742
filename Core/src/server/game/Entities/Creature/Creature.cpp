@@ -497,8 +497,8 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			SetSpeedRate(MOVE_WALK, 1.8f);				// hors combat
 			SetSpeedRate(MOVE_RUN, 1.8f);				// en combat
 		}
-		//Imp , Goul , Custom
-		if (Crfamily == CREATURE_FAMILY_IMP || Crfamily == CREATURE_FAMILY_BEETLE || Crfamily == CREATURE_FAMILY_HORSE_CUSTOM )
+		//Imp , Goul , Custom , Trotteur aquatique
+		if (Crfamily == CREATURE_FAMILY_IMP || Crfamily == CREATURE_FAMILY_BEETLE || Crfamily == CREATURE_FAMILY_HORSE_CUSTOM || CREATURE_FAMILY_WATERSTRIDER)
 		{
 			SetSpeedRate(MOVE_WALK, 0.5f);				// hors combat
 			SetSpeedRate(MOVE_RUN, 1.0f);				// en combat
