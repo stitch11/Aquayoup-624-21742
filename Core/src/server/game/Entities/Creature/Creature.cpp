@@ -644,6 +644,14 @@ void Creature::Update(uint32 diff)
 
     UpdateMovementFlags();
 
+//Stitch Vitesse de nage en combat : bete , Elementaire 
+	uint16 Crtype = GetCreatureTemplate()->type;
+	if (IsInCombat() & (Crtype == CREATURE_TYPE_BEAST || Crtype == CREATURE_TYPE_ELEMENTAL))
+	{
+		SetSpeedRate(MOVE_SWIM, 2.5f); 
+	}
+
+
     switch (m_deathState)
     {
         case JUST_RESPAWNED:
@@ -2809,7 +2817,7 @@ void Creature::UpdateMovementFlags()
         SetFall(false);
 
 //Stitch mouvement dans l'eau : pour ne pas sautiller en combat mais provoque la chute une fois mort - uniquement en Vashj'ir
-	if (GetCreatureTemplate()->InhabitType & INHABIT_WATER && IsInWater() && (GetZoneId() == 4815 || (GetZoneId() == 5144) || (GetZoneId() == 5146)))		
+	if (GetCreatureTemplate()->InhabitType & INHABIT_WATER && IsInWater()) /* && (GetZoneId() == 4815 || GetZoneId() == 5144 || GetZoneId() == 5146)  )*/
 	{
 		SetDisableGravity(true);
 	}
