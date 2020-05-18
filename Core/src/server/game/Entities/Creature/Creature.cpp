@@ -1822,7 +1822,9 @@ void Creature::setDeathState(DeathState s)
         if (m_formation && m_formation->getLeader() == this)
             m_formation->FormationReset(true);
 
-        if ((CanFly() || IsFlying()))
+		//Stitch les cadavres ne coulent pas
+		//if ((CanFly() || IsFlying()))
+		if ((CanFly() || IsFlying()) && !IsUnderWater())
             GetMotionMaster()->MoveFall();
 
         Unit::setDeathState(CORPSE);
