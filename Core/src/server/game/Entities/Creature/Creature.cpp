@@ -646,7 +646,8 @@ void Creature::Update(uint32 diff)
 
 //Stitch Vitesse de nage en combat : bete , Elementaire 
 	uint16 Crtype = GetCreatureTemplate()->type;
-	if (IsInCombat() & (Crtype == CREATURE_TYPE_BEAST || Crtype == CREATURE_TYPE_ELEMENTAL))
+	uint16 Crfamily = GetCreatureTemplate()->family;
+	if (IsInCombat() & ((Crtype == CREATURE_TYPE_BEAST && Crfamily ==0 ) || Crtype == CREATURE_TYPE_ELEMENTAL))
 		SetSpeedRate(MOVE_SWIM, 2.5f); 
 	else
 		SetSpeedRate(MOVE_SWIM, 1.0f);
