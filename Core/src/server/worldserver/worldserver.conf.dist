@@ -21,13 +21,13 @@ Stitch.Guild.Message = "Guilde par defaut , /gquit pour la quiter , voir worldse
 Aquayoup.Solocraft = 1
 
 # FunRate ###  
-# FunAllStat 				- Defaut/Arcade : 2/2	- Multiplicateur des stats joueur
-# FunDamageDefaut 	- Defaut/Arcade : 1/2	- Multiplicateur de degat des armes fait par un joueur 
-# FunDamageSpell		- Defaut/Arcade : 2/2	- Multiplicateur de degat des sorts fait par un joueur 
-# FunHealSpell			- Defaut/Arcade : 2/2	- Multiplicateur de heal & Leech des sorts  fait par un joueur 
-# FunSpeedCast			- Defaut/Arcade : 3/1	- Multiplicateur de temps pour lancer un sort (affichage non modifié)
-# FunArmor					- Defaut/Arcade : 1/1	- Multiplicateur d'armure
-# FunPowerRegen 		- Defaut/Arcade : 1/3	- Ralentisseur du regen (de 1:lent a 5:rapide) de mana , energie , focus , Fureur démoniaque , runes
+# FunAllStat 				- Defaut/Arcade : 2	- Coefficient des stats joueur (1=50% | 2=normal | 3=150% | 4=200% etc)
+# FunDamageDefaut 	- Defaut/Arcade : 1	- Coefficient de degat des armes fait par un joueur (1=normal | 2=150% | 3=200% etc)
+# FunDamageSpell		- Defaut/Arcade : 2	- Coefficient de degat des sorts fait par un joueur (1=50% | 2=normal | 3=150% | 4=200% etc)
+# FunHealSpell			- Defaut/Arcade : 2	- Coefficient de heal & Leech des sorts  fait par un joueur (1=50% | 2=normal | 3=150% | 4=200% etc)
+# FunSpeedCast			- Defaut/Arcade : 1	- Coefficient de temps pour lancer un sort (affichage non modifié) (1=Normal | 2=200% | 3=300% : tres lent)
+# FunArmor					- Defaut/Arcade : 1	- Coefficient d'armure (1=normal | 2=200% | 3=300% etc)
+# FunPowerRegen 		- Defaut/Arcade : 2	- Coefficient du regen (de 1:lent a 5:rapide) de mana , energie , focus , Fureur démoniaque , runes
 
 FunAllStat = 2
 FunDamageDefaut = 1
@@ -35,7 +35,12 @@ FunDamageSpell = 2
 FunHealSpell = 2
 FunSpeedCast = 1
 FunArmor	= 1
-FunPowerRegen = 1
+FunPowerRegen = 2
+
+
+
+
+
 
 
 ###################################################################################################

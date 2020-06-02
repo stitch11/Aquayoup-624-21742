@@ -10548,7 +10548,8 @@ void Unit::ModSpellCastTime(SpellInfo const* spellInfo, int32 & castTime, Spell*
         return;
 
 //Stitch FunRate FunSpeedCast
-	m_FunSpeedCast = sConfigMgr->GetIntDefault("FunSpeedCast", 3);
+	m_FunSpeedCast = sConfigMgr->GetIntDefault("FunSpeedCast", 1);
+	if (m_FunSpeedCast < 1) { m_FunSpeedCast = 1; }
 	castTime = castTime * m_FunSpeedCast ; 
 
     // called from caster
@@ -15473,10 +15474,10 @@ void Unit::RewardRage(uint32 baseRage)
 
 	//Stitch FunRate m_FunPowerRegen rage ours
 //    ModifyPower(POWER_RAGE, uint32(addRage * 1));
-	uint32 m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 3);
+	uint32 m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 2);
 	if (m_FunPowerRegen > 5 || m_FunPowerRegen < 1)
 	{
-		m_FunPowerRegen = 3;
+		m_FunPowerRegen = 2;
 	}
 	ModifyPower(POWER_RAGE, uint32(addRage * m_FunPowerRegen * 35));
 }

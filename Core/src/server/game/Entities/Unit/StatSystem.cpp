@@ -32,6 +32,8 @@ uint32 m_FunDamageDefaut = sConfigMgr->GetIntDefault("FunDamageDefaut", 1);
 uint32 m_FunAllStat = sConfigMgr->GetIntDefault("FunAllStat", 2);
 uint32 m_FunArmor;
 
+
+
 inline bool _ModifyUInt32(bool apply, uint32& baseValue, int32& amount)
 {
     // If amount is negative, change sign and value of apply.
@@ -51,6 +53,8 @@ inline bool _ModifyUInt32(bool apply, uint32& baseValue, int32& amount)
     }
     return apply;
 }
+
+
 
 /*#######################################
 ########                         ########
@@ -203,6 +207,10 @@ bool Player::UpdateAllStats()
         float value = GetTotalStatValue(Stats(i));
 
 //Stitch FunRate m_FunAllStat
+		if (m_FunAllStat < 1)
+		{
+			m_FunAllStat = 1;
+		}
 //		SetStat(Stats(i), int32(value));				
 		SetStat(Stats(i), int32(value) /2 * m_FunAllStat);
     }
@@ -285,6 +293,7 @@ void Player::UpdateArmor()
 
 //Stitch FunRate FunArmor
 	m_FunArmor = sConfigMgr->GetIntDefault("FunArmor", 1);
+	if (m_FunArmor < 1) { m_FunArmor = 1; }
     SetArmor(int32(value)*m_FunArmor);		
 
     Pet* pet = GetPet();
@@ -452,6 +461,12 @@ void Player::CalculateMinMaxDamage(WeaponAttackType attType, bool normalized, bo
 
     float weaponMinDamage = GetWeaponDamageRange(attType, MINDAMAGE);
     float weaponMaxDamage = GetWeaponDamageRange(attType, MAXDAMAGE);
+
+	//Stitch FunRate
+	if (m_FunDamageDefaut < 1)
+	{
+		m_FunDamageDefaut = 1;
+	}
 
     if (IsInFeralForm()) // check if player is druid and in cat or bear forms
     {
