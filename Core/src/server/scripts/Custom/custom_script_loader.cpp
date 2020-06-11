@@ -17,8 +17,9 @@
 
 // This is where scripts' loading functions should be declared:
 void AddSC_solocraft();
-void AddSC_Stitch_npc_ai_level_scale();
-void AddSC_npc_levels();
+void AddSC_Stitch_npc_ai_level_scale();			//Stitch Pour npc . A l'agro s'adapte au level de l'agresseur - AI Caster
+void AddSC_npc_levels();						//Stitch PNJ Level et Lieux de depart avec réputation & equipements
+void AddSC_npc_changer();						//Stitch PNJ change race , faction , rename et custom 15000142
 
 // The name of this function should match:
 // void Add${NameOfDirectory}Scripts()
@@ -27,4 +28,5 @@ void AddCustomScripts()
 		AddSC_solocraft();
 		AddSC_Stitch_npc_ai_level_scale();
 		AddSC_npc_levels();
+		AddSC_npc_changer();
 }
