@@ -17,10 +17,10 @@
 
 // This is where scripts' loading functions should be declared:
 void AddSC_solocraft();
-void AddSC_Stitch_npc_ai_level_scale();			//Stitch Pour npc . A l'agro s'adapte au level de l'agresseur - AI Caster
-void AddSC_npc_levels();						//Stitch PNJ Level et Lieux de depart avec réputation & equipements
-void AddSC_npc_changer();						//Stitch PNJ change race , faction , rename et custom 15000142
-void AddSC_npc_ChangeFactionPanda_quete();		//Stitch choix de faction des panda pour la quete finale 31450 by monsieur Noc
+void AddSC_Stitch_npc_ai_level_scale();			// Pour npc . A l'agro s'adapte au level de l'agresseur - AI Caster
+void AddSC_npc_levels();						// PNJ Level et Lieux de depart avec réputation & equipements
+void AddSC_npc_changer();						// PNJ change race , faction , rename et custom 15000142
+void AddSC_npc_ChangeFactionPanda_quete();		// Choix de faction des panda pour la quete finale 31450 by monsieur Noc
 
 
 
