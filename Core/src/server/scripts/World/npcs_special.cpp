@@ -1901,8 +1901,8 @@ public:
 
 #define EXP_COST                100000 //10 00 00 copper (10golds)
 #define GOSSIP_TEXT_EXP         14736
-#define GOSSIP_XP_OFF           "I no longer wish to gain experience."
-#define GOSSIP_XP_ON            "I wish to start gaining experience again."
+#define GOSSIP_XP_OFF           "Je ne souhaite plus acquerir d'experience."
+#define GOSSIP_XP_ON            "Je souhaite recommencer a acquerir de l'experience."
 
 class npc_experience : public CreatureScript
 {
