@@ -1,26 +1,27 @@
 //################################################################################################
 //Stitch npc_level_scale - A l'agro s'adapte au level de l'agresseur + AI generique
 // Ces mobs utilisent les sorts definit dans Creature_Template->spellx
-// Spell1 : Buff a l'agro
-// Spell2 : Sort sur la cible a l'agro
-// Spell3 : Sort sur la cible pendant le combat
-// Spell4 : Sort Dot sur la cible pendant le combat
-// Druide equilibre : UPDATE `creature_template` SET `spell1` = 1126,`spell2` = 2912,`spell3` = 119577, `spell4` = 8921,`ScriptName` = 'Stitch_npc_ai_level_scale_caster' WHERE (entry = 15000319);
-// Mage : UPDATE `creature_template` SET `spell1` = 165743, `spell2` = 31589, `spell3` = 9053, `spell4` = 31589, `ScriptName` = 'Stitch_npc_ai_level_scale_caster' WHERE(entry = 15000319);
-// Demo : UPDATE `creature_template` SET `spell1` = 79934, `spell2` = 348, `spell3` = 686, `spell4` = 172, `ScriptName` = 'Stitch_npc_ai_level_scale_caster' WHERE(entry = 15000319);
+// Il est possible de modifier le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
+// Ajustez les mélée avec UPDATE `creature_template` SET `ArmorModifier` = 2,`DamageModifier` = 2 WHERE (entry = 15000317);
+// Spell1   : Buff a l'agro
+// Spell2   : Sort sur la cible a l'agro
+// Spell3   : Sort sur la cible pendant le combat
+// Spell4   : Sort Dot sur la cible pendant le combat
+// Druide   : UPDATE `creature_template` SET `spell1` = 1126,`spell2` = 2912,`spell3` = 119577, `spell4` = 15798,`BaseAttackTime` = 2500, `RangeAttackTime` = 3000,`ScriptName` = 'Stitch_npc_ai_level_scale_caster' WHERE (entry = 15000319);
+// Mage     : UPDATE `creature_template` SET `spell1` = 165743, `spell2` = 31589, `spell3` = 9053, `spell4` = 31589, `ScriptName` = 'Stitch_npc_ai_level_scale_caster' WHERE(entry = 15000319);
+// Demo     : UPDATE `creature_template` SET `spell1` = 79934, `spell2` = 348, `spell3` = 686, `spell4` = 172, `ScriptName` = 'Stitch_npc_ai_level_scale_caster' WHERE(entry = 15000319);
 // Chasseur : UPDATE `creature_template` SET `spell1` = 1543, `spell2` = 145663, `spell3` = 171943, `spell4` = 31975, `ScriptName` = 'Stitch_npc_ai_level_scale_caster' WHERE(entry = 15000319);
-// Chaman : UPDATE `creature_template` SET `spell1` = 324, `spell2` = 8056, `spell3` = 9532, `spell4` = 51505, `ScriptName` = 'Stitch_npc_ai_level_scale_caster' WHERE(entry = 15000319);
-// Pretre : UPDATE `creature_template` SET `spell1` = 15473, `spell2` = 2944, `spell3` = 15407, `spell4` = 48045, `ScriptName` = 'Stitch_npc_ai_level_scale_caster' WHERE(entry = 15000319);
+// Chaman   : UPDATE `creature_template` SET `spell1` = 324, `spell2` = 8056, `spell3` = 9532, `spell4` = 51505, `ScriptName` = 'Stitch_npc_ai_level_scale_caster' WHERE(entry = 15000319);
+// Pretre   : UPDATE `creature_template` SET `spell1` = 15473, `spell2` = 2944, `spell3` = 15407, `spell4` = 48045, `ScriptName` = 'Stitch_npc_ai_level_scale_caster' WHERE(entry = 15000319);
+// Guerrier : UPDATE `creature_template` SET `spell1` = 2457,`spell2` = 32323,`spell3` = 29426, `spell4` = 36991,`BaseAttackTime` = 3500, `RangeAttackTime` = 3500,`ScriptName` = 'Stitch_npc_ai_level_scale_melee' WHERE (entry = 15000317);
 //################################################################################################
-
-
-
 
 
 
 //################################################################################################
 //Stitch Stitch_npc_ai_level_scale_caster - A l'agro s'adapte au level de l'agresseur - AI Caster
 //################################################################################################
+
 
 class Stitch_npc_ai_level_scale_caster : public CreatureScript
 {
@@ -30,94 +31,133 @@ public: Stitch_npc_ai_level_scale_caster() : CreatureScript("Stitch_npc_ai_level
 		{
 			Stitch_npc_ai_level_scale_casterAI(Creature* creature) : ScriptedAI(creature) { }
 
+			uint32 spellbuf = me->m_spells[0];
+			uint32 spellagro = me->m_spells[1];
+			uint32 spellagrornd;
+			uint32 distancedecast = 20.0f;
 			uint32 spell = me->m_spells[2];
 			uint32 spelldot = me->m_spells[3];
 			uint32 spelltimerdot = 3000;
+			uint32 spelltimer = 100;
+			Unit* victim = me->GetVictim();
+
+
 
 			void JustRespawned()  override
 			{
-				me->SetLevel(95);	// repasse au lvl 95 pour l'agro suivante
-
-				// Rafraichissement de sa vie
-				CreatureTemplate const* cInfo = me->GetCreatureTemplate();
-				CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(100, 1);
-				uint32 basehp = stats->GenerateHealth(cInfo);
-				uint32 health = uint32(basehp * 1.1);
-				me->SetCreateHealth(health);
-				me->SetMaxHealth(health);
+				initlevelmob();
 			}
 			void EnterCombat(Unit* /*who*/) override
-			{
-				Unit* victim = me->GetVictim();
-				uint32 _level = victim->getLevel();
-				me->SetLevel(_level);
-
-				// Rafraichissement de sa vie
-				CreatureTemplate const* cInfo = me->GetCreatureTemplate();
-				CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(_level, 1);
-				uint32 basehp = stats->GenerateHealth(cInfo);
-				uint32 health = uint32(basehp * 1.1);
-				me->SetCreateHealth(health);
-				me->SetMaxHealth(health);
-
-				// Distance de cast
-				uint32 m_attackDist = 20.0f;
-				AttackStartCaster(victim, m_attackDist);
-
-				// Spell a lancer a l'agro
-				me->CastSpell(me, me->m_spells[0], true);		// Creature_Template->Spell1 : Buf sur soit
-				me->CastSpell(victim, me->m_spells[1], true);   // Creature_Template->Spell2 : spell d'agro sur la cible
-			}
-			void JustReachedHome() override
-			{
-				me->SetLevel(95);	// repasse au lvl 95 pour l'agro suivante
-
-				// Rafraichissement de sa vie
-				CreatureTemplate const* cInfo = me->GetCreatureTemplate();
-				CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(100, 1);
-				uint32 basehp = stats->GenerateHealth(cInfo);
-				uint32 health = uint32(basehp * 1.1);
-				me->SetCreateHealth(health);
-				me->SetMaxHealth(health);
-			}
-			void UpdateAI(uint32 diff) override
 			{
 				if (!UpdateVictim())
 					return;
 
+				agrolevelmob();
+				Unit* victim = me->GetVictim();
+				uint32 _level = victim->getLevel();
 
-				// Combat a distance si mana >5%
-				if (me->GetPower(POWER_MANA) > me->GetMaxPower(POWER_MANA) / 20)
+				// Distance de cast
+				AttackStartCaster(victim, 20.0f);							// Distance de cast
+
+				// Spell a lancer a l'agro
+				mouvementmob();
+				me->CastSpell(me, spellbuf, true);							// Creature_Template->Spell1 : Buf sur soi
+
+				spellagrornd = urand(0, 100);								// Creature_Template->Spell2 : 30% spell d'agro sur la cible
+				if (spellagrornd <30)
 				{
-					AttackStartCaster(me->GetVictim(), 20.0f);
-					void DoRangedAttackIfReady();					// Combat a distance
+				DoSpellAttackIfReady(spellagro);							
+				}
+
+				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);		// ROOT 
+			}
+			void JustReachedHome() override
+			{
+				initlevelmob();
+			}
+			void EnterEvadeMode(EvadeReason /*why*/) override
+			{
+				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);		//UNROOT
+			}
+			void UpdateAI(uint32 diff) override
+			{
+				//Pour bug de combat
+				if (!UpdateVictim() && (me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT)))
+				{
+					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);		// UNROOT
+					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);			// Retire flag "en combat"
+					me->GetMotionMaster()->MoveTargetedHome();						// Retour home
+				}
+
+				if (!UpdateVictim())
+					return;
+
+				mouvementmob();
+								
+					// Creature_Template->Spell3 : spell  sur la cible chaque 2.5 a 3.5s					
+					if (spelltimer <= diff)
+					{
+						DoSpellAttackIfReady(spell);
+						spelltimer = urand(2500, 3500);
+					}
+					else spelltimer -= diff;
+
 
 					// Creature_Template->Spell4 : spell Dot sur la cible chaque 10-15s
 					if (spelltimerdot <= diff)
 					{
-						if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0))
-							//DoSpellAttackIfReady(spelldot);
-							me->CastSpell(target, spelldot, true);
+						me->CastSpell(victim, spelldot, true);
 						spelltimerdot = urand(10000, 15000);
 					}
-					else
-						spelltimerdot -= diff;
+					else spelltimerdot -= diff;
+			}
 
+			void initlevelmob()
+			{
+				me->SetLevel(95);	// repasse au lvl 95 pour l'agro suivante
 
-					// Creature_Template->Spell3 : spell sur la cible
-					DoSpellAttackIfReady(spell);
+				// Rafraichissement des Stats
+				CreatureTemplate const* cInfo = me->GetCreatureTemplate();
+				CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(95, 8); // Guerrier=1,Paladin=2,Voleur=4,Mage/Moine=8
+				uint32 basehp = stats->GenerateHealth(cInfo);
+				uint32 health = uint32(basehp * 0.8);
+				me->SetCreateHealth(health);
+				me->SetMaxHealth(health);
+			}
+			void agrolevelmob()
+			{
+				// Prend le lvl de la cible
+				Unit* victim = me->GetVictim();
+				uint32 _level = victim->getLevel();
+				me->SetLevel(_level);
 
+				// Rafraichissement des Stats
+				CreatureTemplate const* cInfo = me->GetCreatureTemplate();
+				CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(_level, 8); // Guerrier=1,Paladin=2,Voleur=4,Mage/Moine=8
+				uint32 basehp = stats->GenerateHealth(cInfo);
+				uint32 health = uint32(basehp*0.8);
+				me->SetCreateHealth(health);
+				me->SetMaxHealth(health);
 
-
-
-				}
-				// Combat au contact si mana <5 %
-				if (me->GetPower(POWER_MANA) < me->GetMaxPower(POWER_MANA) / 20)
+			}
+			void mouvementmob()
+			{
+				// Mouvement off si Mana >5% ou distance > 20m
+				if ((me->GetPower(POWER_MANA) > me->GetMaxPower(POWER_MANA) / 20) && (me->IsWithinCombatRange(me->GetVictim(), 20.0f)) )
 				{
-					AttackStartCaster(me->GetVictim(), 4.0f);
-					DoMeleeAttackIfReady();		
+					AttackStartCaster(me->GetVictim(), 20.0f);						// Distance de cast
+					void DoRangedAttackIfReady();									// Combat a distance
+					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);			// ROOT
+				}
+
+				// Mouvement on si Mana <5% ou distance > 20m
+				if ((me->GetPower(POWER_MANA) < me->GetMaxPower(POWER_MANA) / 20) | (!me->IsWithinCombatRange(me->GetVictim(), 20.0f)))
+				{
+					DoMeleeAttackIfReady();
+					me->RemoveFlag(UNIT_FIELD_FLAGS,UNIT_FLAG_DISABLE_MOVE);		//UNROOT
 				}
 			}
+
 		};
 
 		CreatureAI* GetAI(Creature* creature) const override
@@ -128,14 +168,138 @@ public: Stitch_npc_ai_level_scale_caster() : CreatureScript("Stitch_npc_ai_level
 
 
 //################################################################################################
-//Stitch Stitch_npc_ai_level_scale_caster - A l'agro s'adapte au level de l'agresseur - AI Caster
+//Stitch Stitch_npc_ai_level_scale_melee - A l'agro s'adapte au level de l'agresseur - AI Melee
 //################################################################################################
 
+
+class Stitch_npc_ai_level_scale_melee : public CreatureScript
+{
+public: Stitch_npc_ai_level_scale_melee() : CreatureScript("Stitch_npc_ai_level_scale_melee") { }
+
+		struct Stitch_npc_ai_level_scale_meleeAI : public ScriptedAI
+		{
+			Stitch_npc_ai_level_scale_meleeAI(Creature* creature) : ScriptedAI(creature) { }
+
+			uint32 spellbuf = me->m_spells[0];
+			uint32 spellagro = me->m_spells[1];
+			uint32 spellagrornd;
+			uint32 spell = me->m_spells[2];
+			uint32 spelldot = me->m_spells[3];
+			uint32 spelltimerdot = 3000;
+			uint32 spelltimer = 100;
+
+			Unit* victim = me->GetVictim();
+
+
+
+			void JustRespawned()  override
+			{
+				initlevelmob();
+			}
+			void EnterCombat(Unit* /*who*/) override
+			{
+				if (!UpdateVictim())
+					return;
+
+				agrolevelmob();
+
+			//	Unit* victim = me->GetVictim();
+			//	uint32 _level = victim->getLevel();
+
+
+				DoMeleeAttackIfReady();								// Combat en Melee
+
+				// Spell a lancer a l'agro
+				me->CastSpell(me, spellbuf, true);					// Creature_Template->Spell1 : Buf sur soi
+
+				spellagrornd = urand(0, 100);						// Creature_Template->Spell2 : 40% spell d'agro sur la cible
+				if (spellagrornd <40)
+				{
+					DoSpellAttackIfReady(spellagro);
+				}
+
+			}
+			void JustReachedHome() override
+			{
+				initlevelmob();
+			}
+			void UpdateAI(uint32 diff) override
+			{
+				//Pour bug de combat
+				if (!UpdateVictim() && (me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT)))
+				{
+					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);		// UNROOT
+					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);			// Retire flag "en combat"
+					me->GetMotionMaster()->MoveTargetedHome();						// Retour home
+				}
+
+				if (!UpdateVictim())
+					return;
+
+
+
+				// Creature_Template->Spell3 : spell  sur la cible chaque 2 a 2.5s					
+				if (spelltimer <= diff)
+				{
+					//DoSpellAttackIfReady(spell);
+					me->CastSpell(victim, spell, true);
+					spelltimer = urand(2000, 2500);
+				}
+				else spelltimer -= diff;
+
+
+				// Creature_Template->Spell4 : spell Dot sur la cible chaque 10-15s
+				if (spelltimerdot <= diff)
+				{
+					me->CastSpell(victim, spelldot, true);
+					spelltimerdot = urand(10000, 15000);
+				}
+				else spelltimerdot -= diff;
+			}
+
+			void initlevelmob()
+			{
+				me->SetLevel(95);	// repasse au lvl 95 pour l'agro suivante
+
+				// Rafraichissement des Stats
+				CreatureTemplate const* cInfo = me->GetCreatureTemplate();
+				CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(95, 1); // Guerrier=1,Paladin=2,Voleur=4,Mage/Moine=8
+				uint32 basehp = stats->GenerateHealth(cInfo);
+				uint32 health = uint32(basehp);
+				me->SetCreateHealth(health);
+				me->SetMaxHealth(health);
+			}
+			void agrolevelmob()
+			{
+				// Prend le lvl de la cible
+				Unit* victim = me->GetVictim();
+				uint32 _level = victim->getLevel();
+				me->SetLevel(_level);
+
+				// Rafraichissement des Stats
+				CreatureTemplate const* cInfo = me->GetCreatureTemplate();
+				CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(_level, 1); // Guerrier=1,Paladin=2,Voleur=4,Mage/Moine=8
+				uint32 basehp = stats->GenerateHealth(cInfo);
+				uint32 health = uint32(basehp);
+				me->SetCreateHealth(health);
+				me->SetMaxHealth(health);
+
+			}
+
+
+		};
+
+		CreatureAI* GetAI(Creature* creature) const override
+		{
+			return new Stitch_npc_ai_level_scale_meleeAI(creature);
+		}
+};
 
 
 void AddSC_Stitch_npc_ai_level_scale()
 {
-	new Stitch_npc_ai_level_scale_caster();					//Stitch npc_level_scale - s'adapte au level de l'agresseur
+	new Stitch_npc_ai_level_scale_caster();					//Stitch npc_level_scale - s'adapte au level de l'agresseur +AI Caster
+	new Stitch_npc_ai_level_scale_melee();					//Stitch npc_level_scale - s'adapte au level de l'agresseur +AI Melee
 }
 
 
