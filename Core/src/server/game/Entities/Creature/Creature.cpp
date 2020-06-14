@@ -1074,6 +1074,14 @@ bool Creature::Create(ObjectGuid::LowType guidlow, Map* map, uint32 /*phaseMask*
 
     LastUsedScriptID = GetCreatureTemplate()->ScriptID;
 
+	//Stitch : Visuel barre de rage pleine
+		if (getClass() == CLASS_WARRIOR)
+	{
+			setPowerType(POWER_RAGE);
+			SetMaxPower(POWER_RAGE, 1000); 
+			SetPower(POWER_RAGE, 1000);
+	}
+
     /// @todo Replace with spell, handle from DB
     if (IsSpiritHealer() || IsSpiritGuide())
     {
