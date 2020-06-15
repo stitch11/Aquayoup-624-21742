@@ -75,10 +75,6 @@ public:
 
 		}
 
-		if (_level < 10)
-		{
-			player->ADD_GOSSIP_ITEM(2, ">>> TEST worgen des neiges <<<", GOSSIP_SENDER_MAIN, 13);
-		}
 
 		player->PlayerTalkClass->SendGossipMenu(65503, creature->GetGUID());	// NPC_txt pointant sur BroadcastText
 
