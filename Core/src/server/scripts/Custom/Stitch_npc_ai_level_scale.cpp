@@ -111,18 +111,37 @@ public: Stitch_npc_ai_level_scale_caster() : CreatureScript("Stitch_npc_ai_level
 			}
 			void agrolevelmob()
 			{
-				// Prend le lvl de la cible ---------------------------------------------------------------------------------------------------------------------
+				// Prend le lvl de la cible ----------------------------------------------------------------------------------------------------------------
 				Unit* victim = me->GetVictim();
 				uint32 _level = victim->getLevel();
 				me->SetLevel(_level);
 
-				// Rafraichissement des Stats -------------------------------------------------------------------------------------------------------------------
+				// Rafraichissement des Stats --------------------------------------------------------------------------------------------------------------
 				CreatureTemplate const* cInfo = me->GetCreatureTemplate();
 				CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(_level, 8); // Guerrier=1,Paladin=2,Voleur=4,Mage/Moine=8
-				uint32 basehp = stats->GenerateHealth(cInfo);
-				uint32 health = uint32(basehp*0.8);
+
+				CreatureTemplate const* cinfo = me->GetCreatureTemplate();
+				ASSERT(cinfo);
+				me->SetLevel(_level);
+				float basedamage = stats->GenerateBaseDamage(cInfo);
+				float weaponBaseMinDamage = basedamage;
+				float weaponBaseMaxDamage = basedamage * 1.5f;
+				me->SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, weaponBaseMinDamage);
+				me->SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, weaponBaseMaxDamage);
+				me->SetBaseWeaponDamage(OFF_ATTACK, MINDAMAGE, weaponBaseMinDamage);
+				me->SetBaseWeaponDamage(OFF_ATTACK, MAXDAMAGE, weaponBaseMaxDamage);
+				me->SetBaseWeaponDamage(RANGED_ATTACK, MINDAMAGE, weaponBaseMinDamage);
+				me->SetBaseWeaponDamage(RANGED_ATTACK, MAXDAMAGE, weaponBaseMaxDamage);
+				me->SetModifierValue(UNIT_MOD_ATTACK_POWER, BASE_VALUE, stats->AttackPower);
+				me->SetModifierValue(UNIT_MOD_ATTACK_POWER_RANGED, BASE_VALUE, stats->RangedAttackPower);
+				me->UpdateAllStats();
+
+				uint32 health = stats->GenerateHealth(cInfo);
 				me->SetCreateHealth(health);
 				me->SetMaxHealth(health);
+				uint32 mana = stats->GenerateMana(cInfo);
+				me->SetCreateMana(mana);
+				me->SetMaxPower(POWER_MANA, mana);
 			}
 			void mouvementmob(uint32 diff)
 			{
@@ -271,19 +290,34 @@ public: Stitch_npc_ai_level_scale_melee() : CreatureScript("Stitch_npc_ai_level_
 			}
 			void agrolevelmob()
 			{
-				// Prend le lvl de la cible
+				// Prend le lvl de la cible ----------------------------------------------------------------------------------------------------------------
 				Unit* victim = me->GetVictim();
 				uint32 _level = victim->getLevel();
 				me->SetLevel(_level);
 
-				// Rafraichissement des Stats
+				// Rafraichissement des Stats --------------------------------------------------------------------------------------------------------------
 				CreatureTemplate const* cInfo = me->GetCreatureTemplate();
-				CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(_level, 1); // Guerrier=1,Paladin=2,Voleur=4,Mage/Moine=8
-				uint32 basehp = stats->GenerateHealth(cInfo);
-				uint32 health = uint32(basehp);
+				CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(_level, 8); // Guerrier=1,Paladin=2,Voleur=4,Mage/Moine=8
+
+				CreatureTemplate const* cinfo = me->GetCreatureTemplate();
+				ASSERT(cinfo);
+				me->SetLevel(_level);
+				float basedamage = stats->GenerateBaseDamage(cInfo);
+				float weaponBaseMinDamage = basedamage;
+				float weaponBaseMaxDamage = basedamage * 1.5f;
+				me->SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, weaponBaseMinDamage);
+				me->SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, weaponBaseMaxDamage);
+				me->SetBaseWeaponDamage(OFF_ATTACK, MINDAMAGE, weaponBaseMinDamage);
+				me->SetBaseWeaponDamage(OFF_ATTACK, MAXDAMAGE, weaponBaseMaxDamage);
+				me->SetBaseWeaponDamage(RANGED_ATTACK, MINDAMAGE, weaponBaseMinDamage);
+				me->SetBaseWeaponDamage(RANGED_ATTACK, MAXDAMAGE, weaponBaseMaxDamage);
+				me->SetModifierValue(UNIT_MOD_ATTACK_POWER, BASE_VALUE, stats->AttackPower);
+				me->SetModifierValue(UNIT_MOD_ATTACK_POWER_RANGED, BASE_VALUE, stats->RangedAttackPower);
+				me->UpdateAllStats();
+
+				uint32 health = stats->GenerateHealth(cInfo);
 				me->SetCreateHealth(health);
 				me->SetMaxHealth(health);
-
 			}
 			void retirebugdecombat()
 			{
@@ -436,11 +470,29 @@ public: Stitch_npc_ai_level_scale_heal() : CreatureScript("Stitch_npc_ai_level_s
 				// Rafraichissement des Stats --------------------------------------------------------------------------------------------------------------
 				CreatureTemplate const* cInfo = me->GetCreatureTemplate();
 				CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(_level, 8); // Guerrier=1,Paladin=2,Voleur=4,Mage/Moine=8
-				uint32 basehp = stats->GenerateHealth(cInfo);
-				uint32 health = uint32(basehp);
+
+				CreatureTemplate const* cinfo = me->GetCreatureTemplate();
+				ASSERT(cinfo);
+				me->SetLevel(_level);
+				float basedamage = stats->GenerateBaseDamage(cInfo);
+				float weaponBaseMinDamage = basedamage;
+				float weaponBaseMaxDamage = basedamage * 1.5f;
+				me->SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, weaponBaseMinDamage);
+				me->SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, weaponBaseMaxDamage);
+				me->SetBaseWeaponDamage(OFF_ATTACK, MINDAMAGE, weaponBaseMinDamage);
+				me->SetBaseWeaponDamage(OFF_ATTACK, MAXDAMAGE, weaponBaseMaxDamage);
+				me->SetBaseWeaponDamage(RANGED_ATTACK, MINDAMAGE, weaponBaseMinDamage);
+				me->SetBaseWeaponDamage(RANGED_ATTACK, MAXDAMAGE, weaponBaseMaxDamage);
+				me->SetModifierValue(UNIT_MOD_ATTACK_POWER, BASE_VALUE, stats->AttackPower);
+				me->SetModifierValue(UNIT_MOD_ATTACK_POWER_RANGED, BASE_VALUE, stats->RangedAttackPower);
+				me->UpdateAllStats();
+
+				uint32 health = stats->GenerateHealth(cInfo);
 				me->SetCreateHealth(health);
 				me->SetMaxHealth(health);
-
+				uint32 mana = stats->GenerateMana(cInfo);
+				me->SetCreateMana(mana);
+				me->SetMaxPower(POWER_MANA, mana);
 			}
 			void mouvementmob(uint32 diff)
 			{

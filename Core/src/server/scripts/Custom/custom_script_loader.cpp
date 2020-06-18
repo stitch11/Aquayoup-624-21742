@@ -17,11 +17,11 @@
 
 // This is where scripts' loading functions should be declared:
 void AddSC_solocraft();
-void AddSC_Stitch_npc_ai_level_scale();			// Pour npc . A l'agro s'adapte au level de l'agresseur - AI Caster , Melee , Heal
-void AddSC_npc_levels();						// PNJ Level et Lieux de depart avec réputation & equipements
-void AddSC_npc_changer();						// PNJ change race , faction , rename et custom 15000142
-void AddSC_npc_ChangeFactionPanda_quete();		// Choix de faction des panda pour la quete finale 31450 by monsieur Noc
-
+void AddSC_Stitch_npc_ai_level_scale();
+void AddSC_npc_levels();
+void AddSC_npc_changer();
+void AddSC_npc_ChangeFactionPanda_quete();	
+void AddSC_npc_ai_druide();						
 
 
 // The name of this function should match:
@@ -33,4 +33,5 @@ void AddCustomScripts()
 		AddSC_npc_levels();
 		AddSC_npc_changer();
 		AddSC_npc_ChangeFactionPanda_quete();
+		AddSC_npc_ai_druide();
 }
