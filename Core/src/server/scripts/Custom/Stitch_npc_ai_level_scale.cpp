@@ -73,10 +73,11 @@ public: Stitch_npc_ai_level_scale_caster() : CreatureScript("Stitch_npc_ai_level
 			void JustReachedHome() override
 			{
 				initlevelmob();
-				retirebugdecombat();
+				me->SetReactState(REACT_AGGRESSIVE);
 			}
 			void EnterEvadeMode(EvadeReason /*why*/) override
 			{
+				me->GetMotionMaster()->MoveTargetedHome();						// Retour home
 				retirebugdecombat();
 			}
 			void UpdateAI(uint32 diff) override
@@ -167,7 +168,6 @@ public: Stitch_npc_ai_level_scale_caster() : CreatureScript("Stitch_npc_ai_level
 				{
 					if (me->IsWithinCombatRange(me->GetVictim(), 6.0f) && (me->GetPower(POWER_MANA) > me->GetMaxPower(POWER_MANA) / 20))
 					{
-
 						float x, y, z;
 						me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 15.0f);
 						me->GetMotionMaster()->MovePoint(0xFFFFFE, x, y, z);
@@ -178,17 +178,25 @@ public: Stitch_npc_ai_level_scale_caster() : CreatureScript("Stitch_npc_ai_level
 
 				// Quite le combat si la cible > 40m --------------------------------------------------------------------------------------------------------
 				if ((!me->IsWithinCombatRange(me->GetVictim(), distancedecast + 10.0f)))
-				{
-					retirebugdecombat();
-					EnterEvadeMode(EVADE_REASON_OTHER); //EnterEvadeMode(EVADE_REASON_NO_HOSTILES);
-				}
+					if (me->GetDistance(me->GetVictim()) > distancedecast + 10.0f)
+					{
+						me->GetMotionMaster()->MoveTargetedHome();						// Retour home
+						retirebugdecombat();
+					}
 			}
 			void retirebugdecombat()
 			{
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);		// UNROOT
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);			// Retire flag "en combat"
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);		// Retire flag "non attaquable"
-				me->GetMotionMaster()->MoveTargetedHome();						// Retour home
+
+				me->AddUnitState(UNIT_STATE_EVADE);
+				me->DeleteThreatList();
+				me->CombatStop(true);
+				me->LoadCreaturesAddon();
+				me->SetLootRecipient(NULL);
+				me->ResetPlayerDamageReq();
+				me->SetLastDamagedTime(0);
 			}
 		};
 
@@ -246,10 +254,11 @@ public: Stitch_npc_ai_level_scale_melee() : CreatureScript("Stitch_npc_ai_level_
 			void JustReachedHome() override
 			{
 				initlevelmob();
-				retirebugdecombat();
+				me->SetReactState(REACT_AGGRESSIVE);
 			}
 			void EnterEvadeMode(EvadeReason /*why*/) override
 			{
+				me->GetMotionMaster()->MoveTargetedHome();						// Retour home
 				retirebugdecombat();
 			}
 			void UpdateAI(uint32 diff) override
@@ -324,7 +333,14 @@ public: Stitch_npc_ai_level_scale_melee() : CreatureScript("Stitch_npc_ai_level_
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);		// UNROOT
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);			// Retire flag "en combat"
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);		// Retire flag "non attaquable"
-				me->GetMotionMaster()->MoveTargetedHome();						// Retour home
+
+				me->AddUnitState(UNIT_STATE_EVADE);
+				me->DeleteThreatList();
+				me->CombatStop(true);
+				me->LoadCreaturesAddon();
+				me->SetLootRecipient(NULL);
+				me->ResetPlayerDamageReq();
+				me->SetLastDamagedTime(0);
 			}
 
 		};
@@ -388,10 +404,11 @@ public: Stitch_npc_ai_level_scale_heal() : CreatureScript("Stitch_npc_ai_level_s
 			void JustReachedHome() override
 			{
 				initlevelmob();
-				retirebugdecombat();
+				me->SetReactState(REACT_AGGRESSIVE);
 			}
 			void EnterEvadeMode(EvadeReason /*why*/) override
 			{
+				me->GetMotionMaster()->MoveTargetedHome();						// Retour home
 				retirebugdecombat();
 			}
 
@@ -524,22 +541,29 @@ public: Stitch_npc_ai_level_scale_heal() : CreatureScript("Stitch_npc_ai_level_s
 						me->GetMotionMaster()->MovePoint(0xFFFFFE, x, y, z);
 					}
 					resteadistancetimer = urand(300, 500);
-				}
-				else resteadistancetimer -= diff;
+				} else resteadistancetimer -= diff;
 
 				// Quite le combat si la cible > 40m --------------------------------------------------------------------------------------------------------
 				if ((!me->IsWithinCombatRange(me->GetVictim(), distancedecast+10.0f)))
-				{
-					retirebugdecombat();
-					EnterEvadeMode(EVADE_REASON_OTHER); //EnterEvadeMode(EVADE_REASON_NO_HOSTILES);
-				}
+					if (me->GetDistance(me->GetVictim()) > distancedecast + 10.0f)
+					{
+						me->GetMotionMaster()->MoveTargetedHome();						// Retour home
+						retirebugdecombat();
+					}
 			}
 			void retirebugdecombat()
 			{
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);		// UNROOT
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);			// Retire flag "en combat"
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);		// Retire flag "non attaquable"
-				me->GetMotionMaster()->MoveTargetedHome();						// Retour home
+
+				me->AddUnitState(UNIT_STATE_EVADE);
+				me->DeleteThreatList();
+				me->CombatStop(true);
+				me->LoadCreaturesAddon();
+				me->SetLootRecipient(NULL);
+				me->ResetPlayerDamageReq();
+				me->SetLastDamagedTime(0);
 			}
 		};
 
