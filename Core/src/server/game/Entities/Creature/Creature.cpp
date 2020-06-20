@@ -812,6 +812,17 @@ void Creature::Update(uint32 diff)
                              !EnsureVictim()->GetCharmerOrOwnerPlayerOrPlayerItself() ||                // or the victim/owner/charmer is not a player
                              !EnsureVictim()->GetCharmerOrOwnerPlayerOrPlayerItself()->IsGameMaster()); // or the victim/owner/charmer is not a GameMaster
 
+
+
+			//Stitch Rage des Mobs toujours a 100 en combat
+				if (IsInCombat() && GetVictim() && getPowerType() == POWER_RAGE) // regeneration rage si hors combat & non métamorphosé 
+				{
+					SetMaxPower(POWER_RAGE, 1000);
+					SetPower(POWER_RAGE,1000);
+				}
+
+
+
             /*if (m_regenTimer <= diff)
             {*/
             if (!IsInEvadeMode() && (!bInCombat || IsPolymorphed())) // regenerate health if not in combat or if polymorphed
