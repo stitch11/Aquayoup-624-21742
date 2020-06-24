@@ -814,7 +814,7 @@ void Creature::Update(uint32 diff)
 
 
 
-			//Stitch Rage des Mobs toujours a 100 en combat
+			//Stitch Rage des Mobs toujours a 100 plutot que 0 en combat
 				if (IsInCombat() && GetVictim() && getPowerType() == POWER_RAGE) // regeneration rage si hors combat & non métamorphosé 
 				{
 					SetMaxPower(POWER_RAGE, 1000);
