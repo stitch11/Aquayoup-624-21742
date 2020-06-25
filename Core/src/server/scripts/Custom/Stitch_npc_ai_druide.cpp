@@ -134,8 +134,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 						VisuelMana();
 
 						me->CastSpell(me, Buf_branche1, true);								// Buf2 sur lui meme
-						me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);				// ROOT
-
+						
 						// Tirages aléatoires des spells Equilibre 
 						Spell_branche1_agro = branche1_agro[urand(0, 3)];
 						Spell_branche1_1 = branche1_1[urand(0, 1)];
@@ -176,7 +175,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 						me->CastSpell(me, Buf_branche3, true);								// Buf3 sur lui meme
 
 						// Tirages aléatoires des spells Equilibre 
-						Spell_branche3_agro = branche3_agro[urand(0, 2)];
+						Spell_branche3_agro = branche1_agro[urand(0, 2)];
 						Spell_branche3_1 = branche3_1[urand(0, 1)];
 						Spell_branche3_2 = branche3_2[urand(0, 1)];
 						Spell_branche3_3 = branche3_3[urand(0, 3)];
@@ -247,30 +246,30 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				{
 				case 1: // Spécialisation Equilibre ################################################################################################################
 
+					Combat_Equilibre(diff);
 					Mouvement_Caster(diff);
 					Mouvement_All();
-					Combat_Equilibre(diff);
 					break;
 
 				case 2 : // Spécialisation Ours ####################################################################################################################
 
+					Combat_Ours(diff);
 					Mouvement_Ours(diff);
 					Mouvement_All();
-					Combat_Ours(diff);
 					break;
 
 				case 3: // Spécialisation Felin ####################################################################################################################
 			
+					Combat_Felin(diff);
 					Mouvement_Felin(diff);
 					Mouvement_All();
-					Combat_Felin(diff);
 					break;
 
 				case 4: // Spécialisation Tréant ######################################################################################################################
 
+					Combat_Treant(diff);
 					Mouvement_Treant(diff);
 					Mouvement_All();
-					Combat_Treant(diff);
 
 					// heal sur lui meme
 					if ( (me->GetHealth() < (me->GetMaxHealth()*0.6)) && (Cooldown_Spell_Heal <= diff)	)	// Si PV < 60%
@@ -334,11 +333,11 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			{
 				if (!UpdateVictim())
 					return;
-
-				Mana = me->GetPower(POWER_MANA);
-				Dist = me->GetDistance(me->GetVictim());
-
 				// Mouvement Caster ---------------------------------------------------------------------------------------------------------------------------------
+				if (!me->HasUnitState(UNIT_STATE_CASTING))									// S'il ne cast pas
+				{
+					Mana = me->GetPower(POWER_MANA);
+					Dist = me->GetDistance(me->GetVictim());
 
 					// Mouvement off si Mana > 10% & distance <= 20m 
 					if ((Mana > MaxMana * 0.1) && (Dist <= ResteADistance))
@@ -382,7 +381,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 						}
 					}
 					else Cooldown_ResteADistance -= diff;
-
+				}
 			}
 			void Mouvement_Ours(uint32 diff)
 			{
@@ -495,7 +494,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					if (Cooldown_Spell1 <= diff)
 					{
 						DoCastVictim(Spell_branche1_1);
-						Cooldown_Spell1 = 3000;
+						Cooldown_Spell1 = 2500;
 					}
 					else Cooldown_Spell1 -= diff;
 
