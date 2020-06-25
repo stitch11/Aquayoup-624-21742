@@ -45,6 +45,9 @@ public: Stitch_npc_ai_level_scale_caster() : CreatureScript("Stitch_npc_ai_level
 			uint32 spelltimer = 100;
 			uint32 resteadistancetimer = urand(400, 600);
 			Unit* victim = me->GetVictim();
+			uint32 Cooldown_RegenMana = 3000;
+			uint32 Mana;
+			uint32 MaxMana = me->GetMaxPower(POWER_MANA);
 
 			void JustRespawned() override
 			{
@@ -67,8 +70,9 @@ public: Stitch_npc_ai_level_scale_caster() : CreatureScript("Stitch_npc_ai_level
 				spellagrornd = urand(0, 100);								// Creature_Template->Spell2 : 30% spell d'agro sur la cible
 				if (spellagrornd <30)
 				{
-				DoSpellAttackIfReady(spellagro);							
+				DoSpellAttackIfReady(spellagro);
 				}
+
 			}
 			void JustReachedHome() override
 			{
@@ -86,12 +90,24 @@ public: Stitch_npc_ai_level_scale_caster() : CreatureScript("Stitch_npc_ai_level
 					return;
 
 				mouvementmob(6);
-					
-					// Creature_Template->Spell3 : spell  sur la cible chaque 2.5 a 3.5s ---------------------------------------------------------------------
+
+				Mana = me->GetPower(POWER_MANA);
+				MaxMana = me->GetMaxPower(POWER_MANA);
+
+				// Regen mana en combat ------------------------------------------------------------------------------------------------------------------------
+				if (Cooldown_RegenMana <= diff)
+				{
+					me->SetPower(POWER_MANA, Mana + (MaxMana / 20));
+					if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
+					Cooldown_RegenMana = 1000;
+				}
+				else Cooldown_RegenMana -= diff;
+
+					// Creature_Template->Spell3 : spell  sur la cible chaque 2.5 a 3s ---------------------------------------------------------------------
 					if (spelltimer <= diff)
 					{
 						DoSpellAttackIfReady(spell);
-						spelltimer = urand(2500, 3500);
+						spelltimer = urand(2500, 3000);
 					}
 					else spelltimer -= diff;
 
@@ -143,6 +159,7 @@ public: Stitch_npc_ai_level_scale_caster() : CreatureScript("Stitch_npc_ai_level
 				uint32 mana = stats->GenerateMana(cInfo);
 				me->SetCreateMana(mana);
 				me->SetMaxPower(POWER_MANA, mana);
+				me->SetPower(POWER_MANA, MaxMana);
 			}
 			void mouvementmob(uint32 diff)
 			{
