@@ -1,6 +1,6 @@
 //################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : DRUIDE V1.0
+// AI generique npc par classe : DRUIDE V1.3
 // Il est possible de modifier le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Exemple pour Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_druide',`AIName` = '' WHERE (entry = 15100001);
@@ -90,7 +90,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			uint32 Cooldown_Spell3 = 3500;
 			uint32 Cooldown_Spell_Heal = 3000;
 			uint32 Cooldown_RegenMana = 3000;
-			uint32 Cooldown_ResteADistance = 3000;									// Test si en contact pour Equilibre pour s'eloigner, bouger en combat pour le Felin
+			uint32 Cooldown_ResteADistance = 1000;									// Test si en contact pour Equilibre pour s'eloigner, bouger en combat pour le Felin
 			uint32 Cooldown_Charge = 8000;
 
 			void JustRespawned() override
@@ -134,7 +134,6 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 						VisuelMana();
 
 						me->CastSpell(me, Buf_branche1, true);								// Buf2 sur lui meme
-						me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);				// ROOT
 
 						// Tirages aléatoires des spells Equilibre 
 						Spell_branche1_agro = branche1_agro[urand(0, 3)];
@@ -142,13 +141,16 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 						Spell_branche1_2 = branche1_2[urand(0, 1)];
 						Spell_branche1_3 = branche1_3[urand(0, 1)];
 
+						AttackStartCaster(victim, ResteADistance);							// Distance de cast
+						me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);				// ROOT
+
 						Random = urand(1, 3); 
 						if (Random == 1) { DoCastVictim(Spell_branche1_agro); }				// 1/3 Chance de lancer le sort d'agro
-
 					break;
 
 					case 2: // Si Spécialisation Ours  --------------------------------------------------------------------------------------------------------
 						me->CastSpell(me, 300213, true);									// Reduction des degats physiques -25%
+						me->SetSpeedRate(MOVE_RUN, 1.2f);									// Vitesse de déplacement
 
 						// Pour visuel seulement
 						VisuelRage();
@@ -168,6 +170,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 
 					case 3: // Si Spécialisation Felin  --------------------------------------------------------------------------------------------------------
 						me->CastSpell(me, 300216, true);									// Reduction des degats physiques -15%
+						me->SetSpeedRate(MOVE_RUN, 1.2f);									// Vitesse de déplacement
 
 						// Pour visuel seulement
 						VisuelEnergy();
@@ -214,6 +217,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				me->SetPower(POWER_MANA, MaxMana);
 
 				me->DeMorph();
+				me->SetSpeedRate(MOVE_RUN, 1.0f);
 
 				me->RemoveAura(Buf_all);
 				me->RemoveAura(Buf_branche1);
@@ -231,6 +235,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			{
 				RetireBugDeCombat();
 				me->AddUnitState(UNIT_STATE_EVADE);
+				me->SetSpeedRate(MOVE_RUN, 1.5f);											// Vitesse de déplacement
 				me->GetMotionMaster()->MoveTargetedHome();									// Retour home
 			}
 			void UpdateAI(uint32 diff) override
@@ -254,23 +259,23 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 
 				case 2 : // Spécialisation Ours ####################################################################################################################
 
+					Combat_Ours(diff);
 					Mouvement_Ours(diff);
 					Mouvement_All();
-					Combat_Ours(diff);
 					break;
 
 				case 3: // Spécialisation Felin ####################################################################################################################
 			
+					Combat_Felin(diff);
 					Mouvement_Felin(diff);
 					Mouvement_All();
-					Combat_Felin(diff);
 					break;
 
 				case 4: // Spécialisation Tréant ######################################################################################################################
 
+					Combat_Treant(diff);
 					Mouvement_Treant(diff);
 					Mouvement_All();
-					Combat_Treant(diff);
 
 					// heal sur lui meme
 					if ( (me->GetHealth() < (me->GetMaxHealth()*0.6)) && (Cooldown_Spell_Heal <= diff)	)	// Si PV < 60%
@@ -288,7 +293,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);				// UNROOT
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);					// Retire flag "en combat"
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);				// Retire flag "non attaquable"
-								
+
 				me->DeleteThreatList();
 				me->CombatStop(true);
 				me->LoadCreaturesAddon();
@@ -323,68 +328,72 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					return;
 				// Mouvement Tous -----------------------------------------------------------------------------------------------------------------------------------
 				Dist = me->GetDistance(me->GetVictim());
-				if (Dist > DistanceDeCast)
+				if (Dist > DistanceDeCast | (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 40))
 				{
 					RetireBugDeCombat();
 					me->AddUnitState(UNIT_STATE_EVADE);
-					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);						// Quite le combat si la cible > 30m (Caster & Mélée)
+					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);						// Quite le combat si la cible > 30m (Caster & Mélée) ou > 40m de home
 				}
 			}
 			void Mouvement_Caster(uint32 diff)
 			{
-				if (!UpdateVictim())
+				if ( !UpdateVictim() )
 					return;
 
 				Mana = me->GetPower(POWER_MANA);
-				Dist = me->GetDistance(me->GetVictim());
+				Unit* victim = me->GetVictim();
+				Dist = me->GetDistance(victim);
 
-				// Mouvement Caster ---------------------------------------------------------------------------------------------------------------------------------
-
-					// Mouvement off si Mana > 10% & distance <= 20m 
-					if ((Mana > MaxMana * 0.1) && (Dist <= ResteADistance))
-					{
-						AttackStartCaster(victim, ResteADistance);							// Distance de cast
-						void DoRangedAttackIfReady();										// Combat a distance
-						me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);				// ROOT
-					}
-
-					// Mouvement on si Mana < 10%
-					if (MaxMana < MaxMana * 0.1)
-					{
-						AttackStartCaster(victim, 5);										// Distance de cast
-						AttackStart(victim);												// Combat au corp a corp
-						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);			// UNROOT
-					}
-
-					// Mouvement on si distance > 20m 
-					if ((Dist > ResteADistance) && (!me->HasUnitState(UNIT_STATE_CASTING)))
+				// Mouvement aléatoire si cible < 6m & Mana > 5% --------------------------------------------------------------------------------------------
+				if (Cooldown_ResteADistance <= diff)
+				{
+					if ((Dist < 6) && (Mana > MaxMana / 20))
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);			// UNROOT
-						AttackStartCaster(victim, ResteADistance);							// Distance de cast
-					}
+						me->SetSpeedRate(MOVE_RUN, 1.25f);
 
-					// Mouvement aléatoire si cible <= 5m & Mana > 10% & ne caste pas
-					if (Cooldown_ResteADistance <= diff)
+						float x, y, z;
+						me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, ResteADistance + 5);			// Bouge de ResteADistance + 5m
+						me->GetMotionMaster()->MovePoint(0xFFFFFE, x, y, z);
+
+						Cooldown_ResteADistance = urand(4000,6000);
+					}
+				}
+				else Cooldown_ResteADistance -= diff;
+
+				// Mouvement OFF si Mana > 5% & distance > 5m & <= 20m ---------------------------------------------------------------------------------------------
+				if ((Mana > MaxMana / 20) && (Dist > 5) && (Dist <= ResteADistance) )
+				{
+					AttackStartCaster(me->GetVictim(), ResteADistance);						// Distance de cast
+
+					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);					// ROOT
+					me->SetSpeedRate(MOVE_RUN, 1.0f);
+				}
+
+				// Mouvement ON si distance > 20m -----------------------------------------------------------------------------------------------
+				if (Dist > 20)
+				{
+					AttackStartCaster(me->GetVictim(), ResteADistance);						// Distance de cast
+
+					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);				// UNROOT
+					me->SetSpeedRate(MOVE_RUN, 1.0f);
+				}
+			
+					// Mouvement ON si Mana < 5%  -----------------------------------------------------------------------------------------------
+					if (Mana < MaxMana / 20)
 					{
-						if ((Dist <= 5) && (Mana > MaxMana * 0.1) /*&& (!me->HasUnitState(UNIT_STATE_CASTING))*/)
-						{
-							me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);		//UNROOT
-
-							float x, y, z;
-							me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 20);		// Bouge de 20m
-							me->GetMotionMaster()->MovePoint(0xFFFFFE, x, y, z);
-
-							AttackStartCaster(victim, ResteADistance);						// Distance de cast
-							Cooldown_ResteADistance = urand(3000, 5000);
-						}
-					}
-					else Cooldown_ResteADistance -= diff;
+						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);			// UNROOT
+						me->SetSpeedRate(MOVE_RUN, 1.0f);
+					} 
 
 			}
 			void Mouvement_Ours(uint32 diff)
 			{
 				if (!UpdateVictim())
 					return;
+
+				Dist = me->GetDistance(me->GetVictim());
+
 				// Mouvement Ours -----------------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Charge <= diff)
 				{
@@ -403,14 +412,16 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			{
 				if (!UpdateVictim())
 					return;
-				// Mouvement Felin -----------------------------------------------------------------------------------------------------------------------------------
+
 				Dist = me->GetDistance(me->GetVictim());
+
+				// Mouvement Felin -----------------------------------------------------------------------------------------------------------------------------------
 
 				// Si la cible est entre 8 & 30m : Griffure bondissante
 				if (Cooldown_Charge <= diff)
 				{
 					Random = urand(1, 4);
-					if ((Dist >= 8) && (Dist <= 30))
+					if ((Dist >= 8) && (Dist <= DistanceDeCast))
 					{
 						if (Random = 1)
 						{
@@ -422,7 +433,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				}
 				else Cooldown_Charge -= diff;
 
-				// Si la cible < 6m : BOND Aleatoire ou Avance
+				// Si la cible < 8m : BOND Aleatoire ou Avance
 				if (Dist < 8 && (Cooldown_ResteADistance <= diff))
 				{
 					Random = urand(1, 5);
@@ -468,14 +479,14 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 
 			void Combat_Equilibre(uint32 diff)
 			{
-				if (!UpdateVictim())
+				if (!UpdateVictim() /*| (me->HasUnitState(UNIT_STATE_MOVING))*/ )
 					return;
 
 				Mana = me->GetPower(POWER_MANA);
 				Dist = me->GetDistance(me->GetVictim());
 
 				// Combat - Equilibre --------------------------------------------------------------------------------------------------------------------------
-				if (Dist <= DistanceDeCast)
+				if (Dist <= ResteADistance)
 				{
 					// Regen mana en combat ------------------------------------------------------------------------------------------------------------------------
 					if (Cooldown_RegenMana <= diff)
@@ -511,6 +522,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 						Cooldown_Spell3 = urand(8000, 10000);
 					}
 					else Cooldown_Spell3 -= diff;
+
 				}
 			}
 			void Combat_Ours(uint32 diff)
