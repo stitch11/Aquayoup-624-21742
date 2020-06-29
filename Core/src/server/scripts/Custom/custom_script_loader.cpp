@@ -21,7 +21,8 @@ void AddSC_Stitch_npc_ai_level_scale();
 void AddSC_npc_levels();
 void AddSC_npc_changer();
 void AddSC_npc_ChangeFactionPanda_quete();	
-void AddSC_npc_ai_druide();						
+void AddSC_npc_ai_druide();	
+void AddSC_npc_ai_chaman();
 
 
 // The name of this function should match:
@@ -34,4 +35,5 @@ void AddCustomScripts()
 		AddSC_npc_changer();
 		AddSC_npc_ChangeFactionPanda_quete();
 		AddSC_npc_ai_druide();
+		AddSC_npc_ai_chaman();
 }
