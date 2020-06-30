@@ -640,6 +640,8 @@ void Creature::Update(uint32 diff)
         AI()->JustRespawned();
         if (m_vehicleKit)
             m_vehicleKit->Reset();
+
+		GetMotionMaster()->MoveTargetedHome();		//Stitch : Retour home des mobs apres commande .respawn
     }
 
     UpdateMovementFlags();
