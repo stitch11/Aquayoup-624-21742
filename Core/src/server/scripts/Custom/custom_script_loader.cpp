@@ -23,6 +23,9 @@ void AddSC_npc_changer();
 void AddSC_npc_ChangeFactionPanda_quete();	
 void AddSC_npc_ai_druide();	
 void AddSC_npc_ai_chaman();
+void AddSC_npc_ai_pretre();
+void AddSC_npc_ai_demo();
+void AddSC_npc_ai_mage();
 
 
 // The name of this function should match:
@@ -36,4 +39,7 @@ void AddCustomScripts()
 		AddSC_npc_ChangeFactionPanda_quete();
 		AddSC_npc_ai_druide();
 		AddSC_npc_ai_chaman();
+		AddSC_npc_ai_pretre();
+		AddSC_npc_ai_demo();
+		AddSC_npc_ai_mage();
 }
