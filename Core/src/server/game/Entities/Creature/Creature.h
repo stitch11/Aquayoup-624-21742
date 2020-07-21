@@ -80,10 +80,10 @@ struct TC_GAME_API CreatureTemplate
     uint32  Entry;
     uint32  DifficultyEntry[MAX_CREATURE_DIFFICULTIES];
     uint32  KillCredit[MAX_KILL_CREDIT];
-    uint32  Modelid1;
-    uint32  Modelid2;
-    uint32  Modelid3;
-    uint32  Modelid4;
+    int32  Modelid1;
+    int32  Modelid2;
+    int32  Modelid3;
+    int32  Modelid4;
     std::string  Name;
     std::string FemaleName;
     std::string  SubName;
@@ -140,8 +140,8 @@ struct TC_GAME_API CreatureTemplate
     uint32  MechanicImmuneMask;
     uint32  flags_extra;
     uint32  ScriptID;
-    uint32  GetRandomValidModelId() const;
-    uint32  GetFirstValidModelId() const;
+    int32  GetRandomValidModelId() const;
+    int32  GetFirstValidModelId() const;
     uint32  GetFirstInvisibleModel() const;
     uint32  GetFirstVisibleModel() const;
 
@@ -476,7 +476,10 @@ class TC_GAME_API Creature : public Unit, public GridObject<Creature>, public Ma
         void SetObjectScale(float scale) override;
         void SetDisplayId(uint32 modelId) override;
 
-        void DisappearAndDie();
+		void SetOutfit(int32 outfit) { outfitId = outfit; };
+		int32 GetOutfit() const { return outfitId; }; 
+		
+		void DisappearAndDie();
 
         bool Create(ObjectGuid::LowType guidlow, Map* map, uint32 phaseMask, uint32 entry, float x, float y, float z, float ang, CreatureData const* data = nullptr, uint32 vehId = 0);
         bool LoadCreaturesAddon();
@@ -783,6 +786,8 @@ class TC_GAME_API Creature : public Unit, public GridObject<Creature>, public Ma
 
         Spell const* m_focusSpell;   ///> Locks the target during spell cast for proper facing
         uint32 m_focusDelay;
+
+		int32 outfitId;
 
         CreatureTextRepeatGroup m_textRepeat;
 };
