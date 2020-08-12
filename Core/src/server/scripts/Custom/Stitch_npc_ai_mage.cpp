@@ -9,7 +9,7 @@
 //###########################################################################################################################################################################################################################################
 // # npc de Test Stitch_npc_ai_Mage  .npc 15100005
 // REPLACE INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `modelid1`, `modelid2`, `modelid3`, `modelid4`, `name`, `femaleName`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `exp_unk`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `scale`, `rank`, `dmgschool`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `trainer_type`, `trainer_class`, `trainer_race`, `type`, `type_flags`, `type_flags2`, `lootid`, `pickpocketloot`, `skinloot`, `resistance1`, `resistance2`, `resistance3`, `resistance4`, `resistance5`, `resistance6`, `spell1`, `spell2`, `spell3`, `spell4`, `spell5`, `spell6`, `spell7`, `spell8`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `InhabitType`, `HoverHeight`, `HealthModifier`, `HealthModifierExtra`, `ManaModifier`, `ManaModifierExtra`, `ArmorModifier`, `DamageModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `flags_extra`, `ScriptName`, `VerifiedBuild`) VALUES
-// (15100005, 0, 0, 0, 0, 0, 28759, 0, 0, 0, 'npc_ai_Mage', '', '', '', 0, 90, 90, 0, 0, 2102, 0, 1.01, 1.01, 1, 0, 0, 2000, 2000, 1, 1, 2, 0, 2048, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 3, 1, 2, 1, 3, 1, 2, 2, 1, 0, 144, 1, 0, 0, 'Stitch_npc_ai_demo', 20173);
+// (15100005, 0, 0, 0, 0, 0, 28759, 0, 0, 0, 'npc_ai_Mage', '', '', '', 0, 90, 90, 0, 0, 2102, 0, 1.01, 1.01, 1, 0, 0, 2000, 2000, 1, 1, 2, 0, 2048, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 3, 1, 2, 1, 3, 1, 2, 2, 1, 0, 144, 1, 0, 0, 'Stitch_npc_ai_mage', 20173);
 // REPLACE INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`, `VerifiedBuild`) VALUES
 // (15100005, 1, 854, 0, 0, 0),
 // (15100005, 2, 854, 0, 0, 0),
@@ -73,9 +73,8 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 			uint32 branche1_2[2] = { 30451, 30451 };									// Déflagration des Arcanes 30451
 			uint32 branche1_3[2] = { 5143, 5143 };										// Projectiles des Arcanes 5143 ,Éclair des Arcanes (rose) 38204
 
-														// Transfert 1953,   [Invisibilité] 66
 			// Spells Feu
-			uint32 Spell_branche2_agro;	//    
+			uint32 Spell_branche2_agro;    
 			uint32 Spell_branche2_1;
 			uint32 Spell_branche2_2;
 			uint32 Spell_branche2_3;
@@ -109,6 +108,11 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 				if (!UpdateVictim() )
 					return;
 
+				Mana = me->GetPower(POWER_MANA);
+				Unit* victim = me->GetVictim();
+				Dist = me->GetDistance(victim);
+				me->SetReactState(REACT_AGGRESSIVE);
+
 				// Forcer le choix de la Spécialisation par creature_template->pickpocketloot
 				ForceBranche = me->GetCreatureTemplate()->pickpocketLootId;											// creature_template->pickpocketloot
 				if (ForceBranche == 1) { BrancheSpe = 1; }															// branche1 forcé
@@ -122,17 +126,14 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 
 				if ((BrancheSpe > NbrDeSpe) || (BrancheSpe == 0)) { BrancheSpe = 2; }
 
-				Unit* victim = me->GetVictim();
-				me->SetReactState(REACT_AGGRESSIVE);
-
 				// Spell a lancer a l'agro ------------------------------------------------------------------------------------------------------------------------
-				DoCast(me, Buf_all);																				// Buf_all sur lui meme pour toutes les Spécialitées
+				me->CastSpell(me, Buf_all, true);																	// Buf_all sur lui meme pour toutes les Spécialitées
 
 				switch (BrancheSpe)
 				{
 				case 1: // Si Arcane --------------------------------------------------------------------------------------------------------------------------
 					Buf_branche1 = Buf_branche1_liste[urand(0, 1)];
-					DoCast(me, Buf_branche1);																		// Buf1 sur lui meme
+					me->CastSpell(me, Buf_branche1, true);															// Buf1 sur lui meme
 
 					me->LoadEquipment(1, true);																		// creature_equip_template 1
 
@@ -148,7 +149,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 
 				case 2: // Si Feu -------------------------------------------------------------------------------------------------------------------------
 					Buf_branche2 = Buf_branche2_liste[urand(0, 1)];
-					DoCast(me, Buf_branche2);																		// Buf2 sur lui meme
+					me->CastSpell(me, Buf_branche2, true);															// Buf2 sur lui meme
 
 					me->LoadEquipment(2, true);																		// creature_equip_template 2
 
@@ -164,7 +165,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 
 				case 3: // Si Givre -------------------------------------------------------------------------------------------------------------------------
 					Buf_branche3 = Buf_branche3_liste[urand(0, 1)];
-					DoCast(me, Buf_branche3);																		// Buf3 sur lui meme
+					me->CastSpell(me, Buf_branche3, true);															// Buf2 sur lui meme
 
 					me->LoadEquipment(3, true);																		// creature_equip_template 3
 
@@ -183,7 +184,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 			}
 			void EnterEvadeMode(EvadeReason /*why*/) override
 			{
-				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);				// UNROOT
+				RetireBugDeCombat();
 				me->AddUnitState(UNIT_STATE_EVADE);
 				me->SetSpeedRate(MOVE_RUN, 1.5f);										// Vitesse de déplacement
 				me->GetMotionMaster()->MoveTargetedHome();								// Retour home
@@ -195,7 +196,6 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 				me->RemoveAura(Buf_branche3);
 				me->RemoveAura(Buf_all);
 
-				RetireBugDeCombat();
 				me->SetReactState(REACT_AGGRESSIVE);
 				me->SetSpeedRate(MOVE_RUN, 1.01f);										// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
 			}
@@ -211,36 +211,38 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 				else Cooldown_Npc_Emotes -= diff;
 
 				// En Combat --------------------------------------------------------------------------------------------------------------------------------------
-				if (!UpdateVictim() || me->isPossessed() || me->IsCharmed() || me->HasAuraType(SPELL_AURA_MOD_FEAR))
+				if (!UpdateVictim() /*|| me->isPossessed() || me->IsCharmed() || me->HasAuraType(SPELL_AURA_MOD_FEAR)*/)
 					return;
 
-
+				Mana = me->GetPower(POWER_MANA);
+				Unit* victim = me->GetVictim();
+				Dist = me->GetDistance(victim);
 
 				// Combat suivant la Spécialisation
 				switch (BrancheSpe)
 				{
 				case 1: // Spécialisation Arcane ##################################################################################################################
 
-					Heal_En_Combat_Caster(diff);
-					Combat_Arcane(diff);
 					Mouvement_All();
 					Mouvement_Caster(diff);
+					Heal_En_Combat_Caster(diff);
+					Combat_Arcane(diff);
 					break;
 					
 				case 2: // Spécialisation Feu #####################################################################################################################
-
-					Heal_En_Combat_Caster(diff);
-					Combat_Feu(diff);
+					
 					Mouvement_All();
 					Mouvement_Caster(diff);
+					Heal_En_Combat_Caster(diff);
+					Combat_Feu(diff);
 					break;
 
 				case 3: // Spécialisation Givre ###################################################################################################################
-
-					Heal_En_Combat_Caster(diff); 
-					Combat_Givre(diff);
+					
 					Mouvement_All();
 					Mouvement_Caster(diff);
+					Heal_En_Combat_Caster(diff); 
+					Combat_Givre(diff);
 					break;
 
 				}
@@ -248,13 +250,12 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 
 			void RetireBugDeCombat()
 			{
+				me->CombatStop(true);
+				me->DeleteThreatList();
+				me->LoadCreaturesAddon();
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);				// UNROOT
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);					// Retire flag "en combat"
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);				// Retire flag "non attaquable"
-
-				me->DeleteThreatList();
-				me->CombatStop(true);
-				me->LoadCreaturesAddon();
 			}
 
 			void Mouvement_All()
@@ -272,44 +273,43 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 			}
 			void Mouvement_Caster(uint32 diff)
 			{
-				if (!UpdateVictim() /*|| me->HasUnitState(UNIT_STATE_CASTING)*/ || me->HasUnitState(UNIT_STATE_STUNNED) )
+				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
 					return;
 
 				Mana = me->GetPower(POWER_MANA);
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
+				if (!me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT)) { me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT); }
 
 				if (Cooldown_ResteADistance <= diff)
 				{
-					// Mouvement aléatoire si cible < 6m & Mana > 5% --------------------------------------------------------------------------------------------------
+					// Mouvement aléatoire si cible < 5m & Mana > 5% --------------------------------------------------------------------------------------------------
 
-
-					if ((Dist <3) && (Mana > MaxMana / 20))
+					if ((Dist <5) && (Mana > MaxMana / 20))
 					{
-						float x, y, z;
-
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
+						me->SetSpeedRate(MOVE_RUN, 1.1f);
 
+						float x, y, z;
 						x = (me->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
 						y = (me->GetPositionY() + urand(0, ResteADistance * 2) - ResteADistance);
-						z = me->GetPositionZ() ;
-						me->GetMotionMaster()->MovePoint(0xFFFFFE, x, y, z );
-						me->SetSpeedRate(MOVE_RUN, 1.1f);
-						Cooldown_ResteADistance = urand(5000,8000);
+						z = me->GetPositionZ();
+						me->GetMotionMaster()->MovePoint(0xFFFFFE, x, y, z);
+						Cooldown_ResteADistance = urand(5000, 8000);
 					}
 				}
 				else Cooldown_ResteADistance -= diff;
 
-					// Speed normal si distance > 6m ------------------------------------------------------------------------------------------------------------------
-					if (Dist> 6 && me->GetSpeedRate(MOVE_RUN) == 1.1f)
-					{
+				// Speed normal si distance > 6m ------------------------------------------------------------------------------------------------------------------
+				if (Dist> 6 && me->GetSpeedRate(MOVE_RUN) == 1.1f)
+				{
 					me->SetSpeedRate(MOVE_RUN, 1.01f);
-					}
+				}
 
 				// Mouvement OFF si Mana > 5% & distance >= 3m & <= 30m ---------------------------------------------------------------------------------------------
-				if ((Mana > MaxMana / 20) && (Dist >= 3 ) && (Dist <= DistanceDeCast) )
+				if ((Mana > MaxMana / 20) && (Dist >= 3) && (Dist <= DistanceDeCast))
 				{
-					AttackStartCaster(me->GetVictim(), ResteADistance);									// Distance de combat
+					AttackStartCaster(victim, ResteADistance);									// Distance de combat
 					void DoRangedAttackIfReady();														// Combat a distance
 					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);								// ROOT
 				}
@@ -330,7 +330,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 
 			void Combat_Arcane(uint32 diff)
 			{
-				if (!UpdateVictim() || me->isMoving() /*me->HasUnitState(UNIT_STATE_MOVE)*/ || me->HasUnitState(UNIT_STATE_CASTING) )
+				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_MOVE) /*|| me->HasUnitState(UNIT_STATE_CASTING)*/)
 					return;
 
 				Mana = me->GetPower(POWER_MANA);
@@ -377,7 +377,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 			}
 			void Combat_Feu(uint32 diff)
 			{
-				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
+				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_MOVE) /*|| me->HasUnitState(UNIT_STATE_CASTING)*/)
 					return;
 
 				Mana = me->GetPower(POWER_MANA);
@@ -431,7 +431,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 			}
 			void Combat_Givre(uint32 diff)
 			{
-				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING) )
+				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_MOVE) /*|| me->HasUnitState(UNIT_STATE_CASTING)*/)
 					return;
 
 				Mana = me->GetPower(POWER_MANA);

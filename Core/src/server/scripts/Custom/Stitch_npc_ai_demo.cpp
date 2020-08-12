@@ -112,6 +112,11 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 				if (!UpdateVictim() )
 					return;
 
+				Mana = me->GetPower(POWER_MANA);
+				Unit* victim = me->GetVictim();
+				Dist = me->GetDistance(victim);
+				me->SetReactState(REACT_AGGRESSIVE);
+
 				// Forcer le choix de la Spécialisation par creature_template->pickpocketloot
 				ForceBranche = me->GetCreatureTemplate()->pickpocketLootId;							// creature_template->pickpocketloot
 				if (ForceBranche == 1) { BrancheSpe = 1; }											// branche1 forcé
@@ -124,9 +129,6 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 				}
 
 				if ((BrancheSpe > NbrDeSpe) || (BrancheSpe == 0)) { BrancheSpe = 1; }
-
-				Unit* victim = me->GetVictim();
-				me->SetReactState(REACT_AGGRESSIVE);
 
 				// Spell a lancer a l'agro ------------------------------------------------------------------------------------------------------------------------
 
@@ -192,11 +194,11 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 			}
 			void EnterEvadeMode(EvadeReason /*why*/) override
 			{
-				//RetireBugDeCombat();
+				RetireBugDeCombat();
 				me->AddUnitState(UNIT_STATE_EVADE);
-				me->SetSpeedRate(MOVE_RUN, 1.5f);									// Vitesse de déplacement
-				me->GetMotionMaster()->MoveTargetedHome();							// Retour home
-				me->RemoveAllControlled();											// renvois pet
+				me->SetSpeedRate(MOVE_RUN, 1.5f);										// Vitesse de déplacement
+				me->GetMotionMaster()->MoveTargetedHome();								// Retour home
+				me->RemoveAllControlled();												// renvois pet
 			}
 			void JustReachedHome() override
 			{
@@ -206,10 +208,8 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 				me->RemoveAura(Armure_Demoniaque);
 				me->RemoveAura(Gangrarmure);
 
-				RetireBugDeCombat();
 				me->SetReactState(REACT_AGGRESSIVE);
 				me->SetSpeedRate(MOVE_RUN, 1.01f);										// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
-
 			}
 			void UpdateAI(uint32 diff) override
 			{
@@ -224,11 +224,12 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 					Cooldown_Npc_Emotes -= diff;
 
 				// En Combat --------------------------------------------------------------------------------------------------------------------------------------
-				if (!UpdateVictim() || me->isPossessed() || me->IsCharmed() || me->HasAuraType(SPELL_AURA_MOD_FEAR))
+				if (!UpdateVictim() /*|| me->isPossessed() || me->IsCharmed() || me->HasAuraType(SPELL_AURA_MOD_FEAR)*/)
 					return;
 
 				Mana = me->GetPower(POWER_MANA);
-				Dist = me->GetDistance(me->GetVictim());
+				Unit* victim = me->GetVictim();
+				Dist = me->GetDistance(victim);
 
 				// Combat suivant la Spécialisation
 				switch (BrancheSpe)
@@ -262,13 +263,12 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 
 			void RetireBugDeCombat()
 			{
+				me->CombatStop(true);
+				me->DeleteThreatList();
+				me->LoadCreaturesAddon();
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);				// UNROOT
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);					// Retire flag "en combat"
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);				// Retire flag "non attaquable"
-
-				me->DeleteThreatList();
-				me->CombatStop(true);
-				me->LoadCreaturesAddon();
 			}
 
 			void Mouvement_All()
@@ -286,7 +286,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 			}
 			void Mouvement_Caster(uint32 diff)
 			{
-				if (!UpdateVictim() /*|| me->HasUnitState(UNIT_STATE_CASTING)*/ || me->HasUnitState(UNIT_STATE_STUNNED))
+				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
 					return;
 
 				Mana = me->GetPower(POWER_MANA);
@@ -295,20 +295,18 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 
 				if (Cooldown_ResteADistance <= diff)
 				{
-					// Mouvement aléatoire si cible < 6m & Mana > 5% --------------------------------------------------------------------------------------------------
+					// Mouvement aléatoire si cible < 5m & Mana > 5% --------------------------------------------------------------------------------------------------
 
-
-					if ((Dist <3) && (Mana > MaxMana / 20))
+					if ((Dist <5) && (Mana > MaxMana / 20))
 					{
-						float x, y, z;
-
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
+						me->SetSpeedRate(MOVE_RUN, 1.1f);
 
+						float x, y, z;
 						x = (me->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
 						y = (me->GetPositionY() + urand(0, ResteADistance * 2) - ResteADistance);
 						z = me->GetPositionZ();
 						me->GetMotionMaster()->MovePoint(0xFFFFFE, x, y, z);
-						me->SetSpeedRate(MOVE_RUN, 1.1f);
 						Cooldown_ResteADistance = urand(5000, 8000);
 					}
 				}
@@ -323,7 +321,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 				// Mouvement OFF si Mana > 5% & distance >= 3m & <= 30m ---------------------------------------------------------------------------------------------
 				if ((Mana > MaxMana / 20) && (Dist >= 3) && (Dist <= DistanceDeCast))
 				{
-					AttackStartCaster(me->GetVictim(), ResteADistance);									// Distance de combat
+					AttackStartCaster(victim, ResteADistance);									// Distance de combat
 					void DoRangedAttackIfReady();														// Combat a distance
 					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);								// ROOT
 				}
@@ -344,8 +342,12 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 
 			void Combat_Affliction(uint32 diff)
 			{
-				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_MOVE))
+				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_MOVE) /*|| me->HasUnitState(UNIT_STATE_CASTING)*/)
 					return;
+
+				Mana = me->GetPower(POWER_MANA);
+				Unit* victim = me->GetVictim();
+				Dist = me->GetDistance(victim);
 
 				if (Dist <= DistanceDeCast)
 				{
@@ -395,8 +397,12 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 			}
 			void Combat_Demonologie(uint32 diff)
 			{
-				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_MOVE))
+				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_MOVE) /*|| me->HasUnitState(UNIT_STATE_CASTING)*/)
 					return;
+
+				Mana = me->GetPower(POWER_MANA);
+				Unit* victim = me->GetVictim();
+				Dist = me->GetDistance(victim);
 
 				// Regen mana en combat ------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_RegenMana <= diff)
@@ -434,8 +440,12 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 			}
 			void Combat_Destruction(uint32 diff)
 			{
-				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_MOVE))
+				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_MOVE) /*|| me->HasUnitState(UNIT_STATE_CASTING)*/)
 					return;
+
+				Mana = me->GetPower(POWER_MANA);
+				Unit* victim = me->GetVictim();
+				Dist = me->GetDistance(victim);
 
 				// Regen mana en combat ------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_RegenMana <= diff)

@@ -1,41 +1,41 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : CHAMAN V1.1
+// AI generique npc par classe : PALADIN V1.0
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
-// Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_chaman',`AIName` = '' WHERE (entry = 15100002);
-// Optionel : UPDATE `creature_template` SET `HealthModifier` = 2, `ManaModifier` = 3, `ArmorModifier` = 1, `DamageModifier` = 2,`BaseAttackTime` = 2000, `RangeAttackTime` = 2000 WHERE(entry = 15100002);
+// Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_paladin',`AIName` = '' WHERE (entry = 15100006);
+// Optionel : UPDATE `creature_template` SET `HealthModifier` = 2, `ManaModifier` = 3, `ArmorModifier` = 1, `DamageModifier` = 2,`BaseAttackTime` = 2000, `RangeAttackTime` = 2000 WHERE(entry = 15100006);
 // Optionel : Utilisez pickpocketloot de creature_template pour passer certains parametres (Solution choisit afin de rester compatible avec tout les cores). Si pickpocketloot = 1 (branche1 forcé), pickpocketloot = 2 (branche2 forcé), etc
 //###########################################################################################################################################################################################################################################
-// # npc de Test Stitch_npc_ai_chaman  .npc 15100002
+// # npc de Test Stitch_npc_ai_paladin  .npc 15100006
 // REPLACE INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `modelid1`, `modelid2`, `modelid3`, `modelid4`, `name`, `femaleName`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `exp_unk`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `scale`, `rank`, `dmgschool`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `trainer_type`, `trainer_class`, `trainer_race`, `type`, `type_flags`, `type_flags2`, `lootid`, `pickpocketloot`, `skinloot`, `resistance1`, `resistance2`, `resistance3`, `resistance4`, `resistance5`, `resistance6`, `spell1`, `spell2`, `spell3`, `spell4`, `spell5`, `spell6`, `spell7`, `spell8`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `InhabitType`, `HoverHeight`, `HealthModifier`, `HealthModifierExtra`, `ManaModifier`, `ManaModifierExtra`, `ArmorModifier`, `DamageModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `flags_extra`, `ScriptName`, `VerifiedBuild`) VALUES
-// (15100002, 0, 0, 0, 0, 0, 59382, 0, 0, 0, 'Stitch_npc_ai_Chaman', '', '', '', 0, 90, 90, 0, 0, 2102, 0, 1.01, 1.01, 0.7, 0, 0, 2000, 2000, 1, 1, 2, 0, 2048, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 3, 1, 2, 1, 3, 1, 2, 2, 1, 0, 144, 1, 0, 0, 'Stitch_npc_ai_chaman', 20173);
+// (15100006, 0, 0, 0, 0, 0, 29491, 0, 0, 0, 'npc_ai_Paladin', '', '', '', 0, 90, 90, 0, 0, 2102, 0, 1.01, 1.01, 1, 0, 0, 2000, 2000, 1, 1, 2, 0, 2048, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 3, 1, 2, 1, 1.5, 1, 2, 2, 1, 0, 144, 1, 0, 0, 'Stitch_npc_ai_paladin', 20173);
 // REPLACE INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`, `VerifiedBuild`) VALUES
-// (15100002, 1, 854, 0, 0, 0),				// baton			- Restauration
-// (15100002, 2, 2209, 63165, 0, 0),		// dague+bouclier	- Elementaire
-// (15100002, 3, 2209, 2209, 0, 0);		    // dague * 2		- Amelioration
+// (15100006, 1, 854, 0, 0, 0),				// baton			- Restauration
+// (15100006, 2, 2209, 63165, 0, 0),		// dague+bouclier	- Elementaire
+// (15100006, 3, 2209, 2209, 0, 0);		    // dague * 2		- Amelioration
 //###########################################################################################################################################################################################################################################
 
 
 
 //################################################################################################
-//StitchAI AI Chaman
+//StitchAI AI Paladin
 //################################################################################################
 
-class Stitch_npc_ai_chaman : public CreatureScript
+class Stitch_npc_ai_paladin : public CreatureScript
 {
-public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
+public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 
-		struct Stitch_npc_ai_chamanAI : public ScriptedAI
+		struct Stitch_npc_ai_paladinAI : public ScriptedAI
 		{
-			Stitch_npc_ai_chamanAI(Creature* creature) : ScriptedAI(creature) { }
+			Stitch_npc_ai_paladinAI(Creature* creature) : ScriptedAI(creature) { }
 
-			uint32 BrancheSpe = 1;													// Choix de la Spécialisation : Restauration=1, Elementaire=2, Amelioration=3
+			uint32 BrancheSpe = 1;													// Choix de la Spécialisation : Vindice=1, Sacré=2, Protection=3
 			uint32 NbrDeSpe = 3;													// Nombre de Spécialisations
 			uint32 ForceBranche;
 			uint32 Random;
 			uint32 DistanceDeCast = 30;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
-			uint32 ResteADistance = 10;												// Distance max a laquelle un npc s'approchera
+			uint32 ResteADistance = 5;												// Distance max a laquelle un npc s'approchera
 			uint32 Dist;															// Distance entre le npc et sa cible
 			uint32 Mana;
 			uint32 MaxMana = me->GetMaxPower(POWER_MANA);
@@ -43,59 +43,54 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 			
 			// Definitions des variables Cooldown et le 1er lancement
 			uint32 Cooldown_Spell1 = 500;
-			uint32 Cooldown_Spell2 = 2500;
+			uint32 Cooldown_Spell2 = 2000;
 			uint32 Cooldown_Spell3 = 3500;
 			uint32 Cooldown_Spell_Heal = 3000;
 			uint32 Cooldown_RegenMana = 3000;
-			uint32 Cooldown_ResteADistance = 4000;									// Test si en contact pour  Restauration, Elementaire et s'eloigner
+			uint32 Cooldown_ResteADistance = 4000;									// Test si en contact
 			uint32 Cooldown_ResteAuContact;
 			uint32 Cooldown_Anti_Bug_Figer = 2000;
-			uint32 Cooldown_Charge = 8000;
 			uint32 Cooldown_Npc_Emotes = urand(5000, 8000);
 
 			// Spells Divers
-			uint32 Buf_branche1 = 974;												// Bouclier de foudre 324 - Bouclier de terre 974 - Bouclier d’eau 52127
-			uint32 Buf_branche2 = 52127;											// Bouclier de foudre 324 - Bouclier de terre 974 - Bouclier d’eau 52127
-			uint32 Buf_branche3 = 324;												// Bouclier de foudre 324 - Bouclier de terre 974 - Bouclier d’eau 52127
-			uint32 Spell_Heal_Caster = 8004;  										// Afflux de soins 
-			uint32 Spell_Heal_Heal = 77472;  										// Vague de soins 
-			uint32 Rappel_totemique = 36936;										// Rappel totemique : retire les totems invoqués
-			uint32 Totem_guerisseur = 5394;
-			uint32 Totem_incendiaire = 3599;
-			uint32 Totem_peau_de_pierre = 78222;
-			uint32 Totem_de_magma = 8190;											// Totem de magma
-			uint32 Horion_de_terre = 8042;											// Horion de terre 
-			uint32 Horion_de_givre = 8056;											// Horion de givre
+			uint32 Buf_branche1 = 20164;											// Sceau de justice 20164, Sceau de clairvoyance 20165, Sceau de vérité 30801, Sceau de méditation 105361
+			uint32 Buf_branche1a = 79977;											// Bénédiction de puissance 79977
+			uint32 Buf_branche2 = 20165;											// Sceau de clairvoyance 20165, Sceau de protection de mana 20154,
+			uint32 Buf_branche2a = 31821;											// Aura de dévotion 31821, Aura de dévotion 52442 (armure+25%)
+			uint32 Buf_branche3 = 30801;											// Sceau de clairvoyance 20165, Sceau de vérité 30801
+			uint32 Buf_branche3a = 31850;											// Ardent défenseur 31850 (dmg -20% 10s),     Bénédiction des rois 72043, Protection divine 498, Aura de dévotion 52442 (armure+25%) 
+			uint32 Spell_Heal_Caster = 19750;  										// Eclair lumineux 19750
+			uint32 Spell_Heal_Heal = 19750;  										// Lumière sacrée 82326
 
-			// Spells Restauration
+			// Spells Vindice
 			uint32 Spell_branche1_agro;
 			uint32 Spell_branche1_1;
 			uint32 Spell_branche1_2;
 			uint32 Spell_branche1_3;
-			uint32 branche1_agro[4] = { 8050, 8056, 3599, 73393 };					// Horion de flammes 8050 - Horion de givre 8056 - Totem incendiaire 3599 - Totem de flot de mana 73393
-			uint32 branche1_1[2] = { 403, 403 };									// Eclair 403
-			uint32 branche1_2[2] = { 8056, 8042 };									// Horion de givre 8056 - Horion de terre 8042 (stun 2s)
-			uint32 branche1_3[2] = { 8050, 57994 };									// Horion de flammes 8050 30s - Cisaille de vent 57994
+			uint32 branche1_agro[4] = { 853, 853, 96231, 62124 };					// Marteau de la justice 853 (stun 6s), Réprimandes 96231 (interrompt 4s), Rétribution 62124
+			uint32 branche1_1[2] = { 20271, 20271 };								// Jugement 20271
+			uint32 branche1_2[2] = { 35395, 35395 };								// Frappe du croisé 35395
+			uint32 branche1_3[3] = { 879, 53595, 53385 };							// Exorcisme 879, Marteau du vertueux 53595 6s, Tempête divine 53385
 			
-			// Definitions des Spells Elementaire
+			// Spells Sacré
 			uint32 Spell_branche2_agro;
 			uint32 Spell_branche2_1;
 			uint32 Spell_branche2_2;
 			uint32 Spell_branche2_3;
-			uint32 branche2_agro[5] = { 8050, 8056, 3599, 2484, 78222 };			// Horion de flammes 8050 - Horion de givre 8056 - Totem incendiaire 3599 - Totem de lien terrestre 2484 - Totem de peau de pierre 78222
-			uint32 branche2_1[4] = { 403, 403, 403, 421 };							// Eclair 403 - Chaîne d'éclairs 421 
-			uint32 branche2_2[3] = { 51505, 51505 ,8056 };							// Explosion de lave 51505 - Horion de givre 8056 8s
-			uint32 branche2_3[4] = { 8050, 8050, 8042, 57994 };						// Horion de flammes 8050 30s - Horion de terre 8042 (stun 2s) - Cisaille de vent 57994
+			uint32 branche2_agro[4] = { 2812, 2812, 853, 96231 };					// Dénoncer 2812 , Marteau de la justice 853 (stun 6s), Réprimandes 96231 (interrompt 4s)
+			uint32 branche2_1[2] = { 20271, 20271 };								// Jugement 20271
+			uint32 branche2_2[2] = { 35395, 35395 };								// Frappe du croisé 35395
+			uint32 branche2_3[2] = { 20473, 20473 };								// Horion sacré 20473
 
-			// Spells Amelioration
+			// Spells Protection
 			uint32 Spell_branche3_agro;
 			uint32 Spell_branche3_1;
 			uint32 Spell_branche3_2;
 			uint32 Spell_branche3_3;
-			uint32 branche3_agro[4] = { 370, 370, 2484, 3599 };						// Purge 370 (retire 1 buf), Totem de lien terrestre 2484, Totem incendiaire 3599
-			uint32 branche3_1[2] = { 300200, 300200 };								// Frappe primordiale 300200
-			uint32 branche3_2[3] = { 17364, 60103, 8056 };							// Horion de givre 8056 8s       - Frappe-tempête 17364 - Fouet de lave 60103
-			uint32 branche3_3[2] = { 8050, 8042 };									// Horion de flammes 8050 - Cisaille de vent 57994 -  Horion de givre 8056 8s - Horion de terre 8042 (stun 2s)
+			uint32 branche3_agro[3] = { 853, 96231, 62124 };						// Marteau de la justice 853 (stun 6s), Réprimandes 96231 (interrompt 4s), Rétribution 62124
+			uint32 branche3_1[2] = { 20271, 20271 };								// Jugement 20271
+			uint32 branche3_2[2] = { 53600, 53600 };								// Frappe du croisé 35395, Bouclier du vertueux 53600
+			uint32 branche3_3[2] = { 31935, 26573 };								// Bouclier du vengeur 31935 (interrompt 3s), Consécration 26573, 
 
 			// Emotes
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
@@ -108,7 +103,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 				}
 			void EnterCombat(Unit* /*who*/) override
 			{
-				if (!UpdateVictim() )
+				if (!UpdateVictim())
 					return;
 
 				Mana = me->GetPower(POWER_MANA);
@@ -124,64 +119,59 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 				else
 				{
 					// Sinon Choix de la Spécialisation Aléatoire
-					BrancheSpe = urand(1, NbrDeSpe + 2);
+					BrancheSpe = urand(1, NbrDeSpe);
 				}
 
-				if ((BrancheSpe > NbrDeSpe) || (BrancheSpe == 0)) { BrancheSpe = 2; }				// plus de chance d'etre Elementaire
+				if ((BrancheSpe > NbrDeSpe) || (BrancheSpe == 0)) { BrancheSpe = 1; }	
 
 				switch(BrancheSpe)
 					{
-					case 1: // Si Spécialisation Restauration -----------------------------------------------------------------------------------------------------
+					case 1: // Si Spécialisation Vindice -------------------------------------------------------------------------------------------------------
 						me->CastSpell(me, Buf_branche1, true);
+						me->CastSpell(me, Buf_branche1a, true);
 						me->LoadEquipment(1, true);													// creature_equip_template 1
 
-						// Tirages aléatoires des spells Restauration 
 						Spell_branche1_agro = branche1_agro[urand(0,3)];
 						Spell_branche1_1 = branche1_1[urand(0, 1)];
 						Spell_branche1_2 = branche1_2[urand(0, 1)];
-						Spell_branche1_3 = branche1_3[urand(0, 1)];
+						Spell_branche1_3 = branche1_3[urand(0, 2)];
 
-						// Totem
-						me->CastSpell(me, Totem_guerisseur, true); 									// Totem guérisseur 5394 (12s)
-						
 						Random = urand(1, 2); 
 						if (Random == 1 && UpdateVictim()) { DoCastVictim(Spell_branche1_agro); }	// 1/2 Chance de lancer le sort d'agro
+
+						Bonus_Armure(150);															// Bonus d'armure +50%
 					break;
 
-					case 2: // Si Spécialisation Elementaire  --------------------------------------------------------------------------------------------------------
+					case 2: // Si Spécialisation Sacré  --------------------------------------------------------------------------------------------------------
 						me->CastSpell(me, Buf_branche2, true);										// Buf2 sur lui meme
+						me->CastSpell(me, Buf_branche2a, true);
 						me->LoadEquipment(2, true);													// creature_equip_template 2
 
-						// Tirages aléatoires des spells Elementaire 
-						Spell_branche2_agro = branche2_agro[urand(0, 4)];
-						Spell_branche2_1 = branche2_1[urand(0, 3)];
-						Spell_branche2_2 = branche2_2[urand(0, 2)];
-						Spell_branche2_3 = branche2_3[urand(0, 3)];
+						Spell_branche2_agro = branche2_agro[urand(0, 3)];
+						Spell_branche2_1 = branche2_1[urand(0, 1)];
+						Spell_branche2_2 = branche2_2[urand(0, 1)];
+						Spell_branche2_3 = branche2_3[urand(0, 1)];
 
-						// Totem
-						me->CastSpell(me, Totem_incendiaire, true);									// Totem incendiaire 3599
+						Random = urand(1, 2);
+						if (Random == 1 && UpdateVictim()) { DoCastVictim(Spell_branche2_agro); }	// 1/2 Chance de lancer le sort d'agro
 
-						Random = urand(1, 3);
-						if (Random == 1 && UpdateVictim()) { DoCastVictim(Spell_branche2_agro); }	// 1/3 Chance de lancer le sort d'agro
+						Bonus_Armure(125);															// Bonus d'armure +25%
 					break;
 
-					case 3: // Si Spécialisation Amelioration  --------------------------------------------------------------------------------------------------------
+					case 3: // Si Spécialisation Protection ----------------------------------------------------------------------------------------------------
 						me->CastSpell(me, Buf_branche3, true);										// Buf3 sur lui meme
+						me->CastSpell(me, Buf_branche3a, true);
 						me->LoadEquipment(3, true);													// creature_equip_template 3
 
-						// Tirages aléatoires des spells Amelioration 
-						Spell_branche3_agro = branche3_agro[urand(0, 3)];
+						Spell_branche3_agro = branche3_agro[urand(0, 2)];
 						Spell_branche3_1 = branche3_1[urand(0, 1)];
-						Spell_branche3_2 = branche3_2[urand(0, 2)];
+						Spell_branche3_2 = branche3_2[urand(0, 1)];
 						Spell_branche3_3 = branche3_3[urand(0, 1)];
 
-						// Totem
-						me->CastSpell(me, Totem_peau_de_pierre, true); 								// Totem de peau de pierre 78222
+						Random = urand(1, 2);
+						if (Random == 1 && UpdateVictim()) { DoCastVictim(Spell_branche3_agro); }	// 1/2 Chance de lancer le sort d'agro
 
-						Random = urand(1, 3);
-						if (Random == 1 && UpdateVictim()) { DoCastVictim(Spell_branche3_agro); }	// 1/3 Chance de lancer le sort d'agro
-
-						Bonus_Armure(115);															// Bonus d'armure +15%
+						Bonus_Armure(200);															// Bonus d'armure +100%
 						break;
 						
 					}
@@ -196,14 +186,16 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 			void JustReachedHome() override
 			{
 				me->RemoveAura(Buf_branche1);
+				me->RemoveAura(Buf_branche1a);
 				me->RemoveAura(Buf_branche2);
+				me->RemoveAura(Buf_branche2a);
 				me->RemoveAura(Buf_branche3);
-				me->CastSpell(me, Rappel_totemique, true);									// Rappel totémique 36936
+				me->RemoveAura(Buf_branche3a);
 
-				Bonus_Armure(100);															// Retire bonus d'armure
+				Bonus_Armure(100);													// Retire bonus d'armure
 
 				me->SetReactState(REACT_AGGRESSIVE);
-				me->SetSpeedRate(MOVE_RUN, 1.01f);											// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
+				me->SetSpeedRate(MOVE_RUN, 1.01f);									// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
 			}
 			void UpdateAI(uint32 diff) override
 			{
@@ -226,28 +218,28 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 				// Combat suivant la Spécialisation
 				switch (BrancheSpe)
 				{
-				case 1: // Spécialisation Restauration #########################################################################################################################
-
-					Mouvement_Caster(diff);
-					Mouvement_All();
-					Combat_Restauration(diff);
-					Heal_En_Combat_Heal(diff);
-					break;
-
-				case 2: // Spécialisation Elementaire #########################################################################################################################
-
-					Mouvement_Caster(diff);
-					Mouvement_All();
-					Heal_En_Combat_Caster(diff);
-					Combat_Elementaire(diff);
-					break;
-
-				case 3: // Spécialisation Amelioration #########################################################################################################################
+				case 1: // Spécialisation Vindice #######################################################################################################################
 
 					Heal_En_Combat_Melee(diff);
-					Combat_Amelioration(diff);
-					Mouvement_Contact(diff);
+					Combat_Vindice(diff);
 					Mouvement_All();
+					Mouvement_Contact(diff);
+					break;
+
+				case 2: // Spécialisation Sacré #########################################################################################################################
+
+					Heal_En_Combat_Heal(diff);
+					Combat_Sacre(diff);
+					Mouvement_All();
+					Mouvement_Contact(diff);
+					break;
+
+				case 3: // Spécialisation Protection ####################################################################################################################
+
+					Heal_En_Combat_Melee(diff);
+					Combat_Protection(diff);
+					Mouvement_All();
+					Mouvement_Contact(diff);
 					break;
 
 				}
@@ -269,128 +261,49 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 					return;
 
 				Dist = me->GetDistance(me->GetVictim());
-				if ((Dist > DistanceDeCast) || (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 40))
+				if (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 40)
 				{
 					RetireBugDeCombat();
 					me->AddUnitState(UNIT_STATE_EVADE);
 					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);						// Quite le combat si la cible > 30m (Caster & Mélée) ou > 40m de home
 				}
 			}
-			void Mouvement_Caster(uint32 diff)
-			{
-				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
-					return;
-
-				Mana = me->GetPower(POWER_MANA);
-				Unit* victim = me->GetVictim();
-				Dist = me->GetDistance(victim);
-
-				if (Cooldown_ResteADistance <= diff)
-				{
-					// Mouvement aléatoire si cible < 5m & Mana > 5% --------------------------------------------------------------------------------------------------
-
-					if ((Dist <5) && (Mana > MaxMana / 20))
-					{
-						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
-						me->SetSpeedRate(MOVE_RUN, 1.1f);
-
-						float x, y, z;
-						x = (me->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
-						y = (me->GetPositionY() + urand(0, ResteADistance * 2) - ResteADistance);
-						z = me->GetPositionZ();
-						me->GetMotionMaster()->MovePoint(0xFFFFFE, x, y, z);
-						Cooldown_ResteADistance = urand(5000, 8000);
-					}
-				}
-				else Cooldown_ResteADistance -= diff;
-
-				// Speed normal si distance > 6m ------------------------------------------------------------------------------------------------------------------
-				if (Dist> 6 && me->GetSpeedRate(MOVE_RUN) == 1.1f)
-				{
-					me->SetSpeedRate(MOVE_RUN, 1.01f);
-				}
-
-				// Mouvement OFF si Mana > 5% & distance >= 3m & <= 30m ---------------------------------------------------------------------------------------------
-				if ((Mana > MaxMana / 20) && (Dist >= 3) && (Dist <= DistanceDeCast))
-				{
-					AttackStartCaster(victim, ResteADistance);											// Distance de combat
-					void DoRangedAttackIfReady();														// Combat a distance
-					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);								// ROOT
-				}
-
-				// Mouvement ON si distance > 30m ------------------------------------------------------------------------------------------------------------------
-				if (Dist > DistanceDeCast)
-				{
-					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// UNROOT
-				}
-
-				// Mouvement ON si Mana < 5%  ----------------------------------------------------------------------------------------------------------------------
-				if (Mana < MaxMana / 20)
-				{
-					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// UNROOT
-				}
-
-			}
 			void Mouvement_Contact(uint32 diff)
 			{
 				if (!UpdateVictim())
 					return;
 
-				DoMeleeAttackIfReady();												// Combat en mélée
-				if (!me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT)) { me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT); }
+				Mana = me->GetPower(POWER_MANA);
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
+				DoMeleeAttackIfReady();												// Combat en mélée
+				if (!me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT)) { me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT); }
 
-				// Si la cible >= 5m (pour éviter bug de rester figé) ------------------------------------------------------------------------------------------
-				if (Dist >= 5 && Cooldown_Anti_Bug_Figer <= diff)
+				// Si la cible >= 6m (pour éviter bug de rester figé) ------------------------------------------------------------------------------------------
+				if (Dist >= 6 && Cooldown_Anti_Bug_Figer <= diff)
 				{
 					float x, y, z;
 					x = victim->GetPositionX();
 					y = victim->GetPositionY();
 					z = victim->GetPositionZ();
-					me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
+					me->GetClosePoint(x, y, z, victim->GetObjectSize() / 3, 3);
 					me->GetMotionMaster()->MovePoint(0xFFFFFE, x, y, z);
 					Cooldown_Anti_Bug_Figer = 2000;
 				}
 				else Cooldown_Anti_Bug_Figer -= diff;
 
+				// Si la cible < 6m ----------------------------------------------------------------------------------------------------------------------------
 
-				// Si la cible est entre 8 & 30m : Horion de terre ou Horion de givre ------------------------------------------------------------------------------
-				if (Cooldown_Charge <= diff)
-				{
-					Random = urand(1, 8);
-					if ((Dist >= 8) && (Dist <= DistanceDeCast))
-					{
-						if (Random = 1)
-						{
-							DoCastVictim(Horion_de_terre);									// Horion de terre 8042 (stun 2s) - 1 chance sur 8
-						}
-						else if (Random = 2)
-						{
-							DoCastVictim(Horion_de_givre);									// Horion de givre 8056 8s - 1 chance sur 8
-						}
-						Cooldown_Charge = urand(15000, 20000);
-						Cooldown_ResteADistance = urand(2000, 4000);						// Sinon bugue Totem de magma 8190
-					}
-				}
-				else Cooldown_Charge -= diff;
-
-				// Si la cible < 8m : Totem de magma ou Avance ou Tourne au tour -----------------------------------------------------------------------------------
-
-				if (Dist < 8 && (Cooldown_ResteADistance <= diff))
+				if (Dist < 6 && (Cooldown_ResteADistance <= diff) && BrancheSpe != 3)
 				{
 					Random = urand(1, 5);
-					if (Random == 1 || Random == 2)
+					if (Random == 1)
 					{
-						Tourne_Au_Tour_En_Combat();													// 2 chances sur 5 tourne au tour de sa victime
+						Tourne_Au_Tour_En_Combat();													// 1 chances sur 5 tourne au tour de sa victime
 					}
-					else if (Random == 3 || Random == 4)
+					else if (Random == 2)
 					{
-						Avance_3m_En_Combat();														// 2 chances sur 5 avance
-					}
-					else
-					{
-						DoCast(me, Totem_de_magma);													// 1 chance sur 5 : Totem de magma 8190
+						Avance_3m_En_Combat();														// 1 chances sur 5 avance
 					}
 					Cooldown_ResteADistance = urand(5000, 7000);
 				}
@@ -402,7 +315,6 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 				if (!UpdateVictim())
 					return;
 				Unit* victim = me->GetVictim();
-				Dist = me->GetDistance(me->GetVictim());
 
 				float x, y, z;
 				x = (victim->GetPositionX() + urand(0, 4) - 2);
@@ -421,28 +333,28 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 				me->GetMotionMaster()->MovePoint(0, x, y, z);
 			}
 
-			void Combat_Restauration(uint32 diff)
+			void Combat_Vindice(uint32 diff)
 			{
-				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_MOVE) /*|| me->HasUnitState(UNIT_STATE_CASTING)*/)
+				if (!UpdateVictim())
 					return;
 
 				Mana = me->GetPower(POWER_MANA);
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
-				if (Dist <= DistanceDeCast)
-				{
 					// Regen mana en combat ------------------------------------------------------------------------------------------------------------------------
 					if (Cooldown_RegenMana <= diff)
 					{
-						me->SetPower(POWER_MANA, Mana + (MaxMana / 5));
+						me->SetPower(POWER_MANA, Mana + (MaxMana / 3));
 						if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
-						Cooldown_RegenMana = urand(1000, 1500);
+						Cooldown_RegenMana = 1000;
 					}
 					else Cooldown_RegenMana -= diff;
 
 					// Combat --------------------------------------------------------------------------------------------------------------------------------------
-					// Spell1 sur la cible chaque (Sort Régulié)
+					Bonus_Degat_Arme_Done(50);										// Bonus de dégat 
+
+					// Spell1 sur la cible
 					if (Cooldown_Spell1 <= diff)
 					{
 						DoCastVictim(Spell_branche1_1);
@@ -450,26 +362,27 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 					}
 					else Cooldown_Spell1 -= diff;
 
-					// Spell2 sur la cible chaque (Sort secondaire plus lent)
+					// Spell2 sur la cible
 					if (Cooldown_Spell2 <= diff)
 					{
 						DoCastVictim(Spell_branche1_2);
-						Cooldown_Spell2 = 8000;
+						Cooldown_Spell2 = 2500;
 					}
 					else Cooldown_Spell2 -= diff;
 
-					// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot)
+					// Spell3 sur la cible 
 					if (Cooldown_Spell3 <= diff)
 					{
 						DoCastVictim(Spell_branche1_3);
-						Cooldown_Spell3 = urand(10000, 12000);
+						Cooldown_Spell3 = 4000;
 					}
 					else Cooldown_Spell3 -= diff;
-				}
+
+					Bonus_Degat_Arme_Done(-50);										// Retrait Bonus de dégat 
 			}
-			void Combat_Elementaire(uint32 diff)
+			void Combat_Sacre(uint32 diff)
 			{
-				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_MOVE) /*|| me->HasUnitState(UNIT_STATE_CASTING)*/)
+				if (!UpdateVictim())
 					return;
 
 				Mana = me->GetPower(POWER_MANA);
@@ -479,38 +392,42 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 				// Regen mana en combat ------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_RegenMana <= diff)
 				{
-					me->SetPower(POWER_MANA, Mana + (MaxMana / 5));
+					me->SetPower(POWER_MANA, Mana + (MaxMana / 2));
 					if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
-					Cooldown_RegenMana = urand(1500, 2000);
+					Cooldown_RegenMana = 1000;
 				}
 				else Cooldown_RegenMana -= diff;
 
+				Bonus_Degat_Arme_Done(-50);											// Reduction des degats parce que trop trop puissant
+
 				// Combat --------------------------------------------------------------------------------------------------------------------------------------
-					// Spell1 sur la cible chaque (Sort Régulié)
+					// Spell1 sur la cible
 					if (Cooldown_Spell1 <= diff)
 					{
 						DoCastVictim(Spell_branche2_1);
-						Cooldown_Spell1 = 3500;
+						Cooldown_Spell1 = 4000;
 					}
 					else Cooldown_Spell1 -= diff;
 
-					// Spell2 sur la cible chaque (Sort secondaire plus lent)
+					// Spell2 sur la cible
 					if (Cooldown_Spell2 <= diff)
 					{
 						DoCastVictim(Spell_branche2_2);
-						Cooldown_Spell2 = 8000;
+						Cooldown_Spell2 = 2500;
 					}
 					else Cooldown_Spell2 -= diff;
 
-					// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot)
+					// Spell3 sur la cible
 					if (Cooldown_Spell3 <= diff)
 					{
 						DoCastVictim(Spell_branche2_3);
-						Cooldown_Spell3 = urand(10000, 12000);
+						Cooldown_Spell3 = urand(5000, 7000);
 					}
 					else Cooldown_Spell3 -= diff;
+
+					Bonus_Degat_Arme_Done(50);										// degats normaux
 				}
-			void Combat_Amelioration(uint32 diff)
+			void Combat_Protection(uint32 diff)
 			{
 				if (!UpdateVictim())
 					return;
@@ -519,80 +436,48 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
-				// Regen mana en combat ----------------------------------------------------------------------------------------------------------------------------
+				// Regen mana en combat ------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_RegenMana <= diff)
 				{
-					me->SetPower(POWER_MANA, Mana + (MaxMana / 10));
+					me->SetPower(POWER_MANA, Mana + (MaxMana / 2));
 					if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
 					Cooldown_RegenMana = 1000;
 				}
 				else Cooldown_RegenMana -= diff;
-
 				
 				// Combat ------------------------------------------------------------------------------------------------------------------------------------------
-				if (Dist < 8)
-				{
+
+				Bonus_Degat_Arme_Done(-40);											// Reduction des degats infligés -40%
 					// Spell1 sur la cible chaque (Sort Régulié)
 					if (Cooldown_Spell1 <= diff)
 					{
-						DoCastVictim(Spell_branche3_1);
-						Cooldown_Spell1 = 3000;
+						me->CastSpell(victim, Spell_branche3_1, true); 
+						Cooldown_Spell1 = 4000;
+						DoMeleeAttackIfReady();						// Combat en mélée
 					}
 					else Cooldown_Spell1 -= diff;
 
 					// Spell2 sur la cible chaque (Sort secondaire plus lent)
 					if (Cooldown_Spell2 <= diff)
 					{
-						Bonus_Degat_Arme_Done(-50);										// Reduction de degat pour ce sort trop puissant
-						DoCastVictim(Spell_branche3_2);
-						Bonus_Degat_Arme_Done(50);										// On le re initialise 
-						Cooldown_Spell2 = urand(5000, 7000);
+						me->CastSpell(victim, Spell_branche3_2, true);
+						Cooldown_Spell2 = 4000;
 					}
 					else Cooldown_Spell2 -= diff;
 
 					// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot)
 					if (Cooldown_Spell3 <= diff)
 					{
-						DoCastVictim(Spell_branche3_3);
+						me->CastSpell(victim, Spell_branche3_3, true);
 						Cooldown_Spell3 = urand(10000, 12000);
 					}
 					else Cooldown_Spell3 -= diff;
 
-					DoMeleeAttackIfReady();
-				}
+					Bonus_Degat_Arme_Done(40);										// Reduction des degats infligés normaux
 
 
 			}
 
-			void Heal_En_Combat_Caster(uint32 diff)
-			{
-			// Heal en combat ------------------------------------------------------------------------------------------------------------------------------
-				if (Cooldown_Spell_Heal <= diff)
-				{
-				Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 1, DistanceDeCast, true);		// pour heal friend
-
-				// heal sur lui meme
-				if ((me->GetHealth() < (me->GetMaxHealth()*0.60)))								// Si PV < 60%
-				{
-					DoCast(me, Spell_Heal_Caster);
-					Cooldown_Spell_Heal = 3500;
-				}
-
-				// heal sur Friend 
-				if (target = DoSelectLowestHpFriendly(DistanceDeCast))							// Distance de l'allié = 30m
-				{
-					if (me->IsFriendlyTo(target) && (me != target))
-					{
-						if (target->GetHealth() < (target->GetMaxHealth()*0.40))				// Si PV < 40%
-						{
-							DoCast(target, Spell_Heal_Caster);
-							Cooldown_Spell_Heal = 4000;
-						}
-					}
-				}
-				}
-				else Cooldown_Spell_Heal -= diff;
-			}
 			void Heal_En_Combat_Heal(uint32 diff)
 			{
 				// Heal en combat ------------------------------------------------------------------------------------------------------------------------------
@@ -601,10 +486,10 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 					Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 1, DistanceDeCast, true);		// pour heal friend
 
 																									// heal sur lui meme
-					if ((me->GetHealth() < (me->GetMaxHealth()*0.75)))								// Si PV < 60%
+					if ((me->GetHealth() < (me->GetMaxHealth()*0.50)))								// Si PV < 50%
 					{
 						DoCast(me, Spell_Heal_Heal);
-						Cooldown_Spell_Heal = 3000;
+						Cooldown_Spell_Heal = 5000;
 					}
 
 					// heal sur Friend 
@@ -612,10 +497,10 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 					{
 						if (me->IsFriendlyTo(target) && (me != target))
 						{
-							if (target->GetHealth() < (target->GetMaxHealth()*0.60))				// Si PV < 60%
+							if (target->GetHealth() < (target->GetMaxHealth()*0.50))				// Si PV < 50%
 							{
 								DoCast(target, Spell_Heal_Heal);
-								Cooldown_Spell_Heal = 3000;
+								Cooldown_Spell_Heal = 5000;
 							}
 						}
 					}
@@ -627,12 +512,11 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 				// Heal en combat ------------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Spell_Heal <= diff)
 				{
-
 					// heal sur lui meme
 					if ((me->GetHealth() < (me->GetMaxHealth()*0.50)))								// Si PV < 50%
 					{
 						DoCast(me, Spell_Heal_Caster);
-						Cooldown_Spell_Heal = 5000;
+						Cooldown_Spell_Heal = 6000;
 					}
 				}
 				else Cooldown_Spell_Heal -= diff;
@@ -659,14 +543,14 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 
 		CreatureAI* GetAI(Creature* creature) const override
 		{
-			return new Stitch_npc_ai_chamanAI(creature);
+			return new Stitch_npc_ai_paladinAI(creature);
 		}
 };
 
 //##################################################################################################################################################################
-void AddSC_npc_ai_chaman()
+void AddSC_npc_ai_paladin()
 {
-	new Stitch_npc_ai_chaman();
+	new Stitch_npc_ai_paladin();
 }
 
 
