@@ -152,6 +152,7 @@ extern int main(int argc, char** argv)
 	TC_LOG_INFO("server.worldserver", "xx * Pet Demo utilisent desormais energie plutot que le mana                      xx");
 	TC_LOG_INFO("server.worldserver", "xx * Pet & FakePlayers donnent de l'XP et sont plus efficace                      xx");
 	TC_LOG_INFO("server.worldserver", "xx * Guilde par defaut a la création d'un perso                                   xx");
+	TC_LOG_INFO("server.worldserver", "xx   DressNPC (creature_template_outfits , modelid1 a modelid4)                   xx");
 	TC_LOG_INFO("server.worldserver", "xx                                                                                xx");
 	TC_LOG_INFO("server.worldserver", "xx * Diverse majs & debugs                                                        xx");
 	TC_LOG_INFO("server.worldserver", "xx * Un grand Merci a Noc & Scade pour leurs aides                                xx");

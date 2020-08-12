@@ -216,7 +216,7 @@ bool Pet::LoadPetFromDB(Player* owner, uint32 petEntry, uint32 petnumber, bool c
             petlevel = owner->getLevel();
 
 			
-//Stitch : Type de power utilisé par les pet . tous les pets utilisent l'energie plutot que le mana apres 335
+//Stitch : pet , Type de power utilisé par les pet . tous les pets utilisent l'energie plutot que le mana apres 335
             SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_CLASS, CLASS_ROGUE);
             SetUInt32Value(UNIT_FIELD_FLAGS, UNIT_FLAG_PVP_ATTACKABLE); // this enables popup window (pet dismiss, cancel)
 			setPowerType(POWER_ENERGY);
