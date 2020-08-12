@@ -33,6 +33,9 @@
 template<>
 void RandomMovementGenerator<Creature>::_setRandomLocation(Creature* creature)
 {
+	if (creature->IsInCombat())			//Stitch mouvement aléatoire uniquement hors combat
+		return;
+
     float respX, respY, respZ, respO, destX, destY, destZ, travelDistZ;
     creature->GetHomePosition(respX, respY, respZ, respO);
     Map const* map = creature->GetBaseMap();
