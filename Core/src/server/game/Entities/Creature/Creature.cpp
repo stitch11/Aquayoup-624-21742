@@ -1802,7 +1802,7 @@ float Creature::GetAttackDistance(Unit const* player) const
 
     // "The aggro radius of a mob having the same level as the player is roughly 20 yards"
     // float RetDistance = 20;
-	float RetDistance = 30;															//Stitch distance pour la transmission de l'agro (npc_ai)
+	float RetDistance = 40;															//Stitch distance pour la transmission de l'agro (npc_ai)
 
     // "Aggro Radius varies with level difference at a rate of roughly 1 yard/level"
     // radius grow if playlevel < creaturelevel
