@@ -1797,11 +1797,12 @@ float Creature::GetAttackDistance(Unit const* player) const
     // "The maximum Aggro Radius has a cap of 25 levels under. Example: A level 30 char has the same Aggro Radius of a level 5 char on a level 60 mob."
 //   if (leveldif < - 25)
 //        leveldif = -25;
-	if (leveldif < -10)		//Stitch Limite la distance d'agro suivant la difference de level
+	if (leveldif < -10)																//Stitch agro : Limite la distance d'agro suivant la difference de level
 		leveldif = -10;
 
     // "The aggro radius of a mob having the same level as the player is roughly 20 yards"
-    float RetDistance = 20;
+    // float RetDistance = 20;
+	float RetDistance = 30;															//Stitch distance pour la transmission de l'agro (npc_ai)
 
     // "Aggro Radius varies with level difference at a rate of roughly 1 yard/level"
     // radius grow if playlevel < creaturelevel
@@ -2778,11 +2779,12 @@ float Creature::GetAggroRange(Unit const* target) const
         // The maximum Aggro Radius is capped at 45 yards (25 level difference)
         //if (levelDiff < -25)
         //    levelDiff = -25;
-		if (levelDiff < -25)
+		if (levelDiff < -25)															//Stitch agro : Limite la distance d'agro suivant la difference de level
 			levelDiff = -10;
 
         // The base aggro radius for mob of same level
-        float aggroRadius = 20;
+		// float aggroRadius = 20;
+		float aggroRadius = 30;															//Stitch distance pour la transmission de l'agro (npc_ai)
 
         // Aggro Radius varies with level difference at a rate of roughly 1 yard/level
         aggroRadius -= (float)levelDiff;
