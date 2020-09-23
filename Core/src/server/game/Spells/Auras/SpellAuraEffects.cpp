@@ -1292,7 +1292,7 @@ void AuraEffect::HandleShapeshiftBoosts(Unit* target, bool apply) const
             spellId2 = 21178;
             break;
         case FORM_BATTLE_STANCE:
-            spellId = 21156;
+			spellId = 18499; // org 21156 Rage de berserker	
             break;
         case FORM_DEFENSIVE_STANCE:
             spellId = 71; // org 7376
