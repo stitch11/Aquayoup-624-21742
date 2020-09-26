@@ -116,6 +116,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 				me->SetReactState(REACT_AGGRESSIVE);
+				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);
 
 				// Forcer le choix de la Spécialisation par creature_template->pickpocketloot
 				ForceBranche = me->GetCreatureTemplate()->pickpocketLootId;							// creature_template->pickpocketloot
@@ -286,12 +287,13 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 			}
 			void Mouvement_Caster(uint32 diff)
 			{
-				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
+				if (!UpdateVictim() /*|| me->HasUnitState(UNIT_STATE_CASTING)*/)
 					return;
 
 				Mana = me->GetPower(POWER_MANA);
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
+				if (!me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT)) { me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT); }
 
 				if (Cooldown_ResteADistance <= diff)
 				{

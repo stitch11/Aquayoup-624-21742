@@ -112,6 +112,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 				me->SetReactState(REACT_AGGRESSIVE);
+				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);
 
 				// Forcer le choix de la Spécialisation par creature_template->pickpocketloot
 				ForceBranche = me->GetCreatureTemplate()->pickpocketLootId;											// creature_template->pickpocketloot
@@ -273,7 +274,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 			}
 			void Mouvement_Caster(uint32 diff)
 			{
-				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
+				if (!UpdateVictim() /*|| me->HasUnitState(UNIT_STATE_CASTING)*/)
 					return;
 
 				Mana = me->GetPower(POWER_MANA);
@@ -309,7 +310,8 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 				// Mouvement OFF si Mana > 5% & distance >= 3m & <= 30m ---------------------------------------------------------------------------------------------
 				if ((Mana > MaxMana / 20) && (Dist >= 3) && (Dist <= DistanceDeCast))
 				{
-					AttackStartCaster(victim, ResteADistance);									// Distance de combat
+					AttackStart(victim); 
+					AttackStartCaster(victim, ResteADistance);											// Distance de combat
 					void DoRangedAttackIfReady();														// Combat a distance
 					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);								// ROOT
 				}
@@ -336,6 +338,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 				Mana = me->GetPower(POWER_MANA);
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
+				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);
 
 				if (Dist <= DistanceDeCast)
 				{

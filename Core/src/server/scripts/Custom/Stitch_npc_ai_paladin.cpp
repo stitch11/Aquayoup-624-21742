@@ -110,6 +110,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 				me->SetReactState(REACT_AGGRESSIVE);
+				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);
 
 				// Forcer le choix de la Spécialisation par creature_template->pickpocketloot
 				ForceBranche = me->GetCreatureTemplate()->pickpocketLootId;							// creature_template->pickpocketloot

@@ -60,7 +60,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 			uint32 Buf_branche2a = 1160;											// Cri démoralisant 1160 (8s 10m Soi-même)
 			uint32 Buf_branche3 = 159362;											// Folie sanguinaire 159362 (pv 1%/3s), Blessures profondes 115768 (50dmg/15s)
 			uint32 Buf_branche3a = 469;												// Cri de commandement 469
-			uint32 Spell_Heal1 = 97436;  											// Cri de ralliement 97436 (+15 % pv 10s / 3mn)
+			uint32 Spell_Heal1 = 97462;  											// Cri de ralliement 97462 (+15 % pv 10s / 3mn)
 			uint32 Spell_Heal2 = 23881;  											// Sanguinaire 23881
 			uint32 Spell_Heal3 = 23920;  											// Protection du bouclier (invulnerable 5s) 23920
 			uint32 Brise_genou = 1715;
@@ -118,6 +118,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 				me->SetReactState(REACT_AGGRESSIVE);
+				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);
 
 				// Forcer le choix de la Spécialisation par creature_template->pickpocketloot
 				ForceBranche = me->GetCreatureTemplate()->pickpocketLootId;							// creature_template->pickpocketloot
@@ -132,7 +133,6 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 
 				if ((BrancheSpe > NbrDeSpe) || (BrancheSpe == 0)) { BrancheSpe = 1; }	
 
-				BrancheSpe = 1; ////// TMP //////
 
 				switch(BrancheSpe)
 					{
