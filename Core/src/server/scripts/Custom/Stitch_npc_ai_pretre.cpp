@@ -81,7 +81,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 			uint32 branche2_agro[6] = { 15487, 15487, 15487, 88625, 88625, 64044 };	// Horreur psychique 64044 (fear 5s), Silence 15487 5s , Mot sacré : Châtier 88625 (stun 3s) , 
 			uint32 branche2_1[2] = { 585, 585 };									// Châtiment 585  
 			uint32 branche2_2[3] = { 14914, 14914 ,14914 };							// Flammes sacrées 14914, Pénitence 47540 dmg/heal
-			uint32 branche2_3[3] = { 589, 589, 33205};								// Mot de l’ombre:Douleur 589, Suppression de la douleur 33205 degat-40% 8s
+			uint32 branche2_3[3] = { 589, 589, 33206};								// Mot de l’ombre:Douleur 589, Suppression de la douleur 33206 degat-40% 8s
 
 																					// Emotes
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
