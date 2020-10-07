@@ -57,7 +57,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			uint32 Buf_branche1a = 79977;											// Bénédiction de puissance 79977
 			uint32 Buf_branche2 = 20165;											// Sceau de clairvoyance 20165, Sceau de protection de mana 20154,
 			uint32 Buf_branche2a = 31821;											// Aura de dévotion 31821, Aura de dévotion 52442 (armure+25%)
-			uint32 Buf_branche3 = 30801;											// Sceau de clairvoyance 20165, Sceau de vérité 30801
+			uint32 Buf_branche3 = 31801;											// Sceau de clairvoyance 20165, Sceau de vérité 31801
 			uint32 Buf_branche3a = 31850;											// Ardent défenseur 31850 (dmg -20% 10s),     Bénédiction des rois 72043, Protection divine 498, Aura de dévotion 52442 (armure+25%) 
 			uint32 Spell_Heal_Caster = 19750;  										// Eclair lumineux 19750
 			uint32 Spell_Heal_Heal = 19750;  										// Lumière sacrée 82326
@@ -262,11 +262,11 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 					return;
 
 				Dist = me->GetDistance(me->GetVictim());
-				if (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 40)
+				if (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 30)
 				{
 					RetireBugDeCombat();
 					me->AddUnitState(UNIT_STATE_EVADE);
-					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);						// Quite le combat si la cible > 30m (Caster & Mélée) ou > 40m de home
+					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);						// Quite le combat si la cible > 30m (Caster & Mélée) ou > 30m de home
 				}
 			}
 			void Mouvement_Contact(uint32 diff)
@@ -281,7 +281,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 				if (!me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT)) { me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT); }
 
 				// Si la cible >= 6m (pour éviter bug de rester figé) ------------------------------------------------------------------------------------------
-				if (Dist >= 6 && Cooldown_Anti_Bug_Figer <= diff)
+				if (Dist >= 4 && Cooldown_Anti_Bug_Figer <= diff)
 				{
 					float x, y, z;
 					x = victim->GetPositionX();
@@ -295,7 +295,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 
 				// Si la cible < 6m ----------------------------------------------------------------------------------------------------------------------------
 
-				if (Dist < 6 && (Cooldown_ResteADistance <= diff) && BrancheSpe != 3)
+				if (Dist < 4 && (Cooldown_ResteADistance <= diff) && BrancheSpe != 3)
 				{
 					Random = urand(1, 5);
 					if (Random == 1)

@@ -56,13 +56,13 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 			// Spells Divers
 			uint32 Buf_branche1 = 12712;											// Soldat aguerri 12712 (2 mains= dmg+15%)
 			uint32 Buf_branche1a = 6673;											// Cri de guerre 6673
-			uint32 Buf_branche2 = 156291;											// Berserker fou 23588 (ambidextre)
+			uint32 Buf_branche2 = 23588;											// Berserker fou 23588 (ambidextre)
 			uint32 Buf_branche2a = 1160;											// Cri démoralisant 1160 (8s 10m Soi-même)
 			uint32 Buf_branche3 = 159362;											// Folie sanguinaire 159362 (pv 1%/3s), Blessures profondes 115768 (50dmg/15s)
 			uint32 Buf_branche3a = 469;												// Cri de commandement 469
 			uint32 Spell_Heal1 = 97462;  											// Cri de ralliement 97462 (+15 % pv 10s / 3mn)
 			uint32 Spell_Heal2 = 23881;  											// Sanguinaire 23881
-			uint32 Spell_Heal3 = 23920;  											// Protection du bouclier (invulnerable 5s) 23920
+			uint32 Spell_Heal3 = 97462;  											// Protection du bouclier (invulnerable 5s) 23920
 			uint32 Brise_genou = 1715;
 			uint32 Spell_Charge = 100;
 
@@ -76,9 +76,9 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 			uint32 Spell_branche1_2;
 			uint32 Spell_branche1_3;
 			uint32 branche1_agro[2] = { 100, 355 };									// Charge 100, Provocation 355
-			uint32 branche1_1[2] = { 78, 78 };										// Frappe héroïque 78
-			uint32 branche1_2[3] = { 167105, 12294, 1680 };							// Frappe du colosse 167105 (posture de combat 6s), Frappe mortelle 12294, Tourbillon 1680,
-			uint32 branche1_3[3] = { 6552, 772, 772 };								// Volée de coups 6552 (interrompt 4s), Pourfendre 772 (18s)
+			uint32 branche1_1[2] = { 29426, 29426 };								// Frappe héroïque 29426/78
+			uint32 branche1_2[3] = { 167105, 12294, 77558 };						// Frappe du colosse 167105 (posture de combat 6s), Frappe mortelle 12294, Tourbillon 1680,Frappe sanglante 77558
+			uint32 branche1_3[3] = { 6552, 772, 118532 };							// Volée de coups 6552 (interrompt 4s), Pourfendre 772 (18s), Entaille infectée 118532
 			
 			// Spells Fureur
 			uint32 Spell_branche2_agro;
@@ -86,9 +86,9 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 			uint32 Spell_branche2_2;
 			uint32 Spell_branche2_3;
 			uint32 branche2_agro[2] = { 6544, 355 };								// Bond héroïque 6544, Provocation 355
-			uint32 branche2_1[2] = { 78, 78 };										// Frappe héroïque 78
-			uint32 branche2_2[2] = { 35395, 35395 };								// 
-			uint32 branche2_3[2] = { 20473, 20473 };								// Coup de tonnerre 6343,
+			uint32 branche2_1[2] = { 126799, 126799 };								// Frappe héroïque 29426/78 , Frappe tranchante 126799
+			uint32 branche2_2[2] = { 1680, 127171 };								// Tourbillon 1680, Fendoir vicieux 127171
+			uint32 branche2_3[2] = { 6343, 125436 };								// Coup de tonnerre 6343, Découpe d'os 125436
 
 			// Spells Protection
 			uint32 Spell_branche3_agro;
@@ -96,9 +96,9 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 			uint32 Spell_branche3_2;
 			uint32 Spell_branche3_3;
 			uint32 branche3_agro[2] = { 355, 355 };									// Provocation 355
-			uint32 branche3_1[2] = { 78, 78 };										// Frappe héroïque 78
-			uint32 branche3_2[2] = { 53600, 53600 };								// 
-			uint32 branche3_3[2] = { 31935, 26573 };								// Coup de tonnerre 6343,
+			uint32 branche3_1[2] = { 118326, 118326 };								// Frappe héroïque 29426/78, Attaque vicieuse 118326
+			uint32 branche3_2[2] = { 53600, 78660 };								// Bouclier du vertueux 53600, Dévaster 78660
+			uint32 branche3_3[3] = { 31935, 6343, 125978 };							// Bouclier du vengeur 31935, Coup de tonnerre 6343, Heurt de bouclier 125978
 
 			// Emotes
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
@@ -179,7 +179,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						Spell_branche3_agro = branche3_agro[urand(0, 2)];
 						Spell_branche3_1 = branche3_1[urand(0, 1)];
 						Spell_branche3_2 = branche3_2[urand(0, 1)];
-						Spell_branche3_3 = branche3_3[urand(0, 1)];
+						Spell_branche3_3 = branche3_3[urand(0, 2)];
 
 						DoCastVictim(Spell_branche1_agro); 											// Lancer le sort d'agro
 
@@ -239,7 +239,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 					Mouvement_All();
 					Mouvement_Contact(diff);
 					Heal_En_Combat_Melee(diff);
-					Combat_Armes(diff);
+					//Combat_Armes(diff);
 					break;
 
 				case 2: // Spécialisation Fureur ########################################################################################################################
@@ -247,13 +247,13 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 					Mouvement_All();
 					Mouvement_Contact(diff);
 					Heal_En_Combat_Melee(diff);
-					Combat_Fureur(diff);
+					//Combat_Fureur(diff);
 					break;
 
 				case 3: // Spécialisation Protection ####################################################################################################################
 
 					Heal_En_Combat_Melee(diff);
-					Combat_Protection(diff);
+					//Combat_Protection(diff);
 					Mouvement_All();
 					Mouvement_Contact(diff);
 					break;
@@ -277,11 +277,11 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 					return;
 
 				Dist = me->GetDistance(me->GetVictim());
-				if (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 40)
+				if (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 30)
 				{
 					RetireBugDeCombat();
 					me->AddUnitState(UNIT_STATE_EVADE);
-					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);						// Quite le combat si la cible > 30m (Caster & Mélée) ou > 40m de home
+					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);						// Quite le combat si la cible > 30m (Caster & Mélée) ou > 30m de home
 				}
 			}
 			void Mouvement_Contact(uint32 diff)
@@ -386,8 +386,8 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 					// Spell1 sur la cible
 					if (Cooldown_Spell1 <= diff)
 					{
-						//DoCastVictim(Spell_branche1_1);
 						me->CastSpell(victim, Spell_branche1_1, true);
+						DoMeleeAttackIfReady();														// Combat en mélée
 						Cooldown_Spell1 = 2500;
 					}
 					else Cooldown_Spell1 -= diff;
@@ -396,7 +396,6 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 					if (Cooldown_Spell2 <= diff)
 					{
 						Bonus_Degat_Arme_Done(-66);													// Reduction des degats infligés
-						//DoCastVictim(Spell_branche1_2);
 						me->CastSpell(victim, Spell_branche1_2, true);
 						Bonus_Degat_Arme_Done(66);
 						Cooldown_Spell2 = urand(4000,6000);
@@ -406,7 +405,6 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 					// Spell3 sur la cible 
 					if (Cooldown_Spell3 <= diff)
 					{
-						//DoCastVictim(Spell_branche1_3);
 						me->CastSpell(victim, Spell_branche1_3, true);
 
 						Random = urand(1, 2);
@@ -439,8 +437,8 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 					if (Cooldown_Spell1 <= diff)
 					{
 						DoCastVictim(Spell_branche2_1);
-						Cooldown_Spell1 = 2000;
 						DoMeleeAttackIfReady();														// Combat en mélée
+						Cooldown_Spell1 = 2000;
 					}
 					else Cooldown_Spell1 -= diff;
 
@@ -458,7 +456,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						DoCastVictim(Spell_branche2_3);
 
 						Random = urand(1, 2);
-						if (Random == 1) { me->CastSpell(victim, Brise_genou, true); }
+						if (Random == 1 && Dist <6) { me->CastSpell(victim, Brise_genou, true); }
 
 						Cooldown_Spell3 = urand(10000, 12000);
 					}
@@ -487,10 +485,9 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 					// Spell1 sur la cible chaque (Sort Régulié)
 					if (Cooldown_Spell1 <= diff)
 					{
-						//DoCast(victim, Spell_branche3_1);
 						me->CastSpell(victim, Spell_branche3_1, true); 
-						Cooldown_Spell1 = 2000;
 						DoMeleeAttackIfReady();														// Combat en mélée
+						Cooldown_Spell1 = 2000;
 					}
 					else Cooldown_Spell1 -= diff;
 

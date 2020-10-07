@@ -563,7 +563,7 @@ public: Stitch_npc_ai_level_scale_heal() : CreatureScript("Stitch_npc_ai_level_s
 					resteadistancetimer = urand(300, 500);
 				} else resteadistancetimer -= diff;
 
-				// Quite le combat si la cible > 40m --------------------------------------------------------------------------------------------------------
+				// Quite le combat si la cible > 30m --------------------------------------------------------------------------------------------------------
 				if ((!me->IsWithinCombatRange(me->GetVictim(), distancedecast+10.0f)))
 					if (me->GetDistance(me->GetVictim()) > distancedecast + 10.0f)
 					{

@@ -16,7 +16,10 @@
 // (15100008, 3, 1899, 0, 20910, 0);
 //###########################################################################################################################################################################################################################################
 
-
+#include "ScriptMgr.h"
+#include "ScriptedCreature.h"
+#include "SpellAuraEffects.h"
+#include "SpellScript.h"
 
 //################################################################################################
 //StitchAI AI Chasseur
@@ -54,14 +57,14 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 
 			// Spells Divers
 			uint32 Buf_all = 31519;														// Aura de précision (60s) 31519
-			uint32 Buf_branche1;	
+			uint32 Buf_branche1;
 			uint32 Buf_branche1_liste[2] = { 109212, 109212 };							// Engagement spirituel 109212
-			uint32 Buf_branche2 ;
+			uint32 Buf_branche2;
 			uint32 Buf_branche2_liste[2] = { 109260, 109260 };							// Faucon de fer 109260
 			uint32 Spell_Heal_Caster = 19801;  											// Piqure du moustique 19801
 
 
-			// Spells Survie
+																						// Spells Survie
 			uint32 Spell_branche1_agro;
 			uint32 Spell_branche1_1;
 			uint32 Spell_branche1_2;
@@ -72,8 +75,8 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 			uint32 branche1_2[3] = { 53301, 5116, 5116 };								// Tir explosif 53301 6s, Trait de choc 5116 6s
 			uint32 branche1_3[3] = { 77767, 77767, 2643 };								// Tir du cobra 77767 , Flèches multiples 2643 3s
 			uint32 branche1_4[2] = { 3674, 31975 };										// Flèche noire 3674 18s, Morsure de serpent 31975 15s 
-			
-			// Spells Bete
+
+																						// Spells Bete
 			uint32 Spell_branche2_agro;	//    
 			uint32 Spell_branche2_1;
 			uint32 Spell_branche2_2;
@@ -85,41 +88,16 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 			uint32 Pet_Chasseur;
 			uint32 Pet_Chasseur_Liste[7] = { 3612, 7488, 7906, 8274, 7909, 32730, 3621 };		// Tigre 3612, Loup 7488, Lion 7906, Sanglier 8274, Gorille 7909, Ravageur 32730, Pantere noire 3621
 
-			
-			// Emotes
+
+																								// Emotes
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
+			
 
-			void JustRespawned() override
+			void Init_AI() 
 			{
-				me->GetMotionMaster()->MoveTargetedHome();								// Retour home pour rafraichir client
-				me->SetSpeedRate(MOVE_RUN, 1.01f);
-				me->SetReactState(REACT_AGGRESSIVE);
-
-				me->SetSheath(SHEATH_STATE_RANGED);										// S'equipe de l'arme a distance
-
-				me->SetMaxPower(POWER_MANA, 100);
-				me->setPowerType(POWER_FOCUS);											// Utilise de la focalisation
-				me->SetMaxPower(POWER_FOCUS, MaxMana);
-				me->SetPower(POWER_ENERGY, MaxMana);
-
-			}
-			void EnterCombat(Unit* /*who*/) override
-			{
-				if (!UpdateVictim() )
-					return;
-
-				me->SetMaxPower(POWER_MANA, 100);
-				me->setPowerType(POWER_FOCUS);											// Utilise de la focalisation
-				me->SetMaxPower(POWER_FOCUS, MaxMana);
-				me->SetPower(POWER_ENERGY, MaxMana);
-
-				Mana = me->GetPower(POWER_FOCUS);
-				Unit* victim = me->GetVictim();
-				Dist = me->GetDistance(victim);
-				me->SetReactState(REACT_AGGRESSIVE);
-				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);
-
+				// ################################################################################################################################################
 				// Forcer le choix de la Spécialisation par creature_template->pickpocketloot
+				// ################################################################################################################################################
 				ForceBranche = me->GetCreatureTemplate()->pickpocketLootId;											// creature_template->pickpocketloot
 				if (ForceBranche == 1) { BrancheSpe = 1; }															// branche1 forcé
 				else if (ForceBranche == 2) { BrancheSpe = 2; }														// branche2 forcé 
@@ -127,17 +105,14 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				else
 				{
 					// Sinon Choix de la Spécialisation Aléatoire
-					BrancheSpe = urand(1, NbrDeSpe+1);																// Plus de chance d'etre Survie
+					BrancheSpe = urand(1, NbrDeSpe + 1);																// Plus de chance d'etre Survie
 				}
+				if ((BrancheSpe > NbrDeSpe) || (BrancheSpe == 0)) { BrancheSpe = 2; }
 
-				if ((BrancheSpe > NbrDeSpe) || (BrancheSpe == 0)) { BrancheSpe = 1; }
 
-
-				me->SetSheath(SHEATH_STATE_RANGED);																	// S'equipe de l'arme a distance
-
-				// Spell a lancer a l'agro ------------------------------------------------------------------------------------------------------------------------
-
-				me->CastSpell(me, Buf_all, true);																	// Buf_all sur lui meme
+				// ################################################################################################################################################
+				// Tirages aléatoires des spells
+				// ################################################################################################################################################
 				switch (BrancheSpe)
 				{
 				case 1: // Si Survie ------------------------------------------------------------------------------------------------------------------------------
@@ -146,15 +121,11 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 
 					me->LoadEquipment(1, true);																		// creature_equip_template 1
 
-					// Tirages aléatoires des spells Survie 
 					Spell_branche1_agro = branche1_agro[urand(0, 4)];
 					Spell_branche1_1 = branche1_1[urand(0, 1)];
 					Spell_branche1_2 = branche1_2[urand(0, 2)];
 					Spell_branche1_3 = branche1_3[urand(0, 2)];
 					Spell_branche1_4 = branche1_4[urand(0, 1)];
-
-					Random = urand(1, 2);
-					if (Random == 1 && UpdateVictim()) { me->CastSpell(victim, Spell_branche1_agro, true); }				// 1/2 Chance de lancer le sort d'agro
 					break;
 
 				case 2: // Si Bete -------------------------------------------------------------------------------------------------------------------------
@@ -163,24 +134,65 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 
 					me->LoadEquipment(2, true);																		// creature_equip_template 2
 
-					uint32 Cooldown_Spell3 = 30000; 
+					uint32 Cooldown_Spell3 = 30000;
 
-					// Tirages aléatoires des spells Bete 
 					Spell_branche2_agro = branche2_agro[urand(0, 5)];
 					Spell_branche2_1 = branche2_1[urand(0, 1)];
 					Spell_branche2_2 = branche2_2[urand(0, 1)];
 					Spell_branche2_3 = branche2_3[urand(0, 1)];
 
+					// Tirages aléatoires du pet
+					Pet_Chasseur = Pet_Chasseur_Liste[urand(0, 6)];
+					break;
+				}
+				// ################################################################################################################################################
+				// Divers
+				// ################################################################################################################################################
+				me->SetSheath(SHEATH_STATE_RANGED);																	// S'equipe de l'arme a distance
+				me->SetReactState(REACT_AGGRESSIVE);
+				// ################################################################################################################################################
+			}
+			void JustRespawned() override
+			{
+				me->GetMotionMaster()->MoveTargetedHome();								// Retour home pour rafraichir client
+				me->SetSpeedRate(MOVE_RUN, 1.01f);
+				me->SetReactState(REACT_AGGRESSIVE);
+				me->SetSheath(SHEATH_STATE_RANGED);										// S'equipe de l'arme a distance
+				
+				Def_Power();
+				Init_AI();
+
+			}
+			void EnterCombat(Unit* /*who*/) override
+			{
+				Def_Power();
+				Init_AI();
+				
+				// ################################################################################################################################################
+				// Spell a lancer a l'agro 
+				// ################################################################################################################################################
+				me->CastSpell(me, Buf_all, true);																	// Buf_all sur lui meme
+
+				switch (BrancheSpe)
+				{
+				case 1: // Si Survie ------------------------------------------------------------------------------------------------------------------------------
+					me->CastSpell(me, Buf_branche1, true);															// Buf1 sur lui meme
+					Random = urand(1, 2);
+					if (Random == 1 && UpdateVictim()) { me->CastSpell(victim, Spell_branche1_agro, true); }		// 1/2 Chance de lancer le sort d'agro
+
+					break;
+				case 2: // Si Bete --------------------------------------------------------------------------------------------------------------------------------
+					me->CastSpell(me, Buf_branche2, true);															// Buf1 sur lui meme
 					Random = urand(1, 2);
 					if (Random == 1 && UpdateVictim()) { me->CastSpell(victim, Spell_branche2_agro, true); }		// 1/2 Chance de lancer le sort d'agro
 
 					// Tirages aléatoires du pet
-					Pet_Chasseur = Pet_Chasseur_Liste[urand(0, 6)];
 					me->CastSpell(me, Pet_Chasseur, true);
 					break;
-
+					// ################################################################################################################################################
 
 				}
+
 			}
 			void EnterEvadeMode(EvadeReason /*why*/) override
 			{
@@ -189,11 +201,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				me->SetSpeedRate(MOVE_RUN, 1.5f);										// Vitesse de déplacement
 				me->GetMotionMaster()->MoveTargetedHome();								// Retour home
 				me->RemoveAllControlled();												// renvois pet
-
-				me->SetMaxPower(POWER_MANA, 100);
-				me->setPowerType(POWER_FOCUS);											// Utilise de la focalisation
-				me->SetMaxPower(POWER_FOCUS, MaxMana);
-				me->SetPower(POWER_ENERGY, MaxMana);
+				Def_Power();
 			}
 			void JustReachedHome() override
 			{
@@ -202,155 +210,51 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 
 				me->SetReactState(REACT_AGGRESSIVE);
 				me->SetSpeedRate(MOVE_RUN, 1.01f);										// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
+				Def_Power();
 			}
 			void UpdateAI(uint32 diff) override
 			{
-				// Emotes hors combat & mouvement -----------------------------------------------------------------------------------------------------------------
+				// ################################################################################################################################################
+				// Emotes hors combat & mouvement #################################################################################################################
+				// ################################################################################################################################################
 				if ((Cooldown_Npc_Emotes <= diff) && (!me->isMoving()) && (!me->IsInCombat()))
 				{
 					uint32 Npc_Play_Emotes = Npc_Emotes[urand(0, 21)];
 					me->HandleEmoteCommand(Npc_Play_Emotes);
 					Cooldown_Npc_Emotes = urand(8000, 15000);
 				}
-				else 
+				else
 					Cooldown_Npc_Emotes -= diff;
 
-				// En Combat --------------------------------------------------------------------------------------------------------------------------------------
-				if (!UpdateVictim() /*|| me->isPossessed() || me->IsCharmed() || me->HasAuraType(SPELL_AURA_MOD_FEAR)*/)
-					return;
-
+				// ################################################################################################################################################
+				// En Combat ######################################################################################################################################
+				// ################################################################################################################################################
+				if (UpdateVictim() /*|| me->isPossessed() || me->IsCharmed() || me->HasAuraType(SPELL_AURA_MOD_FEAR)*/)
+				{ 
 				Mana = me->GetPower(POWER_FOCUS);
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
+				// ################################################################################################################################################
 				// Combat suivant la Spécialisation
-				switch (BrancheSpe)
+					switch (BrancheSpe)
 				{
-				case 1: // Spécialisation Survie ###################################################################################################################
-
-					Mouvement_Caster(diff);
-					Mouvement_All();
-					Heal_En_Combat_Caster(diff);
-					Combat_Survie(diff);
-					break;
-					
-				case 2: // Spécialisation Bete ##################################################################################################################
-
-					Mouvement_Caster(diff);
-					Mouvement_All();
-					Heal_En_Combat_Caster(diff);
-					Combat_Bete(diff);
-					break;
-
-
-				}
-			}
-
-			void RetireBugDeCombat()
-			{
-				me->CombatStop(true);
-				me->DeleteThreatList();
-				me->LoadCreaturesAddon();
-				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);				// UNROOT
-				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);					// Retire flag "en combat"
-				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);				// Retire flag "non attaquable"
-			}
-
-			void Mouvement_All()
-			{
-				if (!UpdateVictim())
-					return;
-
-				Dist = me->GetDistance(me->GetVictim());
-				if ((Dist > DistanceDeCast) || (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 40))
-				{
-					RetireBugDeCombat();
-					me->AddUnitState(UNIT_STATE_EVADE);
-					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);						// Quite le combat si la cible > 30m (Caster & Mélée) ou > 40m de home
-				}
-			}
-			void Mouvement_Caster(uint32 diff)
-			{
-				if (!UpdateVictim() /*|| me->HasUnitState(UNIT_STATE_CASTING)*/)
-					return;
-
-				Mana = me->GetPower(POWER_FOCUS);
-				Unit* victim = me->GetVictim();
-				Dist = me->GetDistance(victim);
-				if (!me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT)) { me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT); }
-
-				if (Cooldown_ResteADistance <= diff)
-				{
-					// Mouvement aléatoire si cible < 5m & Mana > 5% --------------------------------------------------------------------------------------------------
-
-					if ((Dist <5) && (Mana > MaxMana / 20))
-					{
-						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
-						me->SetSpeedRate(MOVE_RUN, 1.1f);
-
-						float x, y, z;
-						x = (me->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
-						y = (me->GetPositionY() + urand(0, ResteADistance * 2) - ResteADistance);
-						z = me->GetPositionZ();
-						me->GetMotionMaster()->MovePoint(0xFFFFFE, x, y, z);
-						Cooldown_ResteADistance = urand(5000, 8000);
-					}
-				}
-				else Cooldown_ResteADistance -= diff;
-
-				// Speed normal si distance > 6m ------------------------------------------------------------------------------------------------------------------
-				if (Dist> 6 && me->GetSpeedRate(MOVE_RUN) == 1.1f)
-				{
-					me->SetSpeedRate(MOVE_RUN, 1.01f);
-				}
-
-				// Mouvement OFF si Mana > 5% & distance >= 3m & <= 30m ---------------------------------------------------------------------------------------------
-				if ((Mana > MaxMana / 20) && (Dist >= 3) && (Dist <= DistanceDeCast))
-				{
-					AttackStartCaster(victim, ResteADistance);											// Distance de combat
-					void DoRangedAttackIfReady();														// Combat a distance
-					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);								// ROOT
-				}
-
-				// Mouvement ON si distance > 30m ------------------------------------------------------------------------------------------------------------------
-				if (Dist > DistanceDeCast)
-				{
-					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// UNROOT
-				}
-
-				// Mouvement ON si Mana < 5%  ----------------------------------------------------------------------------------------------------------------------
-				if (Mana < MaxMana / 20)
-				{
-					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// UNROOT
-				}
-
-			}
-
-			void Combat_Survie(uint32 diff)
-			{
-				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_MOVE) /*|| me->HasUnitState(UNIT_STATE_CASTING)*/)
-					return;
-
-				Mana = me->GetPower(POWER_FOCUS);
-				Unit* victim = me->GetVictim();
-				Dist = me->GetDistance(victim);
-
-				if (Dist <= DistanceDeCast)
-				{
-					// Regen mana en combat ------------------------------------------------------------------------------------------------------------------------
+				case 1: // Spécialisation Survie ------------------------------------------------------------------------------------------------------------------
+						// Regen mana en combat ------------------------------------------------------------------------------------------------------------------------
 					if (Cooldown_RegenMana <= diff)
 					{
 						me->SetPower(POWER_FOCUS, Mana + (MaxMana / 2.5));
 						if (Mana > MaxMana) { me->SetPower(POWER_FOCUS, MaxMana); }
-						Cooldown_RegenMana = urand(1500,2000);
+						Cooldown_RegenMana = urand(1500, 2000);
 					}
 					else Cooldown_RegenMana -= diff;
 
 					// Combat --------------------------------------------------------------------------------------------------------------------------------------
-					// Spell4 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot) : Flèche noire 3674 18s, Morsure de serpent 31975 15s
+
+						// Spell4 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot) : Flèche noire 3674 18s, Morsure de serpent 31975 15s
 					if (Cooldown_Spell4 <= diff)
 					{
-						DoCastAOE(Spell_branche1_4,true);
+						DoCastAOE(Spell_branche1_4, true);
 						Cooldown_Spell4 = urand(15000, 18000);
 					}
 					else Cooldown_Spell4 -= diff;
@@ -366,7 +270,6 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 					// Spell2 sur la cible chaque (Sort secondaire plus lent) : Tir explosif 53301 6s, Trait de choc
 					if (Cooldown_Spell2 <= diff /*&& !me->HasUnitState(UNIT_STATE_CASTING)*/)
 					{
-						//DoCastVictim(Spell_branche1_2);
 						DoSpellAttackIfReady(Spell_branche1_2);
 						Cooldown_Spell2 = urand(6000, 7000);
 					}
@@ -375,58 +278,134 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 					// Spell1 sur la cible chaque (Sort Régulié) : Tir des arcanes
 					if (Cooldown_Spell1 <= diff)
 					{
-						//DoCastVictim(Spell_branche1_1);
 						DoSpellAttackIfReady(Spell_branche1_1);
 						Cooldown_Spell1 = 1500;
 					}
 					else Cooldown_Spell1 -= diff;
 
+					break;
+
+				case 2: // Spécialisation Bete --------------------------------------------------------------------------------------------------------------------
+						// Regen mana en combat ------------------------------------------------------------------------------------------------------------------------
+					if (Cooldown_RegenMana <= diff)
+					{
+						me->SetPower(POWER_FOCUS, Mana + (MaxMana / 2.5));
+						if (Mana > MaxMana) { me->SetPower(POWER_FOCUS, MaxMana); }
+						Cooldown_RegenMana = urand(2500, 3000);
+					}
+					else Cooldown_RegenMana -= diff;
+
+					// Combat --------------------------------------------------------------------------------------------------------------------------------------
+					// Spell1 sur la cible chaque (Sort Régulié) : Tir des arcanes
+					if (Cooldown_Spell1 <= diff)
+					{
+						DoCastVictim(Spell_branche2_1);
+						Cooldown_Spell1 = 2000;
+					}
+					else Cooldown_Spell1 -= diff;
+
+					// Spell2 sur la cible chaque (Sort secondaire plus lent) : Tir assuré
+					if (Cooldown_Spell2 <= diff)
+					{
+						DoCastVictim(Spell_branche2_2);
+						Cooldown_Spell2 = urand(5000, 6000);
+					}
+					else Cooldown_Spell2 -= diff;
+
+					// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot) : Courroux bestial 19574 60s, Ordre de tuer 34026 30s
+					if (Cooldown_Spell3 <= diff)
+					{
+						DoCastVictim(Spell_branche2_3);
+						Cooldown_Spell3 = urand(45000, 45000);
+					}
+					else Cooldown_Spell3 -= diff;
+
+					break;
+				}
+				}
+				// ################################################################################################################################################
+
+				Heal_En_Combat_Caster(diff);
+				Mouvement_Caster(diff);
+				Mouvement_All();
+
+				// ################################################################################################################################################
+			}
+
+			void Mouvement_All()
+			{
+				if (!UpdateVictim())
+					return;
+
+				Dist = me->GetDistance(me->GetVictim());
+				if ((Dist > DistanceDeCast) || (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 40))
+				{
+					RetireBugDeCombat();
+					me->AddUnitState(UNIT_STATE_EVADE);
+					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);						// Quite le combat si la cible > 40m (Caster & Mélée) ou > 40m de home
 				}
 			}
-			void Combat_Bete(uint32 diff)
+			void Mouvement_Caster(uint32 diff)
 			{
-				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_MOVE) /*|| me->HasUnitState(UNIT_STATE_CASTING)*/)
+				if (!UpdateVictim() /*|| me->HasUnitState(UNIT_STATE_CASTING)*/)
 					return;
 
 				Mana = me->GetPower(POWER_FOCUS);
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
+				//if (!me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT)) { me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT); }
 
-				// Regen mana en combat ------------------------------------------------------------------------------------------------------------------------
-				if (Cooldown_RegenMana <= diff)
+				if (Cooldown_ResteADistance <= diff)
 				{
-					me->SetPower(POWER_FOCUS, Mana + (MaxMana / 2.5));
-					if (Mana > MaxMana) { me->SetPower(POWER_FOCUS, MaxMana); }
-					Cooldown_RegenMana = urand(2500, 3000);
-				}
-				else Cooldown_RegenMana -= diff;
+					// Mouvement aléatoire si cible < 6m & Mana > 5% --------------------------------------------------------------------------------------------------
 
-				// Combat --------------------------------------------------------------------------------------------------------------------------------------
-					// Spell1 sur la cible chaque (Sort Régulié) : Tir des arcanes
-				if (Cooldown_Spell1 <= diff)
-				{
-					DoCastVictim(Spell_branche2_1);
-					Cooldown_Spell1 = 2000;
-				}
-				else Cooldown_Spell1 -= diff;
+					if ((Dist <6) && (Mana > MaxMana / 20))
+					{
+						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
+						me->SetSpeedRate(MOVE_RUN, 1.1f);
 
-				// Spell2 sur la cible chaque (Sort secondaire plus lent) : Tir assuré
-				if (Cooldown_Spell2 <= diff)
-				{
-					DoCastVictim(Spell_branche2_2);
-					Cooldown_Spell2 = urand(5000, 6000);
+						float x, y, z;
+						x = (me->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
+						y = (me->GetPositionY() + urand(0, ResteADistance * 2) - ResteADistance);
+						z = me->GetPositionZ();
+						me->GetMotionMaster()->MovePoint(0xFFFFFE, x, y, z);
+						Cooldown_ResteADistance = urand(5000, 8000);
+					}
 				}
-				else Cooldown_Spell2 -= diff;
+				else Cooldown_ResteADistance -= diff;
 
-				// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot) : Courroux bestial 19574 60s, Ordre de tuer 34026 30s
-				if (Cooldown_Spell3 <= diff)
+				// Speed normal si distance > 10m ------------------------------------------------------------------------------------------------------------------
+				if (Dist> 10 && me->GetSpeedRate(MOVE_RUN) == 1.1f)
 				{
-					DoCastVictim(Spell_branche2_3);
-					Cooldown_Spell3 = urand(45000, 45000);
+					me->SetSpeedRate(MOVE_RUN, 1.01f);
 				}
-				else Cooldown_Spell3 -= diff;
+
+				// Mouvement OFF si distance >= 15m & <= 30m &  Mana > 5% ---------------------------------------------------------------------------------------------
+				if ((Mana > MaxMana / 20) && (Dist >= ResteADistance) && (Dist <= DistanceDeCast))
+				{
+					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
+					AttackStartCaster(victim, ResteADistance);										// Distance de combat
+					void DoRangedAttackIfReady();													// Combat a distance
+				}
+
+				// Mouvement ON si distance > 30m ------------------------------------------------------------------------------------------------------------------
+				if (Dist > DistanceDeCast)
+				{
+					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
+					AttackStart(victim);															// Combat au corp a corp
+					//AttackStartCaster(victim, ResteADistance);										// Distance de cast
+					//void DoRangedAttackIfReady();													// Combat a distance
+					DoMeleeAttackIfReady();															// Combat en mélée
+				}
+
+				// Mouvement ON si Mana < 5%  ----------------------------------------------------------------------------------------------------------------------
+				if (Mana < MaxMana / 20)
+				{
+					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// UNROOT
+				}
+
 			}
-
+			
 			void Heal_En_Combat_Caster(uint32 diff)
 			{
 				if (!UpdateVictim() /*|| me->HasUnitState(UNIT_STATE_MOVE)*/)
@@ -443,11 +422,30 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				}
 				else Cooldown_Spell_Heal -= diff;
 			}
-
+			void RetireBugDeCombat()
+			{
+				me->CombatStop(true);
+				me->DeleteThreatList();
+				me->LoadCreaturesAddon();
+				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);				// UNROOT
+				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);					// Retire flag "en combat"
+				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);				// Retire flag "non attaquable"
+				me->AddUnitState(UNIT_STATE_EVADE);
+				me->SetLootRecipient(NULL);
+				me->ResetPlayerDamageReq();
+				me->SetLastDamagedTime(0);
+			}
+			void Def_Power()
+			{
+				me->SetMaxPower(POWER_MANA, 100);
+				me->setPowerType(POWER_FOCUS);											// Utilise de la focalisation
+				me->SetMaxPower(POWER_FOCUS, 100);
+				me->SetPower(POWER_FOCUS, 100);
+			}
 
 
 		};
-		
+
 		CreatureAI* GetAI(Creature* creature) const override
 		{
 			return new Stitch_npc_ai_chasseurAI(creature);
