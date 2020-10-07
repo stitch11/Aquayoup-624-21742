@@ -826,6 +826,7 @@ void AuraEffect::ChangeAmount(int32 newAmount, bool mark, bool onStackOrReapply)
     uint8 handleMask = 0;
     if (newAmount != GetAmount())
         handleMask |= AURA_EFFECT_HANDLE_CHANGE_AMOUNT;
+
     if (onStackOrReapply)
         handleMask |= AURA_EFFECT_HANDLE_REAPPLY;
 
@@ -845,12 +846,18 @@ void AuraEffect::ChangeAmount(int32 newAmount, bool mark, bool onStackOrReapply)
             m_amount = newAmount;
         else
             SetAmount(newAmount);
+
         CalculateSpellMod();
     }
 
-    for (std::list<AuraApplication*>::const_iterator apptItr = effectApplications.begin(); apptItr != effectApplications.end(); ++apptItr)
-        if ((*apptItr)->HasEffect(GetEffIndex()))
-            HandleEffect(*apptItr, handleMask, true);
+	for (std::list<AuraApplication*>::const_iterator apptItr = effectApplications.begin(); apptItr != effectApplications.end(); ++apptItr)
+	{
+		if ((*apptItr)->GetRemoveMode() != AURA_REMOVE_NONE)
+			continue;
+
+		if ((*apptItr)->HasEffect(GetEffIndex()))
+			HandleEffect(*apptItr, handleMask, true);
+	}
 
     if (GetSpellInfo()->HasAttribute(SPELL_ATTR8_AURA_SEND_AMOUNT))
         GetBase()->SetNeedClientUpdateForTargets();
