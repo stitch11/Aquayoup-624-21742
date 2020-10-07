@@ -135,7 +135,7 @@ class boss_doomrel : public CreatureScript
                     player->CLOSE_GOSSIP_MENU();
                     //start event here
                     creature->setFaction(FACTION_HOSTILE);
-                    creature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC);
+                    creature->SetImmuneToPC(false);
                     creature->AI()->AttackStart(player);
                     InstanceScript* instance = creature->GetInstanceScript();
                     if (instance)
@@ -173,7 +173,7 @@ class boss_doomrel : public CreatureScript
                 me->setFaction(FACTION_FRIEND);
 
                 // was set before event start, so set again
-                me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC);
+				me->SetImmuneToPC(true);
 
                 if (_instance->GetData(DATA_GHOSTKILL) >= 7)
                     me->SetUInt32Value(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_NONE);

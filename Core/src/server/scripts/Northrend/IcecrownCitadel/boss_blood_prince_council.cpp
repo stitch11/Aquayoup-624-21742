@@ -185,6 +185,7 @@ class boss_blood_council_controller : public CreatureScript
             boss_blood_council_controllerAI(Creature* creature) : BossAI(creature, DATA_BLOOD_PRINCE_COUNCIL)
             {
                 Initialize();
+				SetCombatMovement(false);
             }
 
             void Initialize()
@@ -198,6 +199,7 @@ class boss_blood_council_controller : public CreatureScript
                 events.Reset();
                 me->SetReactState(REACT_PASSIVE);
                 Initialize();
+				SetCombatMovement(false);
 
                 instance->SetBossState(DATA_BLOOD_PRINCE_COUNCIL, NOT_STARTED);
             }
@@ -391,7 +393,7 @@ class boss_prince_keleseth_icc : public CreatureScript
                 events.Reset();
                 summons.DespawnAll();
 
-                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC);
+                me->SetImmuneToPC(false);
                 _isEmpowered = false;
                 me->SetHealth(_spawnHealth);
                 instance->SetData(DATA_ORB_WHISPERER_ACHIEVEMENT, uint32(true));
@@ -487,7 +489,8 @@ class boss_prince_keleseth_icc : public CreatureScript
                 {
                     case ACTION_STAND_UP:
                         me->RemoveAurasDueToSpell(SPELL_FEIGN_DEATH);
-                        me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_IMMUNE_TO_PC);
+						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+						me->SetImmuneToPC(false);
                         me->RemoveFlag(OBJECT_DYNAMIC_FLAGS, UNIT_DYNFLAG_DEAD);
                         me->RemoveFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_FEIGN_DEATH);
                         me->ForceValuesUpdateAtIndex(UNIT_NPC_FLAGS);   // was in sniff. don't ask why
@@ -603,7 +606,7 @@ class boss_prince_taldaram_icc : public CreatureScript
                 events.Reset();
                 summons.DespawnAll();
 
-                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC);
+                me->SetImmuneToPC(false);
                 _isEmpowered = false;
                 me->SetHealth(_spawnHealth);
                 instance->SetData(DATA_ORB_WHISPERER_ACHIEVEMENT, uint32(true));
@@ -698,7 +701,8 @@ class boss_prince_taldaram_icc : public CreatureScript
                 {
                     case ACTION_STAND_UP:
                         me->RemoveAurasDueToSpell(SPELL_FEIGN_DEATH);
-                        me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_IMMUNE_TO_PC);
+						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+						me->SetImmuneToPC(false);
                         me->RemoveFlag(OBJECT_DYNAMIC_FLAGS, UNIT_DYNFLAG_DEAD);
                         me->RemoveFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_FEIGN_DEATH);
                         me->ForceValuesUpdateAtIndex(UNIT_NPC_FLAGS);   // was in sniff. don't ask why
@@ -819,7 +823,7 @@ class boss_prince_valanar_icc : public CreatureScript
                 events.Reset();
                 summons.DespawnAll();
 
-                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC);
+                me->SetImmuneToPC(false);
                 _isEmpowered = false;
                 me->SetHealth(me->GetMaxHealth());
                 instance->SetData(DATA_ORB_WHISPERER_ACHIEVEMENT, uint32(true));
@@ -930,7 +934,8 @@ class boss_prince_valanar_icc : public CreatureScript
                 {
                     case ACTION_STAND_UP:
                         me->RemoveAurasDueToSpell(SPELL_FEIGN_DEATH);
-                        me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_IMMUNE_TO_PC);
+						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+						me->SetImmuneToPC(false);
                         me->RemoveFlag(OBJECT_DYNAMIC_FLAGS, UNIT_DYNFLAG_DEAD);
                         me->RemoveFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_FEIGN_DEATH);
                         me->ForceValuesUpdateAtIndex(UNIT_NPC_FLAGS);   // was in sniff. don't ask why

@@ -414,6 +414,11 @@ class Vehicle;
 class VehicleJoinEvent;
 class TransportBase;
 class SpellCastTargets;
+
+class ThreatContainer;
+class ThreatManager;
+class HostileReference;
+
 namespace Movement
 {
     class MoveSpline;
@@ -692,7 +697,7 @@ enum UnitFlags : uint32
     UNIT_FLAG_PET_IN_COMBAT         = 0x00000800,           // in combat?, 2.0.8
     UNIT_FLAG_PVP                   = 0x00001000,           // changed in 3.0.3
     UNIT_FLAG_SILENCED              = 0x00002000,           // silenced, 2.1.1
-    UNIT_FLAG_UNK_14                = 0x00004000,           // 2.0.8
+	UNIT_FLAG_CANNOT_SWIM			= 0x00004000,           // 2.0.8
     UNIT_FLAG_UNK_15                = 0x00008000,
     UNIT_FLAG_UNK_16                = 0x00010000,
     UNIT_FLAG_PACIFIED              = 0x00020000,           // 3.0.3 ok
@@ -1591,6 +1596,16 @@ class TC_GAME_API Unit : public WorldObject
         bool IsCritter() const { return GetCreatureType() == CREATURE_TYPE_CRITTER; }
 
         bool IsInFlight()  const { return HasUnitState(UNIT_STATE_IN_FLIGHT); }
+
+		bool IsEngaged() const { return IsInCombat(); }
+		bool IsEngagedBy(Unit const* who) const { return IsInCombatWith(who); }
+
+		void SetImmuneToAll(bool apply, bool keepCombat = false) { SetImmuneToPC(apply, keepCombat); SetImmuneToNPC(apply, keepCombat); }
+		bool IsImmuneToAll() const { return IsImmuneToPC() && IsImmuneToNPC(); }
+		void SetImmuneToPC(bool apply, bool keepCombat = false);
+		bool IsImmuneToPC() const { return HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC); }
+		void SetImmuneToNPC(bool apply, bool keepCombat = false);
+		bool IsImmuneToNPC() const { return HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_NPC); }
 
         bool IsInCombat()  const { return HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT); }
         bool IsInCombatWith(Unit const* who) const;

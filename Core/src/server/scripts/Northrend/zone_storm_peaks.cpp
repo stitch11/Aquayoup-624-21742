@@ -668,7 +668,7 @@ public:
                 playerGUID = who->GetGUID();
                 Talk(SAY_HOLD_ON, who);
                 me->CastSpell(who, SPELL_JOKKUM_KILL_CREDIT, true);
-                me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_NPC);
+				me->SetImmuneToNPC(true);
                 me->GetMotionMaster()->MovePath(PATH_JOKKUM, false);
             }
         }

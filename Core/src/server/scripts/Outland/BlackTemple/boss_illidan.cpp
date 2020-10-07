@@ -1824,7 +1824,7 @@ void boss_illidan_stormrage::boss_illidan_stormrageAI::Reset()
     Initialize();
 
     me->SetDisplayId(MODEL_ILLIDAN);
-    me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC);
+    me->SetImmuneToPC(false);
     me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
     me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
     SetEquipmentSlots(false, EQUIP_UNEQUIP, EQUIP_UNEQUIP, EQUIP_NO_CHANGE);

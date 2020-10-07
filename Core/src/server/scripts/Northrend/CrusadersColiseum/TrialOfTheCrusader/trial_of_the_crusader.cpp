@@ -175,6 +175,7 @@ class npc_announcer_toc10 : public CreatureScript
                 {
                     jaraxxus->RemoveAurasDueToSpell(SPELL_JARAXXUS_CHAINS);
                     jaraxxus->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+					jaraxxus->SetImmuneToPC(false);
                     jaraxxus->SetReactState(REACT_DEFENSIVE);
                     jaraxxus->SetInCombatWithZone();
                 }
@@ -360,11 +361,12 @@ class npc_fizzlebang_toc : public CreatureScript
             {
                 Talk(SAY_STAGE_1_06, killer);
                 _instance->SetData(TYPE_EVENT, 1180);
-                if (Creature* temp = ObjectAccessor::GetCreature(*me, _instance->GetGuidData(NPC_JARAXXUS)))
+                if (Creature* jaraxxus = ObjectAccessor::GetCreature(*me, _instance->GetGuidData(NPC_JARAXXUS)))
                 {
-                    temp->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
-                    temp->SetReactState(REACT_AGGRESSIVE);
-                    temp->SetInCombatWithZone();
+					jaraxxus->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+					jaraxxus->SetImmuneToPC(false);
+					jaraxxus->SetReactState(REACT_AGGRESSIVE);
+					jaraxxus->SetInCombatWithZone();
                 }
             }
 
@@ -457,11 +459,12 @@ class npc_fizzlebang_toc : public CreatureScript
                             break;
                         case 1140:
                             Talk(SAY_STAGE_1_04);
-                            if (Creature* temp = me->SummonCreature(NPC_JARAXXUS, ToCCommonLoc[1].GetPositionX(), ToCCommonLoc[1].GetPositionY(), ToCCommonLoc[1].GetPositionZ(), 5.0f, TEMPSUMMON_CORPSE_TIMED_DESPAWN, DESPAWN_TIME))
+                            if (Creature* jaraxxus = me->SummonCreature(NPC_JARAXXUS, ToCCommonLoc[1].GetPositionX(), ToCCommonLoc[1].GetPositionY(), ToCCommonLoc[1].GetPositionZ(), 5.0f, TEMPSUMMON_CORPSE_TIMED_DESPAWN, DESPAWN_TIME))
                             {
-                                temp->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
-                                temp->SetReactState(REACT_PASSIVE);
-                                temp->GetMotionMaster()->MovePoint(0, ToCCommonLoc[1].GetPositionX(), ToCCommonLoc[1].GetPositionY()-10, ToCCommonLoc[1].GetPositionZ());
+								jaraxxus->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+								jaraxxus->SetImmuneToPC(true);
+								jaraxxus->SetReactState(REACT_PASSIVE);
+								jaraxxus->GetMotionMaster()->MovePoint(0, ToCCommonLoc[1].GetPositionX(), ToCCommonLoc[1].GetPositionY()-10, ToCCommonLoc[1].GetPositionZ());
                             }
                             _instance->SetData(TYPE_EVENT, 1142);
                             _updateTimer = 5*IN_MILLISECONDS;

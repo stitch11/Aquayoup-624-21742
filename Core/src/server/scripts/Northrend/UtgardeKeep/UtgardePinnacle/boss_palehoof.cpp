@@ -233,7 +233,8 @@ public:
 
         void JustReachedHome() override
         {
-            me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE|UNIT_FLAG_NOT_SELECTABLE|UNIT_FLAG_NOT_ATTACKABLE_1|UNIT_FLAG_IMMUNE_TO_PC);
+            me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NOT_ATTACKABLE_1);
+			me->SetImmuneToPC(true);
             me->SetStandState(UNIT_STAND_STATE_STAND);
             DoCast(me, SPELL_FREEZE);
         }
@@ -351,7 +352,8 @@ public:
 
         void JustReachedHome() override
         {
-            me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NOT_ATTACKABLE_1 | UNIT_FLAG_IMMUNE_TO_PC);
+            me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NOT_ATTACKABLE_1);
+			me->SetImmuneToPC(true);
             me->SetStandState(UNIT_STAND_STATE_STAND);
             DoCast(me, SPELL_FREEZE);
         }
@@ -466,7 +468,8 @@ public:
 
         void JustReachedHome() override
         {
-            me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NOT_ATTACKABLE_1 | UNIT_FLAG_IMMUNE_TO_PC);
+            me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NOT_ATTACKABLE_1);
+			me->SetImmuneToPC(true);
             me->SetStandState(UNIT_STAND_STATE_STAND);
             DoCast(me, SPELL_FREEZE);
         }
@@ -582,7 +585,8 @@ public:
 
         void JustReachedHome() override
         {
-            me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NOT_ATTACKABLE_1 | UNIT_FLAG_IMMUNE_TO_PC);
+            me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NOT_ATTACKABLE_1);
+			me->SetImmuneToPC(true);
             me->SetStandState(UNIT_STAND_STATE_STAND);
             DoCast(me, SPELL_FREEZE);
         }
@@ -704,7 +708,8 @@ public:
 
         void JustReachedHome() override
         {
-            me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NOT_ATTACKABLE_1 | UNIT_FLAG_IMMUNE_TO_PC);
+            me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NOT_ATTACKABLE_1);
+			me->SetImmuneToPC(true);
             me->SetStandState(UNIT_STAND_STATE_STAND);
             DoCast(me, SPELL_FREEZE);
         }
@@ -781,7 +786,8 @@ public:
                 if (Creature* nextBoss = ObjectAccessor::GetCreature(*me, instance->GetGuidData(nextBossId)))
                 {
                     nextBoss->RemoveAurasDueToSpell(SPELL_FREEZE);
-                    nextBoss->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_ATTACKABLE_1 | UNIT_FLAG_IMMUNE_TO_PC);
+                    nextBoss->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_ATTACKABLE_1);
+					nextBoss->SetImmuneToPC(false);
                     nextBoss->SetStandState(UNIT_STAND_STATE_STAND);
                     nextBoss->SetInCombatWithZone();
                     nextBoss->Attack(nextBoss->SelectNearestTarget(100), true);

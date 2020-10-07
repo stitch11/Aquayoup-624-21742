@@ -2138,8 +2138,7 @@ void Spell::EffectSummonType(SpellEffIndex effIndex)
 
                     summon->SelectLevel();       // some summoned creaters have different from 1 DB data for level/hp
                     summon->SetUInt64Value(UNIT_NPC_FLAGS, summon->GetCreatureTemplate()->npcflag);
-
-                    summon->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_IMMUNE_TO_NPC);
+					summon->SetImmuneToAll(true);
 
                     summon->AI()->EnterEvadeMode();
                     break;

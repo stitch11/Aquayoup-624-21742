@@ -126,7 +126,7 @@ public:
             Initialize();
             events.Reset();
             me->setFaction(7);
-            me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC);
+			me->SetImmuneToPC(true);
             me->SetUInt32Value(UNIT_FIELD_BYTES_1, 8);
             me->LoadEquipment(0, true);
         }
@@ -232,7 +232,7 @@ public:
                     else
                     {
                         me->setFaction(14);
-                        me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC);
+						me->SetImmuneToPC(false);
                         phase = PHASE_ATTACKING;
 
                         if (Player* target = ObjectAccessor::GetPlayer(*me, playerGUID))
@@ -493,7 +493,7 @@ public:
                     return true;
             }
 
-            creature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC);
+            creature->SetImmuneToPC(false);
             creature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_UNK_15);
 
             player->CastSpell(creature, SPELL_DUEL, false);
@@ -1022,7 +1022,7 @@ class npc_scarlet_miner_cart : public CreatureScript
         {
             npc_scarlet_miner_cartAI(Creature* creature) : PassiveAI(creature)
             {
-                me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC);
+				me->SetImmuneToPC(true);
                 me->SetDisplayId(me->GetCreatureTemplate()->Modelid1); // Modelid2 is a horse.
             }
 

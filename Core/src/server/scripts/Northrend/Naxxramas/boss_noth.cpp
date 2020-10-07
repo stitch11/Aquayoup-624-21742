@@ -104,7 +104,8 @@ public:
             {
                 DoCastAOE(SPELL_TELEPORT_BACK);
                 me->SetReactState(REACT_AGGRESSIVE);
-                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_NOT_SELECTABLE);
+				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+				me->SetImmuneToPC(false);
             }
 
             balconyCount = 0;
@@ -242,7 +243,8 @@ public:
                     case EVENT_BALCONY:
                         events.SetPhase(PHASE_BALCONY);
                         me->SetReactState(REACT_PASSIVE);
-                        me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_NOT_SELECTABLE);
+						me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+						me->SetImmuneToPC(true);
                         me->AttackStop();
                         me->StopMoving();
                         me->RemoveAllAuras();
@@ -298,7 +300,8 @@ public:
                         EnterPhaseGround();
                         break;
                     case EVENT_GROUND_ATTACKABLE:
-                        me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_NOT_SELECTABLE);
+						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+						me->SetImmuneToPC(false);
                         me->SetReactState(REACT_AGGRESSIVE);
                         break;
                 }

@@ -110,7 +110,9 @@ class boss_ingvar_the_plunderer : public CreatureScript
             {
                 if (me->GetEntry() != NPC_INGVAR)
                     me->UpdateEntry(NPC_INGVAR);
-                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_NOT_SELECTABLE);
+
+				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE);
+				me->SetImmuneToPC(false);
 
                 _Reset();
             }
@@ -126,7 +128,8 @@ class boss_ingvar_the_plunderer : public CreatureScript
                     me->StopMoving();
                     DoCast(me, SPELL_INGVAR_FEIGN_DEATH, true);
 
-                    me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_NOT_SELECTABLE);
+					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE);
+					me->SetImmuneToPC(true, true);
 
                     Talk(SAY_DEATH);
                 }
@@ -224,7 +227,8 @@ class boss_ingvar_the_plunderer : public CreatureScript
                             break;
                         case EVENT_JUST_TRANSFORMED:
                             ScheduleSecondPhase();
-                            me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_NOT_SELECTABLE);
+							me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE);
+							me->SetImmuneToPC(false);
                             if (Unit* target = me->getThreatManager().getHostilTarget())
                                 AttackStart(target);
                             else

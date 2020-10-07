@@ -79,7 +79,9 @@ public:
 
         void Reset() override
         {
-            me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_NOT_SELECTABLE);
+			me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+			me->SetImmuneToPC(true);
+
             events.Reset();
             // Apply auras on spawn and reset
             // DoCast(me, SPELL_FIRE_SHIELD_TRIGGER); // Need to find this in old DBC if possible
@@ -157,7 +159,9 @@ public:
                     me->CastSpell(me, SPELL_EMBERSEER_FULL_STRENGTH);
                     Talk(EMOTE_FREE_OF_BONDS);
                     Talk(YELL_FREE_OF_BONDS);
-                    me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_NOT_SELECTABLE);
+					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+					me->SetImmuneToPC(false);
+
                     events.ScheduleEvent(EVENT_ENTER_COMBAT, 2000);
                 }
             }
@@ -334,7 +338,7 @@ public:
 
         void Reset() override
         {
-            me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC|UNIT_FLAG_IMMUNE_TO_NPC);
+			me->SetImmuneToAll(true);
             if (Creature* Emberseer = me->FindNearestCreature(NPC_PYROGAURD_EMBERSEER, 30.0f, true))
                 Emberseer->AI()->SetData(1, 3);
         }
@@ -348,7 +352,7 @@ public:
         {
             if (data == 1 && value == 1)
             {
-                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC|UNIT_FLAG_IMMUNE_TO_NPC);
+				me->SetImmuneToAll(false);
                 me->InterruptSpell(CURRENT_CHANNELED_SPELL);
                 _events.CancelEvent(EVENT_ENCAGED_EMBERSEER);
             }

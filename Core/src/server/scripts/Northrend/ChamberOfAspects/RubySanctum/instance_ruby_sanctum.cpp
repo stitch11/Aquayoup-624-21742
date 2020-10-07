@@ -231,7 +231,10 @@ class instance_ruby_sanctum : public InstanceMapScript
                         {
                             HandleGameObject(FlameWallsGUID, true);
                             if (Creature* zarithrian = instance->GetCreature(GeneralZarithrianGUID))
-                                zarithrian->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_NOT_SELECTABLE);
+							{
+								zarithrian->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+								zarithrian->SetImmuneToPC(false);
+							}
                         }
                         break;
                     }
@@ -241,7 +244,10 @@ class instance_ruby_sanctum : public InstanceMapScript
                         {
                             HandleGameObject(FlameWallsGUID, true);
                             if (Creature* zarithrian = instance->GetCreature(GeneralZarithrianGUID))
-                                zarithrian->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_NOT_SELECTABLE);
+							{
+								zarithrian->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+								zarithrian->SetImmuneToPC(false);
+							}
                         }
                         break;
                     }

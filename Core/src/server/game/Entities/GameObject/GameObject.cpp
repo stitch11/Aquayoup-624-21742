@@ -1870,7 +1870,10 @@ void GameObject::CastSpell(Unit* target, uint32 spellId, bool triggered /*= true
     if (!trigger)
         return;
 
-    if (Unit* owner = GetOwner())
+	// remove immunity flags, to allow spell to target anything
+	trigger->SetImmuneToAll(false);
+
+	if (Unit* owner = GetOwner())
     {
         trigger->setFaction(owner->getFaction());
         if (owner->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PVP_ATTACKABLE))

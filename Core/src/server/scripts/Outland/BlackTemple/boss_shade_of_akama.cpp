@@ -188,7 +188,7 @@ public:
                 events.ScheduleEvent(EVENT_RESET_ENCOUNTER, 5000);
             }
 
-            me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC);
+            me->SetImmuneToPC(false);
 
             me->SetWalk(true);
             Initialize();
@@ -333,7 +333,7 @@ public:
                         me->DeleteThreatList();
                         me->CombatStop();
                         me->GetMotionMaster()->MoveTargetedHome();
-                        me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC);
+						me->SetImmuneToPC(true);
                         combatStarted = false;
 
                         if (Creature* Akama = ObjectAccessor::GetCreature(*me, instance->GetGuidData(DATA_AKAMA_SHADE)))

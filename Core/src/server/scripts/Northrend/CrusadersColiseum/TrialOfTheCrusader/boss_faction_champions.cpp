@@ -448,27 +448,29 @@ class boss_toc_champion_controller : public CreatureScript
                 std::vector<Position> vChampionJumpTarget;
                 for (uint8 i = 10; i < 20; i++)
                     vChampionJumpTarget.push_back(FactionChampionLoc[i]);
+
                 std::vector<uint32> vChampionEntries = SelectChampions(playerTeam);
 
                 for (uint8 i = 0; i < vChampionEntries.size(); ++i)
                 {
                     uint8 pos = urand(0, vChampionJumpTarget.size()-1);
-                    if (Creature* temp = me->SummonCreature(vChampionEntries[i], vChampionJumpOrigin[urand(0, vChampionJumpOrigin.size()-1)], TEMPSUMMON_MANUAL_DESPAWN))
+                    if (Creature* champion = me->SummonCreature(vChampionEntries[i], vChampionJumpOrigin[urand(0, vChampionJumpOrigin.size()-1)], TEMPSUMMON_MANUAL_DESPAWN))
                     {
-                        _summons.Summon(temp);
-                        temp->SetReactState(REACT_PASSIVE);
-                        temp->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_IMMUNE_TO_PC);
+                        _summons.Summon(champion);
+						champion->SetReactState(REACT_PASSIVE);
+						champion->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+						champion->SetImmuneToPC(false);
                         if (playerTeam == ALLIANCE)
                         {
-                            temp->SetHomePosition(vChampionJumpTarget[pos].GetPositionX(), vChampionJumpTarget[pos].GetPositionY(), vChampionJumpTarget[pos].GetPositionZ(), 0);
-                            temp->GetMotionMaster()->MoveJump(vChampionJumpTarget[pos], 20.0f, 20.0f);
-                            temp->SetOrientation(0);
+							champion->SetHomePosition(vChampionJumpTarget[pos].GetPositionX(), vChampionJumpTarget[pos].GetPositionY(), vChampionJumpTarget[pos].GetPositionZ(), 0);
+							champion->GetMotionMaster()->MoveJump(vChampionJumpTarget[pos], 20.0f, 20.0f);
+							champion->SetOrientation(0);
                         }
                         else
                         {
-                            temp->SetHomePosition((ToCCommonLoc[1].GetPositionX()*2)-vChampionJumpTarget[pos].GetPositionX(), vChampionJumpTarget[pos].GetPositionY(), vChampionJumpTarget[pos].GetPositionZ(), 3);
-                            temp->GetMotionMaster()->MoveJump((ToCCommonLoc[1].GetPositionX() * 2) - vChampionJumpTarget[pos].GetPositionX(), vChampionJumpTarget[pos].GetPositionY(), vChampionJumpTarget[pos].GetPositionZ(), vChampionJumpTarget[pos].GetOrientation(), 20.0f, 20.0f);
-                            temp->SetOrientation(3);
+							champion->SetHomePosition((ToCCommonLoc[1].GetPositionX()*2)-vChampionJumpTarget[pos].GetPositionX(), vChampionJumpTarget[pos].GetPositionY(), vChampionJumpTarget[pos].GetPositionZ(), 3);
+							champion->GetMotionMaster()->MoveJump((ToCCommonLoc[1].GetPositionX() * 2) - vChampionJumpTarget[pos].GetPositionX(), vChampionJumpTarget[pos].GetPositionY(), vChampionJumpTarget[pos].GetPositionZ(), vChampionJumpTarget[pos].GetOrientation(), 20.0f, 20.0f);
+							champion->SetOrientation(3);
                         }
                     }
                     vChampionJumpTarget.erase(vChampionJumpTarget.begin()+pos);
@@ -488,7 +490,8 @@ class boss_toc_champion_controller : public CreatureScript
                             if (Creature* temp = ObjectAccessor::GetCreature(*me, *i))
                             {
                                 temp->SetReactState(REACT_AGGRESSIVE);
-                                temp->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_IMMUNE_TO_PC);
+								temp->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+								temp->SetImmuneToPC(true);
                             }
                         }
                         break;

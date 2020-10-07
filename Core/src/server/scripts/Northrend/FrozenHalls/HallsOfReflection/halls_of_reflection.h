@@ -201,7 +201,7 @@ struct boss_horAI : BossAI
     {
         _Reset();
         me->SetVisible(false);
-        me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_IMMUNE_TO_NPC);
+		me->SetImmuneToAll(true);
         me->SetReactState(REACT_PASSIVE);
         if (instance->GetData(DATA_WAVE_COUNT) != NOT_STARTED)
             instance->ProcessEvent(NULL, EVENT_DO_WIPE);
@@ -212,8 +212,9 @@ struct boss_horAI : BossAI
         switch (actionId)
         {
             case ACTION_ENTER_COMBAT: // called by InstanceScript when boss shall enter in combat.
-                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_IMMUNE_TO_NPC);
+				me->SetImmuneToAll(false);
                 me->SetReactState(REACT_AGGRESSIVE);
+
                 DoZoneInCombat(me, 150.0f);
                 break;
             default:

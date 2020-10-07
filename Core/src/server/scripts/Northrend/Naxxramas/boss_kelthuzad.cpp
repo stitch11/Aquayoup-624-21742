@@ -310,6 +310,7 @@ public:
 
             me->setFaction(35);
             me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_DISABLE_MOVE | UNIT_FLAG_NOT_SELECTABLE);
+			me->SetImmuneToPC(true);
 
             ResetPlayerScale();
             spawns.DespawnAll();
@@ -427,6 +428,7 @@ public:
                             Talk(EMOTE_PHASE_TWO);
                             spawns.DespawnAll();
                             me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_DISABLE_MOVE | UNIT_FLAG_NOT_SELECTABLE);
+							me->SetImmuneToPC(false);
                             me->CastStop();
 
                             DoStartMovement(me->GetVictim());

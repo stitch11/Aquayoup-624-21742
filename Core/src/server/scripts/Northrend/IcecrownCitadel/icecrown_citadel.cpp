@@ -824,7 +824,7 @@ class boss_sister_svalna : public CreatureScript
                     case ACTION_START_GAUNTLET:
                         me->setActive(true);
                         _isEventInProgress = true;
-                        me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_IMMUNE_TO_NPC);
+						me->SetImmuneToAll(true);
                         events.ScheduleEvent(EVENT_SVALNA_START, 25000);
                         break;
                     case ACTION_RESURRECT_CAPTAINS:
@@ -858,7 +858,7 @@ class boss_sister_svalna : public CreatureScript
 
                 _isEventInProgress = false;
                 me->setActive(false);
-                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_IMMUNE_TO_NPC);
+				me->SetImmuneToAll(false);
                 me->SetDisableGravity(false);
                 me->SetHover(false);
             }
@@ -1026,6 +1026,7 @@ class npc_crok_scourgebane : public CreatureScript
                 {
                     // pause pathing until trash pack is cleared
                     case 0:
+						me->SetImmuneToNPC(false);
                         Talk(SAY_CROK_COMBAT_WP_0);
                         if (!_aliveTrash.empty())
                             SetEscortPaused(true);
@@ -1758,7 +1759,8 @@ class spell_icc_stoneform : public SpellScriptLoader
                 if (Creature* target = GetTarget()->ToCreature())
                 {
                     target->SetReactState(REACT_PASSIVE);
-                    target->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_IMMUNE_TO_PC);
+					target->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+					target->SetImmuneToPC(true); // 1792
                     target->SetUInt32Value(UNIT_NPC_EMOTESTATE, EMOTE_STATE_CUSTOM_SPELL_02);
                 }
             }
@@ -1768,7 +1770,8 @@ class spell_icc_stoneform : public SpellScriptLoader
                 if (Creature* target = GetTarget()->ToCreature())
                 {
                     target->SetReactState(REACT_AGGRESSIVE);
-                    target->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_IMMUNE_TO_PC);
+					target->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+					target->SetImmuneToPC(false);
                     target->SetUInt32Value(UNIT_NPC_EMOTESTATE, 0);
                 }
             }

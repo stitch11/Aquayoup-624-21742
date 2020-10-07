@@ -973,6 +973,7 @@ class boss_vx_001 : public CreatureScript
                         // Missing break intended.
                     case DO_START_VX001:
                         me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE);
+						me->SetImmuneToPC(false);
                         me->RemoveAurasDueToSpell(SPELL_FREEZE_ANIM);
                         me->SetUInt32Value(UNIT_NPC_EMOTESTATE, EMOTE_ONESHOT_NONE); // Remove emotestate.
                         //me->SetUInt32Value(UNIT_FIELD_BYTES_1, 33554432); Blizzard handles hover animation like this it seems.
@@ -986,6 +987,7 @@ class boss_vx_001 : public CreatureScript
                     case DO_ASSEMBLED_COMBAT:
                         me->SetStandState(UNIT_STAND_STATE_STAND);
                         me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE);
+						me->SetImmuneToPC(false);
 
                         events.SetPhase(PHASE_VOL7RON);
                         events.ScheduleEvent(EVENT_ROCKET_STRIKE, 20000);

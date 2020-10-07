@@ -697,6 +697,7 @@ class npc_spinestalker : public CreatureScript
 
                     me->setActive(true);
                     me->SetSpeedRate(MOVE_FLIGHT, 2.0f);
+					me->SetImmuneToPC(true);
                     me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
                     float moveTime = me->GetExactDist(&SpinestalkerFlyPos) / (me->GetSpeed(MOVE_FLIGHT) * 0.001f);
                     me->m_Events.AddEvent(new FrostwyrmLandEvent(*me, SpinestalkerLandPos), me->m_Events.CalculateTime(uint64(moveTime) + 250));
@@ -834,7 +835,7 @@ class npc_rimefang : public CreatureScript
 
                     me->setActive(true);
                     me->SetSpeedRate(MOVE_FLIGHT, 2.0f);
-                    me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC);
+					me->SetImmuneToPC(true);
                     float moveTime = me->GetExactDist(&RimefangFlyPos) / (me->GetSpeed(MOVE_FLIGHT) * 0.001f);
                     me->m_Events.AddEvent(new FrostwyrmLandEvent(*me, RimefangLandPos), me->m_Events.CalculateTime(uint64(moveTime) + 250));
                     me->SetDefaultMovementType(IDLE_MOTION_TYPE);
@@ -856,7 +857,7 @@ class npc_rimefang : public CreatureScript
                 me->RemoveByteFlag(UNIT_FIELD_BYTES_1, 3, UNIT_BYTE1_FLAG_ALWAYS_STAND | UNIT_BYTE1_FLAG_HOVER);
                 me->SetHomePosition(RimefangLandPos);
                 me->SetFacingTo(RimefangLandPos.GetOrientation());
-                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC);
+                me->SetImmuneToPC(false);
                 me->SetReactState(REACT_AGGRESSIVE);
             }
 
