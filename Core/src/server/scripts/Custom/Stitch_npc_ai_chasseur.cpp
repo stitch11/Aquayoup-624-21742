@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : Chasseur V1.0
+// AI generique npc par classe : Chasseur Ver 2020-10-08
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_chasseur',`AIName` = '' WHERE (entry = 15100004);
@@ -105,7 +105,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				else
 				{
 					// Sinon Choix de la Spécialisation Aléatoire
-					BrancheSpe = urand(1, NbrDeSpe + 1);																// Plus de chance d'etre Survie
+					BrancheSpe = urand(1, NbrDeSpe + 1);															// Plus de chance d'etre Survie
 				}
 				if ((BrancheSpe > NbrDeSpe) || (BrancheSpe == 0)) { BrancheSpe = 2; }
 
@@ -115,7 +115,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				// ################################################################################################################################################
 				switch (BrancheSpe)
 				{
-				case 1: // Si Survie ------------------------------------------------------------------------------------------------------------------------------
+				case 1: // Si Branche 1 ---------------------------------------------------------------------------------------------------------------------------
 					Buf_branche1 = Buf_branche1_liste[urand(0, 1)];
 					me->CastSpell(me, Buf_branche1, true);															// Buf1 sur lui meme
 
@@ -128,7 +128,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 					Spell_branche1_4 = branche1_4[urand(0, 1)];
 					break;
 
-				case 2: // Si Bete -------------------------------------------------------------------------------------------------------------------------
+				case 2: // Si Si Branche 2 ------------------------------------------------------------------------------------------------------------------------
 					Buf_branche2 = Buf_branche2_liste[urand(0, 1)];
 					me->CastSpell(me, Buf_branche2, true);															// Buf2 sur lui meme
 
@@ -159,15 +159,14 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				me->SetReactState(REACT_AGGRESSIVE);
 				me->SetSheath(SHEATH_STATE_RANGED);										// S'equipe de l'arme a distance
 				
-				Def_Power();
 				Init_AI();
-
+				Def_Power();
 			}
 			void EnterCombat(Unit* /*who*/) override
 			{
-				Def_Power();
 				Init_AI();
-				
+				Def_Power();
+
 				// ################################################################################################################################################
 				// Spell a lancer a l'agro 
 				// ################################################################################################################################################
@@ -187,7 +186,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 					if (Random == 1 && UpdateVictim()) { me->CastSpell(victim, Spell_branche2_agro, true); }		// 1/2 Chance de lancer le sort d'agro
 
 					// Tirages aléatoires du pet
-					me->CastSpell(me, Pet_Chasseur, true);
+					// me->CastSpell(me, Pet_Chasseur, true);
 					break;
 					// ################################################################################################################################################
 
@@ -234,22 +233,28 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				Mana = me->GetPower(POWER_FOCUS);
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
+				// if (me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC)) { me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC); }
+				// if (me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_NPC)) { me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_NPC); }
+				// if (!me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT)) { me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT); }
 
 				// ################################################################################################################################################
 				// Combat suivant la Spécialisation
 					switch (BrancheSpe)
 				{
 				case 1: // Spécialisation Survie ------------------------------------------------------------------------------------------------------------------
-						// Regen mana en combat ------------------------------------------------------------------------------------------------------------------------
+						// Regen mana en combat -------------------------------------------------------------------------------------------------------------------
 					if (Cooldown_RegenMana <= diff)
 					{
 						me->SetPower(POWER_FOCUS, Mana + (MaxMana / 2.5));
-						if (Mana > MaxMana) { me->SetPower(POWER_FOCUS, MaxMana); }
+						if (Mana > MaxMana || Mana == 0) { me->SetPower(POWER_FOCUS, MaxMana); }
 						Cooldown_RegenMana = urand(1500, 2000);
+
+						me->SetSheath(SHEATH_STATE_RANGED);																	// S'equipe de l'arme a distance
+						me->SetReactState(REACT_AGGRESSIVE);
 					}
 					else Cooldown_RegenMana -= diff;
 
-					// Combat --------------------------------------------------------------------------------------------------------------------------------------
+					// Combat -------------------------------------------------------------------------------------------------------------------------------------
 
 						// Spell4 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot) : Flèche noire 3674 18s, Morsure de serpent 31975 15s
 					if (Cooldown_Spell4 <= diff)
@@ -292,6 +297,9 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 						me->SetPower(POWER_FOCUS, Mana + (MaxMana / 2.5));
 						if (Mana > MaxMana) { me->SetPower(POWER_FOCUS, MaxMana); }
 						Cooldown_RegenMana = urand(2500, 3000);
+
+						me->SetSheath(SHEATH_STATE_RANGED);																	// S'equipe de l'arme a distance
+						me->SetReactState(REACT_AGGRESSIVE);
 					}
 					else Cooldown_RegenMana -= diff;
 
@@ -322,16 +330,28 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 
 					break;
 				}
-				}
-				// ################################################################################################################################################
 
+				// ################################################################################################################################################
 				Heal_En_Combat_Caster(diff);
 				Mouvement_Caster(diff);
 				Mouvement_All();
-
+				}
 				// ################################################################################################################################################
 			}
 
+			void RetireBugDeCombat()
+			{
+				me->CombatStop(true);
+				me->DeleteThreatList();
+				me->LoadCreaturesAddon();
+				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);				// UNROOT
+				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);					// Retire flag "en combat"
+				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);				// Retire flag "non attaquable"
+				me->AddUnitState(UNIT_STATE_EVADE);
+				me->SetLootRecipient(NULL);
+				me->ResetPlayerDamageReq();
+				me->SetLastDamagedTime(0);
+			}
 			void Mouvement_All()
 			{
 				if (!UpdateVictim())
@@ -342,7 +362,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				{
 					RetireBugDeCombat();
 					me->AddUnitState(UNIT_STATE_EVADE);
-					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);						// Quite le combat si la cible > 40m (Caster & Mélée) ou > 40m de home
+					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);						// Quite le combat si la cible > 30m (Caster & Mélée) ou > 40m de home
 				}
 			}
 			void Mouvement_Caster(uint32 diff)
@@ -353,7 +373,6 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				Mana = me->GetPower(POWER_FOCUS);
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
-				//if (!me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT)) { me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT); }
 
 				if (Cooldown_ResteADistance <= diff)
 				{
@@ -393,7 +412,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				{
 					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 					AttackStart(victim);															// Combat au corp a corp
-					//AttackStartCaster(victim, ResteADistance);										// Distance de cast
+					//AttackStartCaster(victim, ResteADistance);									// Distance de cast
 					//void DoRangedAttackIfReady();													// Combat a distance
 					DoMeleeAttackIfReady();															// Combat en mélée
 				}
@@ -405,7 +424,6 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				}
 
 			}
-			
 			void Heal_En_Combat_Caster(uint32 diff)
 			{
 				if (!UpdateVictim() /*|| me->HasUnitState(UNIT_STATE_MOVE)*/)
@@ -422,25 +440,12 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				}
 				else Cooldown_Spell_Heal -= diff;
 			}
-			void RetireBugDeCombat()
-			{
-				me->CombatStop(true);
-				me->DeleteThreatList();
-				me->LoadCreaturesAddon();
-				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);				// UNROOT
-				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);					// Retire flag "en combat"
-				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);				// Retire flag "non attaquable"
-				me->AddUnitState(UNIT_STATE_EVADE);
-				me->SetLootRecipient(NULL);
-				me->ResetPlayerDamageReq();
-				me->SetLastDamagedTime(0);
-			}
 			void Def_Power()
 			{
 				me->SetMaxPower(POWER_MANA, 100);
 				me->setPowerType(POWER_FOCUS);											// Utilise de la focalisation
 				me->SetMaxPower(POWER_FOCUS, 100);
-				me->SetPower(POWER_FOCUS, 100);
+				me->SetPower(POWER_FOCUS, 99);
 			}
 
 
