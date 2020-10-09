@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : Chasseur Ver 2020-10-08
+// AI generique npc par classe : Chasseur Ver 2020-10-09
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_chasseur',`AIName` = '' WHERE (entry = 15100004);
@@ -152,6 +152,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				me->SetReactState(REACT_AGGRESSIVE);
 				// ################################################################################################################################################
 			}
+
 			void JustRespawned() override
 			{
 				me->GetMotionMaster()->MoveTargetedHome();								// Retour home pour rafraichir client
@@ -186,7 +187,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 					if (Random == 1 && UpdateVictim()) { me->CastSpell(victim, Spell_branche2_agro, true); }		// 1/2 Chance de lancer le sort d'agro
 
 					// Tirages aléatoires du pet
-					// me->CastSpell(me, Pet_Chasseur, true);
+					me->CastSpell(me, Pet_Chasseur, true);
 					break;
 					// ################################################################################################################################################
 
@@ -399,22 +400,22 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 					me->SetSpeedRate(MOVE_RUN, 1.01f);
 				}
 
-				// Mouvement OFF si distance >= 15m & <= 30m &  Mana > 5% ---------------------------------------------------------------------------------------------
-				if ((Mana > MaxMana / 20) && (Dist >= ResteADistance) && (Dist <= DistanceDeCast))
+				// Mouvement OFF si Mana > 5% & distance >= 10m & <= 15m ---------------------------------------------------------------------------------------------
+				if ((Mana > MaxMana / 20) && (Dist >= ResteADistance - 5) && (Dist <= ResteADistance))
 				{
 					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
 					AttackStartCaster(victim, ResteADistance);										// Distance de combat
 					void DoRangedAttackIfReady();													// Combat a distance
 				}
 
-				// Mouvement ON si distance > 30m ------------------------------------------------------------------------------------------------------------------
-				if (Dist > DistanceDeCast)
+				// Mouvement ON si distance > 15m ------------------------------------------------------------------------------------------------------------------
+				if (Dist > ResteADistance)
 				{
 					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
-					AttackStart(victim);															// Combat au corp a corp
-					//AttackStartCaster(victim, ResteADistance);									// Distance de cast
-					//void DoRangedAttackIfReady();													// Combat a distance
-					DoMeleeAttackIfReady();															// Combat en mélée
+					//AttackStart(victim);															// Combat au corp a corp
+					AttackStartCaster(victim, ResteADistance);									// Distance de cast
+					void DoRangedAttackIfReady();													// Combat a distance
+					//DoMeleeAttackIfReady();															// Combat en mélée
 				}
 
 				// Mouvement ON si Mana < 5%  ----------------------------------------------------------------------------------------------------------------------

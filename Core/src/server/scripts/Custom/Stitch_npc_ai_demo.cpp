@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : DEMO Ver 2020-10-08
+// AI generique npc par classe : DEMO Ver 2020-10-09
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_demo',`AIName` = '' WHERE (entry = 15100004);
@@ -35,11 +35,10 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 			uint32 ForceBranche;
 			uint32 Random;
 			uint32 DistanceDeCast = 30;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
-			uint32 ResteADistance = 15;												// Distance max a laquelle un npc s'approchera
-			uint32 Dist;															// Distance entre le npc et sa cible
+			uint32 ResteADistance = 15;												// Distance a laquelle un npc cast : ROOT +-5m
+			uint32 Dist;															// Distance entre le npc et sa cible 
 			uint32 Mana;
 			uint32 MaxMana = me->GetMaxPower(POWER_MANA);
-			uint32 Start_Agro = 0;
 
 			Unit* victim = me->GetVictim();
 
@@ -87,7 +86,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 			uint32 branche2_2[2] = { 980, 980 };										// Agonie 980 , corruption 172
 			uint32 branche2_3[2] = { 70388, 70388 };									// Graine de Corruption 70388
 			uint32 Pet_Demo;
-			uint32 Pet_Demo_Liste[5] = { 30146, 712, 691, 697, 688 };					// Gangregarde 30146, Succube 712, Chasseur corrompu 691, Marcheur du Vide 697, Diablotin 688
+			uint32 Pet_Demo_Liste[5] = { 30146, 30146, 30146, 30146, 30146 };			// Gangregarde 30146, Succube 712, Chasseur corrompu 691, Marcheur du Vide 697, Diablotin 688
 
 			// Spells Destruction
 			uint32 Spell_branche3_agro;
@@ -102,6 +101,8 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 			// Emotes
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
 
+			uint32 Start_Agro = 0;
+
 			void Init_AI()
 			{
 				// ################################################################################################################################################
@@ -111,7 +112,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 				ForceBranche = me->GetCreatureTemplate()->pickpocketLootId;							// creature_template->pickpocketloot
 				if (ForceBranche == 1) { BrancheSpe = 1; }											// branche1 forcé
 				else if (ForceBranche == 2) { BrancheSpe = 2; }										// branche2 forcé 
-				else if (ForceBranche == 3) { BrancheSpe = 3; }										// branche2 forcé
+				else if (ForceBranche == 3) { BrancheSpe = 3; }										// branche3 forcé
 				else
 				{
 					// Sinon Choix de la Spécialisation Aléatoire
@@ -181,6 +182,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 				me->SetReactState(REACT_AGGRESSIVE);
 				// ################################################################################################################################################
 			}
+
 			void JustRespawned() override
 			{
 				me->GetMotionMaster()->MoveTargetedHome();								// Retour home pour rafraichir client
@@ -189,9 +191,9 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 
 				Init_AI();
 			}
-
 			void EnterCombat(Unit* /*who*/) override
 			{
+				ResteADistance = 10 + urand(0, 5);
 				Init_AI();
 			}
 			void EnterEvadeMode(EvadeReason /*why*/) override
@@ -461,22 +463,20 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 					me->SetSpeedRate(MOVE_RUN, 1.01f);
 				}
 
-				// Mouvement OFF si Mana > 5% & distance >= 15m & <= 30m ---------------------------------------------------------------------------------------------
-				if ((Mana > MaxMana / 20) && (Dist >= ResteADistance) && (Dist <= DistanceDeCast))
-				{
-					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
-					AttackStartCaster(victim, ResteADistance);										// Distance de combat
-					void DoRangedAttackIfReady();													// Combat a distance
-				}
-
-				// Mouvement ON si distance > 30m ------------------------------------------------------------------------------------------------------------------
-				if (Dist > DistanceDeCast)
+				// Mouvement OFF si Mana > 5% & distance >= 5/10m & <= 10/15m ---------------------------------------------------------------------------------------------
+				if ((Mana > MaxMana / 20) && (Dist >= ResteADistance - 5) && (Dist <= ResteADistance))
 				{
 					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 					AttackStart(victim);															// Combat au corp a corp
-					//AttackStartCaster(victim, ResteADistance);									// Distance de cast
-					//void DoRangedAttackIfReady();													// Combat a distance
 					DoMeleeAttackIfReady();															// Combat en mélée
+				}
+
+				// Mouvement ON si distance > 15m ------------------------------------------------------------------------------------------------------------------
+				if (Dist > ResteADistance)
+				{
+					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
+					AttackStartCaster(victim, ResteADistance);										// Distance de cast
+					void DoRangedAttackIfReady();													// Combat a distance
 				}
 
 				// Mouvement ON si Mana < 5%  ----------------------------------------------------------------------------------------------------------------------
