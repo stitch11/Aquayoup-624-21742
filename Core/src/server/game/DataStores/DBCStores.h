@@ -94,7 +94,6 @@ TC_GAME_API void Map2ZoneCoordinates(float &x, float &y, uint32 worldMapAreaId);
 // WorldMapTransforms
 TC_GAME_API void DeterminaAlternateMapPosition(uint32 mapId, float x, float y, float z, uint32* newMapId = nullptr, DBCPosition2D* newPos = nullptr);
 
-TC_GAME_API uint32 GetMaxLevelForExpansion(uint32 expansion);
 TC_GAME_API uint32 GetExpansionForLevel(uint32 level);
 
 template<class T>
