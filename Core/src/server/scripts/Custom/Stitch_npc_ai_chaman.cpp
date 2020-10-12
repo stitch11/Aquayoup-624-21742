@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : CHAMAN Ver 2020-10-09
+// AI generique npc par classe : CHAMAN Ver 2020-10-12
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_chaman',`AIName` = '' WHERE (entry = 15100002);
@@ -389,7 +389,6 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 							}
 							else Cooldown_Spell3 -= diff;
 
-							DoMeleeAttackIfReady();
 						}
 
 						Heal_En_Combat_Melee(diff);
@@ -409,15 +408,15 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 			void RetireBugDeCombat()
 			{
 				me->CombatStop(true);
+				me->RemoveAllControlled();												// renvois pet
 				me->DeleteThreatList();
 				me->LoadCreaturesAddon();
-				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);				// UNROOT
-				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);					// Retire flag "en combat"
-				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);				// Retire flag "non attaquable"
-				me->AddUnitState(UNIT_STATE_EVADE);
 				me->SetLootRecipient(NULL);
 				me->ResetPlayerDamageReq();
 				me->SetLastDamagedTime(0);
+				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);				// UNROOT
+				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);					// Retire flag "en combat"
+				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);				// Retire flag "non attaquable"
 			}
 			void Mouvement_All()
 			{
@@ -434,7 +433,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 			}
 			void Mouvement_Caster(uint32 diff)
 			{
-				if (!UpdateVictim() /*|| me->HasUnitState(UNIT_STATE_CASTING)*/)
+				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
 					return;
 
 				Mana = me->GetPower(POWER_MANA);
@@ -494,13 +493,15 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 				if (!UpdateVictim())
 					return;
 
-				DoMeleeAttackIfReady();														// Combat en mélée
-				if (!me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT)) { me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT); }
+				Mana = me->GetPower(POWER_MANA);
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
-				// Si la cible >= 5m (pour éviter bug de rester figé) ------------------------------------------------------------------------------------------
-				if (Dist >= 5 && Cooldown_Anti_Bug_Figer <= diff)
+				AttackStartCaster(me->GetVictim(), 5.0f);
+				DoMeleeAttackIfReady();														// Combat en mélée
+
+				// Si la cible >= 8m (pour éviter bug de rester figé) ------------------------------------------------------------------------------------------
+				if (Dist >= 8 && Cooldown_Anti_Bug_Figer <= diff)
 				{
 					float x, y, z;
 					x = victim->GetPositionX();
@@ -512,8 +513,8 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 				}
 				else Cooldown_Anti_Bug_Figer -= diff;
 
-
 				// Si la cible est entre 8 & 30m : Horion de terre ou Horion de givre ------------------------------------------------------------------------------
+
 				if (Cooldown_Charge <= diff)
 				{
 					Random = urand(1, 8);
@@ -535,7 +536,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 
 				// Si la cible < 8m : Totem de magma ou Avance ou Tourne au tour -----------------------------------------------------------------------------------
 
-				if (Dist < 8 && (Cooldown_ResteADistance <= diff))
+				if (/*Dist < 8 &&*/ (Cooldown_ResteADistance <= diff))
 				{
 					Random = urand(1, 5);
 					if (Random == 1 || Random == 2)
@@ -559,15 +560,15 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 			{
 				if (!UpdateVictim())
 					return;
+
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(me->GetVictim());
 
 				float x, y, z;
-				x = (victim->GetPositionX() + urand(0, 6) - 3);
-				y = (victim->GetPositionY() + urand(0, 6) - 3);
+				x = (victim->GetPositionX() + urand(0, 4) - 2);
+				y = (victim->GetPositionY() + urand(0, 4) - 2);
 				z = victim->GetPositionZ();
 				me->GetMotionMaster()->MovePoint(0, x, y, z);
-
 			}
 			void Avance_3m_En_Combat()
 			{
@@ -575,7 +576,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 					return;
 
 				float x, y, z;
-				me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 5);
+				me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
 				me->GetMotionMaster()->MovePoint(0, x, y, z);
 			}
 

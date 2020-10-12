@@ -138,7 +138,7 @@ extern int main(int argc, char** argv)
     TC_LOG_INFO("server.worldserver", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     TC_LOG_INFO("server.worldserver", "xx Trinity 19/05/2016 - TrinityCore/tree/498725f3de8d18b26986c2c2e0ceec6c384a8016 xx");
 	TC_LOG_INFO("server.worldserver", "xx                                                                                xx");
-	TC_LOG_INFO("server.worldserver", "xx  Derniere maj du core 09/2019 - Stitch https://aquayoup.123.fr/                xx");
+	TC_LOG_INFO("server.worldserver", "xx  Derniere maj du core 10/2020 - Stitch https://aquayoup.123.fr/                xx");
     TC_LOG_INFO("server.worldserver", "xx                                                                                xx");
 	TC_LOG_INFO("server.worldserver", "xx * Toutes les Classes pour toutes les Races                                     xx");
 	TC_LOG_INFO("server.worldserver", "xx * Extension de classe Vampire pour le voleur                                   xx");
@@ -153,6 +153,7 @@ extern int main(int argc, char** argv)
 	TC_LOG_INFO("server.worldserver", "xx * Pet & FakePlayers donnent de l'XP et sont plus efficace                      xx");
 	TC_LOG_INFO("server.worldserver", "xx * Guilde par defaut a la création d'un perso                                   xx");
 	TC_LOG_INFO("server.worldserver", "xx   DressNPC (creature_template_outfits , modelid1 a modelid4 en négatif)        xx");
+	TC_LOG_INFO("server.worldserver", "xx * NPC_AI_xxx Script de classes et autres pour mobs classiques                  xx");
 	TC_LOG_INFO("server.worldserver", "xx                                                                                xx");
 	TC_LOG_INFO("server.worldserver", "xx * Diverse majs & debugs                                                        xx");
 	TC_LOG_INFO("server.worldserver", "xx * Un grand Merci a Noc & Scade pour leurs aides                                xx");
