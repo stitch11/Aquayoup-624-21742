@@ -206,6 +206,8 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 				me->RemoveAura(Buf_branche1);
 				me->RemoveAura(Buf_branche2);
 				me->RemoveAura(Buf_branche3);
+
+				Bonus_Armure(100);													// Retire bonus d'armure
 			}
 			void JustReachedHome() override
 			{

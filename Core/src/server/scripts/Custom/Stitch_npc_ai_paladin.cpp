@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : PALADIN V1.0
+// AI generique npc par classe : PALADIN Ver 2020-10-14
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_paladin',`AIName` = '' WHERE (entry = 15100006);
@@ -60,7 +60,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			uint32 Buf_branche3 = 31801;											// Sceau de clairvoyance 20165, Sceau de vérité 31801
 			uint32 Buf_branche3a = 31850;											// Ardent défenseur 31850 (dmg -20% 10s),     Bénédiction des rois 72043, Protection divine 498, Aura de dévotion 52442 (armure+25%) 
 			uint32 Spell_Heal_Caster = 19750;  										// Eclair lumineux 19750
-			uint32 Spell_Heal_Heal = 19750;  										// Lumière sacrée 82326
+			uint32 Spell_Heal_Heal = 177551;  										// Lumière sacrée 82326/177551
 
 			// Spells Vindice
 			uint32 Spell_branche1_agro;
@@ -95,94 +95,110 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			// Emotes
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
 
-			void JustRespawned() override
-				{
-				me->GetMotionMaster()->MoveTargetedHome();								// Retour home pour rafraichir client
-				me->SetSpeedRate(MOVE_RUN, 1.01f);
-				me->SetReactState(REACT_AGGRESSIVE);
-				}
-			void EnterCombat(Unit* /*who*/) override
+			uint32 Start_Agro = 0;
+
+			void Init_AI()
 			{
-				if (!UpdateVictim())
-					return;
-
-				Mana = me->GetPower(POWER_MANA);
-				Unit* victim = me->GetVictim();
-				Dist = me->GetDistance(victim);
-				me->SetReactState(REACT_AGGRESSIVE);
-				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);
-
+				// ################################################################################################################################################
+				// Forcer le choix de la Spécialisation par creature_template->pickpocketloot
+				// ################################################################################################################################################
 				// Forcer le choix de la Spécialisation par creature_template->pickpocketloot
 				ForceBranche = me->GetCreatureTemplate()->pickpocketLootId;							// creature_template->pickpocketloot
 				if (ForceBranche == 1) { BrancheSpe = 1; }											// branche1 forcé
-				else if (ForceBranche == 2) { BrancheSpe = 2; }										// branche2 forcé
-				else if (ForceBranche == 3) { BrancheSpe = 3; }										// branche3 forcé 
+				else if (ForceBranche == 2) { BrancheSpe = 2; }										// branche2 forcé 
+				else if (ForceBranche == 3) { BrancheSpe = 3; }										// branche3 forcé
 				else
 				{
 					// Sinon Choix de la Spécialisation Aléatoire
 					BrancheSpe = urand(1, NbrDeSpe);
 				}
 
-				if ((BrancheSpe > NbrDeSpe) || (BrancheSpe == 0)) { BrancheSpe = 1; }	
+				if ((BrancheSpe > NbrDeSpe) || (BrancheSpe == 0)) { BrancheSpe = 2; }
 
-				switch(BrancheSpe)
-					{
-					case 1: // Si Spécialisation Vindice -------------------------------------------------------------------------------------------------------
-						me->CastSpell(me, Buf_branche1, true);
-						me->CastSpell(me, Buf_branche1a, true);
-						me->LoadEquipment(1, true);													// creature_equip_template 1
+				// ################################################################################################################################################
+				// Tirages aléatoires des spells
+				// ################################################################################################################################################
+				// Spell a lancer a l'agro ------------------------------------------------------------------------------------------------------------------------
 
-						Spell_branche1_agro = branche1_agro[urand(0,3)];
-						Spell_branche1_1 = branche1_1[urand(0, 1)];
-						Spell_branche1_2 = branche1_2[urand(0, 1)];
-						Spell_branche1_3 = branche1_3[urand(0, 2)];
+				switch (BrancheSpe)
+				{
+				case 1: // Si Vindice -------------------------------------------------------------------------------------------------------------------------------
+					me->CastSpell(me, Buf_branche1, true);
+					me->CastSpell(me, Buf_branche1a, true);
+					me->LoadEquipment(1, true);													// creature_equip_template 1
 
-						Random = urand(1, 2); 
-						if (Random == 1 && UpdateVictim()) { DoCastVictim(Spell_branche1_agro); }	// 1/2 Chance de lancer le sort d'agro
+					Spell_branche1_agro = branche1_agro[urand(0, 3)];
+					Spell_branche1_1 = branche1_1[urand(0, 1)];
+					Spell_branche1_2 = branche1_2[urand(0, 1)];
+					Spell_branche1_3 = branche1_3[urand(0, 2)];
 
-						Bonus_Armure(150);															// Bonus d'armure +50%
+					Bonus_Armure(150);															// Bonus d'armure +50%
 					break;
 
-					case 2: // Si Spécialisation Sacré  --------------------------------------------------------------------------------------------------------
-						me->CastSpell(me, Buf_branche2, true);										// Buf2 sur lui meme
-						me->CastSpell(me, Buf_branche2a, true);
-						me->LoadEquipment(2, true);													// creature_equip_template 2
+				case 2: // Si Sacré ------------------------------------------------------------------------------------------------------------------------------
+					me->CastSpell(me, Buf_branche2, true);										// Buf2 sur lui meme
+					me->CastSpell(me, Buf_branche2a, true);
+					me->LoadEquipment(2, true);													// creature_equip_template 2
 
-						Spell_branche2_agro = branche2_agro[urand(0, 3)];
-						Spell_branche2_1 = branche2_1[urand(0, 1)];
-						Spell_branche2_2 = branche2_2[urand(0, 1)];
-						Spell_branche2_3 = branche2_3[urand(0, 1)];
+					Spell_branche2_agro = branche2_agro[urand(0, 3)];
+					Spell_branche2_1 = branche2_1[urand(0, 1)];
+					Spell_branche2_2 = branche2_2[urand(0, 1)];
+					Spell_branche2_3 = branche2_3[urand(0, 1)];
 
-						Random = urand(1, 2);
-						if (Random == 1 && UpdateVictim()) { DoCastVictim(Spell_branche2_agro); }	// 1/2 Chance de lancer le sort d'agro
-
-						Bonus_Armure(125);															// Bonus d'armure +25%
+					Bonus_Armure(125);															// Bonus d'armure +25%
 					break;
 
-					case 3: // Si Spécialisation Protection ----------------------------------------------------------------------------------------------------
-						me->CastSpell(me, Buf_branche3, true);										// Buf3 sur lui meme
-						me->CastSpell(me, Buf_branche3a, true);
-						me->LoadEquipment(3, true);													// creature_equip_template 3
+				case 3: // Si Protection --------------------------------------------------------------------------------------------------------------------------
+					me->CastSpell(me, Buf_branche3, true);										// Buf3 sur lui meme
+					me->CastSpell(me, Buf_branche3a, true);
+					me->LoadEquipment(3, true);													// creature_equip_template 3
 
-						Spell_branche3_agro = branche3_agro[urand(0, 2)];
-						Spell_branche3_1 = branche3_1[urand(0, 1)];
-						Spell_branche3_2 = branche3_2[urand(0, 1)];
-						Spell_branche3_3 = branche3_3[urand(0, 1)];
+					Spell_branche3_agro = branche3_agro[urand(0, 2)];
+					Spell_branche3_1 = branche3_1[urand(0, 1)];
+					Spell_branche3_2 = branche3_2[urand(0, 1)];
+					Spell_branche3_3 = branche3_3[urand(0, 1)];
 
-						Random = urand(1, 2);
-						if (Random == 1 && UpdateVictim()) { DoCastVictim(Spell_branche3_agro); }	// 1/2 Chance de lancer le sort d'agro
+					Bonus_Armure(200);
+					break;
+				}
+				// ################################################################################################################################################
+				// Divers
+				// ################################################################################################################################################
+				me->SetSheath(SHEATH_STATE_MELEE);												// S'equipe de l'arme au contact
+				me->SetReactState(REACT_AGGRESSIVE);
+				// ################################################################################################################################################
+			}
+			void JustRespawned() override
+			{
+				me->GetMotionMaster()->MoveTargetedHome();								// Retour home pour rafraichir client
+				me->SetSpeedRate(MOVE_RUN, 1.01f);
+				me->SetReactState(REACT_AGGRESSIVE);
 
-						Bonus_Armure(200);															// Bonus d'armure +100%
-						break;
-						
-					}
+				Init_AI();
+			}
+
+			void EnterCombat(Unit* /*who*/) override
+			{
+				ResteADistance = urand(4, 6);
+				Init_AI();
 			}
 			void EnterEvadeMode(EvadeReason /*why*/) override
 			{
+				Start_Agro = 0;
 				RetireBugDeCombat();
 				me->AddUnitState(UNIT_STATE_EVADE);
 				me->SetSpeedRate(MOVE_RUN, 1.5f);										// Vitesse de déplacement
 				me->GetMotionMaster()->MoveTargetedHome();								// Retour home
+				me->RemoveAllControlled();												// renvois pet
+
+				me->RemoveAura(Buf_branche1);
+				me->RemoveAura(Buf_branche1a);
+				me->RemoveAura(Buf_branche2);
+				me->RemoveAura(Buf_branche2a);
+				me->RemoveAura(Buf_branche3);
+				me->RemoveAura(Buf_branche3a);
+
+				Bonus_Armure(100);													// Retire bonus d'armure
 			}
 			void JustReachedHome() override
 			{
@@ -200,111 +216,277 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			}
 			void UpdateAI(uint32 diff) override
 			{
-				// Emotes hors combat & mouvement -----------------------------------------------------------------------------------------------------------------
+				// ################################################################################################################################################
+				// Emotes hors combat & mouvement #################################################################################################################
+				// ################################################################################################################################################
 				if ((Cooldown_Npc_Emotes <= diff) && (!me->isMoving()) && (!me->IsInCombat()))
 				{
-				uint32 Npc_Play_Emotes = Npc_Emotes[urand(0, 21)];
-				me->HandleEmoteCommand(Npc_Play_Emotes);
-				Cooldown_Npc_Emotes = urand(8000, 15000);
-				} else Cooldown_Npc_Emotes -= diff;
+					uint32 Npc_Play_Emotes = Npc_Emotes[urand(0, 21)];
+					me->HandleEmoteCommand(Npc_Play_Emotes);
+					Cooldown_Npc_Emotes = urand(8000, 15000);
+				}
+				else
+					Cooldown_Npc_Emotes -= diff;
 
-				// En Combat --------------------------------------------------------------------------------------------------------------------------------------
-				if (!UpdateVictim() /*|| me->isPossessed() || me->IsCharmed() || me->HasAuraType(SPELL_AURA_MOD_FEAR)*/)
-					return;
-
-				Mana = me->GetPower(POWER_MANA);
-				Unit* victim = me->GetVictim();
-				Dist = me->GetDistance(victim);
-
-				// Combat suivant la Spécialisation
-				switch (BrancheSpe)
+				// ################################################################################################################################################
+				// En Combat ######################################################################################################################################
+				// ################################################################################################################################################
+				if (UpdateVictim() /*&& !me->HasUnitState(UNIT_STATE_MOVE) || me->HasUnitState(UNIT_STATE_CASTING)*/)
 				{
-				case 1: // Spécialisation Vindice #######################################################################################################################
+					Mana = me->GetPower(POWER_MANA);
+					Unit* victim = me->GetVictim();
+					Dist = me->GetDistance(victim);
 
-					Heal_En_Combat_Melee(diff);
-					Combat_Vindice(diff);
+					if (Start_Agro == 0)
+					{
+						Start_Agro = 1;
+
+						// ########################################################################################################################################
+						// Spell a lancer a l'agro 
+						// ########################################################################################################################################
+						switch (BrancheSpe)
+						{
+						case 1: // Si Vindice ---------------------------------------------------------------------------------------------------------------------
+							me->CastSpell(me, Buf_branche1, true);										// Buf3 sur lui meme
+							me->CastSpell(me, Buf_branche1a, true); 
+
+							Random = urand(1, 2);
+							if (Random == 1 && UpdateVictim()) { DoCastVictim(Spell_branche1_agro); }	// 1/2 Chance de lancer le sort d'agro
+
+							break;
+
+						case 2: // Si Sacré -----------------------------------------------------------------------------------------------------------------------
+							me->CastSpell(me, Buf_branche2, true);										// Buf3 sur lui meme
+							me->CastSpell(me, Buf_branche2a, true); 
+							
+							Random = urand(1, 2);
+							if (Random == 1 && UpdateVictim()) { DoCastVictim(Spell_branche2_agro); }	// 1/2 Chance de lancer le sort d'agro
+
+							break;
+
+						case 3: // Si Protection ------------------------------------------------------------------------------------------------------------------
+							me->CastSpell(me, Buf_branche3, true);										// Buf3 sur lui meme
+							me->CastSpell(me, Buf_branche3a, true); 
+							
+							Random = urand(1, 2);
+							if (Random == 1 && UpdateVictim()) { DoCastVictim(Spell_branche3_agro); }	// 1/2 Chance de lancer le sort d'agro
+
+							break;
+
+							// ####################################################################################################################################
+						}
+					}
+
+
+					// ############################################################################################################################################
+					// Combat suivant la Spécialisation
+
+					if (Dist < 6)
+					{
+
+						switch (BrancheSpe)
+						{
+						case 1: // Spécialisation Armes ###############################################################################################################
+								// Regen Mana en combat ---------------------------------------------------------------------------------------------------------------
+							if (Cooldown_RegenMana <= diff)
+							{
+								me->SetPower(POWER_MANA, Mana + (MaxMana / 3));
+								if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
+								Cooldown_RegenMana = 1000;
+							}
+							else Cooldown_RegenMana -= diff;
+
+							// Combat ---------------------------------------------------------------------------------------------------------------------------------
+							Bonus_Degat_Arme_Done(100);										// Bonus de dégat 
+
+																							// Spell1 sur la cible
+							if (Cooldown_Spell1 <= diff)
+							{
+								DoCastVictim(Spell_branche1_1);
+								Cooldown_Spell1 = 4000;
+							}
+							else Cooldown_Spell1 -= diff;
+
+							// Spell2 sur la cible
+							if (Cooldown_Spell2 <= diff)
+							{
+								DoCastVictim(Spell_branche1_2);
+								Cooldown_Spell2 = 2500;
+							}
+							else Cooldown_Spell2 -= diff;
+
+							// Spell3 sur la cible 
+							if (Cooldown_Spell3 <= diff)
+							{
+								DoCastVictim(Spell_branche1_3);
+								Cooldown_Spell3 = 4000;
+							}
+							else Cooldown_Spell3 -= diff;
+
+							Bonus_Degat_Arme_Done(-100);										// Retrait Bonus de dégat 
+							Heal_En_Combat_Melee(diff);
+							break;
+
+						case 2: // Spécialisation Sacre ###############################################################################################################
+								// Regen Mana en combat ---------------------------------------------------------------------------------------------------------------
+							if (Cooldown_RegenMana <= diff)
+							{
+								me->SetPower(POWER_MANA, Mana + (MaxMana / 2));
+								if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
+								Cooldown_RegenMana = 1000;
+							}
+							else Cooldown_RegenMana -= diff;
+
+							Bonus_Degat_Arme_Done(75);											// Reduction des degats parce que trop trop puissant
+
+
+							// Combat ---------------------------------------------------------------------------------------------------------------------------------
+							// Spell1 sur la cible
+							if (Cooldown_Spell1 <= diff)
+							{
+								DoCastVictim(Spell_branche2_1);
+								Cooldown_Spell1 = 4000;
+							}
+							else Cooldown_Spell1 -= diff;
+
+							// Spell2 sur la cible
+							if (Cooldown_Spell2 <= diff)
+							{
+								DoCastVictim(Spell_branche2_2);
+								Cooldown_Spell2 = 2500;
+							}
+							else Cooldown_Spell2 -= diff;
+
+							// Spell3 sur la cible
+							if (Cooldown_Spell3 <= diff)
+							{
+								DoCastVictim(Spell_branche2_3);
+								Cooldown_Spell3 = urand(5000, 7000);
+							}
+							else Cooldown_Spell3 -= diff;
+
+
+							Bonus_Degat_Arme_Done(-75);										// degats normaux
+							Heal_En_Combat_Heal(diff);
+							break;
+
+						case 3: // Spécialisation Protection ##########################################################################################################
+								// Regen Mana en combat ---------------------------------------------------------------------------------------------------------------
+							if (Cooldown_RegenMana <= diff)
+							{
+								me->SetPower(POWER_MANA, Mana + (MaxMana / 2));
+								if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
+								Cooldown_RegenMana = 1000;
+							}
+							else Cooldown_RegenMana -= diff;
+
+							Bonus_Degat_Arme_Done(-40);
+
+							// Combat ---------------------------------------------------------------------------------------------------------------------------------
+							// Spell1 sur la cible chaque (Sort Régulié)
+							if (Cooldown_Spell1 <= diff)
+							{
+								me->CastSpell(victim, Spell_branche3_1, true);
+								Cooldown_Spell1 = 4000;
+								DoMeleeAttackIfReady();						// Combat en mélée
+							}
+							else Cooldown_Spell1 -= diff;
+
+							// Spell2 sur la cible chaque (Sort secondaire plus lent)
+							if (Cooldown_Spell2 <= diff)
+							{
+								me->CastSpell(victim, Spell_branche3_2, true);
+								Cooldown_Spell2 = 4000;
+							}
+							else Cooldown_Spell2 -= diff;
+
+							// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot)
+							if (Cooldown_Spell3 <= diff)
+							{
+								me->CastSpell(victim, Spell_branche3_3, true);
+								Cooldown_Spell3 = urand(10000, 12000);
+							}
+							else Cooldown_Spell3 -= diff;
+
+							Bonus_Degat_Arme_Done(40);										// Reduction des degats infligés normaux
+							Heal_En_Combat_Melee(diff);
+							break;
+
+						}
+					}
+
 					Mouvement_All();
 					Mouvement_Contact(diff);
-					break;
 
-				case 2: // Spécialisation Sacré #########################################################################################################################
 
-					Heal_En_Combat_Heal(diff);
-					Combat_Sacre(diff);
-					Mouvement_All();
-					Mouvement_Contact(diff);
-					break;
-
-				case 3: // Spécialisation Protection ####################################################################################################################
-
-					Heal_En_Combat_Melee(diff);
-					Combat_Protection(diff);
-					Mouvement_All();
-					Mouvement_Contact(diff);
-					break;
+					// ############################################################################################################################################
 
 				}
+				// ################################################################################################################################################
 			}
 
 			void RetireBugDeCombat()
 			{
 				me->CombatStop(true);
+				me->RemoveAllControlled();												// renvois pet
 				me->DeleteThreatList();
 				me->LoadCreaturesAddon();
+				me->SetLootRecipient(NULL);
+				me->ResetPlayerDamageReq();
+				me->SetLastDamagedTime(0);
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);				// UNROOT
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);					// Retire flag "en combat"
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);				// Retire flag "non attaquable"
-				}
-
+			}
 			void Mouvement_All()
 			{
 				if (!UpdateVictim())
 					return;
 
 				Dist = me->GetDistance(me->GetVictim());
-				if (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 30)
+				if ((Dist > DistanceDeCast) || (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 40))
 				{
 					RetireBugDeCombat();
 					me->AddUnitState(UNIT_STATE_EVADE);
-					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);						// Quite le combat si la cible > 30m (Caster & Mélée) ou > 30m de home
+					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);						// Quite le combat si la cible > 30m (Caster & Mélée) ou > 40m de home
 				}
 			}
 			void Mouvement_Contact(uint32 diff)
 			{
-				if (!UpdateVictim())
+				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
 					return;
 
 				Mana = me->GetPower(POWER_MANA);
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
-				DoMeleeAttackIfReady();												// Combat en mélée
-				if (!me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT)) { me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT); }
 
-				// Si la cible >= 6m (pour éviter bug de rester figé) ------------------------------------------------------------------------------------------
-				if (Dist >= 4 && Cooldown_Anti_Bug_Figer <= diff)
+				AttackStartCaster(me->GetVictim(), 5.0f);
+				DoMeleeAttackIfReady();														// Combat en mélée
+
+																							// Si la cible >= 6m (pour éviter bug de rester figé) --------------------------------------------------------------------------------------------
+				if ((Dist >= 6) && (Cooldown_Anti_Bug_Figer <= diff))
 				{
 					float x, y, z;
 					x = victim->GetPositionX();
 					y = victim->GetPositionY();
 					z = victim->GetPositionZ();
-					me->GetClosePoint(x, y, z, victim->GetObjectSize() / 3, 3);
+					me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
 					me->GetMotionMaster()->MovePoint(0xFFFFFE, x, y, z);
-					Cooldown_Anti_Bug_Figer = 2000;
+					Cooldown_Anti_Bug_Figer = 4000;
 				}
 				else Cooldown_Anti_Bug_Figer -= diff;
 
-				// Si la cible < 6m ----------------------------------------------------------------------------------------------------------------------------
-
-				if (Dist < 4 && (Cooldown_ResteADistance <= diff) && BrancheSpe != 3)
+				// Si la cible < 6m -------------------------------------------------------------------------------------------------------------------------------------------
+				if ((Dist < 6) && (Cooldown_ResteADistance <= diff) && (BrancheSpe != 3))
 				{
 					Random = urand(1, 5);
 					if (Random == 1)
 					{
-						Tourne_Au_Tour_En_Combat();													// 1 chances sur 5 tourne au tour de sa victime
+						Tourne_Au_Tour_En_Combat();											// 2 chances sur 5 tourne au tour de sa victime
 					}
 					else if (Random == 2)
 					{
-						Avance_3m_En_Combat();														// 1 chances sur 5 avance
+						Avance_3m_En_Combat();												// 2 chances sur 5 avance
 					}
 					Cooldown_ResteADistance = urand(5000, 7000);
 				}
@@ -315,14 +497,15 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			{
 				if (!UpdateVictim())
 					return;
+
 				Unit* victim = me->GetVictim();
+				Dist = me->GetDistance(me->GetVictim());
 
 				float x, y, z;
 				x = (victim->GetPositionX() + urand(0, 4) - 2);
 				y = (victim->GetPositionY() + urand(0, 4) - 2);
 				z = victim->GetPositionZ();
 				me->GetMotionMaster()->MovePoint(0, x, y, z);
-
 			}
 			void Avance_3m_En_Combat()
 			{
@@ -332,151 +515,6 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 				float x, y, z;
 				me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
 				me->GetMotionMaster()->MovePoint(0, x, y, z);
-			}
-
-			void Combat_Vindice(uint32 diff)
-			{
-				if (!UpdateVictim())
-					return;
-
-				Mana = me->GetPower(POWER_MANA);
-				Unit* victim = me->GetVictim();
-				Dist = me->GetDistance(victim);
-
-					// Regen mana en combat ------------------------------------------------------------------------------------------------------------------------
-					if (Cooldown_RegenMana <= diff)
-					{
-						me->SetPower(POWER_MANA, Mana + (MaxMana / 3));
-						if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
-						Cooldown_RegenMana = 1000;
-					}
-					else Cooldown_RegenMana -= diff;
-
-					// Combat --------------------------------------------------------------------------------------------------------------------------------------
-					Bonus_Degat_Arme_Done(50);										// Bonus de dégat 
-
-					// Spell1 sur la cible
-					if (Cooldown_Spell1 <= diff)
-					{
-						DoCastVictim(Spell_branche1_1);
-						Cooldown_Spell1 = 4000;
-					}
-					else Cooldown_Spell1 -= diff;
-
-					// Spell2 sur la cible
-					if (Cooldown_Spell2 <= diff)
-					{
-						DoCastVictim(Spell_branche1_2);
-						Cooldown_Spell2 = 2500;
-					}
-					else Cooldown_Spell2 -= diff;
-
-					// Spell3 sur la cible 
-					if (Cooldown_Spell3 <= diff)
-					{
-						DoCastVictim(Spell_branche1_3);
-						Cooldown_Spell3 = 4000;
-					}
-					else Cooldown_Spell3 -= diff;
-
-					Bonus_Degat_Arme_Done(-50);										// Retrait Bonus de dégat 
-			}
-			void Combat_Sacre(uint32 diff)
-			{
-				if (!UpdateVictim())
-					return;
-
-				Mana = me->GetPower(POWER_MANA);
-				Unit* victim = me->GetVictim();
-				Dist = me->GetDistance(victim);
-
-				// Regen mana en combat ------------------------------------------------------------------------------------------------------------------------
-				if (Cooldown_RegenMana <= diff)
-				{
-					me->SetPower(POWER_MANA, Mana + (MaxMana / 2));
-					if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
-					Cooldown_RegenMana = 1000;
-				}
-				else Cooldown_RegenMana -= diff;
-
-				Bonus_Degat_Arme_Done(-50);											// Reduction des degats parce que trop trop puissant
-
-				// Combat --------------------------------------------------------------------------------------------------------------------------------------
-					// Spell1 sur la cible
-					if (Cooldown_Spell1 <= diff)
-					{
-						DoCastVictim(Spell_branche2_1);
-						Cooldown_Spell1 = 4000;
-					}
-					else Cooldown_Spell1 -= diff;
-
-					// Spell2 sur la cible
-					if (Cooldown_Spell2 <= diff)
-					{
-						DoCastVictim(Spell_branche2_2);
-						Cooldown_Spell2 = 2500;
-					}
-					else Cooldown_Spell2 -= diff;
-
-					// Spell3 sur la cible
-					if (Cooldown_Spell3 <= diff)
-					{
-						DoCastVictim(Spell_branche2_3);
-						Cooldown_Spell3 = urand(5000, 7000);
-					}
-					else Cooldown_Spell3 -= diff;
-
-					Bonus_Degat_Arme_Done(50);										// degats normaux
-				}
-			void Combat_Protection(uint32 diff)
-			{
-				if (!UpdateVictim())
-					return;
-
-				Mana = me->GetPower(POWER_MANA);
-				Unit* victim = me->GetVictim();
-				Dist = me->GetDistance(victim);
-
-				// Regen mana en combat ------------------------------------------------------------------------------------------------------------------------
-				if (Cooldown_RegenMana <= diff)
-				{
-					me->SetPower(POWER_MANA, Mana + (MaxMana / 2));
-					if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
-					Cooldown_RegenMana = 1000;
-				}
-				else Cooldown_RegenMana -= diff;
-				
-				// Combat ------------------------------------------------------------------------------------------------------------------------------------------
-
-				Bonus_Degat_Arme_Done(-40);											// Reduction des degats infligés -40%
-					// Spell1 sur la cible chaque (Sort Régulié)
-					if (Cooldown_Spell1 <= diff)
-					{
-						me->CastSpell(victim, Spell_branche3_1, true); 
-						Cooldown_Spell1 = 4000;
-						DoMeleeAttackIfReady();						// Combat en mélée
-					}
-					else Cooldown_Spell1 -= diff;
-
-					// Spell2 sur la cible chaque (Sort secondaire plus lent)
-					if (Cooldown_Spell2 <= diff)
-					{
-						me->CastSpell(victim, Spell_branche3_2, true);
-						Cooldown_Spell2 = 4000;
-					}
-					else Cooldown_Spell2 -= diff;
-
-					// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot)
-					if (Cooldown_Spell3 <= diff)
-					{
-						me->CastSpell(victim, Spell_branche3_3, true);
-						Cooldown_Spell3 = urand(10000, 12000);
-					}
-					else Cooldown_Spell3 -= diff;
-
-					Bonus_Degat_Arme_Done(40);										// Reduction des degats infligés normaux
-
-
 			}
 
 			void Heal_En_Combat_Heal(uint32 diff)
@@ -523,7 +561,6 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 				else Cooldown_Spell_Heal -= diff;
 			}
 
-
 			void Bonus_Degat_Arme_Done(int val) // 
 			{
 				// +- Bonus en % de degat des armes infligées a victim
@@ -539,6 +576,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 				me->UpdateAllStats();
 			}
 		};
+
 
 
 
