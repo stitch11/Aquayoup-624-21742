@@ -720,7 +720,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 						z = victim->GetPositionZ();
 						me->GetMotionMaster()->MovePoint(0, x, y, z);						// 4 chance sur 5 avance Au contact
 					}
-					Cooldown_ResteADistance = urand(2000, 4000);
+					Cooldown_ResteADistance = urand(3000, 5000);
 				}
 				else Cooldown_ResteADistance -= diff;
 

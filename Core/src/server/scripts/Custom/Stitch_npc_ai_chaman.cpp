@@ -509,7 +509,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 					z = victim->GetPositionZ();
 					me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
 					me->GetMotionMaster()->MovePoint(0xFFFFFE, x, y, z);
-					Cooldown_Anti_Bug_Figer = 2000;
+					Cooldown_Anti_Bug_Figer = 4000;
 				}
 				else Cooldown_Anti_Bug_Figer -= diff;
 

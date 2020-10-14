@@ -403,9 +403,10 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				// Mouvement OFF si Mana > 5% & distance >= 10m & <= 15m ---------------------------------------------------------------------------------------------
 				if ((Mana > MaxMana / 20) && (Dist >= ResteADistance - 5) && (Dist <= ResteADistance))
 				{
-					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
-					AttackStartCaster(victim, ResteADistance);										// Distance de combat
-					void DoRangedAttackIfReady();													// Combat a distance
+					AttackStart(victim);
+					AttackStartCaster(victim, ResteADistance);											// Distance de combat
+					void DoRangedAttackIfReady();														// Combat a distance
+					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);								// ROOT
 				}
 
 				// Mouvement ON si distance > 15m ------------------------------------------------------------------------------------------------------------------

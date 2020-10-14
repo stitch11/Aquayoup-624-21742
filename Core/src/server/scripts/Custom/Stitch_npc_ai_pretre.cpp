@@ -167,6 +167,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 				me->AddUnitState(UNIT_STATE_EVADE);
 				me->SetSpeedRate(MOVE_RUN, 1.5f);										// Vitesse de déplacement
 				me->GetMotionMaster()->MoveTargetedHome();								// Retour home
+				me->RemoveAllControlled();												// renvois pet
 			}
 			void JustReachedHome() override
 			{
@@ -368,7 +369,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 						y = (me->GetPositionY() + urand(0, ResteADistance * 2) - ResteADistance);
 						z = me->GetPositionZ();
 						me->GetMotionMaster()->MovePoint(0xFFFFFE, x, y, z);
-						Cooldown_ResteADistance = urand(5000, 8000);
+						Cooldown_ResteADistance = urand(6000, 8000);
 					}
 				}
 				else Cooldown_ResteADistance -= diff;
@@ -421,6 +422,8 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 			}
 			void Heal_En_Combat_Heal(uint32 diff)
 			{
+				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_MOVE))
+					return;
 				Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 1, DistanceDeCast, true);			// pour heal friend
 
 				// mot de pouvoir:bouclier sur lui meme ----------------------------------------------------------------------------------------------------------------
