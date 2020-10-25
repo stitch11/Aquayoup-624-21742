@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : Chasseur Ver 2020-10-12
+// AI generique npc par classe : Chasseur Ver 2020-10-24
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_chasseur',`AIName` = '' WHERE (entry = 15100004);
@@ -38,7 +38,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 			uint32 ForceBranche;
 			uint32 Random;
 			uint32 DistanceDeCast = 30;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
-			uint32 ResteADistance = 15;												// Distance max a laquelle un npc s'approchera
+			uint32 ResteADistance = 12;												// Distance max a laquelle un npc s'approchera
 			uint32 Dist;															// Distance entre le npc et sa cible
 			uint32 Mana;
 			uint32 MaxMana = 100;
@@ -52,7 +52,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 			uint32 Cooldown_Spell4 = 5500;
 			uint32 Cooldown_Spell_Heal = 6000;											// Cooldown pour la fréquence du heal
 			uint32 Cooldown_RegenMana = 3000;											// Cooldown pour le regen du mana
-			uint32 Cooldown_ResteADistance = 3000;										// Test si en contact pour s'eloigner
+			uint32 Cooldown_ResteADistance = 2000;										// Test si en contact pour s'eloigner
 			uint32 Cooldown_Npc_Emotes = urand(5000, 8000);
 
 			// Spells Divers
@@ -179,7 +179,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 					me->CastSpell(me, Buf_branche1, true);															// Buf1 sur lui meme
 					Random = urand(1, 2);
 					if (Random == 1 && UpdateVictim()) { me->CastSpell(victim, Spell_branche1_agro, true); }		// 1/2 Chance de lancer le sort d'agro
-
+					
 					break;
 				case 2: // Si Bete --------------------------------------------------------------------------------------------------------------------------------
 					me->CastSpell(me, Buf_branche2, true);															// Buf1 sur lui meme
@@ -333,9 +333,9 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				}
 
 				// ################################################################################################################################################
-				Heal_En_Combat_Caster(diff);
-				Mouvement_Caster(diff);
-				Mouvement_All();
+					Heal_En_Combat_Caster(diff);
+					Mouvement_Caster(diff);
+					Mouvement_All();
 				}
 				// ################################################################################################################################################
 			}
@@ -384,12 +384,13 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 						me->SetSpeedRate(MOVE_RUN, 1.1f);
 
-						float x, y, z;
+						float x, y, z, mapid;
 						x = (me->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
 						y = (me->GetPositionY() + urand(0, ResteADistance * 2) - ResteADistance);
 						z = me->GetPositionZ();
-						me->GetMotionMaster()->MovePoint(0xFFFFFE, x, y, z);
-						Cooldown_ResteADistance = urand(5000, 8000);
+						mapid = victim->GetMapId();
+						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
+						Cooldown_ResteADistance = 4000;
 					}
 				}
 				else Cooldown_ResteADistance -= diff;
@@ -400,11 +401,11 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 					me->SetSpeedRate(MOVE_RUN, 1.01f);
 				}
 
-				// Mouvement OFF si Mana > 5% & distance >= 10m & <= 15m ---------------------------------------------------------------------------------------------
-				if ((Mana > MaxMana / 20) && (Dist >= ResteADistance - 5) && (Dist <= ResteADistance))
+				// Mouvement OFF si Mana > 5% & distance >= 11m & <= 15m ---------------------------------------------------------------------------------------------
+				if ((Mana > MaxMana / 20) && (Dist >= ResteADistance - 4) && (Dist <= ResteADistance))
 				{
 					AttackStart(victim);
-					AttackStartCaster(victim, ResteADistance);											// Distance de combat
+					me->GetMotionMaster()->MoveChase(victim, ResteADistance);							// Distance de combat
 					void DoRangedAttackIfReady();														// Combat a distance
 					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);								// ROOT
 				}
@@ -413,10 +414,8 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				if (Dist > ResteADistance)
 				{
 					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
-					//AttackStart(victim);															// Combat au corp a corp
-					AttackStartCaster(victim, ResteADistance);									// Distance de cast
+					me->GetMotionMaster()->MoveChase(victim, ResteADistance);						// Distance de combat
 					void DoRangedAttackIfReady();													// Combat a distance
-					//DoMeleeAttackIfReady();															// Combat en mélée
 				}
 
 				// Mouvement ON si Mana < 5%  ----------------------------------------------------------------------------------------------------------------------

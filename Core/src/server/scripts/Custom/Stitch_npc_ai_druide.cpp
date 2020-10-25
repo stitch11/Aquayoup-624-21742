@@ -1,6 +1,6 @@
 //###########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : DRUIDE Ver 2020-10-14
+// AI generique npc par classe : DRUIDE Ver 2020-10-24
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_druide',`AIName` = '' WHERE (entry = 15100001);
@@ -108,7 +108,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			uint32 Cooldown_Spell3 = 4000;
 			uint32 Cooldown_Spell_Heal = 3000;
 			uint32 Cooldown_RegenMana = 3000;
-			uint32 Cooldown_ResteADistance = 4000;									// Test si en contact pour Equilibre pour s'eloigner, bouger en combat pour le Felin
+			uint32 Cooldown_ResteADistance = 2000;									// Test si en contact pour Equilibre pour s'eloigner, bouger en combat pour le Felin
 			uint32 Cooldown_ResteAuContact;
 			uint32 Cooldown_Anti_Bug_Figer = 2000;
 			uint32 Cooldown_Charge = 8000;
@@ -579,12 +579,13 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 						me->SetSpeedRate(MOVE_RUN, 1.1f);
 
-						float x, y, z;
+						float x, y, z, mapid;
 						x = (me->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
 						y = (me->GetPositionY() + urand(0, ResteADistance * 2) - ResteADistance);
 						z = me->GetPositionZ();
-						me->GetMotionMaster()->MovePoint(0xFFFFFE, x, y, z);
-						Cooldown_ResteADistance = urand(5000, 8000);
+						mapid = victim->GetMapId();
+						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
+						Cooldown_ResteADistance = 4000;
 					}
 				}
 				else Cooldown_ResteADistance -= diff;
@@ -595,12 +596,13 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					me->SetSpeedRate(MOVE_RUN, 1.01f);
 				}
 
-				// Mouvement OFF si Mana > 5% & distance >= 5/10m & <= 10/15m ---------------------------------------------------------------------------------------------
-				if ((Mana > MaxMana / 20) && (Dist >= ResteADistance - 5) && (Dist <= ResteADistance))
+				// Mouvement OFF si Mana > 5% & distance >= 6m & <= 10m ---------------------------------------------------------------------------------------------
+				if ((Mana > MaxMana / 20) && (Dist >= ResteADistance - 4) && (Dist <= ResteADistance))
 				{
-					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
-					AttackStart(victim);															// Combat au corp a corp
-					DoMeleeAttackIfReady();															// Combat en mélée
+					AttackStart(victim);
+					me->GetMotionMaster()->MoveChase(victim, ResteADistance);							// Pour suivre la cible
+					void DoRangedAttackIfReady();														// Combat a distance
+					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);								// ROOT
 				}
 
 				// Mouvement ON si distance > 15m ------------------------------------------------------------------------------------------------------------------
@@ -649,7 +651,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					Random = urand(1, 2);
 					if ((Dist >= 10) && (Dist <= 20))
 					{
-						if (Random = 1)
+						if (Random == 1)
 						{
 							DoCastVictim(Charge_ours);						// Charge 32323 - 1 chance sur 2
 						}
@@ -667,19 +669,20 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
-				AttackStartCaster(me->GetVictim(), 5.0f);
-				DoMeleeAttackIfReady();														// Combat en mélée
+				//DoMeleeAttackIfReady();
+				me->GetMotionMaster()->MoveChase(victim, 1);								// Pour suivre la cible
 
-				// Si la cible >= 8m (pour éviter bug de rester figé) ---------------------------------------------------------------------------------------------
-				if (Dist >= 8 && Cooldown_Anti_Bug_Figer <= diff)
+				// Si la cible >= 6m (pour éviter bug de rester figé) ---------------------------------------------------------------------------------------------
+				if (Dist >= 6 && Cooldown_Anti_Bug_Figer <= diff)
 				{
-					float x, y, z;
-					x = victim->GetPositionX();
-					y = victim->GetPositionY();
+					float x, y, z, mapid;
+					x = (victim->GetPositionX() + urand(0, 4) - 2);
+					y = (victim->GetPositionY() + urand(0, 4) - 2);
 					z = victim->GetPositionZ();
-					me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
-					me->GetMotionMaster()->MovePoint(0xFFFFFE, x, y, z);
-					Cooldown_Anti_Bug_Figer = 2000;
+					mapid = victim->GetMapId();
+					//me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
+					me->GetMotionMaster()->MovePoint(mapid, x, y, z);
+					Cooldown_Anti_Bug_Figer = 1000;
 				}
 				else Cooldown_Anti_Bug_Figer -= diff;
 
@@ -689,19 +692,19 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					Random = urand(1, 4);
 				if ((Dist >= 8) && (Dist <= DistanceDeCast))
 				{
-					if (Random = 1)
+					if (Random == 1)
 					{
 						DoCastVictim(Griffure_Bondissante);									// Griffure bondissante - 1 chance sur 4    
 					}
 					Cooldown_Charge = urand(15000, 20000);
-					Cooldown_ResteADistance = urand(2000, 4000);							// Sinon bougue BOND Aleatoire ou Avance !?
+					Cooldown_ResteADistance = urand(2000, 4000);							// Sinon bugue BOND Aleatoire ou Avance !?
 				}
 			}
 				else Cooldown_Charge -= diff;
 
 
-				// Si la cible <= 6m : BOND Aleatoire ou tourne au tour de sa victime
-				if (Dist <= 6 && (Cooldown_ResteADistance <= diff))
+				// Si la cible <= 8m : BOND Aleatoire ou tourne au tour de sa victime
+				if (Dist <= 8 && (Cooldown_ResteADistance <= diff))
 				{
 					Random = urand(1, 5);
 					if (Random == 1)
@@ -711,16 +714,9 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					else
 					{
 						// Au contact tourne au tour de sa victime --------------------------------------------------------------------------------------------------
-						Unit* victim = me->GetVictim();
-						Dist = me->GetDistance(me->GetVictim());
-
-						float x, y, z;
-						x = (victim->GetPositionX() + urand(0, 4) - 2);
-						y = (victim->GetPositionY() + urand(0, 4) - 2);
-						z = victim->GetPositionZ();
-						me->GetMotionMaster()->MovePoint(0, x, y, z);						// 4 chance sur 5 avance Au contact
+						Tourne_Au_Tour_En_Combat();											// 4 chance sur 5 avance Au contact
 					}
-					Cooldown_ResteADistance = urand(3000, 5000);
+					Cooldown_ResteADistance = urand(2500, 4500);
 				}
 				else Cooldown_ResteADistance -= diff;
 
@@ -756,7 +752,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					Random = urand(1, 5);
 					if ((Dist >= 8) && (Dist <= 20))
 					{
-						if (Random = 1)
+						if (Random == 1)
 						{
 							DoCastVictim(Empaler_et_tirer);											// Empaler et tirer - 1 chance sur 2
 						}
@@ -776,22 +772,31 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					return;
 
 				Unit* victim = me->GetVictim();
-				Dist = me->GetDistance(me->GetVictim());
+				Dist = me->GetDistance(victim);
 
-				float x, y, z;
+				float x, y, z, mapid;
 				x = (victim->GetPositionX() + urand(0, 4) - 2);
 				y = (victim->GetPositionY() + urand(0, 4) - 2);
 				z = victim->GetPositionZ();
-				me->GetMotionMaster()->MovePoint(0, x, y, z);
+				mapid = victim->GetMapId();
+				//me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
+				me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 			}
 			void Avance_3m_En_Combat()
 			{
 				if (!UpdateVictim())
 					return;
 
-				float x, y, z;
+				Unit* victim = me->GetVictim();
+				Dist = me->GetDistance(victim);
+
+				float x, y, z, mapid;
+				x = (victim->GetPositionX());
+				y = (victim->GetPositionY());
+				z = victim->GetPositionZ();
+				mapid = victim->GetMapId();
 				me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
-				me->GetMotionMaster()->MovePoint(0, x, y, z);
+				me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 			}
 
 			void Heal_En_Combat_Caster(uint32 diff)

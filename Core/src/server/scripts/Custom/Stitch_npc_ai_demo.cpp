@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : DEMO Ver 2020-10-12
+// AI generique npc par classe : DEMO Ver 2020-10-24
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_demo',`AIName` = '' WHERE (entry = 15100004);
@@ -49,7 +49,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 			uint32 Cooldown_Spell4 = 750;
 			uint32 Cooldown_Spell_Heal = 3000;											// Cooldown pour la fréquence du heal
 			uint32 Cooldown_RegenMana = 3000;											// Cooldown pour le regen du mana
-			uint32 Cooldown_ResteADistance = 5000;										// Test si en contact pour s'eloigner
+			uint32 Cooldown_ResteADistance = 2000;										// Test si en contact pour s'eloigner
 			uint32 Cooldown_Npc_Emotes = urand(5000, 8000);
 
 			// Spells Divers
@@ -449,12 +449,13 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 						me->SetSpeedRate(MOVE_RUN, 1.1f);
 
-						float x, y, z;
+						float x, y, z, mapid;
 						x = (me->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
 						y = (me->GetPositionY() + urand(0, ResteADistance * 2) - ResteADistance);
 						z = me->GetPositionZ();
-						me->GetMotionMaster()->MovePoint(0xFFFFFE, x, y, z);
-						Cooldown_ResteADistance = urand(5000, 8000);
+						mapid = victim->GetMapId();
+						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
+						Cooldown_ResteADistance = 4000;
 					}
 				}
 				else Cooldown_ResteADistance -= diff;
@@ -465,12 +466,13 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 					me->SetSpeedRate(MOVE_RUN, 1.01f);
 				}
 
-				// Mouvement OFF si Mana > 5% & distance >= 5/10m & <= 10/15m ---------------------------------------------------------------------------------------------
-				if ((Mana > MaxMana / 20) && (Dist >= ResteADistance - 5) && (Dist <= ResteADistance))
+				// Mouvement OFF si Mana > 5% & distance >= 6m & <= 10m ---------------------------------------------------------------------------------------------
+				if ((Mana > MaxMana / 20) && (Dist >= ResteADistance - 4) && (Dist <= ResteADistance))
 				{
-					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
-					AttackStart(victim);															// Combat au corp a corp
-					DoMeleeAttackIfReady();															// Combat en mélée
+					AttackStart(victim);
+					me->GetMotionMaster()->MoveChase(victim, ResteADistance);							// Pour suivre la cible
+					void DoRangedAttackIfReady();														// Combat a distance
+					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);								// ROOT
 				}
 
 				// Mouvement ON si distance > 15m ------------------------------------------------------------------------------------------------------------------

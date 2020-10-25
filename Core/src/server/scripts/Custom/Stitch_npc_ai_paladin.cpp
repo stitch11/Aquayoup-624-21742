@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : PALADIN Ver 2020-10-14
+// AI generique npc par classe : PALADIN Ver 2020-10-24
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_paladin',`AIName` = '' WHERE (entry = 15100006);
@@ -281,8 +281,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 					// ############################################################################################################################################
 					// Combat suivant la Spécialisation
 
-					if (Dist < 6)
-					{
+
 
 						switch (BrancheSpe)
 						{
@@ -413,7 +412,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 							break;
 
 						}
-					}
+
 
 					Mouvement_All();
 					Mouvement_Contact(diff);
@@ -453,31 +452,31 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			}
 			void Mouvement_Contact(uint32 diff)
 			{
-				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
+				if (!UpdateVictim() /*|| me->HasUnitState(UNIT_STATE_CASTING)*/)
 					return;
 
 				Mana = me->GetPower(POWER_MANA);
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
-				AttackStartCaster(me->GetVictim(), 5.0f);
-				DoMeleeAttackIfReady();														// Combat en mélée
+				me->GetMotionMaster()->MoveChase(victim, 1);								// Pour suivre la cible
+				//DoMeleeAttackIfReady();													// Combat en mélée
 
-																							// Si la cible >= 6m (pour éviter bug de rester figé) --------------------------------------------------------------------------------------------
+				// Si la cible >= 6m (pour éviter bug de rester figé) --------------------------------------------------------------------------------------------
 				if ((Dist >= 6) && (Cooldown_Anti_Bug_Figer <= diff))
 				{
-					float x, y, z;
-					x = victim->GetPositionX();
-					y = victim->GetPositionY();
+					float x, y, z, mapid;
+					x = (victim->GetPositionX() + urand(0, 2) - 1);
+					y = (victim->GetPositionY() + urand(0, 2) - 1);
 					z = victim->GetPositionZ();
-					me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
-					me->GetMotionMaster()->MovePoint(0xFFFFFE, x, y, z);
-					Cooldown_Anti_Bug_Figer = 4000;
+					mapid = victim->GetMapId();
+					me->GetMotionMaster()->MovePoint(mapid, x, y, z);
+					Cooldown_Anti_Bug_Figer = 1000;
 				}
 				else Cooldown_Anti_Bug_Figer -= diff;
 
-				// Si la cible < 6m -------------------------------------------------------------------------------------------------------------------------------------------
-				if ((Dist < 6) && (Cooldown_ResteADistance <= diff) && (BrancheSpe != 3))
+				// Si la cible < 8m -------------------------------------------------------------------------------------------------------------------------------------------
+				if ((Dist < 10) && (Cooldown_ResteADistance <= diff) && (BrancheSpe != 3))
 				{
 					Random = urand(1, 5);
 					if (Random == 1)
@@ -488,7 +487,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 					{
 						Avance_3m_En_Combat();												// 2 chances sur 5 avance
 					}
-					Cooldown_ResteADistance = urand(5000, 7000);
+					Cooldown_ResteADistance = urand(4000, 6000);
 				}
 				else Cooldown_ResteADistance -= diff;
 
@@ -499,22 +498,31 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 					return;
 
 				Unit* victim = me->GetVictim();
-				Dist = me->GetDistance(me->GetVictim());
+				Dist = me->GetDistance(victim);
 
-				float x, y, z;
-				x = (victim->GetPositionX() + urand(0, 4) - 2);
-				y = (victim->GetPositionY() + urand(0, 4) - 2);
+				float x, y, z, mapid;
+				x = (victim->GetPositionX() + urand(0, 2) - 1);
+				y = (victim->GetPositionY() + urand(0, 2) - 1);
 				z = victim->GetPositionZ();
-				me->GetMotionMaster()->MovePoint(0, x, y, z);
+				mapid = victim->GetMapId();
+				//me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
+				me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 			}
 			void Avance_3m_En_Combat()
 			{
 				if (!UpdateVictim())
 					return;
 
-				float x, y, z;
+				Unit* victim = me->GetVictim();
+				Dist = me->GetDistance(victim);
+
+				float x, y, z, mapid;
+				x = (victim->GetPositionX());
+				y = (victim->GetPositionY());
+				z = victim->GetPositionZ();
+				mapid = victim->GetMapId();
 				me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
-				me->GetMotionMaster()->MovePoint(0, x, y, z);
+				me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 			}
 
 			void Heal_En_Combat_Heal(uint32 diff)
@@ -528,7 +536,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 					if ((me->GetHealth() < (me->GetMaxHealth()*0.50)))								// Si PV < 50%
 					{
 						DoCast(me, Spell_Heal_Heal);
-						Cooldown_Spell_Heal = 5000;
+						Cooldown_Spell_Heal = 6000;
 					}
 
 					// heal sur Friend 
@@ -539,7 +547,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 							if (target->GetHealth() < (target->GetMaxHealth()*0.50))				// Si PV < 50%
 							{
 								DoCast(target, Spell_Heal_Heal);
-								Cooldown_Spell_Heal = 5000;
+								Cooldown_Spell_Heal = 6000;
 							}
 						}
 					}
@@ -551,14 +559,30 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 				// Heal en combat ------------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Spell_Heal <= diff)
 				{
+					Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 1, DistanceDeCast, true);		// pour heal friend
 					// heal sur lui meme
 					if ((me->GetHealth() < (me->GetMaxHealth()*0.50)))								// Si PV < 50%
 					{
 						DoCast(me, Spell_Heal_Caster);
 						Cooldown_Spell_Heal = 6000;
 					}
+
+					// heal sur Friend 
+					if (target = DoSelectLowestHpFriendly(DistanceDeCast))							// Distance de l'allié = 30m
+					{
+						if (me->IsFriendlyTo(target) && (me != target))
+						{
+							if (target->GetHealth() < (target->GetMaxHealth()*0.50))				// Si PV < 50%
+							{
+								DoCast(target, Spell_Heal_Heal);
+								Cooldown_Spell_Heal = 6000;
+							}
+						}
+					}
 				}
 				else Cooldown_Spell_Heal -= diff;
+
+
 			}
 
 			void Bonus_Degat_Arme_Done(int val) // 
