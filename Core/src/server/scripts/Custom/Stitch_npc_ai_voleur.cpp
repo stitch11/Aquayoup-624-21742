@@ -1,105 +1,88 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour Aquayoup
-// AI generique npc par classe : GUERRIER Ver 2020-10-24
+// AI generique npc par classe : VOLEUR Ver 2020-10-29
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
-// Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_guerrier',`AIName` = '' WHERE (entry = 15100007);
-// Optionel : UPDATE `creature_template` SET `HealthModifier` = 2, `ManaModifier` = 3, `ArmorModifier` = 1, `DamageModifier` = 2,`BaseAttackTime` = 2000, `RangeAttackTime` = 2000 WHERE(entry = 15100007);
+// Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_voleur',`AIName` = '' WHERE (entry = 15100010);
+// Optionel : UPDATE `creature_template` SET `HealthModifier` = 2, `ManaModifier` = 3, `ArmorModifier` = 1, `DamageModifier` = 2,`BaseAttackTime` = 2000, `RangeAttackTime` = 2000 WHERE(entry = 15100010);
 // Optionel : Utilisez pickpocketloot de creature_template pour passer certains parametres (Solution choisit afin de rester compatible avec tout les cores). Si pickpocketloot = 1 (branche1 forcé), pickpocketloot = 2 (branche2 forcé), etc
 //###########################################################################################################################################################################################################################################
-// # npc de Test Stitch_npc_ai_guerrier  .npc 15100007
-// REPLACE INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `modelid1`, `modelid2`, `modelid3`, `modelid4`, `name`, `femaleName`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `exp_unk`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `scale`, `rank`, `dmgschool`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `trainer_type`, `trainer_class`, `trainer_race`, `type`, `type_flags`, `type_flags2`, `lootid`, `pickpocketloot`, `skinloot`, `resistance1`, `resistance2`, `resistance3`, `resistance4`, `resistance5`, `resistance6`, `spell1`, `spell2`, `spell3`, `spell4`, `spell5`, `spell6`, `spell7`, `spell8`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `InhabitType`, `HoverHeight`, `HealthModifier`, `HealthModifierExtra`, `ManaModifier`, `ManaModifierExtra`, `ArmorModifier`, `DamageModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `flags_extra`, `ScriptName`, `VerifiedBuild`) VALUES
-// (15100007, 0, 0, 0, 0, 0, 12917, 0, 0, 0, 'npc_ai_guerrier', '', '', '', 0, 90, 90, 0, 0, 2102, 0, 1.01, 1.01, 1, 0, 0, 2000, 2000, 1, 1, 1, 0, 2048, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 3, 1, 2, 1, 1, 1, 2, 2, 1, 0, 144, 1, 0, 0, 'Stitch_npc_ai_guerrier', 20173);
-// REPLACE INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`, `VerifiedBuild`) VALUES
-// (15100007, 1, 37659, 0, 0, 0),
-// (15100007, 2, 37659, 37659, 0, 0),
-// (15100007, 3, 1899, 6078, 0, 0);
+// # npc de Test Stitch_npc_ai_voleur  .npc 15100010
+//REPLACE INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `modelid1`, `modelid2`, `modelid3`, `modelid4`, `name`, `femaleName`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `exp_unk`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `scale`, `rank`, `dmgschool`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `trainer_type`, `trainer_class`, `trainer_race`, `type`, `type_flags`, `type_flags2`, `lootid`, `pickpocketloot`, `skinloot`, `resistance1`, `resistance2`, `resistance3`, `resistance4`, `resistance5`, `resistance6`, `spell1`, `spell2`, `spell3`, `spell4`, `spell5`, `spell6`, `spell7`, `spell8`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `InhabitType`, `HoverHeight`, `HealthModifier`, `HealthModifierExtra`, `ManaModifier`, `ManaModifierExtra`, `ArmorModifier`, `DamageModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `flags_extra`, `ScriptName`, `VerifiedBuild`) VALUES
+//(15100010, 0, 0, 0, 0, 0, 13171, 0, 0, 0, 'npc_ai_voleur', '', '', '', 0, 90, 90, 0, 0, 2102, 0, 1.01, 1.01, 1, 0, 0, 2000, 2000, 1, 1, 4, 0, 2048, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 3, 1, 2, 1, 1, 1, 2, 2, 1, 0, 144, 1, 0, 0, 'Stitch_npc_ai_voleur', 20173);
+//REPLACE INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`, `VerifiedBuild`) VALUES
+//(15100010, 1, 2209, 2209, 0, 0),
+//(15101510, 2, 36669, 36669, 0, 0);
 //###########################################################################################################################################################################################################################################
 
 
 
 //################################################################################################
-//StitchAI AI Guerrier
+//StitchAI AI Voleur
 //################################################################################################
 
-class Stitch_npc_ai_guerrier : public CreatureScript
+class Stitch_npc_ai_voleur : public CreatureScript
 {
-public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
+public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 
-		struct Stitch_npc_ai_guerrierAI : public ScriptedAI
+		struct Stitch_npc_ai_voleurAI : public ScriptedAI
 		{
-			Stitch_npc_ai_guerrierAI(Creature* creature) : ScriptedAI(creature) { }
+			Stitch_npc_ai_voleurAI(Creature* creature) : ScriptedAI(creature) { }
 
-			uint32 BrancheSpe = 1;													// Choix de la Spécialisation : Armes=1, Fureur=2, Protection=3
-			uint32 NbrDeSpe = 3;													// Nombre de Spécialisations
+			uint32 BrancheSpe = 1;													// Choix de la Spécialisation : Voleur=1, Vampire Berserker=2
+			uint32 NbrDeSpe = 2;													// Nombre de Spécialisations
 			uint32 ForceBranche;
 			uint32 Random;
 			uint32 DistanceDeCast = 30;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
 			uint32 ResteADistance = 5;												// Distance max a laquelle un npc s'approchera
 			uint32 Dist;															// Distance entre le npc et sa cible
-			uint32 Rage;
-			uint32 MaxRage = me->GetMaxPower(POWER_RAGE);
+			uint32 Mana;
+			uint32 MaxMana = me->GetMaxPower(POWER_ENERGY);
 			Unit* victim = me->GetVictim();										 
 			
 			// Definitions des variables Cooldown et le 1er lancement
 			uint32 Cooldown_Spell1 = 500;
 			uint32 Cooldown_Spell2 = 2000;
 			uint32 Cooldown_Spell3 = 3500;
+			uint32 Cooldown_Spell4 = 4000;
 			uint32 Cooldown_Spell_Heal = 3000;
-			uint32 Cooldown_RegenRage = 1000;
+			uint32 Cooldown_RegenMana = 1000;
 			uint32 Cooldown_ResteADistance = 4000;									// Test si en contact
 			uint32 Cooldown_ResteAuContact;
 			uint32 Cooldown_Anti_Bug_Figer = 2000;
 			uint32 Cooldown_Npc_Emotes = urand(5000, 8000);
-			uint32 Cooldown_Charge = 5000;
+			uint32 Cooldown_Lancer = 1000;
 
 			// Spells Divers
-			uint32 Buf_branche1 = 12712;											// Soldat aguerri 12712 (2 mains= dmg+15%)
-			uint32 Buf_branche1a = 6673;											// Cri de guerre 6673
-			uint32 Buf_branche2 = 23588;											// Berserker fou 23588 (ambidextre)
-			uint32 Buf_branche2a = 1160;											// Cri démoralisant 1160 (8s 10m Soi-même)
-			uint32 Buf_branche3 = 159362;											// Folie sanguinaire 159362 (pv 1%/3s), Blessures profondes 115768 (50dmg/15s)
-			uint32 Buf_branche3a = 469;												// Cri de commandement 469
-			uint32 Spell_Heal1 = 97462;  											// Cri de ralliement 97462 (+15 % pv 10s / 3mn)
-			uint32 Spell_Heal2 = 23881;  											// Sanguinaire 23881
-			uint32 Spell_Heal3 = 97462;  											// Protection du bouclier (invulnerable 5s) 23920
-			uint32 Brise_genou = 1715;
-			uint32 Spell_Charge = 100;
+			uint32 Liste_Buf_branche1[5] = { 31209, 2983, 1784, 31220, 5171 };		// Pied léger 31209 (vit+10%), Sprint 2983,  Camouflage 1784, Vocation pernicieuse 31220 (-ag+15,Armure +100%), Débiter 5171
+			uint32 Buf_branche1;								
+			uint32 Liste_Buf_branche1a[3] = { 2823, 8679, 3408 };					// Poison mortel 2823, Poison douloureux 8679, Poison affaiblissant 3408
+			uint32 Buf_branche1a;
+			
+			uint32 Vampire_Berserker = 300124;										// Vampire Berserker 300124
+			uint32 Buf_branche2 = 300137;											// Peau de demon 300137 (armure+100% esquive/parade+2%), 
+			uint32 Liste_Buf_branche2a[3] = { 2823, 8679, 3408 };					// Poison mortel 2823, Poison douloureux 8679, Poison affaiblissant 3408
+			uint32 Buf_branche2a;													//  
+			uint32 Spell_Heal1 = 97462;  											// Evasion 5277 (esquive +100%/10s)
+			uint32 Spell_Lancer = 121733;
 
-			uint32 Posture_de_combat = 2457;
-			uint32 Posture_du_gladiateur = 156291;
-			uint32 Posture_defensive = 71;
-
-			// Spells Armes
+			// Spells Voleur
 			uint32 Spell_branche1_agro;
 			uint32 Spell_branche1_1;
 			uint32 Spell_branche1_2;
 			uint32 Spell_branche1_3;
-			uint32 branche1_agro[2] = { 100, 355 };									// Charge 100, Provocation 355
-			uint32 branche1_1[2] = { 29426, 29426 };								// Frappe héroïque 29426/78
-			uint32 branche1_2[3] = { 167105, 12294, 77558 };						// Frappe du colosse 167105 (posture de combat 6s), Frappe mortelle 12294, Tourbillon 1680,Frappe sanglante 77558
-			uint32 branche1_3[3] = { 6552, 772, 118532 };							// Volée de coups 6552 (interrompt 4s), Pourfendre 772 (18s), Entaille infectée 118532
+			uint32 branche1_agro[3] = { 2094, 121733, 79140 };						// Cécité 2094, Lancer 121733, Vendetta 79140
+			uint32 branche1_1[2] = { 1752, 1329 };									// Attaque pernicieuse 1752, Estropier 1329
+			uint32 branche1_2[2] = { 2098, 2098 };									// Eviscération 2098
+			uint32 branche1_3[5] = { 1776, 1776, 84617, 16511, 1943 };				// Suriner 1776 (stun 4s), Hémorragie 16511 (dps 24s), Frappe révélatrice 84617 (regen 24s), Rupture 1943 (regen + dps 12s)  
 			
-			// Spells Fureur
-			uint32 Spell_branche2_agro;
-			uint32 Spell_branche2_1;
-			uint32 Spell_branche2_2;
-			uint32 Spell_branche2_3;
-			uint32 branche2_agro[2] = { 6544, 355 };								// Bond héroïque 6544, Provocation 355
-			uint32 branche2_1[2] = { 126799, 126799 };								// Frappe héroïque 29426/78 , Frappe tranchante 126799
-			uint32 branche2_2[2] = { 1680, 127171 };								// Tourbillon 1680, Fendoir vicieux 127171
-			uint32 branche2_3[2] = { 6343, 125436 };								// Coup de tonnerre 6343, Découpe d'os 125436
-
-			// Spells Protection
-			uint32 Spell_branche3_agro;
-			uint32 Spell_branche3_1;
-			uint32 Spell_branche3_2;
-			uint32 Spell_branche3_3;
-			uint32 branche3_agro[2] = { 355, 355 };									// Provocation 355
-			uint32 branche3_1[2] = { 118326, 118326 };								// Frappe héroïque 29426/78, Attaque vicieuse 118326
-			uint32 branche3_2[2] = { 53600, 78660 };								// Bouclier du vertueux 53600, Dévaster 78660
-			uint32 branche3_3[3] = { 31935, 6343, 125978 };							// Bouclier du vengeur 31935, Coup de tonnerre 6343, Heurt de bouclier 125978
-
+			// Spells Vampire Berserker
+			uint32 Spell_branche2_agro = 300131;									// Griffure bondissante 300131
+			uint32 Spell_branche2_1 = 300126;										// Frappe sanglante 300126 
+			uint32 Spell_branche2_2 = 300127;										// Frappe sauvage 300127
+			uint32 Spell_branche2_3 = 300176;										// Enchaînement Sanglant 300128, Enchaînement Sanglant amélioré 300176
+			uint32 Spell_branche2_4 = 300174;										// Griffure sanglante 300130/300174 (version talent)
+			
 			// Emotes
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
 
@@ -115,14 +98,14 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 				ForceBranche = me->GetCreatureTemplate()->pickpocketLootId;							// creature_template->pickpocketloot
 				if (ForceBranche == 1) { BrancheSpe = 1; }											// branche1 forcé
 				else if (ForceBranche == 2) { BrancheSpe = 2; }										// branche2 forcé 
-				else if (ForceBranche == 3) { BrancheSpe = 3; }										// branche3 forcé
 				else
 				{
 					// Sinon Choix de la Spécialisation Aléatoire
 					BrancheSpe = urand(1, NbrDeSpe);
 				}
 
-				if ((BrancheSpe > NbrDeSpe) || (BrancheSpe == 0)) { BrancheSpe = 2; }
+				if ((BrancheSpe > NbrDeSpe) || (BrancheSpe == 0)) { BrancheSpe = 1; }
+
 
 				// ################################################################################################################################################
 				// Tirages aléatoires des spells
@@ -131,52 +114,38 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 
 				switch (BrancheSpe)
 				{
-				case 1: // Si Armes -------------------------------------------------------------------------------------------------------------------------------
-					me->CastSpell(me, Posture_de_combat, true);
-					me->CastSpell(me, Buf_branche1, true);										// Buf1 sur lui meme
-					me->CastSpell(me, Buf_branche1a, true);
+				case 1: // Si Voleur ------------------------------------------------------------------------------------------------------------------------------
 					me->LoadEquipment(1, true);													// creature_equip_template 1
 
 					// Tirages aléatoires des spells  
-					Spell_branche1_agro = branche1_agro[urand(0, 1)];
+					Spell_branche1_agro = branche1_agro[urand(0, 2)];
 					Spell_branche1_1 = branche1_1[urand(0, 1)];
-					Spell_branche1_2 = branche1_2[urand(0, 2)];
-					Spell_branche1_3 = branche1_3[urand(0, 2)];
+					Spell_branche1_2 = branche1_2[urand(0, 1)];
+					Spell_branche1_3 = branche1_3[urand(0, 4)];
+					
+					Buf_branche1 = Liste_Buf_branche1[urand(0, 4)];
+					me->CastSpell(me, Buf_branche1, true);
+					Buf_branche1a = Liste_Buf_branche1a[urand(0, 2)];							// Poisons
+					me->CastSpell(me, Buf_branche1a, true);
 
+					//VisuelPowerEnergy();
 					break;
 
-				case 2: // Si Fureur ------------------------------------------------------------------------------------------------------------------------------
-					me->CastSpell(me, Posture_du_gladiateur, true);
+				case 2: // Si Vampire Berserker -------------------------------------------------------------------------------------------------------------------
+					DoCastAOE(Vampire_Berserker, true);
 					me->CastSpell(me, Buf_branche2, true);										// Buf2 sur lui meme
+					Buf_branche2a = Liste_Buf_branche2a[urand(0, 2)];							// Poisons
 					me->CastSpell(me, Buf_branche2a, true);
 					me->LoadEquipment(2, true);													// creature_equip_template 2
 
-					// Tirages aléatoires des spells  
-					Spell_branche2_agro = branche2_agro[urand(0, 1)];
-					Spell_branche2_1 = branche2_1[urand(0, 1)];
-					Spell_branche2_2 = branche2_2[urand(0, 1)];
-					Spell_branche2_3 = branche2_3[urand(0, 1)];
-
+					VisuelPowerDemonicFury();
 					break;
 
-				case 3: // Si Protection --------------------------------------------------------------------------------------------------------------------------
-					me->CastSpell(me, Posture_defensive, true);
-					me->CastSpell(me, Buf_branche3, true);										// Buf3 sur lui meme
-					me->CastSpell(me, Buf_branche3a, true);
-					me->LoadEquipment(3, true);													// creature_equip_template 2
-
-					// Tirages aléatoires des spells  
-					Spell_branche3_agro = branche2_agro[urand(0, 3)];
-					Spell_branche3_1 = branche3_1[urand(0, 1)];
-					Spell_branche3_2 = branche3_2[urand(0, 1)];
-					Spell_branche3_3 = branche3_3[urand(0, 2)];
-
-					break;
 				}
 				// ################################################################################################################################################
 				// Divers
 				// ################################################################################################################################################
-				me->SetSheath(SHEATH_STATE_MELEE);												// S'equipe de l'arme au contact
+				//me->SetSheath(SHEATH_STATE_MELEE);												// S'equipe de l'arme au contact
 				me->SetReactState(REACT_AGGRESSIVE);
 				// ################################################################################################################################################
 			}
@@ -191,8 +160,9 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 
 			void EnterCombat(Unit* /*who*/) override
 			{
-				ResteADistance = urand(4, 6);
+				ResteADistance = urand(3, 5);
 				Init_AI();
+
 			}
 			void EnterEvadeMode(EvadeReason /*why*/) override
 			{
@@ -204,25 +174,23 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 				me->RemoveAllControlled();												// renvois pet
 
 				me->RemoveAura(Buf_branche1);
+				me->RemoveAura(Buf_branche1a);
 				me->RemoveAura(Buf_branche2);
-				me->RemoveAura(Buf_branche3);
+				me->RemoveAura(Buf_branche2a);
+				me->RemoveAura(Vampire_Berserker);
 
-				Bonus_Armure(100);													// Retire bonus d'armure
+				Bonus_Armure(100);														// Retire bonus d'armure
 			}
 			void JustReachedHome() override
 			{
-				me->RemoveAura(Posture_de_combat);
-				me->RemoveAura(Posture_du_gladiateur);
-				me->RemoveAura(Posture_defensive);
-
 				me->RemoveAura(Buf_branche1);
 				me->RemoveAura(Buf_branche1a);
 				me->RemoveAura(Buf_branche2);
 				me->RemoveAura(Buf_branche2a);
-				me->RemoveAura(Buf_branche3);
-				me->RemoveAura(Buf_branche3a);
+				me->RemoveAura(Vampire_Berserker);
 
 				Bonus_Armure(100);
+				VisuelPowerEnergy();
 
 				me->SetReactState(REACT_AGGRESSIVE);
 				me->SetSpeedRate(MOVE_RUN, 1.01f);										// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
@@ -246,7 +214,6 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 				// ################################################################################################################################################
 				if (UpdateVictim() /*&& !me->HasUnitState(UNIT_STATE_MOVE) || me->HasUnitState(UNIT_STATE_CASTING)*/)
 				{
-					Rage = me->GetPower(POWER_RAGE);
 					Unit* victim = me->GetVictim();
 					Dist = me->GetDistance(victim);
 
@@ -259,24 +226,22 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						// ########################################################################################################################################
 						switch (BrancheSpe)
 						{
-						case 1: // Si Armes -----------------------------------------------------------------------------------------------------------------------
-							Random = urand(1, 2);
-							if (Random == 1 && UpdateVictim()) { DoCastVictim(Spell_branche1_agro); }	// 1/2 Chance de lancer le sort d'agro
+						case 1: // Si Voleur ----------------------------------------------------------------------------------------------------------------------
+							Mana = me->GetPower(POWER_ENERGY);
 
-							Bonus_Armure(125);															// Bonus d'armure +25%
+							Random = urand(1, 2); 
+							if (Random == 1 && UpdateVictim()) { me->CastSpell(victim, Spell_branche1_agro, true); }		// 1/2 Chance de lancer le sort d'agro
+
+							//Bonus_Armure(125);															// Bonus d'armure +25%
 							break;
 
-						case 2: // Si Fureur ----------------------------------------------------------------------------------------------------------------------
+						case 2: // Si Vampire Berserker -----------------------------------------------------------------------------------------------------------
+							Mana = me->GetPower(POWER_DEMONIC_FURY);
+
 							Random = urand(1, 2);
-							if (Random == 1 && UpdateVictim()) { DoCastVictim(Spell_branche2_agro); }	// 1/2 Chance de lancer le sort d'agro
+							if (Random == 1 && UpdateVictim()) { DoCastVictim(Spell_branche2_agro); }		// 1/2 Chance de lancer le sort d'agro
 
-							Bonus_Armure(125);															// Bonus d'armure +25%
-							break;
-
-						case 3: // Si Protection ------------------------------------------------------------------------------------------------------------------
-							DoCastVictim(Spell_branche3_agro); 											// Lancer le sort d'agro
-
-							Bonus_Armure(200);															// Bonus d'armure +100%
+							//Bonus_Armure(125);															// Bonus d'armure +25%
 							break;
 
 							// ####################################################################################################################################
@@ -287,38 +252,37 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 					// ############################################################################################################################################
 					// Combat suivant la Spécialisation
 
-					if (Dist < 6)
-					{ 
 
 					switch (BrancheSpe)
 					{
-					case 1: // Spécialisation Armes ###############################################################################################################
-							// Regen rage en combat ---------------------------------------------------------------------------------------------------------------
-						if (Cooldown_RegenRage <= diff)
+					case 1: // Spécialisation Voleur ##############################################################################################################
+							// Regen en combat --------------------------------------------------------------------------------------------------------------------
+						Mana = me->GetPower(POWER_ENERGY);
+						if (Cooldown_RegenMana <= diff)
 						{
-							me->SetPower(POWER_RAGE, Rage + 10);
-							if (Rage > MaxRage) { me->SetPower(POWER_RAGE, MaxRage); }
-							Cooldown_RegenRage = 2000;
+							me->SetPower(POWER_ENERGY, Mana + (MaxMana / 10));
+							if (Mana > MaxMana) { me->SetPower(POWER_ENERGY, MaxMana); }
+							Cooldown_RegenMana = 2000;
 						}
-						else Cooldown_RegenRage -= diff;
+						else Cooldown_RegenMana -= diff;
 
 						// Combat ---------------------------------------------------------------------------------------------------------------------------------
 						// Spell1 sur la cible
 						if (Cooldown_Spell1 <= diff)
 						{
+							Bonus_Degat_Arme_Done(-40);													// Reduction des degats infligés
 							me->CastSpell(victim, Spell_branche1_1, true);
+							Bonus_Degat_Arme_Done(40);
 							DoMeleeAttackIfReady();														// Combat en mélée
-							Cooldown_Spell1 = 2500;
+							Cooldown_Spell1 = 1500;
 						}
 						else Cooldown_Spell1 -= diff;
 
 						// Spell2 sur la cible
 						if (Cooldown_Spell2 <= diff)
 						{
-							Bonus_Degat_Arme_Done(-66);													// Reduction des degats infligés
 							me->CastSpell(victim, Spell_branche1_2, true);
-							Bonus_Degat_Arme_Done(66);
-							Cooldown_Spell2 = urand(4000, 6000);
+							Cooldown_Spell2 = urand(3000, 5000);
 						}
 						else Cooldown_Spell2 -= diff;
 
@@ -326,101 +290,66 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						if (Cooldown_Spell3 <= diff)
 						{
 							me->CastSpell(victim, Spell_branche1_3, true);
-
-							Random = urand(1, 2);
-							if (Random == 1) { me->CastSpell(victim, Brise_genou, true); }
-
-							Cooldown_Spell3 = urand(10000, 12000);
+							Cooldown_Spell3 = urand(8000, 12000);
 						}
 						else Cooldown_Spell3 -= diff;
 
+						Heal_En_Combat_Melee(diff);
 						break;
 
-					case 2: // Spécialisation Fureur ##############################################################################################################
-							// Regen rage en combat ---------------------------------------------------------------------------------------------------------------
-						if (Cooldown_RegenRage <= diff)
+					case 2: // Spécialisation Vampire Berserker ###################################################################################################
+							// Regen en combat --------------------------------------------------------------------------------------------------------------------
+						Mana = me->GetPower(POWER_DEMONIC_FURY);
+						if (Cooldown_RegenMana <= diff)
 						{
-							me->SetPower(POWER_RAGE, Rage + (MaxRage / 10));
-							if (Rage > MaxRage) { me->SetPower(POWER_RAGE, MaxRage); }
-							Cooldown_RegenRage = 1000;
+							me->SetPower(POWER_DEMONIC_FURY, Mana + (MaxMana / 10));
+							if (Mana > MaxMana) { me->SetPower(POWER_DEMONIC_FURY, MaxMana); }
+							Cooldown_RegenMana = 2000;
 						}
-						else Cooldown_RegenRage -= diff;
+						else Cooldown_RegenMana -= diff;
 
 						// Combat ---------------------------------------------------------------------------------------------------------------------------------
 						// Spell1 sur la cible
 						if (Cooldown_Spell1 <= diff)
 						{
-							DoCastVictim(Spell_branche2_1);
+							Bonus_Degat_Arme_Done(-40);													// Reduction des degats infligés
+							me->CastSpell(victim, Spell_branche2_1, true);
+							Bonus_Degat_Arme_Done(40);	
 							DoMeleeAttackIfReady();														// Combat en mélée
-							Cooldown_Spell1 = 2000;
+							Cooldown_Spell1 = 4500;
 						}
 						else Cooldown_Spell1 -= diff;
 
 						// Spell2 sur la cible
 						if (Cooldown_Spell2 <= diff)
 						{
-							DoCastVictim(Spell_branche2_2);
-							Cooldown_Spell2 = urand(4000, 6000);;
+							me->CastSpell(victim, Spell_branche2_2, true);
+							//DoCastVictim(Spell_branche2_2);
+							Cooldown_Spell2 = 4500;
 						}
 						else Cooldown_Spell2 -= diff;
 
 						// Spell3 sur la cible
 						if (Cooldown_Spell3 <= diff)
 						{
-							DoCastVictim(Spell_branche2_3);
-
-							Random = urand(1, 2);
-							if (Random == 1 && Dist <6) { me->CastSpell(victim, Brise_genou, true); }
-
-							Cooldown_Spell3 = urand(10000, 12000);
+							me->CastSpell(victim, Spell_branche2_3, true);
+							//DoCastVictim(Spell_branche2_3);
+							Cooldown_Spell3 = 4500;
 						}
 						else Cooldown_Spell3 -= diff;
 
-						break;
-
-					case 3: // Spécialisation Protection ##########################################################################################################
-							// Regen rage en combat ---------------------------------------------------------------------------------------------------------------
-						if (Cooldown_RegenRage <= diff)
+						// Spell4 sur la cible
+						if (Cooldown_Spell4 <= diff)
 						{
-							me->SetPower(POWER_RAGE, Rage + (MaxRage / 10));
-							if (Rage > MaxRage) { me->SetPower(POWER_RAGE, MaxRage); }
-							Cooldown_RegenRage = 1000;
+							me->CastSpell(victim, Spell_branche2_4, true);
+							//DoCastVictim(Spell_branche2_4);
+							Cooldown_Spell4 = 9000;
 						}
-						else Cooldown_RegenRage -= diff;
-
-						// Combat ---------------------------------------------------------------------------------------------------------------------------------
-
-						// Spell1 sur la cible chaque (Sort Régulié)
-						if (Cooldown_Spell1 <= diff)
-						{
-							me->CastSpell(victim, Spell_branche3_1, true);
-							DoMeleeAttackIfReady();														// Combat en mélée
-							Cooldown_Spell1 = 2000;
-						}
-						else Cooldown_Spell1 -= diff;
-
-						// Spell2 sur la cible chaque (Sort secondaire plus lent)
-						if (Cooldown_Spell2 <= diff)
-						{
-							me->CastSpell(victim, Spell_branche3_2, true);
-							Cooldown_Spell2 = urand(4000, 6000);;
-						}
-						else Cooldown_Spell2 -= diff;
-
-						// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot)
-						if (Cooldown_Spell3 <= diff)
-						{
-							me->CastSpell(victim, Spell_branche3_3, true);
-							Cooldown_Spell3 = urand(10000, 12000);
-						}
-						else Cooldown_Spell3 -= diff;
+						else Cooldown_Spell4 -= diff;
 
 						break;
-
-					}
 					}
 
-					Heal_En_Combat_Melee(diff);
 					Mouvement_Contact(diff);
 					Mouvement_All();
 
@@ -461,15 +390,21 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 				if (!UpdateVictim())
 					return;
 
-				Rage = me->GetPower(POWER_RAGE);
+
+				if (BrancheSpe == 1) 
+				{
+					Mana = me->GetPower(POWER_ENERGY); 
+				} 
+				else Mana = me->GetPower(POWER_DEMONIC_FURY);
+
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
 				me->GetMotionMaster()->MoveChase(victim, 1);								// Pour suivre la cible
 				//DoMeleeAttackIfReady();													// Combat en mélée
 
-				// Si la cible >= 6m (pour éviter bug de rester figé) --------------------------------------------------------------------------------------------
-				if ((Dist >= 6) && (Cooldown_Anti_Bug_Figer <= diff))
+				// Si la cible >= 8m (pour éviter bug de rester figé) --------------------------------------------------------------------------------------------
+				if ((Dist >= 8) && (Cooldown_Anti_Bug_Figer <= diff))
 				{
 					float x, y, z, mapid;
 					x = (victim->GetPositionX() + urand(0, 2) - 1);
@@ -482,34 +417,35 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 				}
 				else Cooldown_Anti_Bug_Figer -= diff;
 
-				// Si la cible est entre 10 & 25m : Charge
-				if (Cooldown_Charge <= diff)
+				// Si la cible est entre 10 & 25m 
+				if (Cooldown_Lancer <= diff)
 				{
 					Random = urand(1, 2);
 					if ((Dist >= 10) && (Dist <= 25))
 					{
 						if (Random = 1)
 						{
-							DoCastVictim(Spell_Charge);										// Charge - 1 chance sur 2    
+							//DoCastVictim(Spell_Lancer);									// Lancer une dague - 1 chance sur 2    
+							me->CastSpell(victim, Spell_Lancer, true);						// Lancer une dague - 1 chance sur 2  
 						}
-						Cooldown_Charge = urand(12000, 15000);
+						Cooldown_Lancer = urand(4000, 6000);
 					}
 				}
-				else Cooldown_Charge -= diff;
+				else Cooldown_Lancer -= diff;
 
 				// Si la cible < 8m -------------------------------------------------------------------------------------------------------------------------------------------
-				if ((Dist < 8) && (Cooldown_ResteADistance <= diff) && (BrancheSpe != 3))
+				if ((Dist < 8) & (Cooldown_ResteADistance <= diff) )
 				{
-					Random = urand(1, 5);
+					Random = urand(1, 4);
 					if (Random == 1 || Random == 2)
 					{
-						Tourne_Au_Tour_En_Combat();											// 2 chances sur 5 tourne au tour de sa victime
+						Tourne_Au_Tour_En_Combat();											// 2 chances sur 4 tourne au tour de sa victime
 					}
 					else if (Random == 3 || Random == 4)
 					{
-						Avance_3m_En_Combat();												// 2 chances sur 5 avance
+						Avance_3m_En_Combat();												// 2 chances sur 4 avance
 					}
-					Cooldown_ResteADistance = urand(5000, 7000);
+					Cooldown_ResteADistance = urand(3000, 5000);
 				}
 				else Cooldown_ResteADistance -= diff;
 
@@ -552,15 +488,12 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 				// Heal en combat ------------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Spell_Heal <= diff)
 				{
+					Random = urand(1, 2);
 
-					// heal sur lui meme
-					if ((me->GetHealth() < (me->GetMaxHealth()*0.40)))								// Si PV < 40%
+					if ( (me->GetHealth() < (me->GetMaxHealth()*0.40)) && Random == 1)								// Si PV < 40%
 					{
-						if (BrancheSpe == 1) { DoCast(me, Spell_Heal1); }
-						if (BrancheSpe == 2) { DoCast(me, Spell_Heal2); }
-						if (BrancheSpe == 3) { DoCast(me, Spell_Heal3); }
-
-						Cooldown_Spell_Heal = 120000;
+						DoCast(me, Spell_Heal1);
+						Cooldown_Spell_Heal = 60000;
 					}
 				}
 				else Cooldown_Spell_Heal -= diff;
@@ -580,21 +513,32 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 				me->SetCanModifyStats(true);
 				me->UpdateAllStats();
 			}
+			
+			void VisuelPowerEnergy()
+		{
+				me->setPowerType(POWER_ENERGY);
+				me->SetMaxPower(POWER_ENERGY, 99);
+				me->SetPower(POWER_ENERGY, 99);
+		}
+			void VisuelPowerDemonicFury()
+		{
+				me->SetMaxPower(POWER_ENERGY, 100);
+				me->setPowerType(POWER_DEMONIC_FURY);
+				me->SetMaxPower(POWER_DEMONIC_FURY, 100);
+				me->SetPower(POWER_DEMONIC_FURY, 100);
+		}
+
 		};
-
-
-
-
 		CreatureAI* GetAI(Creature* creature) const override
 		{
-			return new Stitch_npc_ai_guerrierAI(creature);
+			return new Stitch_npc_ai_voleurAI(creature);
 		}
 };
 
 //#################################################################################################################################################################
-void AddSC_npc_ai_guerrier()
+void AddSC_npc_ai_voleur()
 {
-	new Stitch_npc_ai_guerrier();
+	new Stitch_npc_ai_voleur();
 }
 
 
