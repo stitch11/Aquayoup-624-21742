@@ -305,8 +305,6 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 
 						Heal_En_Combat_Heal(diff);
 						Mouvement_Caster(diff);
-						Mouvement_All();
-
 						break;
 
 					case 2: // Spécialisation Elementaire #############################################################################################################
@@ -346,8 +344,6 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 
 						Heal_En_Combat_Caster(diff);
 						Mouvement_Caster(diff);
-						Mouvement_All();
-
 						break;
 
 					case 3: // Spécialisation Amelioration #############################################################################################################
@@ -393,8 +389,6 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 
 						Heal_En_Combat_Melee(diff);
 						Mouvement_Contact(diff);
-						Mouvement_All();
-
 						break;
 
 					}
@@ -403,6 +397,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 
 				}
 				// ################################################################################################################################################
+				Mouvement_All();
 			}
 
 			void RetireBugDeCombat()
@@ -420,6 +415,11 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 			}
 			void Mouvement_All()
 			{
+				if (me->IsAlive() && !me->IsInCombat() /*&& !UpdateVictim()*/ && !me->HasUnitState(UNIT_STATE_MOVE) && (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 1))
+				{
+					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);
+				}
+
 				if (!UpdateVictim())
 					return;
 

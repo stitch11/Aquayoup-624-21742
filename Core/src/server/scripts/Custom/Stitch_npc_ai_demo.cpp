@@ -400,9 +400,9 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 				// ################################################################################################################################################
 				Heal_En_Combat_Caster(diff);
 				Mouvement_Caster(diff);
-				Mouvement_All();
 				}
 				// ################################################################################################################################################
+				Mouvement_All();
 			}
 			
 			void RetireBugDeCombat()
@@ -420,6 +420,11 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 			}
 			void Mouvement_All()
 			{
+				if (me->IsAlive() && !me->IsInCombat() /*&& !UpdateVictim()*/ && !me->HasUnitState(UNIT_STATE_MOVE) && (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 1))
+				{
+					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);
+				}
+
 				if (!UpdateVictim())
 					return;
 
