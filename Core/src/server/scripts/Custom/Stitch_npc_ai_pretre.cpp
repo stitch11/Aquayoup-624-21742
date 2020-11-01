@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : PRETRE Ver 2020-10-24
+// AI generique npc par classe : PRETRE Ver 2020-11-01
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_pretre',`AIName` = '' WHERE (entry = 15100003);
@@ -232,6 +232,11 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 
 					// ####################################################################################################################################################
 					// Combat suivant la Spécialisation
+					if (me->HasUnitState(UNIT_STATE_CASTING) ) 
+					{ 
+						me->ClearUnitState(UNIT_STATE_MOVING); 
+					}
+
 					switch (BrancheSpe)
 					{
 					case 1: // Spécialisation Ombre #######################################################################################################################

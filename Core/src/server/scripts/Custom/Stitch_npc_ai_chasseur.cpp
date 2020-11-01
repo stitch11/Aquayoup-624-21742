@@ -250,7 +250,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 						if (Mana > MaxMana || Mana == 0) { me->SetPower(POWER_FOCUS, MaxMana); }
 						Cooldown_RegenMana = urand(1500, 2000);
 
-						me->SetSheath(SHEATH_STATE_RANGED);																	// S'equipe de l'arme a distance
+						//me->SetSheath(SHEATH_STATE_RANGED);																	// S'equipe de l'arme a distance
 						me->SetReactState(REACT_AGGRESSIVE);
 					}
 					else Cooldown_RegenMana -= diff;
