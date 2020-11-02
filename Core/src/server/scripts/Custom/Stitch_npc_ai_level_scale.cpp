@@ -1,5 +1,5 @@
 //################################################################################################################################################################################################
-//  Copyright (C) Juin 2020 Stitch pour Aquayoup
+//  Copyright (C) Novembre 2020 Stitch pour Aquayoup
 // npc a l'agro s'adapte au level de l'agresseur + AI generique
 // Ces mobs utilisent les sorts definit dans Creature_Template->spellx
 // Il est possible de modifier le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
@@ -87,6 +87,11 @@ public: Stitch_npc_ai_level_scale_caster() : CreatureScript("Stitch_npc_ai_level
 			}
 			void UpdateAI(uint32 diff) override
 			{
+				if (me->IsAlive() && !me->IsInCombat() /*&& !UpdateVictim()*/ && !me->HasUnitState(UNIT_STATE_MOVE) && (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 15))
+				{
+					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);
+				}
+
 				if (!UpdateVictim() || me->isPossessed() || me->IsCharmed() || me->HasAuraType(SPELL_AURA_MOD_FEAR))
 					return;
 
@@ -194,13 +199,15 @@ public: Stitch_npc_ai_level_scale_caster() : CreatureScript("Stitch_npc_ai_level
 				}
 				else resteadistancetimer -= diff;
 
-				// Quite le combat si la cible > 40m --------------------------------------------------------------------------------------------------------
-				if ((!me->IsWithinCombatRange(me->GetVictim(), distancedecast + 10.0f)))
-					if (me->GetDistance(me->GetVictim()) > distancedecast + 10.0f)
-					{
-						me->GetMotionMaster()->MoveTargetedHome();						// Retour home
-						retirebugdecombat();
-					}
+				// Quite le combat si la cible > 30m ou >40m de home----------------------------------------------------------------------------------------
+				if ((!me->IsWithinCombatRange(me->GetVictim(), 30.0f)) || (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 40))
+				{
+					me->AddUnitState(UNIT_STATE_EVADE);
+					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);					// Quite le combat si la cible > 30m ou > 40m de home
+					me->GetMotionMaster()->MoveTargetedHome();						// Retour home
+					retirebugdecombat();
+				}
+
 			}
 			void retirebugdecombat()
 			{
@@ -244,6 +251,7 @@ public: Stitch_npc_ai_level_scale_melee() : CreatureScript("Stitch_npc_ai_level_
 			uint32 spelldot = me->m_spells[3];
 			uint32 spelltimerdot = 3000;
 			uint32 spelltimer = 100;
+			uint32 Dist;
 
 			Unit* victim = me->GetVictim();
 
@@ -282,8 +290,18 @@ public: Stitch_npc_ai_level_scale_melee() : CreatureScript("Stitch_npc_ai_level_
 			}
 			void UpdateAI(uint32 diff) override
 			{
+				if (me->IsAlive() && !me->IsInCombat() /*&& !UpdateVictim()*/ && !me->HasUnitState(UNIT_STATE_MOVE) && (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 15)) 
+				{
+					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);
+				}
+
 				if (!UpdateVictim() || me->isPossessed() || me->IsCharmed() || me->HasAuraType(SPELL_AURA_MOD_FEAR))
 					return;
+
+
+				Unit* victim = me->GetVictim();
+				Dist = me->GetDistance(victim);
+
 
 				if (me->IsWithinCombatRange(me->GetVictim(), 6.0f)) // Uniquement si au contact
 				{
@@ -310,6 +328,16 @@ public: Stitch_npc_ai_level_scale_melee() : CreatureScript("Stitch_npc_ai_level_
 				{
 					retirebugdecombat();
 				}
+
+				// Quite le combat si la cible > 30m ou >40m de home----------------------------------------------------------------------------------------
+				if ( ((Dist > 30) || (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 40)) && !me->HasUnitState(UNIT_STATE_MOVE))
+				{
+					me->AddUnitState(UNIT_STATE_EVADE);
+					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);					// Quite le combat si la cible > 30m ou > 40m de home
+					me->GetMotionMaster()->MoveTargetedHome();						// Retour home
+					retirebugdecombat();
+				}
+
 			}
 
 			void initlevelmob()
@@ -434,6 +462,11 @@ public: Stitch_npc_ai_level_scale_heal() : CreatureScript("Stitch_npc_ai_level_s
 
 			void UpdateAI(uint32 diff) override
 			{
+				if (me->IsAlive() && !me->IsInCombat() /*&& !UpdateVictim()*/ && !me->HasUnitState(UNIT_STATE_MOVE) && (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 15)) 
+				{
+					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);
+				}
+
 				if (!UpdateVictim() || me->isPossessed() || me->IsCharmed() || me->HasAuraType(SPELL_AURA_MOD_FEAR))
 					return;
 
@@ -490,6 +523,16 @@ public: Stitch_npc_ai_level_scale_heal() : CreatureScript("Stitch_npc_ai_level_s
 					me->CastSpell(victim, spelldot, true);
 					spelltimerdot = urand(10000, 15000);
 				} else spelltimerdot -= diff;
+
+				// Quite le combat si la cible > 30m ou >40m de home----------------------------------------------------------------------------------------
+				if ((!me->IsWithinCombatRange(me->GetVictim(), 30.0f)) || (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 40))
+				{
+					me->AddUnitState(UNIT_STATE_EVADE);
+					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);					// Quite le combat si la cible > 30m ou > 40m de home
+					me->GetMotionMaster()->MoveTargetedHome();						// Retour home
+					retirebugdecombat();
+				}
+
 			}
 
 			void initlevelmob()
@@ -563,13 +606,14 @@ public: Stitch_npc_ai_level_scale_heal() : CreatureScript("Stitch_npc_ai_level_s
 					resteadistancetimer = urand(300, 500);
 				} else resteadistancetimer -= diff;
 
-				// Quite le combat si la cible > 30m --------------------------------------------------------------------------------------------------------
-				if ((!me->IsWithinCombatRange(me->GetVictim(), distancedecast+10.0f)))
-					if (me->GetDistance(me->GetVictim()) > distancedecast + 10.0f)
-					{
-						me->GetMotionMaster()->MoveTargetedHome();						// Retour home
-						retirebugdecombat();
-					}
+				// Quite le combat si la cible > 30m ou >40m de home----------------------------------------------------------------------------------------
+				if ((!me->IsWithinCombatRange(me->GetVictim(), distancedecast + 10.0f)) || (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 40))
+				{
+					me->AddUnitState(UNIT_STATE_EVADE);
+					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);					// Quite le combat si la cible > 30m ou > 40m de home
+					me->GetMotionMaster()->MoveTargetedHome();						// Retour home
+					retirebugdecombat();
+				}
 			}
 			void retirebugdecombat()
 			{
