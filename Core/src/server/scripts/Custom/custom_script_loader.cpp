@@ -32,7 +32,7 @@ void AddSC_npc_ai_chasseur();
 void AddSC_npc_ai_dk();
 void AddSC_npc_ai_voleur();
 void AddSC_npc_ai_moine();
-void AddSC_npc_ai_fantassin();
+
 
 // The name of this function should match:
 // void Add${NameOfDirectory}Scripts()
@@ -54,5 +54,5 @@ void AddCustomScripts()
 		AddSC_npc_ai_dk();
 		AddSC_npc_ai_voleur();
 		AddSC_npc_ai_moine();
-		AddSC_npc_ai_fantassin();
+
 }
