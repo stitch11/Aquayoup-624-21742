@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : CHAMAN Ver 2020-10-24
+// AI generique npc par classe : CHAMAN Ver 2020-11-07
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_chaman',`AIName` = '' WHERE (entry = 15100002);
@@ -499,7 +499,6 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
-				me->GetMotionMaster()->MoveChase(victim, 1);								// Pour suivre la cible
 				//DoMeleeAttackIfReady();														// Combat en mélée
 
 				// Si la cible >= 6m (pour éviter bug de rester figé) ------------------------------------------------------------------------------------------
@@ -512,6 +511,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 					mapid = victim->GetMapId();
 					//me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
 					me->GetMotionMaster()->MovePoint(mapid, x, y, z);
+					me->GetMotionMaster()->MoveChase(victim, 1, frand(0, 6.2836f));			// Pour suivre la cible avec un angle
 					Cooldown_Anti_Bug_Figer = 1000;
 				}
 				else Cooldown_Anti_Bug_Figer -= diff;
