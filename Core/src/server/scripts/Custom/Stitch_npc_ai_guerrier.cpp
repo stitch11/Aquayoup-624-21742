@@ -473,17 +473,18 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 
 				//DoMeleeAttackIfReady();													// Combat en mélée
 
-				// Si la cible >= 6m (pour éviter bug de rester figé) --------------------------------------------------------------------------------------------
-				if ((Dist >= 6) && (Cooldown_Anti_Bug_Figer <= diff))
+				// ------ ALLER A LA CIBLE -------------------------------------------------------------------------------------------------------------------------
+				if (Cooldown_Anti_Bug_Figer <= diff)
 				{
-					float x, y, z, mapid;
-					x = (victim->GetPositionX() + urand(0, 2) - 1);
-					y = (victim->GetPositionY() + urand(0, 2) - 1);
-					z = victim->GetPositionZ();
-					mapid = victim->GetMapId();
-					//me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
-					me->GetMotionMaster()->MovePoint(mapid, x, y, z);
-					me->GetMotionMaster()->MoveChase(victim, 1, frand(0, 6.2836f));			// Pour suivre la cible avec un angle
+					if (Dist >= ResteADistance)
+					{
+						float x, y, z, mapid;
+						x = (victim->GetPositionX() + urand(0, 4) - 2);
+						y = (victim->GetPositionY() + urand(0, 4) - 2);
+						z = victim->GetPositionZ();
+						mapid = victim->GetMapId();
+						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
+					}
 					Cooldown_Anti_Bug_Figer = 1000;
 				}
 				else Cooldown_Anti_Bug_Figer -= diff;
@@ -491,9 +492,10 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 				// Si la cible est entre 10 & 25m : Charge
 				if (Cooldown_Charge <= diff)
 				{
-					Random = urand(1, 2);
+
 					if ((Dist >= 10) && (Dist <= 25))
 					{
+					Random = urand(1, 2);
 						if (Random = 1)
 						{
 							DoCastVictim(Spell_Charge);										// Charge - 1 chance sur 2    

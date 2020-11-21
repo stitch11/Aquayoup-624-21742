@@ -678,19 +678,18 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
-				//DoMeleeAttackIfReady();
-
-				// Si la cible >= 6m (pour éviter bug de rester figé) ---------------------------------------------------------------------------------------------
-				if (Dist >= 6 && Cooldown_Anti_Bug_Figer <= diff )
+				// ------ ALLER A LA CIBLE -------------------------------------------------------------------------------------------------------------------------
+				if (Cooldown_Anti_Bug_Figer <= diff)
 				{
-					float x, y, z, mapid;
-					x = (victim->GetPositionX() + urand(0, 4) - 2);
-					y = (victim->GetPositionY() + urand(0, 4) - 2);
-					z = victim->GetPositionZ();
-					mapid = victim->GetMapId();
-					//me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
-					me->GetMotionMaster()->MovePoint(mapid, x, y, z);
-					me->GetMotionMaster()->MoveChase(victim, 1, frand(0, 6.2836f));			// Pour suivre la cible avec un angle
+					if (Dist >= ResteADistance)
+					{
+						float x, y, z, mapid;
+						x = (victim->GetPositionX() + urand(0, 4) - 2);
+						y = (victim->GetPositionY() + urand(0, 4) - 2);
+						z = victim->GetPositionZ();
+						mapid = victim->GetMapId();
+						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
+					}
 					Cooldown_Anti_Bug_Figer = 1000;
 				}
 				else Cooldown_Anti_Bug_Figer -= diff;
@@ -710,8 +709,10 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 
 
 				// Si la cible < 8m : avance ou tourne au tour de sa victime
-				if (Dist < 8 && Cooldown_ResteADistance <= diff)
+				if (Dist < 8)
 				{
+					if (Cooldown_ResteADistance <= diff)
+					{
 					Random = urand(1, 5);
 					if (Random == 1)														// 1 chance sur 5 avance Au contact
 					{
@@ -724,7 +725,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 					}
 				}
 				else Cooldown_ResteADistance -= diff;
-
+				}
 			}
 			void Mouvement_Caster(uint32 diff)
 			{

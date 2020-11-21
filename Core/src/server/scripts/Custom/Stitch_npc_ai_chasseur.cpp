@@ -86,7 +86,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 			uint32 branche2_2[2] = { 56641, 56641 };											// Tir assuré 56641
 			uint32 branche2_3[2] = { 19574, 34026 };											// Courroux bestial 19574 60s, Ordre de tuer 34026 30s
 			uint32 Pet_Chasseur;
-			uint32 Pet_Chasseur_Liste[7] = { 3612, 7488, 7906, 8274, 7909, 32730, 3621 };		// Tigre 3612, Loup 7488, Lion 7906, Sanglier 8274, Gorille 7909, Ravageur 32730, Pantere noire 3621
+			uint32 Pet_Chasseur_Liste[7] = { 3612, 7488, 7906, 8274, 7909, 32730, 3621 };		// Tigre 3612, Loup 7488, Lion 7906, Sanglier 8274, Gorille 7909, Ravageur 32730, Panthere noire 3621
 
 
 			// Emotes
@@ -384,8 +384,10 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				{
 					// Mouvement aléatoire si cible < 6m & Mana > 5% --------------------------------------------------------------------------------------------------
 
-					if ((Dist <6) && (Mana > MaxMana / 20))
+					if (Dist <6)
 					{
+						if (Mana > MaxMana / 20)
+						{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 						me->SetSpeedRate(MOVE_RUN, 1.1f);
 
@@ -396,23 +398,30 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 						mapid = victim->GetMapId();
 						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 						Cooldown_ResteADistance = 4000;
+						}
 					}
 				}
 				else Cooldown_ResteADistance -= diff;
 
 				// Speed normal si distance > 10m ------------------------------------------------------------------------------------------------------------------
-				if (Dist> 10 && me->GetSpeedRate(MOVE_RUN) == 1.1f)
+				if (Dist> 10)
 				{
+					if (me->GetSpeedRate(MOVE_RUN) == 1.1f)
+					{
 					me->SetSpeedRate(MOVE_RUN, 1.01f);
+					}
 				}
 
 				// Mouvement OFF si Mana > 5% & distance >= 11m & <= 15m ---------------------------------------------------------------------------------------------
-				if ((Mana > MaxMana / 20) && (Dist >= ResteADistance - 4) && (Dist <= ResteADistance))
+				if ( (Dist >= ResteADistance - 4) && (Dist <= ResteADistance) )
 				{
+					if (Mana > MaxMana / 20)
+					{
 					AttackStart(victim);
 					me->GetMotionMaster()->MoveChase(victim, ResteADistance);							// Distance de combat
 					void DoRangedAttackIfReady();														// Combat a distance
 					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);								// ROOT
+					}
 				}
 
 				// Mouvement ON si distance > 15m ------------------------------------------------------------------------------------------------------------------

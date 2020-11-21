@@ -407,8 +407,10 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 				//DoMeleeAttackIfReady();													// Combat en mélée
 
 				// Si la cible >= 8m (pour éviter bug de rester figé) --------------------------------------------------------------------------------------------
-				if ((Dist >= 8) && (Cooldown_Anti_Bug_Figer <= diff))
+				if (Cooldown_Anti_Bug_Figer <= diff)
 				{
+					if (Dist >= 8)
+					{
 					float x, y, z, mapid;
 					x = (victim->GetPositionX() + urand(0, 2) - 1);
 					y = (victim->GetPositionY() + urand(0, 2) - 1);
@@ -417,6 +419,7 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 					me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 					me->GetMotionMaster()->MoveChase(victim, 1, frand(0, 6.2836f));			// Pour suivre la cible avec un angle
 					Cooldown_Anti_Bug_Figer = 1000;
+				}
 				}
 				else Cooldown_Anti_Bug_Figer -= diff;
 

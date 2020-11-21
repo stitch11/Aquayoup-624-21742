@@ -165,6 +165,8 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 					Spell_branche3_2 = branche3_2[urand(0, 2)];
 					Spell_branche3_3 = branche3_3[urand(0, 1)];
 
+					ResteADistance = 5;
+
 					// Totem
 					me->CastSpell(me, Totem_incendiaire, true);									// Totem incendiaire 3599
 					break;
@@ -501,17 +503,18 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 
 				//DoMeleeAttackIfReady();														// Combat en mélée
 
-				// Si la cible >= 6m (pour éviter bug de rester figé) ------------------------------------------------------------------------------------------
-				if (Dist >= 6 && Cooldown_Anti_Bug_Figer <= diff)
+				// ------ ALLER A LA CIBLE -------------------------------------------------------------------------------------------------------------------------
+				if (Cooldown_Anti_Bug_Figer <= diff)
 				{
-					float x, y, z, mapid;
-					x = (victim->GetPositionX() + urand(0, 4) - 2);
-					y = (victim->GetPositionY() + urand(0, 4) - 2);
-					z = victim->GetPositionZ();
-					mapid = victim->GetMapId();
-					//me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
-					me->GetMotionMaster()->MovePoint(mapid, x, y, z);
-					me->GetMotionMaster()->MoveChase(victim, 1, frand(0, 6.2836f));			// Pour suivre la cible avec un angle
+					if (Dist >= ResteADistance)
+					{
+						float x, y, z, mapid;
+						x = (victim->GetPositionX() + urand(0, 4) - 2);
+						y = (victim->GetPositionY() + urand(0, 4) - 2);
+						z = victim->GetPositionZ();
+						mapid = victim->GetMapId();
+						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
+					}
 					Cooldown_Anti_Bug_Figer = 1000;
 				}
 				else Cooldown_Anti_Bug_Figer -= diff;

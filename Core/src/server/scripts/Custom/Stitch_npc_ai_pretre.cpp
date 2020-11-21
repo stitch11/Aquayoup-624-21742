@@ -176,7 +176,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 				me->RemoveAura(Buf_all);
 
 				me->SetReactState(REACT_AGGRESSIVE);
-				me->SetSpeedRate(MOVE_RUN, 1.01f);										// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
+				me->SetSpeedRate(MOVE_RUN, 1.01f);				
 			}
 			void UpdateAI(uint32 diff) override
 			{
@@ -424,7 +424,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 				if (Cooldown_Spell_Heal <= diff)
 				{
 					// heal sur lui meme-------------------------------------------------------------------------------------------------------------------------------
-					if ((me->GetHealth() < (me->GetMaxHealth()*0.50)))								// Si PV < 50%
+					if ((me->GetHealth() < (me->GetMaxHealth()*0.40)))								// Si PV < 40%
 					{
 						DoCastVictim(Spell_Heal_Caster);
 						Cooldown_Spell_Heal = 3500;
@@ -441,7 +441,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 				// mot de pouvoir:bouclier sur lui meme ----------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Spell_Bouclier <= diff)
 				{
-					if (me->GetHealth() < (me->GetMaxHealth()*0.40))								// Si PV < 40%
+					if (me->GetHealth() < (me->GetMaxHealth()*0.50))								// Si PV < 50%
 					{
 						me->CastSpell(me, Mot_de_pouvoir_Bouclier, true);							// Utilise Mot de pouvoir : Bouclier chaque 30s 
 						Cooldown_Spell_Bouclier = 30000;
