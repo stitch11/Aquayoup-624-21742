@@ -417,10 +417,13 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				{
 					if (Mana > MaxMana / 20)
 					{
-					AttackStart(victim);
-					me->GetMotionMaster()->MoveChase(victim, ResteADistance);							// Distance de combat
-					void DoRangedAttackIfReady();														// Combat a distance
-					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);								// ROOT
+						if (me->isMoving())																	// Sinon bug d'animation
+						{
+							AttackStart(victim);
+							AttackStartCaster(victim, ResteADistance);										// Distance de combat
+							void DoRangedAttackIfReady();													// Combat a distance
+							me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
+						}
 					}
 				}
 
