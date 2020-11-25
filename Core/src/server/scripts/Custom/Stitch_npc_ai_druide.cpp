@@ -603,12 +603,15 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				}
 
 				// Mouvement OFF si Mana > 5% & distance >= 6m & <= 10m ---------------------------------------------------------------------------------------------
-				if ((Mana > MaxMana / 20) && (Dist >= ResteADistance - 4) && (Dist <= ResteADistance))
+				if ((Dist >= ResteADistance - 4) && (Dist <= ResteADistance))
 				{
+					if (Mana > MaxMana / 20)
+					{
 					AttackStart(victim);
 					me->GetMotionMaster()->MoveChase(victim, ResteADistance);							// Pour suivre la cible
 					void DoRangedAttackIfReady();														// Combat a distance
 					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);								// ROOT
+					}
 				}
 
 				// Mouvement ON si distance > 15m ------------------------------------------------------------------------------------------------------------------
