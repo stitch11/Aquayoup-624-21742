@@ -38,10 +38,11 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 			uint32 ForceBranche;
 			uint32 Random;
 			uint32 DistanceDeCast = 30;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
-			uint32 ResteADistance = 12;												// Distance max a laquelle un npc s'approchera
+			uint32 ResteADistance = 15;												// Distance max a laquelle un npc s'approchera
 			uint32 Dist;															// Distance entre le npc et sa cible
 			uint32 Mana;
 			uint32 MaxMana = 100;
+			uint32 Start_Agro = 0;
 
 			Unit* victim = me->GetVictim();
 
@@ -168,30 +169,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				Init_AI();
 				Def_Power();
 
-				// ################################################################################################################################################
-				// Spell a lancer a l'agro 
-				// ################################################################################################################################################
-				me->CastSpell(me, Buf_all, true);																	// Buf_all sur lui meme
 
-				switch (BrancheSpe)
-				{
-				case 1: // Si Survie ------------------------------------------------------------------------------------------------------------------------------
-					me->CastSpell(me, Buf_branche1, true);															// Buf1 sur lui meme
-					Random = urand(1, 2);
-					if (Random == 1 && UpdateVictim()) { me->CastSpell(victim, Spell_branche1_agro, true); }		// 1/2 Chance de lancer le sort d'agro
-					
-					break;
-				case 2: // Si Bete --------------------------------------------------------------------------------------------------------------------------------
-					me->CastSpell(me, Buf_branche2, true);															// Buf1 sur lui meme
-					Random = urand(1, 2);
-					if (Random == 1 && UpdateVictim()) { me->CastSpell(victim, Spell_branche2_agro, true); }		// 1/2 Chance de lancer le sort d'agro
-
-					// Tirages aléatoires du pet
-					me->CastSpell(me, Pet_Chasseur, true);
-					break;
-					// ################################################################################################################################################
-
-				}
 
 			}
 			void EnterEvadeMode(EvadeReason /*why*/) override
@@ -202,6 +180,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				me->GetMotionMaster()->MoveTargetedHome();								// Retour home
 				me->RemoveAllControlled();												// renvois pet
 				Def_Power();
+				Start_Agro = 0;
 			}
 			void JustReachedHome() override
 			{
@@ -234,9 +213,40 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				Mana = me->GetPower(POWER_FOCUS);
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
-				// if (me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC)) { me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC); }
-				// if (me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_NPC)) { me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_NPC); }
-				// if (!me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT)) { me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT); }
+
+				if (Start_Agro == 0)
+				{
+					Start_Agro = 1;
+
+					me->CastSpell(me, Buf_all, true);																	// Buf_all sur lui meme
+
+					switch (BrancheSpe)
+					{
+					case 1: // Si Survie ------------------------------------------------------------------------------------------------------------------------------
+						me->CastSpell(me, Buf_branche1, true);															// Buf1 sur lui meme
+						Random = urand(1, 2);
+						if (Random == 1 && UpdateVictim()) { me->CastSpell(victim, Spell_branche1_agro, true); }		// 1/2 Chance de lancer le sort d'agro
+
+						break;
+					case 2: // Si Bete --------------------------------------------------------------------------------------------------------------------------------
+						me->CastSpell(me, Buf_branche2, true);															// Buf1 sur lui meme
+						Random = urand(1, 2);
+						if (Random == 1 && UpdateVictim()) { me->CastSpell(victim, Spell_branche2_agro, true); }		// 1/2 Chance de lancer le sort d'agro
+
+						// Tirages aléatoires du pet
+						me->CastSpell(me, Pet_Chasseur, true);
+						break;
+						// ################################################################################################################################################
+
+					}
+				}
+
+					// ################################################################################################################################################
+					// Spell a lancer a l'agro 
+					// ################################################################################################################################################
+
+
+
 
 				// ################################################################################################################################################
 				// Combat suivant la Spécialisation
@@ -382,12 +392,10 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 
 				if (Cooldown_ResteADistance <= diff)
 				{
-					// Mouvement aléatoire si cible < 6m & Mana > 5% --------------------------------------------------------------------------------------------------
+					// Mouvement aléatoire si cible < 6m  ----------------------------------------------------------------------------------------------------------
 
 					if (Dist <6)
 					{
-						if (Mana > MaxMana / 20)
-						{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 						me->SetSpeedRate(MOVE_RUN, 1.1f);
 
@@ -398,7 +406,6 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 						mapid = victim->GetMapId();
 						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 						Cooldown_ResteADistance = 4000;
-						}
 					}
 				}
 				else Cooldown_ResteADistance -= diff;
@@ -415,8 +422,6 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				// Mouvement OFF si Mana > 5% & distance >= 11m & <= 15m ---------------------------------------------------------------------------------------------
 				if ( (Dist >= ResteADistance - 4) && (Dist <= ResteADistance) )
 				{
-					if (Mana > MaxMana / 20)
-					{
 						if (me->isMoving())																	// Sinon bug d'animation
 						{
 							AttackStart(victim);
@@ -424,22 +429,17 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 							void DoRangedAttackIfReady();													// Combat a distance
 							me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
 						}
-					}
 				}
 
 				// Mouvement ON si distance > 15m ------------------------------------------------------------------------------------------------------------------
 				if (Dist > ResteADistance)
 				{
-					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
-					me->GetMotionMaster()->MoveChase(victim, ResteADistance);						// Distance de combat
-					void DoRangedAttackIfReady();													// Combat a distance
+					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);								// UNROOT
+					//me->GetMotionMaster()->MoveChase(victim, ResteADistance);								// Distance de combat
+					AttackStartCaster(victim, ResteADistance);												// Distance de cast
+					void DoRangedAttackIfReady();															// Combat a distance
 				}
 
-				// Mouvement ON si Mana < 5%  ----------------------------------------------------------------------------------------------------------------------
-				if (Mana < MaxMana / 20)
-				{
-					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// UNROOT
-				}
 
 			}
 			void Heal_En_Combat_Caster(uint32 diff)

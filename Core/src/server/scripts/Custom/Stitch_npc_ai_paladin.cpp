@@ -132,7 +132,6 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 					Spell_branche1_2 = branche1_2[urand(0, 1)];
 					Spell_branche1_3 = branche1_3[urand(0, 2)];
 
-					Bonus_Armure(150);															// Bonus d'armure +50%
 					break;
 
 				case 2: // Si Sacré ------------------------------------------------------------------------------------------------------------------------------
@@ -145,7 +144,6 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 					Spell_branche2_2 = branche2_2[urand(0, 1)];
 					Spell_branche2_3 = branche2_3[urand(0, 1)];
 
-					Bonus_Armure(125);															// Bonus d'armure +25%
 					break;
 
 				case 3: // Si Protection --------------------------------------------------------------------------------------------------------------------------
@@ -158,7 +156,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 					Spell_branche3_2 = branche3_2[urand(0, 1)];
 					Spell_branche3_3 = branche3_3[urand(0, 1)];
 
-					Bonus_Armure(200);
+					Bonus_Armure(120);															// Bonus d'armure +20%
 					break;
 				}
 				// ################################################################################################################################################
@@ -278,31 +276,31 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 					}
 
 
-					// ############################################################################################################################################
+					// ################################################################################################################################################
 					// Combat suivant la Spécialisation
 
 
 
 						switch (BrancheSpe)
 						{
-						case 1: // Spécialisation Armes ###############################################################################################################
+						case 1: // Spécialisation Armes (epee 2m)######################################################################################################
 								// Regen Mana en combat ---------------------------------------------------------------------------------------------------------------
 							if (Cooldown_RegenMana <= diff)
 							{
-								me->SetPower(POWER_MANA, Mana + (MaxMana / 3));
+								me->SetPower(POWER_MANA, Mana + (MaxMana / 2));
 								if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
-								Cooldown_RegenMana = 1000;
+								Cooldown_RegenMana = 2000;
 							}
 							else Cooldown_RegenMana -= diff;
 
 							// Combat ---------------------------------------------------------------------------------------------------------------------------------
-							Bonus_Degat_Arme_Done(100);										// Bonus de dégat 
+							Bonus_Degat_Arme_Done(-50);										// Bonus de dégat 
 
 																							// Spell1 sur la cible
 							if (Cooldown_Spell1 <= diff)
 							{
 								DoCastVictim(Spell_branche1_1);
-								Cooldown_Spell1 = 4000;
+								Cooldown_Spell1 = 6000;
 							}
 							else Cooldown_Spell1 -= diff;
 
@@ -322,29 +320,31 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 							}
 							else Cooldown_Spell3 -= diff;
 
-							Bonus_Degat_Arme_Done(-100);										// Retrait Bonus de dégat 
+							Bonus_Degat_Arme_Done(50);										// Retrait Bonus de dégat 
+
 							Heal_En_Combat_Melee(diff);
 							break;
 
-						case 2: // Spécialisation Sacre ###############################################################################################################
+						case 2: // Spécialisation Sacre (Masse)########################################################################################################
 								// Regen Mana en combat ---------------------------------------------------------------------------------------------------------------
 							if (Cooldown_RegenMana <= diff)
 							{
+								me->setPowerType(POWER_MANA);
 								me->SetPower(POWER_MANA, Mana + (MaxMana / 2));
 								if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
-								Cooldown_RegenMana = 1000;
+
+								Cooldown_RegenMana = 2000;
 							}
 							else Cooldown_RegenMana -= diff;
 
-							Bonus_Degat_Arme_Done(75);											// Reduction des degats parce que trop trop puissant
-
+							Bonus_Degat_Arme_Done(-75);
 
 							// Combat ---------------------------------------------------------------------------------------------------------------------------------
 							// Spell1 sur la cible
 							if (Cooldown_Spell1 <= diff)
 							{
 								DoCastVictim(Spell_branche2_1);
-								Cooldown_Spell1 = 4000;
+								Cooldown_Spell1 = 6000;
 							}
 							else Cooldown_Spell1 -= diff;
 
@@ -352,7 +352,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 							if (Cooldown_Spell2 <= diff)
 							{
 								DoCastVictim(Spell_branche2_2);
-								Cooldown_Spell2 = 2500;
+								Cooldown_Spell2 = 3000;
 							}
 							else Cooldown_Spell2 -= diff;
 
@@ -360,34 +360,34 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 							if (Cooldown_Spell3 <= diff)
 							{
 								DoCastVictim(Spell_branche2_3);
-								Cooldown_Spell3 = urand(5000, 7000);
+								Cooldown_Spell3 = urand(8000, 10000);
 							}
 							else Cooldown_Spell3 -= diff;
 
 
-							Bonus_Degat_Arme_Done(-75);										// degats normaux
 							Heal_En_Combat_Heal(diff);
+							Bonus_Degat_Arme_Done(75);										// Reduction des degats parce que trop trop puissant
+
 							break;
 
-						case 3: // Spécialisation Protection ##########################################################################################################
+						case 3: // Spécialisation Protection (bouclier)################################################################################################
 								// Regen Mana en combat ---------------------------------------------------------------------------------------------------------------
 							if (Cooldown_RegenMana <= diff)
 							{
 								me->SetPower(POWER_MANA, Mana + (MaxMana / 2));
 								if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
-								Cooldown_RegenMana = 1000;
+								Cooldown_RegenMana = 2000;
 							}
 							else Cooldown_RegenMana -= diff;
 
-							Bonus_Degat_Arme_Done(-40);
+							Bonus_Degat_Arme_Done(-50);
 
 							// Combat ---------------------------------------------------------------------------------------------------------------------------------
 							// Spell1 sur la cible chaque (Sort Régulié)
 							if (Cooldown_Spell1 <= diff)
 							{
 								me->CastSpell(victim, Spell_branche3_1, true);
-								Cooldown_Spell1 = 4000;
-								DoMeleeAttackIfReady();						// Combat en mélée
+								Cooldown_Spell1 = 6000;
 							}
 							else Cooldown_Spell1 -= diff;
 
@@ -395,7 +395,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 							if (Cooldown_Spell2 <= diff)
 							{
 								me->CastSpell(victim, Spell_branche3_2, true);
-								Cooldown_Spell2 = 4000;
+								Cooldown_Spell2 = 3000;
 							}
 							else Cooldown_Spell2 -= diff;
 
@@ -403,11 +403,12 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 							if (Cooldown_Spell3 <= diff)
 							{
 								me->CastSpell(victim, Spell_branche3_3, true);
-								Cooldown_Spell3 = urand(10000, 12000);
+								Cooldown_Spell3 = urand(8000, 10000);
 							}
 							else Cooldown_Spell3 -= diff;
 
-							Bonus_Degat_Arme_Done(40);										// Reduction des degats infligés normaux
+							Bonus_Degat_Arme_Done(50);
+
 							Heal_En_Combat_Melee(diff);
 							break;
 
@@ -537,10 +538,10 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 					Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 1, DistanceDeCast, true);		// pour heal friend
 
 																									// heal sur lui meme
-					if ((me->GetHealth() < (me->GetMaxHealth()*0.70)))								// Si PV < 70%
+					if ((me->GetHealth() < (me->GetMaxHealth()*0.50)))								// Si PV < 50%
 					{
 						DoCast(me, Spell_Heal_Heal);
-						Cooldown_Spell_Heal = 5000;
+						Cooldown_Spell_Heal = 8000;
 					}
 
 					// heal sur Friend 
@@ -548,10 +549,10 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 					{
 						if (me->IsFriendlyTo(target) && (me != target))
 						{
-							if (target->GetHealth() < (target->GetMaxHealth()*0.70))				// Si PV < 70%
+							if (target->GetHealth() < (target->GetMaxHealth()*0.50))				// Si PV < 50%
 							{
 								DoCast(target, Spell_Heal_Heal);
-								Cooldown_Spell_Heal = 5000;
+								Cooldown_Spell_Heal = 8000;
 							}
 						}
 					}
@@ -598,14 +599,17 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			}
 			void Bonus_Armure(int val) // 
 			{
-				// +- Bonus d'armure 100% = pas de bonus/malus   ex : Bonus_Armure(115); // Bonus d'armure +15%
+				// +- Bonus d'armure 100% = pas de bonus/malus   ex : Bonus_Armure(115) = Bonus d'armure +15%
 				me->SetModifierValue(UNIT_MOD_ARMOR, BASE_VALUE, me->GetArmor() * (val / 100));
 				me->SetCanModifyStats(true);
 				me->UpdateAllStats();
 			}
+
+
+
+
+
 		};
-
-
 
 
 		CreatureAI* GetAI(Creature* creature) const override

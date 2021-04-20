@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour Aquayoup
-// AI generique npc par classe : VOLEUR Ver 2020-11-07
+// AI generique npc par classe : VOLEUR Ver 2020-12-09
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_voleur',`AIName` = '' WHERE (entry = 15100010);
@@ -281,16 +281,20 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 						// Spell2 sur la cible
 						if (Cooldown_Spell2 <= diff)
 						{
+							Bonus_Degat_Arme_Done(-25);//
 							me->CastSpell(victim, Spell_branche1_2, true);
 							Cooldown_Spell2 = urand(3000, 5000);
+							Bonus_Degat_Arme_Done(25);//
 						}
 						else Cooldown_Spell2 -= diff;
 
 						// Spell3 sur la cible 
 						if (Cooldown_Spell3 <= diff)
 						{
+							Bonus_Degat_Arme_Done(-25);//
 							me->CastSpell(victim, Spell_branche1_3, true);
 							Cooldown_Spell3 = urand(8000, 12000);
+							Bonus_Degat_Arme_Done(25);//
 						}
 						else Cooldown_Spell3 -= diff;
 
@@ -323,27 +327,30 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 						// Spell2 sur la cible
 						if (Cooldown_Spell2 <= diff)
 						{
+							Bonus_Degat_Arme_Done(-25);//
 							me->CastSpell(victim, Spell_branche2_2, true);
-							//DoCastVictim(Spell_branche2_2);
 							Cooldown_Spell2 = 4500;
+							Bonus_Degat_Arme_Done(25);//
 						}
 						else Cooldown_Spell2 -= diff;
 
 						// Spell3 sur la cible
 						if (Cooldown_Spell3 <= diff)
 						{
+							Bonus_Degat_Arme_Done(-25);//
 							me->CastSpell(victim, Spell_branche2_3, true);
-							//DoCastVictim(Spell_branche2_3);
 							Cooldown_Spell3 = 4500;
+							Bonus_Degat_Arme_Done(25);//
 						}
 						else Cooldown_Spell3 -= diff;
 
 						// Spell4 sur la cible
 						if (Cooldown_Spell4 <= diff)
 						{
+							Bonus_Degat_Arme_Done(-25);//
 							me->CastSpell(victim, Spell_branche2_4, true);
-							//DoCastVictim(Spell_branche2_4);
 							Cooldown_Spell4 = 9000;
+							Bonus_Degat_Arme_Done(25);//
 						}
 						else Cooldown_Spell4 -= diff;
 

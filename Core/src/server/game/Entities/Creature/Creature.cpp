@@ -408,56 +408,58 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
     SetSpeedRate(MOVE_FLIGHT, 1.0f); // using 1.0 rate
 
 
-
-//Stitch vitesse de deplacement des creatures par type & famille
+//Stitch Pas d'equipement pour les betes
+	if (GetCreatureTemplate()->type == CREATURE_TYPE_BEAST)
+	{
+		LoadEquipment(0, true);
+	}
 	//CreatureTemplate const* cinfo = nullptr;
 
+	// Stitch vitesse de deplacement des creatures par type & famille
+	// UPDATE `creature_template` SET `speed_walk` = 1, `speed_run` = 1 WHERE `speed_walk` <1.5 AND `type` = 4 OR `type` = 5 OR `type` =  6 OR `type` =  9 OR `type` = 8 OR `type` = 12 OR `type` = 13 OR `type` = 14 OR `type` = 7 OR `type` = 10 OR `type` = 1;
 	uint16 Crtype = GetCreatureTemplate()->type;
 	uint16 Crfamily = GetCreatureTemplate()->family;
 	uint16 Crspeed = GetCreatureTemplate()->speed_walk;
 
-	if (Crtype == CREATURE_TYPE_BEAST) // Pas d'equipement pour les betes
-	{
-	LoadEquipment(0, true);
-	}
-
 // TYPE
 	//elementaire ,	Mort-vivant
-	if (Crspeed == 1.0f && (Crtype == CREATURE_TYPE_UNDEAD || Crtype == CREATURE_TYPE_ELEMENTAL))
+	if (Crspeed == 1.0f)
 	{
-		SetSpeedRate(MOVE_WALK, 0.5f);				// hors combat
-		SetSpeedRate(MOVE_RUN, 0.8f);				// en combat
-		SetSpeedRate(MOVE_SWIM, 0.4f);				// en nageant
-	}
-	// Geant 
-	if (Crspeed == 1.0f && (Crtype == CREATURE_TYPE_GIANT))
-	{
-		SetSpeedRate(MOVE_WALK, 0.8f);				// hors combat
-		SetSpeedRate(MOVE_RUN, 1.2f);				// en combat
-		SetSpeedRate(MOVE_SWIM, 0.8f);				// en nageant
-	}
-	//Machine
-	if (Crspeed == 1.0f && (Crtype == CREATURE_TYPE_MECHANICAL))
-	{
-		SetSpeedRate(MOVE_WALK, 0.65f);				// hors combat
-		SetSpeedRate(MOVE_RUN, 1.0f);				// en combat
-		SetSpeedRate(MOVE_SWIM, 0.65f);				// en nageant
-	}
-	// Bestiole , Mascotte pacifique , Mascotte sauvage , Nuage de gaz
-	if (Crspeed == 1.0f && (Crtype == CREATURE_TYPE_CRITTER || Crtype == CREATURE_TYPE_NON_COMBAT_PET || Crtype == CREATURE_TYPE_WILD_PET || Crtype == CREATURE_TYPE_GAS_CLOUD))
-	{
-		SetSpeedRate(MOVE_WALK, 0.3f);				// hors combat
-		SetSpeedRate(MOVE_RUN, 1.0f);				// en combat
-		SetSpeedRate(MOVE_SWIM, 0.5f);				// en nageant
-	}
-	// Humanoide , Non specifié  
-		if (Crspeed == 1.0f && (Crtype == CREATURE_TYPE_HUMANOID || Crtype == CREATURE_TYPE_NOT_SPECIFIED ))
+		if (Crtype == CREATURE_TYPE_UNDEAD || Crtype == CREATURE_TYPE_ELEMENTAL)
 		{
-		SetSpeedRate(MOVE_WALK, 0.6f);				// hors combat
-	    SetSpeedRate(MOVE_RUN, 1.0f);				// en combat
-	    SetSpeedRate(MOVE_SWIM, 0.6f);				// en nageant
+			SetSpeedRate(MOVE_WALK, 0.5f);				// hors combat
+			SetSpeedRate(MOVE_RUN, 0.8f);				// en combat
+			SetSpeedRate(MOVE_SWIM, 0.4f);				// en nageant
+		}
+		// Geant 
+		if (Crtype == CREATURE_TYPE_GIANT)
+		{
+			SetSpeedRate(MOVE_WALK, 0.8f);				// hors combat
+			SetSpeedRate(MOVE_RUN, 1.2f);				// en combat
+			SetSpeedRate(MOVE_SWIM, 0.8f);				// en nageant
+		}
+		//Machine
+		if (Crtype == CREATURE_TYPE_MECHANICAL)
+		{
+			SetSpeedRate(MOVE_WALK, 0.65f);				// hors combat
+			SetSpeedRate(MOVE_RUN, 1.0f);				// en combat
+			SetSpeedRate(MOVE_SWIM, 0.65f);				// en nageant
+		}
+		// Bestiole , Mascotte pacifique , Mascotte sauvage , Nuage de gaz
+		if (Crtype == CREATURE_TYPE_CRITTER || Crtype == CREATURE_TYPE_NON_COMBAT_PET || Crtype == CREATURE_TYPE_WILD_PET || Crtype == CREATURE_TYPE_GAS_CLOUD)
+		{
+			SetSpeedRate(MOVE_WALK, 0.3f);				// hors combat
+			SetSpeedRate(MOVE_RUN, 1.0f);				// en combat
+			SetSpeedRate(MOVE_SWIM, 0.5f);				// en nageant
+		}
+		// Humanoide , Non specifié  
+		if (Crtype == CREATURE_TYPE_HUMANOID || Crtype == CREATURE_TYPE_NOT_SPECIFIED)
+		{
+			SetSpeedRate(MOVE_WALK, 0.6f);				// hors combat
+			SetSpeedRate(MOVE_RUN, 1.0f);				// en combat
+			SetSpeedRate(MOVE_SWIM, 0.6f);				// en nageant
+		}
 	}
-
 
 // FAMILY
 	if (Crspeed == 1.0f)
@@ -491,7 +493,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			SetSpeedRate(MOVE_SWIM, 0.5f);				// en nageant
 		}
 		//Scorpion, Chevre, Cerf , Porc epic
-		if (Crfamily == CREATURE_FAMILY_SCORPID || Crfamily == CREATURE_FAMILY_GOAT || Crfamily == CREATURE_FAMILY_STAG || Crfamily == CREATURE_FAMILY_PORCUPINE)
+		if (Crfamily == CREATURE_FAMILY_SCORPID || Crfamily == CREATURE_FAMILY_GOAT || Crfamily == CREATURE_FAMILY_STAG || Crfamily == CREATURE_FAMILY_PORCUPINE || Crfamily == CREATURE_FAMILY_RYLAK || Crfamily == 0 || Crfamily == 157) //////
 		{
 			SetSpeedRate(MOVE_WALK, 0.5f);				// hors combat
 			SetSpeedRate(MOVE_RUN, 1.2f);				// en combat
@@ -1784,7 +1786,7 @@ bool Creature::CheckNoGrayAggroConfig(uint32 playerLevel, uint32 creatureLevel) 
 float Creature::GetAttackDistance(Unit const* player) const
 {
 	// WoW Wiki: the minimum radius seems to be 5 yards, while the maximum range is 45 yards
-	float minRadius = (5.0f * sWorld->getRate(RATE_CREATURE_AGGRO)); 
+	float minRadius = (15.0f * sWorld->getRate(RATE_CREATURE_AGGRO)); 
 	float maxRadius = (45.0f * sWorld->getRate(RATE_CREATURE_AGGRO));
 	float aggroRate = sWorld->getRate(RATE_CREATURE_AGGRO);
 	
@@ -1801,8 +1803,8 @@ float Creature::GetAttackDistance(Unit const* player) const
 	// "The maximum Aggro Radius has a cap of 25 levels under. Example: A level 30 char has the same Aggro Radius of a level 5 char on a level 60 mob."
 	//   if (leveldif < - 25)
 	//        leveldif = -25;
-	//if (leveldif < -10)																//Stitch agro : Limite la distance d'agro suivant la difference de level
-	//	leveldif = -10;
+	if (levelDifference > -25)																//Stitch agro : Limite la distance d'agro suivant la difference de level
+		levelDifference = -25;
 
 	//Stitch distance pour la transmission de l'agro (npc_ai)
 
@@ -2787,8 +2789,8 @@ float Creature::GetAggroRange(Unit const* target) const
         // The maximum Aggro Radius is capped at 45 yards (25 level difference)
         //if (levelDiff < -25)
         //    levelDiff = -25;
-		if (levelDiff < -10)															//Stitch agro : Limite la distance d'agro suivant la difference de level
-			levelDiff = -10;
+		if (levelDiff < -25)															//Stitch agro : Limite la distance d'agro suivant la difference de level
+			levelDiff = -25;
 
         // The base aggro radius for mob of same level
 		// float aggroRadius = 20;

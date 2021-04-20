@@ -26822,16 +26822,18 @@ uint32 Player::DoRandomRoll(uint32 minimum, uint32 maximum)
 }
 
 // ***********************************
-//Stitch void Player::ApprendLesSpells()
+//Stitch apprentissage spell
 // ***********************************
 
 void Player::ApprendLesSpells()
 {
 	uint8 _class = getClass();
+	uint8 _level = getLevel();
 
 	switch (_class)
 	{
 	case CLASS_WARRIOR:
+		if (_level > 3) { LearnSpell(6343, false); }			//Coup de tonnerre 
 		break;
 	case CLASS_PALADIN:
 		break;

@@ -549,8 +549,8 @@ void World::LoadConfigSettings(bool reload)
     rate_values[RATE_CREATURE_ELITE_RAREELITE_DAMAGE] = sConfigMgr->GetFloatDefault("Rate.Creature.Elite.RAREELITE.Damage", 1.0f);
     rate_values[RATE_CREATURE_ELITE_WORLDBOSS_DAMAGE] = sConfigMgr->GetFloatDefault("Rate.Creature.Elite.WORLDBOSS.Damage", 1.0f);
     rate_values[RATE_CREATURE_ELITE_RARE_DAMAGE]      = sConfigMgr->GetFloatDefault("Rate.Creature.Elite.RARE.Damage", 1.0f);
-	rate_values[RATE_CREATURE_NORMAL_HP] = sConfigMgr->GetFloatDefault("Rate.Creature.Normal.HP", 1.0f) + 0.25; //Stitch Rate HP
-	rate_values[RATE_CREATURE_ELITE_ELITE_HP] = sConfigMgr->GetFloatDefault("Rate.Creature.Elite.Elite.HP", 1.0f) + 0.25; //Stitch Rate HP elite
+	rate_values[RATE_CREATURE_NORMAL_HP] = sConfigMgr->GetFloatDefault("Rate.Creature.Normal.HP", 1.0f) ; //Stitch Rate HP
+	rate_values[RATE_CREATURE_ELITE_ELITE_HP] = sConfigMgr->GetFloatDefault("Rate.Creature.Elite.Elite.HP", 1.0f) ; //Stitch Rate HP elite
     rate_values[RATE_CREATURE_ELITE_RAREELITE_HP] = sConfigMgr->GetFloatDefault("Rate.Creature.Elite.RAREELITE.HP", 1.0f);
     rate_values[RATE_CREATURE_ELITE_WORLDBOSS_HP] = sConfigMgr->GetFloatDefault("Rate.Creature.Elite.WORLDBOSS.HP", 1.0f);
     rate_values[RATE_CREATURE_ELITE_RARE_HP]      = sConfigMgr->GetFloatDefault("Rate.Creature.Elite.RARE.HP", 1.0f);
@@ -571,7 +571,7 @@ void World::LoadConfigSettings(bool reload)
     rate_values[RATE_INSTANCE_RESET_TIME] = sConfigMgr->GetFloatDefault("Rate.InstanceResetTime", 1.0f);
     rate_values[RATE_TALENT] = sConfigMgr->GetFloatDefault("Rate.Talent", 1.0f);
 
-	rate_values[RATE_CREATURE_AGGRO] += 1; //Stitch Agro : compense le bug de distance d'aggro des updates de noc
+
 
     if (rate_values[RATE_TALENT] < 0.0f)
     {

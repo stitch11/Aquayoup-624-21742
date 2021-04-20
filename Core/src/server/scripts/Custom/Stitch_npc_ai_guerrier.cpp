@@ -263,20 +263,20 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 							Random = urand(1, 2);
 							if (Random == 1 && UpdateVictim()) { DoCastVictim(Spell_branche1_agro); }	// 1/2 Chance de lancer le sort d'agro
 
-							Bonus_Armure(125);															// Bonus d'armure +25%
+							//Bonus_Armure(125);															// Bonus d'armure +25%
 							break;
 
 						case 2: // Si Fureur ----------------------------------------------------------------------------------------------------------------------
 							Random = urand(1, 2);
 							if (Random == 1 && UpdateVictim()) { DoCastVictim(Spell_branche2_agro); }	// 1/2 Chance de lancer le sort d'agro
 
-							Bonus_Armure(125);															// Bonus d'armure +25%
+							//Bonus_Armure(125);															// Bonus d'armure +25%
 							break;
 
 						case 3: // Si Protection ------------------------------------------------------------------------------------------------------------------
 							DoCastVictim(Spell_branche3_agro); 											// Lancer le sort d'agro
 
-							Bonus_Armure(200);															// Bonus d'armure +100%
+							//Bonus_Armure(200);															// Bonus d'armure +100%
 							break;
 
 							// ####################################################################################################################################
@@ -303,21 +303,24 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						else Cooldown_RegenRage -= diff;
 
 						// Combat ---------------------------------------------------------------------------------------------------------------------------------
+						Bonus_Degat_Arme_Done(-75);
+
 						// Spell1 sur la cible
+						
 						if (Cooldown_Spell1 <= diff)
 						{
+
 							me->CastSpell(victim, Spell_branche1_1, true);
 							DoMeleeAttackIfReady();														// Combat en mélée
 							Cooldown_Spell1 = 2500;
+							
 						}
 						else Cooldown_Spell1 -= diff;
 
 						// Spell2 sur la cible
 						if (Cooldown_Spell2 <= diff)
 						{
-							Bonus_Degat_Arme_Done(-66);													// Reduction des degats infligés
 							me->CastSpell(victim, Spell_branche1_2, true);
-							Bonus_Degat_Arme_Done(66);
 							Cooldown_Spell2 = urand(4000, 6000);
 						}
 						else Cooldown_Spell2 -= diff;
@@ -333,6 +336,8 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 							Cooldown_Spell3 = urand(10000, 12000);
 						}
 						else Cooldown_Spell3 -= diff;
+						
+						Bonus_Degat_Arme_Done(75);
 
 						break;
 
@@ -347,6 +352,8 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						else Cooldown_RegenRage -= diff;
 
 						// Combat ---------------------------------------------------------------------------------------------------------------------------------
+						Bonus_Degat_Arme_Done(-75);
+
 						// Spell1 sur la cible
 						if (Cooldown_Spell1 <= diff)
 						{
@@ -360,7 +367,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						if (Cooldown_Spell2 <= diff)
 						{
 							DoCastVictim(Spell_branche2_2);
-							Cooldown_Spell2 = urand(4000, 6000);;
+							Cooldown_Spell2 = urand(4000, 6000);
 						}
 						else Cooldown_Spell2 -= diff;
 
@@ -376,6 +383,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						}
 						else Cooldown_Spell3 -= diff;
 
+						Bonus_Degat_Arme_Done(75);
 						break;
 
 					case 3: // Spécialisation Protection ##########################################################################################################
@@ -389,6 +397,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						else Cooldown_RegenRage -= diff;
 
 						// Combat ---------------------------------------------------------------------------------------------------------------------------------
+						Bonus_Degat_Arme_Done(-75);
 
 						// Spell1 sur la cible chaque (Sort Régulié)
 						if (Cooldown_Spell1 <= diff)
@@ -403,7 +412,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						if (Cooldown_Spell2 <= diff)
 						{
 							me->CastSpell(victim, Spell_branche3_2, true);
-							Cooldown_Spell2 = urand(4000, 6000);;
+							Cooldown_Spell2 = urand(4000, 6000);
 						}
 						else Cooldown_Spell2 -= diff;
 
@@ -415,6 +424,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						}
 						else Cooldown_Spell3 -= diff;
 
+						Bonus_Degat_Arme_Done(75);
 						break;
 
 					}

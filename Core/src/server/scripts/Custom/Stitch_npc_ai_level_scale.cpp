@@ -170,30 +170,36 @@ public: Stitch_npc_ai_level_scale_caster() : CreatureScript("Stitch_npc_ai_level
 			void mouvementmob(uint32 diff)
 			{
 				// Mouvement off si Mana > 5% ou distance < 20m ---------------------------------------------------------------------------------------------
-				if ((me->GetPower(POWER_MANA) > me->GetMaxPower(POWER_MANA) / 20) && (me->IsWithinCombatRange(me->GetVictim(), 20.0f)))
+				if ((me->GetPower(POWER_MANA) > me->GetMaxPower(POWER_MANA) / 20) )
 				{
-					AttackStartCaster(me->GetVictim(), 20.0f);						// Distance de cast
-					void DoRangedAttackIfReady();									// Combat a distance
-					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);			// ROOT
+					if (me->IsWithinCombatRange(me->GetVictim(), 20.0f))
+					{
+						AttackStartCaster(me->GetVictim(), 20.0f);						// Distance de cast
+						void DoRangedAttackIfReady();									// Combat a distance
+						me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);			// ROOT
+					}
 				}
 
 				// Mouvement on si Mana < 5% ou distance > 20m ----------------------------------------------------------------------------------------------
 				if ((me->GetPower(POWER_MANA) < me->GetMaxPower(POWER_MANA) / 20) | (!me->IsWithinCombatRange(me->GetVictim(), 20.0f)))
 				{
-					AttackStart(me->GetVictim());									// Combat au corp a corp
-					AttackStartCaster(me->GetVictim(), 20.0f);						// Distance de cast
+					AttackStart(me->GetVictim());										// Combat au corp a corp
+					AttackStartCaster(me->GetVictim(), 20.0f);							// Distance de cast
 					DoMeleeAttackIfReady();
-					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);		//UNROOT
+					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);			//UNROOT
 				}
 
 				// Mouvement aléatoire si cible < 6m -------------------------------------------------------------------------------------------------------
 				if ((resteadistancetimer <= diff))
 				{
-					if (me->IsWithinCombatRange(me->GetVictim(), 6.0f) && (me->GetPower(POWER_MANA) > me->GetMaxPower(POWER_MANA) / 20))
+					if (me->GetPower(POWER_MANA) > me->GetMaxPower(POWER_MANA) / 20)
 					{
-						float x, y, z;
-						me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 15.0f);
-						me->GetMotionMaster()->MovePoint(0xFFFFFE, x, y, z);
+						if (me->IsWithinCombatRange(me->GetVictim(), 6.0f) )
+						{
+							float x, y, z;
+							me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 15.0f);
+							me->GetMotionMaster()->MovePoint(0xFFFFFE, x, y, z);
+						}
 					}
 					resteadistancetimer = urand(300, 500);
 				}
