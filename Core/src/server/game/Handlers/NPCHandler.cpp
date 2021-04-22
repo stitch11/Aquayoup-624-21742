@@ -293,6 +293,9 @@ void WorldSession::HandleGossipHelloOpcode(WorldPackets::NPC::Hello& packet)
         _player->PrepareGossipMenu(unit, unit->GetCreatureTemplate()->GossipMenuId, true);
         _player->SendPreparedGossip(unit);
     }
+	//Stitch visuel gossip Handler
+	unit->HandleEmoteCommand(401);
+
     unit->AI()->sGossipHello(_player);
 }
 
@@ -459,6 +462,11 @@ void WorldSession::SendBindPoint(Creature* npc)
 
     // send spell for homebinding (3286)
     npc->CastSpell(_player, bindspell, true);
+
+	//Stitch aubergiste Handler
+	_player->AddItem(6948, 1);						// Ajout Pierre de foyer
+	_player->HandleEmoteCommand(4);
+	npc->CastSpell(_player, 14867, true);		// Pour visuel
 
     _player->PlayerTalkClass->SendCloseGossip();
 }
