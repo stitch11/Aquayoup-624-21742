@@ -2497,8 +2497,6 @@ class TC_GAME_API Player : public Unit, public GridObject<Player>
 		void ShowNeutralPlayerFactionSelectUI();
 		void SetPandaFactionAlliance();
 		void SetPandaFactionHorde();
-		// Apprentissage spell
-		void ApprendLesSpells();
 
     protected:
         // Gamemaster whisper whitelist
