@@ -154,7 +154,7 @@ extern int main(int argc, char** argv)
 	TC_LOG_INFO("server.worldserver", "xx * FunRate (joueur) stat,heal,dps,temps de cast,power...                        xx");
 	TC_LOG_INFO("server.worldserver", "xx * DressNPC (creature_template_outfits , modelid1 a modelid4 en négatif)        xx");
 	TC_LOG_INFO("server.worldserver", "xx * NPC_AI_xxx Script de classes et autres pour mobs classiques                  xx");
-	TC_LOG_INFO("server.worldserver", "xx * Action suite a un événement Joueur(Apprentissage, connexion, levelup, zone...xx");                                                                           xx");
+	TC_LOG_INFO("server.worldserver", "xx * Action suite a un événement Joueur(Apprentissage, connexion, levelup, zone...xx");
 	TC_LOG_INFO("server.worldserver", "xx                                                                                xx");
 	TC_LOG_INFO("server.worldserver", "xx * Diverse majs & debugs                                                        xx");
 	TC_LOG_INFO("server.worldserver", "xx * Un grand Merci a Noc & Scade pour leurs aides                                xx");
