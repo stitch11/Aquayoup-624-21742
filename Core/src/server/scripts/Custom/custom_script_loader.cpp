@@ -36,6 +36,7 @@ void AddSC_npc_ai_melee();
 void AddSC_npc_ai_caster();
 void AddSC_npc_ai_lancier();
 void AddSC_npc_ai_mobs();
+void AddSC_Player_Even_Action();
 
 // The name of this function should match:
 // void Add${NameOfDirectory}Scripts()
@@ -61,4 +62,5 @@ void AddCustomScripts()
 		AddSC_npc_ai_caster();
 		AddSC_npc_ai_lancier();
 		AddSC_npc_ai_mobs();
+		AddSC_Player_Even_Action();
 }
