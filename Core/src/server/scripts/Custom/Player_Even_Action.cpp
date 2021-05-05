@@ -28,7 +28,6 @@
 #include "SpellMgr.h"
 #include "SpellScript.h"
 
-uint32 SPELL_POUR_REZ = 95750;               // Résurrection de Pierre d'âme - 3026 95750
 uint32 SPELL_POUR_VISUEL = 14867;
 uint32 PERTE_DE_DURABILITE = 45317;         //  Perte de 10 % de la durabilité
 uint32 DISPARITION6S = 35205;
@@ -54,7 +53,7 @@ public:
         {
 
         }
-        Apprentissage_Rez_sur_son_corp(player);
+
     }
 
     // Au level up
@@ -95,7 +94,7 @@ public:
     // void OnAccountLogin(uint32 /*accountId*/) {}
 
 	// ################################################################################################################################################
-    // Routines d'actions suite a un évènement 
+    // Routines d'actions secondaires suite a un évènement 
 	// ################################################################################################################################################
 
 	void Apprentissage_Ou_Additem_Suivant_classes_races(Player* player)
@@ -241,15 +240,17 @@ case RACE_PANDAREN_HORDE:
 
 }
     }
+
+	/*
     void Apprentissage_Rez_sur_son_corp(Player* player)
     {
-        uint8 rez = sConfigMgr->GetIntDefault("REZ_SUR_SON_CORP", 0);
+        uint8 rez = sConfigMgr->GetIntDefault("Rez_sur_son_corp", 1);
         if (rez == 1)
         {
             player->LearnSpell(SPELL_POUR_REZ, true);      // Résurrection de Pierre d'âme
         }
     }
-    
+    */
 
 
 
