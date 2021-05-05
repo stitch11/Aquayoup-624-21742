@@ -294,7 +294,7 @@ void WorldSession::HandleGossipHelloOpcode(WorldPackets::NPC::Hello& packet)
         _player->SendPreparedGossip(unit);
     }
 	//Stitch visuel gossip Handler
-	unit->HandleEmoteCommand(401);
+	unit->HandleEmoteCommand(4); // 401
 
     unit->AI()->sGossipHello(_player);
 }
