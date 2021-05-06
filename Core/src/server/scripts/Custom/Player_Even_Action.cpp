@@ -148,12 +148,13 @@ case CLASS_HUNTER:
     break;
 case CLASS_ROGUE:
 	// Vampire ------
-	if (player->GetUInt32Value(PLAYER_FIELD_CURRENT_SPEC_ID) == PLAYER_SPEC_ID_VAMPIRE) //Si Branche talent vampire - 538 correspond a ID de ChrSpecialization.dbc
+	if (player->GetUInt32Value(PLAYER_FIELD_CURRENT_SPEC_ID) == PLAYER_SPEC_ID_VAMPIRE) //Stitch Vampire - 538 correspond a ID de ChrSpecialization.dbc
 	{
 		if (player->HasAura(300124) || player->HasAura(300125))
 		{
 			player->setPowerType(POWER_DEMONIC_FURY);
 			player->SetMaxPower(POWER_DEMONIC_FURY, 100);
+			player->SetMaxPower(POWER_ENERGY, 0);
 		}
 		else
 		{
