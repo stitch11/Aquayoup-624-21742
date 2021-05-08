@@ -1360,15 +1360,19 @@ void SmartScript::ProcessAction(SmartScriptHolder& e, Unit* unit, uint32 var0, u
             if (!targets)
                 break;
 
-            for (ObjectList::const_iterator itr = targets->begin(); itr != targets->end(); ++itr)
-            {
-                if (IsPlayer(*itr))
-                    (*itr)->ToPlayer()->TeleportTo(e.action.teleport.mapID, e.target.x, e.target.y, e.target.z, e.target.o);
+			for (ObjectList::const_iterator itr = targets->begin(); itr != targets->end(); ++itr)
+			{
+				if (IsPlayer(*itr))
+				{
+					(*itr)->ToPlayer()->TeleportTo(e.action.teleport.mapID, e.target.x, e.target.y, e.target.z, e.target.o);
+					(*itr)->ToPlayer()->CastSpell((*itr)->ToPlayer(),60178,true); // Visuel pour tp ( SMART_ACTION_TELEPORT )
+				}
                 else if (IsCreature(*itr))
                     (*itr)->ToCreature()->NearTeleportTo(e.target.x, e.target.y, e.target.z, e.target.o);
             }
-
+			
             delete targets;
+
             break;
         }
         case SMART_ACTION_SET_FLY:
