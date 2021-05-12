@@ -314,7 +314,7 @@ float Player::GetHealthBonusFromStamina()
 
 	//Stitch item rate PV bonus 
 //    return stamina * ratio;
-	return stamina * (ratio * 0.75);
+	return stamina * (ratio * 0.5);	//0.75
 
 
 }
