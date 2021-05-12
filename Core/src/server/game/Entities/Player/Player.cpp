@@ -2631,6 +2631,7 @@ void Player::GiveLevel(uint8 level)
 //Stitch Vampire Unlearn spells avant levelup - PLAYER_SPEC_ID_VAMPIRE = 538 correspond a ID de ChrSpecialization.dbc
 	if (GetUInt32Value(PLAYER_FIELD_CURRENT_SPEC_ID) == PLAYER_SPEC_ID_VAMPIRE)
 	{
+		/*
 		RemoveSpell(300124);
 		RemoveSpell(300125);
 		RemoveSpell(300126);
@@ -2652,6 +2653,7 @@ void Player::GiveLevel(uint8 level)
 		RemoveSpell(300143);
 		RemoveSpell(300144);
 		RemoveSpell(300145);
+		*/
 	}
 
     UpdateSkillsForLevel();
