@@ -2,8 +2,10 @@
 // Copyright (C) Juillet 2020 Stitch pour https:\\Aquayoup.123.fr
 // AI generique npc par famille : Mobs Ver 2020-12-08 (family)
 //
-// Si spell[1] = 0 : alors affectation aléatoire de tous les spells(prédéfini dans le core), sinon utilisera les spells définis dans creature_template spell[1a5]
-// ScriptName = Stitch_npc_ai_mobs : npc d'exemple : 15100015
+// Si spell[1] = 0 : alors affectation aléatoire de tous les spells(prédéfini dans le core), sinon utilisera les spells définis dans creature_template spell[1 a 5]
+// BETE
+// UPDATE `creature_template` SET `spell1` = ATTAQUE, `spell2` = DOT, `spell3` = AGRO, `spell4` = EVADE, `spell5` = BUF, `ScriptName` = 'Stitch_npc_ai_mobs', `AIName` = '' WHERE(entry = 15100015);
+
 // spell1 : Attaque principale
 // spell2 : Dot
 // spell3 : spell lancé a l'agro
