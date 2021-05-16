@@ -1015,6 +1015,20 @@ void Player::Update(uint32 p_time)
     if (!IsInWorld())
         return;
 
+//Stitch Vampire : Verrouillage a 0 de l'energie en mode vampire avant une déconnexion
+	if (HasAura(300124) || HasAura(300125))
+	{
+		setPowerType(POWER_DEMONIC_FURY);
+		SetMaxPower(POWER_DEMONIC_FURY, 100);
+		SetMaxPower(POWER_ENERGY, 0);
+	}
+	else
+	{
+		setPowerType(POWER_ENERGY);
+		SetMaxPower(POWER_ENERGY, 100);
+	}
+
+
 //Stitch UpdatePlayer : talent Afflux de venin (Voleur & Vampire)
 			if (HasSpell(152152) && getPowerType() == POWER_ENERGY)							
 			{
@@ -1025,6 +1039,11 @@ void Player::Update(uint32 p_time)
 			{
 				SetMaxPower(POWER_DEMONIC_FURY, 120);
 			}
+
+
+
+
+
 
 
     // undelivered mail
