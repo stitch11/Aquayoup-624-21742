@@ -974,6 +974,7 @@ public:
 
             Unit* target = GetUnitOwner();
             target->CastSpell(target, SPELL_ROGUE_HONOR_AMONG_THIEVES_PROC, TRIGGERED_FULL_MASK, nullptr, aurEff);
+			target->SetPower(POWER_ENERGY, 80);
         }
 
         void Register() override
