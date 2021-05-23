@@ -240,7 +240,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 			void JustRespawned() override
 			{
 				me->GetMotionMaster()->MoveTargetedHome();								// Retour home pour rafraichir client
-				me->SetSpeedRate(MOVE_RUN, 1.01f);
+				//me->SetSpeedRate(MOVE_RUN, 1.01f);
 				me->SetReactState(REACT_AGGRESSIVE);
 
 				VisuelPowerRunic();
@@ -258,7 +258,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 				Start_Agro = 0;
 				RetireBugDeCombat();
 				me->AddUnitState(UNIT_STATE_EVADE);
-				me->SetSpeedRate(MOVE_RUN, 1.5f);										// Vitesse de déplacement
+				//me->SetSpeedRate(MOVE_RUN, 1.5f);										// Vitesse de déplacement
 				me->GetMotionMaster()->MoveTargetedHome();								// Retour home
 				me->RemoveAllControlled();												// renvois pet
 
@@ -288,7 +288,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 				Bonus_Armure(100);													// Retire bonus d'armure
 
 				me->SetReactState(REACT_AGGRESSIVE);
-				me->SetSpeedRate(MOVE_RUN, 1.01f);									// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
+				//me->SetSpeedRate(MOVE_RUN, 1.01f);									// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
 				VisuelPowerRunic();
 			}
 			void UpdateAI(uint32 diff) override
@@ -742,7 +742,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 					if ((Dist <6))
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
-						me->SetSpeedRate(MOVE_RUN, 1.1f);
+						//me->SetSpeedRate(MOVE_RUN, 1.1f);
 
 						float x, y, z, mapid;
 						x = (me->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
@@ -758,7 +758,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 				// Speed normal si distance > 10m ------------------------------------------------------------------------------------------------------------------
 				if (Dist> 10 && me->GetSpeedRate(MOVE_RUN) == 1.1f)
 				{
-					me->SetSpeedRate(MOVE_RUN, 1.01f);
+					//me->SetSpeedRate(MOVE_RUN, 1.01f);
 				}
 
 				// Mouvement OFF si distance >= 6m & <= 10/15m ---------------------------------------------------------------------------------------------

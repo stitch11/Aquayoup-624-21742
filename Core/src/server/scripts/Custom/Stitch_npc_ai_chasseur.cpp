@@ -157,7 +157,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 			void JustRespawned() override
 			{
 				me->GetMotionMaster()->MoveTargetedHome();								// Retour home pour rafraichir client
-				me->SetSpeedRate(MOVE_RUN, 1.01f);
+				//me->SetSpeedRate(MOVE_RUN, 1.01f);
 				me->SetReactState(REACT_AGGRESSIVE);
 				me->SetSheath(SHEATH_STATE_RANGED);										// S'equipe de l'arme a distance
 				
@@ -176,7 +176,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 			{
 				RetireBugDeCombat();
 				me->AddUnitState(UNIT_STATE_EVADE);
-				me->SetSpeedRate(MOVE_RUN, 1.5f);										// Vitesse de déplacement
+				//me->SetSpeedRate(MOVE_RUN, 1.5f);										// Vitesse de déplacement
 				me->GetMotionMaster()->MoveTargetedHome();								// Retour home
 				me->RemoveAllControlled();												// renvois pet
 				Def_Power();
@@ -188,7 +188,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				me->RemoveAura(Buf_branche2);
 
 				me->SetReactState(REACT_AGGRESSIVE);
-				me->SetSpeedRate(MOVE_RUN, 1.01f);										// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
+				//me->SetSpeedRate(MOVE_RUN, 1.01f);										// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
 				Def_Power();
 			}
 			void UpdateAI(uint32 diff) override
@@ -397,7 +397,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 					if (Dist <6)
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
-						me->SetSpeedRate(MOVE_RUN, 1.1f);
+						//me->SetSpeedRate(MOVE_RUN, 1.1f);
 
 						float x, y, z, mapid;
 						x = (me->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
@@ -415,7 +415,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				{
 					if (me->GetSpeedRate(MOVE_RUN) == 1.1f)
 					{
-					me->SetSpeedRate(MOVE_RUN, 1.01f);
+					//me->SetSpeedRate(MOVE_RUN, 1.01f);
 					}
 				}
 

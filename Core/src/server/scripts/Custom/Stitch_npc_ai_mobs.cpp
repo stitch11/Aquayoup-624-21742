@@ -1793,7 +1793,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			void JustRespawned() override
 			{
 				me->GetMotionMaster()->MoveTargetedHome();															// Retour home pour rafraichir client
-				me->SetSpeedRate(MOVE_RUN, 1.01f);
+				//me->SetSpeedRate(MOVE_RUN, 1.01f);
 				me->SetReactState(REACT_AGGRESSIVE);
 
 				Random = urand(1, 3);
@@ -1835,7 +1835,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			void JustReachedHome() override
 			{
 				me->SetReactState(REACT_AGGRESSIVE);
-				me->SetSpeedRate(MOVE_RUN, 1.01f);		
+				//me->SetSpeedRate(MOVE_RUN, 1.01f);		
 
 
 				Random = urand(1, 3);
@@ -1922,6 +1922,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					// ############################################################################################################################################
 					// COMBAT 
 
+
 						// SpellA sur la cible  -------------------------------------------------------------------------------------------------------------------
 					if (Spell_A != 0)
 					{
@@ -1937,8 +1938,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						}
 						else Cooldown_SpellA -= diff;
 					}
-
-						// SpellB sur la cible  -------------------------------------------------------------------------------------------------------------------
+					
+					// SpellB sur la cible  -------------------------------------------------------------------------------------------------------------------
 						if (Spell_B != 0)
 						{
 							if (Cooldown_SpellB <= diff)
@@ -1954,6 +1955,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							}
 							else Cooldown_SpellB -= diff;
 						}
+
 
 					// ############################################################################################################################################
 					// MOUVEMENT
@@ -2211,7 +2213,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					if (Dist <4)
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
-						me->SetSpeedRate(MOVE_RUN, 1.01f);
+						//me->SetSpeedRate(MOVE_RUN, 1.01f);
 
 						//float x, y, z, mapid;
 						x = (me->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
@@ -2721,6 +2723,9 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				if (!UpdateVictim())
 					return;
 
+				if (me->HasUnitState(UNIT_STATE_ROOT) || me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED) )
+					return;
+
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
@@ -2737,6 +2742,9 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				if (!UpdateVictim())
 					return;
 
+				if (me->HasUnitState(UNIT_STATE_ROOT) || me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED))
+					return;
+
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
@@ -2750,11 +2758,18 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			}
 			void BOND_Aleatoire() 
 			{
+
+				if (me->HasUnitState(UNIT_STATE_ROOT) || me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED))
+					return;
+
 				DoCastAOE(Spell_Bond_Aleatoire, true);
 			}
 			void Recule_ou_Avance(int32 val)
 			{
 				if (!UpdateVictim())
+					return;
+
+				if (me->HasUnitState(UNIT_STATE_ROOT) || me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED))
 					return;
 
 				Unit* victim = me->GetVictim();

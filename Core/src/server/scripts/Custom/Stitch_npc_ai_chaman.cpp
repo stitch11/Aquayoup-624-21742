@@ -181,7 +181,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 			void JustRespawned() override
 			{
 				me->GetMotionMaster()->MoveTargetedHome();								// Retour home pour rafraichir client
-				me->SetSpeedRate(MOVE_RUN, 1.01f);
+				//me->SetSpeedRate(MOVE_RUN, 1.01f);
 				me->SetReactState(REACT_AGGRESSIVE);
 
 				Init_AI();
@@ -197,7 +197,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 				Start_Agro = 0;
 				RetireBugDeCombat();
 				me->AddUnitState(UNIT_STATE_EVADE);
-				me->SetSpeedRate(MOVE_RUN, 1.5f);										// Vitesse de déplacement
+				//me->SetSpeedRate(MOVE_RUN, 1.5f);										// Vitesse de déplacement
 				me->GetMotionMaster()->MoveTargetedHome();								// Retour home
 				me->RemoveAllControlled();												// renvois pet
 
@@ -212,7 +212,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 				me->RemoveAura(Buf_branche3);
 
 				me->SetReactState(REACT_AGGRESSIVE);
-				me->SetSpeedRate(MOVE_RUN, 1.01f);										// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
+				//me->SetSpeedRate(MOVE_RUN, 1.01f);										// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
 			}
 			void UpdateAI(uint32 diff) override
 			{
@@ -449,7 +449,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 					if ((Dist <6) && (Mana > MaxMana / 20))
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
-						me->SetSpeedRate(MOVE_RUN, 1.1f);
+						//me->SetSpeedRate(MOVE_RUN, 1.1f);
 
 						float x, y, z, mapid;
 						x = (me->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
@@ -465,7 +465,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 				// Speed normal si distance > 10m ------------------------------------------------------------------------------------------------------------------
 				if (Dist> 10 && me->GetSpeedRate(MOVE_RUN) == 1.1f)
 				{
-					me->SetSpeedRate(MOVE_RUN, 1.01f);
+					//me->SetSpeedRate(MOVE_RUN, 1.01f);
 				}
 
 				// Mouvement OFF si Mana > 5% & distance >= 6 & <= 10m ---------------------------------------------------------------------------------------------

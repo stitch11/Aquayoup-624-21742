@@ -231,7 +231,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			void JustRespawned() override
 			{
 				me->GetMotionMaster()->MoveTargetedHome();								// Retour home pour rafraichir client
-				me->SetSpeedRate(MOVE_RUN, 1.01f);
+				//me->SetSpeedRate(MOVE_RUN, 1.01f);
 				me->SetReactState(REACT_AGGRESSIVE);
 
 				Init_AI();
@@ -261,7 +261,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			void JustReachedHome() override
 			{
 				me->SetReactState(REACT_AGGRESSIVE);
-				me->SetSpeedRate(MOVE_RUN, 1.01f);										// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
+				//me->SetSpeedRate(MOVE_RUN, 1.01f);										// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
 			}
 			void UpdateAI(uint32 diff) override
 			{
@@ -392,7 +392,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					if (Dist <4 && (Mana > MaxMana / 10))
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
-						me->SetSpeedRate(MOVE_RUN, 1.01f);
+						//me->SetSpeedRate(MOVE_RUN, 1.01f);
 
 						float x, y, z, mapid;
 						x = (me->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
