@@ -83,6 +83,9 @@ enum MageSpells
     SPELL_MAGE_FINGERS_OF_FROST                  = 44544,
     SPELL_MAGE_TEMPORAL_DISPLACEMENT             = 80354,
     SPELL_PET_NETHERWINDS_FATIGUED               = 160455,
+	SPELL_MAGE_MIRROR_IMAGE_LEFT = 58834,
+	SPELL_MAGE_MIRROR_IMAGE_RIGHT = 58833,
+	SPELL_MAGE_MIRROR_IMAGE_FRONT = 58831
 };
 
 enum MageIcons
@@ -1476,6 +1479,40 @@ class spell_mage_water_elemental_freeze : public SpellScriptLoader
        }
 };
 
+
+// Mirror Image - 55342
+class spell_mage_mirror_image_summon : public SpellScriptLoader
+{
+public:
+	spell_mage_mirror_image_summon() : SpellScriptLoader("spell_mage_mirror_image_summon") { }
+
+	class spell_mage_mirror_image_summon_SpellScript : public SpellScript
+	{
+		PrepareSpellScript(spell_mage_mirror_image_summon_SpellScript);
+
+		void HandleDummy(SpellEffIndex /*effIndex*/)
+		{
+			if (Unit* caster = GetCaster())
+			{
+				caster->CastSpell(caster, SPELL_MAGE_MIRROR_IMAGE_LEFT, true);
+				caster->CastSpell(caster, SPELL_MAGE_MIRROR_IMAGE_FRONT, true);
+				caster->CastSpell(caster, SPELL_MAGE_MIRROR_IMAGE_RIGHT, true);
+			}
+		}
+
+		void Register() override
+		{
+			OnEffectHitTarget += SpellEffectFn(spell_mage_mirror_image_summon_SpellScript::HandleDummy, EFFECT_1, SPELL_EFFECT_DUMMY);
+		}
+	};
+
+	SpellScript* GetSpellScript() const override
+	{
+		return new spell_mage_mirror_image_summon_SpellScript();
+	}
+};
+
+
 void AddSC_mage_spell_scripts()
 {
 //    new spell_mage_arcane_potency();
@@ -1506,4 +1543,5 @@ void AddSC_mage_spell_scripts()
 //    new spell_mage_ring_of_frost_freeze();
     new spell_mage_time_warp();
     new spell_mage_water_elemental_freeze();
+	new spell_mage_mirror_image_summon();
 }
