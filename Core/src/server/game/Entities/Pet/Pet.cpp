@@ -962,7 +962,7 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 					SetObjectScale(1.0f);
 				}
 
-//Stitch type de Power pour FAKEPLAYER & autres - Par ID -  InitCharmInfo();
+//Stitch Pet : Dmg & type de Power pour FAKEPLAYER & autres - Par ID -  InitCharmInfo();
 				case 15000269: // Guerrier A2
 				{
 					setPowerType(POWER_RAGE);
@@ -1202,6 +1202,16 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel - 30 + (petlevel / 4)));
 					break;
 				}	
+				case 11859: // Garde funeste
+				{
+					SetModifierValue(UNIT_MOD_ARMOR, BASE_VALUE, float(GetOwner()->GetArmor()) * 0.25f);  // Bonus Armor (25% of player armor)
+					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float((petlevel * 9)));
+					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float((petlevel * 10)));
+					break;
+				}
+
+
+
 			}		// switch GetEntry
 
 
