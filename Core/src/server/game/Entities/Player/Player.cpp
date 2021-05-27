@@ -1022,10 +1022,15 @@ void Player::Update(uint32 p_time)
 		SetMaxPower(POWER_DEMONIC_FURY, 100);
 		SetMaxPower(POWER_ENERGY, 0);
 	}
-	else
+	else if (getClass() == CLASS_ROGUE)
 	{
 		setPowerType(POWER_ENERGY);
 		SetMaxPower(POWER_ENERGY, 100);
+
+		if (HasSpell(152152)) // si talent  Afflux de venin
+		{
+			SetMaxPower(POWER_ENERGY, 120);
+		}
 	}
 
 
