@@ -926,8 +926,8 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 				m_charmInfo->InitPetActionBar();
 				SetMaxPower(POWER_ENERGY, 100);
 				SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK)));
-				SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 20));
-				SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 25));
+				SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float((petlevel * 8)));
+				SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float((petlevel * 10)));
 			}
 
 
@@ -1094,6 +1094,7 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 					setPowerType(POWER_MANA);
 					SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA));
 					SetBonusDamage(int32(GetOwner()->SpellBaseDamageBonusDone(SPELL_SCHOOL_MASK_FROST) * 0.33f));
+					m_charmInfo->InitPetActionBar();
 					break;
 				}
 				case 1964: //force of nature
@@ -1104,6 +1105,7 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 					float bonusDmg = GetOwner()->SpellBaseDamageBonusDone(SPELL_SCHOOL_MASK_NATURE) * 0.15f;
 					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 2.5f - (petlevel / 2) + bonusDmg));
 					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 2.5f + (petlevel / 2) + bonusDmg));
+					m_charmInfo->InitPetActionBar();
 					break;
 				}
 				case 15352: //earth elemental 36213
@@ -1113,6 +1115,7 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 
 					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel - (petlevel / 4)));
 					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel + (petlevel / 4)));
+					m_charmInfo->InitPetActionBar();
 					break;
 				}
 				case 15438: //fire elemental
@@ -1125,6 +1128,7 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 					SetBonusDamage(int32(GetOwner()->SpellBaseDamageBonusDone(SPELL_SCHOOL_MASK_FIRE) * 0.5f));
 					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 4 - petlevel));
 					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 4 + petlevel));
+					m_charmInfo->InitPetActionBar();
 					break;
 				}
 				case 19668: // Shadowfiend
@@ -1207,21 +1211,77 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 					SetModifierValue(UNIT_MOD_ARMOR, BASE_VALUE, float(GetOwner()->GetArmor()) * 0.25f);  // Bonus Armor (25% of player armor)
 					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float((petlevel * 9)));
 					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float((petlevel * 10)));
+					m_charmInfo->InitPetActionBar();
+					break;
+				}
+				case 417: // Felhunter/Chasseur corrompu 
+				{
+					setPowerType(POWER_ENERGY);
+					SetMaxPower(POWER_ENERGY, GetMaxPower(POWER_ENERGY));
+					SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK)));
+					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 12));
+					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 15));
+					m_charmInfo->InitPetActionBar();
+					break;
+				}
+				case 89: // Infernal
+				{
+					setPowerType(POWER_ENERGY);
+					SetMaxPower(POWER_ENERGY, GetMaxPower(POWER_ENERGY));
+					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float((petlevel * 7)));
+					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float((petlevel * 8)));
+					m_charmInfo->InitPetActionBar();
+					break;
+				}
+				case 17252: // Gangregarde
+				{
+					setPowerType(POWER_ENERGY);
+					SetMaxPower(POWER_ENERGY, GetMaxPower(POWER_ENERGY));
+					m_charmInfo->InitPetActionBar();
+					break;
+				}
+				case 58960: // Seigneur du vide
+				{
+					setPowerType(POWER_ENERGY);
+					SetMaxPower(POWER_ENERGY, GetMaxPower(POWER_ENERGY));
+					m_charmInfo->InitPetActionBar();
+					break;
+				}
+				case 58964: // Observateur
+				{
+					setPowerType(POWER_ENERGY);
+					SetMaxPower(POWER_ENERGY, GetMaxPower(POWER_ENERGY));
+					m_charmInfo->InitPetActionBar();
+					break;
+				}
+				case 58997: // Abyssal 
+				{
+					setPowerType(POWER_ENERGY);
+					SetMaxPower(POWER_ENERGY, GetMaxPower(POWER_ENERGY));
 					break;
 				}
 
+				case 59000: // Garde de terreur 
+				{
+					setPowerType(POWER_ENERGY);
+					SetMaxPower(POWER_ENERGY, GetMaxPower(POWER_ENERGY));
+					break;
+				}
+				 
+
+				default:
+				//Stitch Degat par defaut des Guardian 
+				SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK)));
+				SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 4));
+				SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 5));
+
+			}	
 
 
-			}		// switch GetEntry
 
 
-//Stitch Degat par defaut des Guardian 
-			SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK)));
-			SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 12 ));
-			SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 15));
 
-
-        }	// default
+        }	
 	}
 
     UpdateAllStats();
