@@ -1033,8 +1033,7 @@ void Player::Update(uint32 p_time)
 		}
 	}
 
-
-//Stitch UpdatePlayer : talent Afflux de venin (Voleur & Vampire)
+//Stitch Voleur & Vampire : talent Afflux de venin 
 			if (HasSpell(152152) && getPowerType() == POWER_ENERGY)							
 			{
 				SetMaxPower(POWER_ENERGY, 120);
@@ -1045,7 +1044,15 @@ void Player::Update(uint32 p_time)
 				SetMaxPower(POWER_DEMONIC_FURY, 120);
 			}
 
-
+//Stitch Demo metamorphe : Verrouillage a 0 du mana
+			if (HasAura(103958))
+			{
+				SetMaxPower(POWER_MANA, 0);
+			}
+			else if (getClass() == CLASS_WARLOCK)
+			{
+				SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA));
+			}
 
 
 
