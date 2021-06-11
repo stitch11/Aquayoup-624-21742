@@ -1885,6 +1885,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 			void UpdateAI(uint32 diff) override
 			{
+				if ( me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED) )
+				return;
 
 				// ################################################################################################################################################
 				// En Combat ######################################################################################################################################
@@ -1959,6 +1961,9 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 					// ############################################################################################################################################
 					// MOUVEMENT
+						if ( me->HasUnitState(UNIT_STATE_ROOT) )
+							return;
+
 						switch (Crfamily)
 						{
 						case 1: // Loup
