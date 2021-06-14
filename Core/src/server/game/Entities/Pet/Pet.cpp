@@ -1267,8 +1267,20 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 					SetMaxPower(POWER_ENERGY, GetMaxPower(POWER_ENERGY));
 					break;
 				}
-				 
-
+				case 63508: // Xuen, le Tigre blanc (Talent moine)
+				{
+					SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK)));
+					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 12));
+					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 15));
+					break;
+				}
+				case 69680: // Esprit élémentaire (moine)
+				{
+					SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK)));
+					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 7));
+					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 9));
+					break;
+				}
 				default:
 				//Stitch Degat par defaut des Guardian 
 				SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK)));
