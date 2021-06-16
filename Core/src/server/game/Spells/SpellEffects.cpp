@@ -458,7 +458,7 @@ void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
                         damage = (m_caster->getLevel() - 60) * 4 + 60;
                         break;
                     }
-                }
+               }
                 break;
             }
             case SPELLFAMILY_WARRIOR:
@@ -497,6 +497,24 @@ void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
             }
             case SPELLFAMILY_DRUID:
             {
+				// -------------------------------------------------------------------------------
+				if (m_spellInfo->Id == 22568)
+				{
+			//case 22568:		// Druide Morsure féroce   uint32 combo = GetCaster()->ToPlayer()->GetComboPoints();   unitTarget
+			
+
+				uint8 Combo_Points = GetCaster()->ToPlayer()->GetComboPoints();
+
+				if (Combo_Points > 0)
+				{
+					damage = damage + (damage / (6 - Combo_Points));
+					m_caster->SetPower(POWER_COMBO_POINTS, 0);
+				}
+
+				break;
+			}
+
+				/*
                 // Ferocious Bite
                 if (m_caster->GetTypeId() == TYPEID_PLAYER && m_spellInfo->SpellFamilyFlags[3] & 0x1000)
                 {
@@ -505,6 +523,7 @@ void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
                     // 25 energy = 100% more damage
                     AddPct(damage, energy * 4);
                 }
+				*/
                 break;
             }
             case SPELLFAMILY_DEATHKNIGHT:
