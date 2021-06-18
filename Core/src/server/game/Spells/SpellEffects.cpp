@@ -1260,6 +1260,19 @@ void Spell::EffectHeal(SpellEffIndex /*effIndex*/)
 
         int32 addhealth = damage;
 
+
+		//--- Stitch effect (10) Heal ----------------------------------------------------------------
+		// Régénération frénétique
+		if (m_spellInfo->Id == 22842)
+		{
+			uint8 Combo_Points = GetCaster()->ToPlayer()->GetComboPoints();
+			AddPct(addhealth, Combo_Points * 100); 
+			m_caster->SetPower(POWER_COMBO_POINTS, 0);
+
+		}
+		//--------------------------------------------------------------------------------------------
+
+
         // Vessel of the Naaru (Vial of the Sunwell trinket)
         if (m_spellInfo->Id == 45064)
         {
