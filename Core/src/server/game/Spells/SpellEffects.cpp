@@ -414,6 +414,11 @@ void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
     if (unitTarget && unitTarget->IsAlive())
     {
         bool apply_direct_bonus = true;
+
+
+
+
+
         switch (m_spellInfo->SpellFamilyName)
         {
             case SPELLFAMILY_GENERIC:
@@ -458,9 +463,20 @@ void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
                         damage = (m_caster->getLevel() - 60) * 4 + 60;
                         break;
                     }
+
+
+
+
+
+
+
+
+
                }
                 break;
             }
+			//----------------------------------------------------------------------------------------------------------------------
+			// Stitch effect Spell
             case SPELLFAMILY_WARRIOR:
             {
                 // Victory Rush
@@ -476,7 +492,44 @@ void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
                 }
                 break;
             }
-            case SPELLFAMILY_WARLOCK:
+			case SPELLFAMILY_PALADIN:
+			{
+				break;
+			}
+			case SPELLFAMILY_HUNTER:
+			{
+				break;
+			}
+			case SPELLFAMILY_ROGUE:
+			{
+				break;
+			}
+			case SPELLFAMILY_PRIEST:
+			{
+				break;
+			}
+			case SPELLFAMILY_DEATHKNIGHT:
+			{
+				// Blood Boil - bonus for diseased targets
+				if (m_spellInfo->SpellFamilyFlags[0] & 0x00040000)
+				{
+					if (unitTarget->GetAuraEffect(SPELL_AURA_PERIODIC_DAMAGE, SPELLFAMILY_DEATHKNIGHT, flag128(0, 0, 0x00000002), m_caster->GetGUID()))
+					{
+						damage += m_damage / 2;
+						damage += int32(m_caster->GetTotalAttackPowerValue(BASE_ATTACK) * 0.035f);
+					}
+				}
+				break;
+			}
+			case SPELLFAMILY_SHAMAN:
+			{
+				break;
+			}
+			case SPELLFAMILY_MAGE:
+			{
+				break;
+			}
+			case SPELLFAMILY_WARLOCK:
             {
                 // Incinerate Rank 1 & 2
                 if ((m_spellInfo->SpellFamilyFlags[1] & 0x000040) && m_spellInfo->SpellIconID == 2128)
@@ -491,28 +544,29 @@ void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
                 }
                 break;
             }
-            case SPELLFAMILY_PRIEST:
-            {
-                break;
-            }
-            case SPELLFAMILY_DRUID:
-            {
-				// -------------------------------------------------------------------------------
-				if (m_spellInfo->Id == 22568)
-				{
-			//case 22568:		// Druide Morsure féroce   uint32 combo = GetCaster()->ToPlayer()->GetComboPoints();   unitTarget
-			
-
-				uint8 Combo_Points = GetCaster()->ToPlayer()->GetComboPoints();
-
-				if (Combo_Points > 0)
-				{
-					damage = damage + (damage / (6 - Combo_Points));
-					m_caster->SetPower(POWER_COMBO_POINTS, 0);
-				}
-
+			case SPELLFAMILY_MONK:
+			{
 				break;
 			}
+			case SPELLFAMILY_DRUID:
+            {
+				// -------------------------------------------------------------------------------
+				// Druide Morsure féroce 
+				if (m_spellInfo->Id == 22568)
+				{
+					uint8 Combo_Points = GetCaster()->ToPlayer()->GetComboPoints();
+					if (Combo_Points > 0)
+					{
+						damage = damage + (damage / (6 - Combo_Points));
+						m_caster->SetPower(POWER_COMBO_POINTS, 0);
+					}
+					break;
+				}
+				// -------------------------------------------------------------------------------
+
+
+
+
 
 				/*
                 // Ferocious Bite
@@ -524,19 +578,6 @@ void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
                     AddPct(damage, energy * 4);
                 }
 				*/
-                break;
-            }
-            case SPELLFAMILY_DEATHKNIGHT:
-            {
-                // Blood Boil - bonus for diseased targets
-                if (m_spellInfo->SpellFamilyFlags[0] & 0x00040000)
-                {
-                    if (unitTarget->GetAuraEffect(SPELL_AURA_PERIODIC_DAMAGE, SPELLFAMILY_DEATHKNIGHT, flag128(0, 0, 0x00000002), m_caster->GetGUID()))
-                    {
-                        damage += m_damage / 2;
-                        damage += int32(m_caster->GetTotalAttackPowerValue(BASE_ATTACK) * 0.035f);
-                    }
-                }
                 break;
             }
 
@@ -2953,7 +2994,10 @@ void Spell::EffectWeaponDmg(SpellEffIndex effIndex)
     float totalDamagePercentMod  = 1.0f;                    // applied to final bonus+weapon damage
     int32 fixed_bonus = 0;
     int32 spell_bonus = 0;                                  // bonus specific for spell
-
+															
+															
+	//----------------------------------------------------------------------------------------------------------------------
+	// Stitch effect weapon
     switch (m_spellInfo->SpellFamilyName)
     {
         case SPELLFAMILY_WARRIOR:
@@ -2975,31 +3019,93 @@ void Spell::EffectWeaponDmg(SpellEffIndex effIndex)
             }
             break;
         }
-        case SPELLFAMILY_ROGUE:
-        {
-            // Hemorrhage
-            if (m_spellInfo->SpellFamilyFlags[0] & 0x2000000)
-            {
-                if (m_caster->GetTypeId() == TYPEID_PLAYER)
-                    m_caster->ToPlayer()->AddComboPoints(1, this);
-                // 50% more damage with daggers
-                if (m_caster->GetTypeId() == TYPEID_PLAYER)
-                    if (Item* item = m_caster->ToPlayer()->GetWeaponForAttack(m_attackType, true))
-                        if (item->GetTemplate()->GetSubClass() == ITEM_SUBCLASS_WEAPON_DAGGER)
-                            totalDamagePercentMod *= 1.5f;
-            }
-            break;
-        }
-        case SPELLFAMILY_SHAMAN:
-        {
-            // Skyshatter Harness item set bonus
-            // Stormstrike
-            if (AuraEffect* aurEff = m_caster->IsScriptOverriden(m_spellInfo, 5634))
-                m_caster->CastSpell(m_caster, 38430, true, NULL, aurEff);
-            break;
-        }
+		case SPELLFAMILY_PALADIN:
+		{
+			break;
+		}
+		case SPELLFAMILY_HUNTER:
+		{
+			// Kill Shot - bonus damage from Ranged Attack Power
+			if (m_spellInfo->SpellFamilyFlags[1] & 0x800000)
+				spell_bonus += int32(0.45f * m_caster->GetTotalAttackPowerValue(RANGED_ATTACK));
+			break;
+		}
+		case SPELLFAMILY_ROGUE:
+		{
+			// Hemorrhage
+			if (m_spellInfo->SpellFamilyFlags[0] & 0x2000000)
+			{
+				if (m_caster->GetTypeId() == TYPEID_PLAYER)
+					m_caster->ToPlayer()->AddComboPoints(1, this);
+				// 50% more damage with daggers
+				if (m_caster->GetTypeId() == TYPEID_PLAYER)
+					if (Item* item = m_caster->ToPlayer()->GetWeaponForAttack(m_attackType, true))
+						if (item->GetTemplate()->GetSubClass() == ITEM_SUBCLASS_WEAPON_DAGGER)
+							totalDamagePercentMod *= 1.5f;
+			}
+			break;
+		}
+		case SPELLFAMILY_PRIEST:
+		{
+			break;
+		}
+		case SPELLFAMILY_DEATHKNIGHT:
+		{
+			// Blood Strike
+			if (m_spellInfo->SpellFamilyFlags[0] & 0x400000)
+			{
+				if (SpellEffectInfo const* effect = GetEffect(EFFECT_2))
+				{
+					float bonusPct = effect->CalcValue(m_caster) * unitTarget->GetDiseasesByCaster(m_caster->GetGUID()) / 2.0f;
+					// Death Knight T8 Melee 4P Bonus
+					if (AuraEffect const* aurEff = m_caster->GetAuraEffect(64736, EFFECT_0))
+						AddPct(bonusPct, aurEff->GetAmount());
+					AddPct(totalDamagePercentMod, bonusPct);
+				}
+				break;
+			}
+			break;
+		}
+		case SPELLFAMILY_SHAMAN:
+		{
+			// Skyshatter Harness item set bonus
+			// Stormstrike
+			if (AuraEffect* aurEff = m_caster->IsScriptOverriden(m_spellInfo, 5634))
+				m_caster->CastSpell(m_caster, 38430, true, NULL, aurEff);
+			break;
+		}
+		case SPELLFAMILY_MAGE:
+		{
+			break;
+		}
+		case SPELLFAMILY_WARLOCK:
+		{
+			break;
+		}
+		case SPELLFAMILY_MONK:
+		{
+			break;
+		}
         case SPELLFAMILY_DRUID:
         {
+			//----------------------------------------------------------------------------------------------------------------------
+			// Estropier 
+			if (m_spellInfo->Id == 22570)
+			{
+				uint8 Combo_Points = GetCaster()->ToPlayer()->GetComboPoints();
+				totalDamagePercentMod *= 1.5f+(Combo_Points/5) ;
+				m_caster->SetPower(POWER_COMBO_POINTS, 0);
+				break;
+			}
+			//----------------------------------------------------------------------------------------------------------------------
+
+			//if (m_caster->HasAura(5215) && m_spellInfo->Id == 22570 )   unitTarget
+
+
+
+
+
+
             // Mangle (Cat): CP
             if (m_spellInfo->SpellFamilyFlags[1] & 0x400)
             {
@@ -3014,31 +3120,7 @@ void Spell::EffectWeaponDmg(SpellEffIndex effIndex)
             }
             break;
         }
-        case SPELLFAMILY_HUNTER:
-        {
-            // Kill Shot - bonus damage from Ranged Attack Power
-            if (m_spellInfo->SpellFamilyFlags[1] & 0x800000)
-                spell_bonus += int32(0.45f * m_caster->GetTotalAttackPowerValue(RANGED_ATTACK));
-            break;
-        }
-        case SPELLFAMILY_DEATHKNIGHT:
-        {
-            // Blood Strike
-            if (m_spellInfo->SpellFamilyFlags[0] & 0x400000)
-            {
-                if (SpellEffectInfo const* effect = GetEffect(EFFECT_2))
-                {
-                    float bonusPct = effect->CalcValue(m_caster) * unitTarget->GetDiseasesByCaster(m_caster->GetGUID()) / 2.0f;
-                    // Death Knight T8 Melee 4P Bonus
-                    if (AuraEffect const* aurEff = m_caster->GetAuraEffect(64736, EFFECT_0))
-                        AddPct(bonusPct, aurEff->GetAmount());
-                    AddPct(totalDamagePercentMod, bonusPct);
-                }
-                break;
-            }
-            break;
-        }
-    }
+}
 
     bool normalized = false;
     float weaponDamagePercentMod = 1.0f;
