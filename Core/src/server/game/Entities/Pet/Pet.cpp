@@ -1281,7 +1281,13 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 9));
 					break;
 				}
-
+				case 24207: // Armée des morts (DK)
+				{
+					SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK)));
+					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 6));
+					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 8));
+					break;
+				}
 
 				
 				default:
