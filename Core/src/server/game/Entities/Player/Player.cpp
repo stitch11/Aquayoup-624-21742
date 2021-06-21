@@ -24554,7 +24554,7 @@ uint32 Player::GetRuneTypeBaseCooldown(RuneType runeType) const
 	{
 		m_FunPowerRegen = 2;
 	}
-	cooldown = cooldown *2 / (m_FunPowerRegen *3);
+	cooldown = cooldown *2 / (m_FunPowerRegen *2);
 
 
     return cooldown;
