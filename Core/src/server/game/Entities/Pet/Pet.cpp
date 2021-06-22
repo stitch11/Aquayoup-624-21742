@@ -1284,10 +1284,19 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 				case 24207: // Armée des morts (DK)
 				{
 					SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK)));
-					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 6));
-					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 8));
+					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 5));
+					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 7));
 					break;
 				}
+				case 27893: // Arme runique (DK)
+				{
+					SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK)));
+					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 12));
+					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 15));
+					SetReactState(REACT_DEFENSIVE);
+					break;
+				}
+
 
 				
 				default:
