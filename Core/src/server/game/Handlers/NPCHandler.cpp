@@ -294,7 +294,9 @@ void WorldSession::HandleGossipHelloOpcode(WorldPackets::NPC::Hello& packet)
         _player->SendPreparedGossip(unit);
     }
 	//Stitch visuel gossip Handler
-	unit->HandleEmoteCommand(4); // 401
+	uint32 Npc_Emotes[15] = { 1,3,6,11,15,22,2,24,25,71,2,2,274,482,482 };
+	uint32 Npc_Play_Emotes = Npc_Emotes[urand(0, 14)];
+	unit->HandleEmoteCommand(Npc_Play_Emotes); // 401
 
     unit->AI()->sGossipHello(_player);
 }
@@ -371,6 +373,11 @@ void WorldSession::HandleGossipSelectOptionOpcode(WorldPackets::NPC::GossipSelec
         if (unit)
         {
             unit->AI()->sGossipSelect(_player, packet.GossipID, packet.GossipIndex);
+
+			uint32 Npc_Emotes[15] = { 1,3,6,11,15,22,2,24,25,71,2,2,274,482,482 };
+			uint32 Npc_Play_Emotes = Npc_Emotes[urand(0, 14)];
+			unit->HandleEmoteCommand(Npc_Play_Emotes); // 401
+
             if (!sScriptMgr->OnGossipSelect(_player, unit, _player->PlayerTalkClass->GetGossipOptionSender(packet.GossipIndex), _player->PlayerTalkClass->GetGossipOptionAction(packet.GossipIndex)))
                 _player->OnGossipSelect(unit, packet.GossipIndex, packet.GossipID);
         }
