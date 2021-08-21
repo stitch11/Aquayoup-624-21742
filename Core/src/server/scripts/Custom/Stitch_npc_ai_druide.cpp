@@ -1,6 +1,6 @@
 //###########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : DRUIDE Ver 2020-11-07
+// AI generique npc par classe : DRUIDE Ver 2021-08-01
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_druide',`AIName` = '' WHERE (entry = 15100001);
@@ -66,10 +66,10 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			uint32 Spell_branche1_1;
 			uint32 Spell_branche1_2;
 			uint32 Spell_branche1_3;
-			uint32 branche1_agro[4] = { 2912, 2912, 2912, 33844 };					// Feu stellaire 2912, Sarments (4s) 33844
-			uint32 branche1_1[2] = { 119577, 5176 };								// Colère (verte) 119577 , Colère (jaune) 5176
-			uint32 branche1_2[2] = { 78674, 770 };									// Éruption stellaire 78674, Lucioles 770
-			uint32 branche1_3[2] = { 15798, 2912 };									// Eclat lunaire 15798, Feu stellaire 2912
+			uint32 branche1_agro[4] = { 21668, 21668, 21668, 33844 };				// Feu stellaire 21668, Sarments (4s) 33844
+			uint32 branche1_1[2] = { 149466, 149466 };								// Colère (verte) 149466 
+			uint32 branche1_2[2] = { 98995, 770 };									// Éruption stellaire 98995, Lucioles 770
+			uint32 branche1_3[2] = { 15798, 21668 };								// Eclat lunaire 15798, Feu stellaire 21668
 																					
 			// Definitions des Spells Ours
 			uint32 Spell_branche2_agro;
@@ -77,8 +77,8 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			uint32 Spell_branche2_2;
 			uint32 Spell_branche2_3;
 			uint32 branche2_agro[3] = { 32323, 22863, 19196 };						// Charge 32323, Vitesse 22863 (30%) , charge afflux 19196 (charge+renverse)
-			uint32 branche2_1[2] = { 85835, 84867 };								// Mutiler 85835/300206, Balayage fracassant 84867
-			uint32 branche2_2[2] = { 33917, 106832 };								// Mutilation (mob ours) 33917/300207, Rosser Ours 106832/300208
+			uint32 branche2_1[2] = { 300206, 84867 };								// Mutiler 300206, Balayage fracassant 84867
+			uint32 branche2_2[2] = { 300207, 300208 };								// Mutilation (mob ours) 300207, Rosser Ours 300208
 			uint32 branche2_3[5] = { 131172, 300209, 138766, 10887, 127987 };		// Rugissement perçant 138766 (interrompt ,empêchant les sorts de la même école pendant 6 sec)
 																					// Coup de tete 131172, Coup de crâne 300209 (dps+interrompt  4s), faucher la foule 10887 (interomp, repousse 10 m), *Morsure hémorragique 127987
 			// Spells Felin
@@ -87,7 +87,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			uint32 Spell_branche3_2;
 			uint32 Spell_branche3_3;
 			uint32 branche3_agro[3] = { 22863, 89712, 59737 };						// Vitesse +30% 22863, Griffure bondissante 89712 (Etourdi 2s),vitesse +100% 59737
-			uint32 branche3_1[2] = { 24187, 85835 };								// Griffe 24187, Mutiler 85835
+			uint32 branche3_1[2] = { 31289, 85835 };								// Griffe 31289, Mutiler 85835
 			uint32 branche3_2[2] = { 113687, 138765 };								// Morsure 113687, Écraser 138765 (armure -10%/30s)
 			uint32 branche3_3[4] = { 300220, 300220, 83639, 30639 };				// Griffure 300220, Bain de sang 83639 (6 attaque /3s), Morsure carnivore 30639
 
@@ -99,7 +99,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			uint32 branche4_agro[3] = { 33844, 82742, 82742 };						// Sarments 4s 33844, *Empaler et tirer 82742
 			uint32 branche4_1[3] = { 131193, 119004, 38742 };						// Choc 131193, Violent coup direct 119004, Enchaînement gangrené 38742
 			uint32 branche4_2[4] = { 80515, 113967, 113967, 118682 };				// Frénésie immortelle 80515 (Canalisée 5s), Barbelés d'épines 113967, Taper du pied 118682
-			uint32 branche4_3[4] = { 129375, 689, 152571, 152571 };					// Choc terrestre 129375 (stun 3s), Drain de vie 689, Encorner 152571 (cone 5m)
+			uint32 branche4_3[4] = { 129375, 46155, 152571, 152571 };				// Choc terrestre 129375 (stun 3s), Drain de vie 46155, Encorner 152571 (cone 5m)
 
 
 		// Definitions des variables Cooldown et le 1er lancement
@@ -171,7 +171,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					me->CastSpell(me, Buf_branche2, true);										// Buf2 sur lui meme
 					me->LoadEquipment(2, true);													// creature_equip_template 2
 
-					Bonus_Armure(250);															// Bonus d'armure +150%
+					Bonus_Armure(200);															// Bonus d'armure +100%
 
 					// Pour visuel seulement
 					me->SetDisplayId(Modelid_Branche2);											// Modelid Ours
@@ -189,7 +189,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					me->CastSpell(me, Buf_branche3, true);										// Buf3 sur lui meme
 					me->LoadEquipment(3, true);													// creature_equip_template 2
 
-					Bonus_Armure(200);															// Bonus d'armure +100%
+					Bonus_Armure(150);															// Bonus d'armure +50%
 					
 					// Pour visuel seulement
 					me->SetDisplayId(Modelid_Branche3);											// Modelid Felin
@@ -207,7 +207,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					me->CastSpell(me, Buf_branche4, true);										// Buf4 sur lui meme
 					me->LoadEquipment(0, true);													// creature_equip_template 0
 
-					Bonus_Armure(150);															// Bonus d'armure +50%
+					Bonus_Armure(100);															// Bonus d'armure +0%
 
 					// Pour visuel seulement
 					me->SetDisplayId(Modelid_Branche4);											// Modelid Tréant - Petite-Branche 57040
@@ -283,6 +283,8 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			}
 			void UpdateAI(uint32 diff) override
 			{
+				if (me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED) || me->HasUnitState(UNIT_STATE_CANNOT_TURN) || me->HasUnitState(UNIT_STATE_CONTROLLED) || me->HasUnitState(UNIT_STATE_POSSESSED) || me->HasUnitState(UNIT_STATE_CONFUSED_MOVE))
+					return;
 				// ################################################################################################################################################
 				// Emotes hors combat & mouvement #################################################################################################################
 				// ################################################################################################################################################
@@ -825,7 +827,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					if ((me->GetHealth() < (me->GetMaxHealth()*0.50)))								// Si PV < 50%
 					{
 						DoCast(me, Spell_Heal_Caster);
-						Cooldown_Spell_Heal = 3500;
+						Cooldown_Spell_Heal = 4500;
 					}
 
 					// heal sur Friend 
@@ -836,7 +838,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 							if (target->GetHealth() < (target->GetMaxHealth()*0.40))				// Si PV < 40%
 							{
 								DoCast(target, Spell_Heal_Caster);
-								Cooldown_Spell_Heal = 4000;
+								Cooldown_Spell_Heal = 5500;
 							}
 						}
 					}

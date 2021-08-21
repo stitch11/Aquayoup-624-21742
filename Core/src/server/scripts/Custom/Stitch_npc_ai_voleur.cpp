@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour Aquayoup
-// AI generique npc par classe : VOLEUR Ver 2020-12-09
+// AI generique npc par classe : VOLEUR Ver 2021-08-17
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_voleur',`AIName` = '' WHERE (entry = 15100010);
@@ -72,16 +72,16 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 			uint32 Spell_branche1_2;
 			uint32 Spell_branche1_3;
 			uint32 branche1_agro[3] = { 2094, 121733, 79140 };						// Cécité 2094, Lancer 121733, Vendetta 79140
-			uint32 branche1_1[2] = { 1752, 1329 };									// Attaque pernicieuse 1752, Estropier 1329
-			uint32 branche1_2[2] = { 2098, 2098 };									// Eviscération 2098
-			uint32 branche1_3[5] = { 1776, 1776, 84617, 16511, 1943 };				// Suriner 1776 (stun 4s), Hémorragie 16511 (dps 24s), Frappe révélatrice 84617 (regen 24s), Rupture 1943 (regen + dps 12s)  
+			uint32 branche1_1[2] = { 172028, 80588 };								// Attaque pernicieuse 172028, Estropier 80588
+			uint32 branche1_2[2] = { 41177, 41177 };								// Eviscération 41177
+			uint32 branche1_3[5] = { 1776, 1776, 16511, 84617, 14874 };				// Suriner 1776 (stun 4s), Hémorragie 16511 (dps 24s), Frappe révélatrice 84617 (regen 24s), Rupture 14874 (dot 12s)  
 			
 			// Spells Vampire Berserker
 			uint32 Spell_branche2_agro = 300131;									// Griffure bondissante 300131
-			uint32 Spell_branche2_1 = 300126;										// Frappe sanglante 300126 
-			uint32 Spell_branche2_2 = 300127;										// Frappe sauvage 300127
-			uint32 Spell_branche2_3 = 300176;										// Enchaînement Sanglant 300128, Enchaînement Sanglant amélioré 300176
-			uint32 Spell_branche2_4 = 300174;										// Griffure sanglante 300130/300174 (version talent)
+			uint32 Spell_branche2_1 = 300242;										// Frappe sanglante 300242 
+			uint32 Spell_branche2_2 = 300243;										// Frappe sauvage 300243
+			uint32 Spell_branche2_3 = 300244;										// Enchaînement Sanglant 300244
+			uint32 Spell_branche2_4 = 300130;										// Griffure sanglante 300130/300174 (version talent)
 			
 			// Emotes
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
@@ -197,6 +197,8 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 			}
 			void UpdateAI(uint32 diff) override
 			{
+				if (me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED) || me->HasUnitState(UNIT_STATE_CANNOT_TURN) || me->HasUnitState(UNIT_STATE_CONTROLLED) || me->HasUnitState(UNIT_STATE_POSSESSED) || me->HasUnitState(UNIT_STATE_CONFUSED_MOVE))
+					return;
 				// ################################################################################################################################################
 				// Emotes hors combat & mouvement #################################################################################################################
 				// ################################################################################################################################################

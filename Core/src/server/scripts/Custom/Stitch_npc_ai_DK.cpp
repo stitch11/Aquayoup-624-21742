@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : DK Ver 2020-11-07
+// AI generique npc par classe : DK Ver 2021-08-04
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_dk',`AIName` = '' WHERE (entry = 15100009);
@@ -67,12 +67,12 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 			uint32 Buf_branche3a = 49222;											// Carapace anti-magie 48707, Bouclier d’os 49222, Invocation d'une gargouille 49206, Réanimation morbide 46584
 			uint32 Buf_branche4 = 300049;											// Présence du Chaos 300049
 			uint32 Buf_branche4a = 115994;											// Chancre impie 115994
-			uint32 Spell_Heal_1 = 48982;  											// Connexion runique 48982/171049 59754
-			uint32 Spell_Heal_2 = 47541;  											// Voile mortel 47541
+			uint32 Spell_Heal_1 = 48982;  											// Connexion runique 48982
+			uint32 Spell_Heal_2 = 46283;  											// Voile mortel 46283
 			uint32 Spell_Cible_trop_loin = 300060;									// Poigne_de_la_mort 49576/30010, Nova de sang 300059, Souffle de givre 300060
-			uint32 Peste_de_sang = 57601;											// 12s
-			uint32 fievre_de_givre = 69917;											// 3s/15s
-			uint32 Peste_necrotique = 155159;										// 2s/30s
+			uint32 Peste_de_sang = 60950;											// 3s/12s
+			uint32 fievre_de_givre = 67719;											// 12s, vit -25%
+			uint32 Peste_necrotique = 300232;										// 3s/30s
 			uint32 Passage_de_givre = 3714;
 			uint32 Robustesse_glaciale = 48792;
 			uint32 Strangulation = 47476;
@@ -85,11 +85,11 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 			uint32 Spell_branche1_2;
 			uint32 Spell_branche1_3;
 			uint32 Spell_branche1_4;
-			uint32 branche1_agro[3] = { 49576, 77575, 130736 };						// Poigne de la mort 49576, Poussée de fièvre 77575, Faucheur d’âme 130736
-			uint32 branche1_1[2] = { 60945, 60945 };								// Frappe de sang 60945   
-			uint32 branche1_2[2] = { 49998, 49998 };								// Frappe de mort 49998, 45470 (mob)
+			uint32 branche1_agro[3] = { 49576, 300233, 130736 };					// Poigne de la mort 49576, Poussée de fièvre 300233, Faucheur d’âme 130736
+			uint32 branche1_1[2] = { 300198, 300198 };								// Frappe de sang 300198   
+			uint32 branche1_2[2] = { 45470, 45470 };								// Frappe de mort 45470
 			uint32 branche1_3[2] = { 79885, 79885 };								// Frappe au cœur 79885
-			uint32 branche1_4[2] = { 43265, 50842 };								// Mort et décomposition 43265, Furoncle sanglant 50842, Poussée de fièvre 77575 rech 30s-10m
+			uint32 branche1_4[2] = { 43265, 92025 };								// Mort et décomposition 43265, Furoncle sanglant 92025
 
 			// Spells Givre
 			uint32 Spell_branche2_agro;
@@ -98,10 +98,10 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 			uint32 Spell_branche2_3;
 			uint32 Spell_branche2_4; 
 			uint32 branche2_agro[4] = { 45524, 45524, 47528, 47528 };				// Chaînes de glace 45524, Gel de l'esprit 47528 
-			uint32 branche2_1[2] = { 45477, 45477 };								// Toucher de glace 45477
+			uint32 branche2_1[2] = { 300197, 300197 };								// Toucher de glace 300197
 			uint32 branche2_2[2] = { 49143, 49143 };								// Frappe de givre 49143, 
-			uint32 branche2_3[2] = { 49020, 49020 };								// Anéantissement 49020
-			uint32 branche2_4[2] = { 49184, 49184 };								// Rafale hurlante 49184, Poussée de fièvre 77575 rech 30s-10m
+			uint32 branche2_3[2] = { 300234, 300234 };								// Anéantissement 300234
+			uint32 branche2_4[2] = { 49184, 49184 };								// Rafale hurlante 49184
 			
 			// Spells Impie
 			uint32 Spell_branche3_agro;
@@ -109,11 +109,11 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 			uint32 Spell_branche3_2;
 			uint32 Spell_branche3_3;
 			uint32 Spell_branche3_4;
-			uint32 branche3_agro[3] = { 77575, 130736, 130736 };					// Poussée de fièvre 77575, Faucheur d’âme 130736
-			uint32 branche3_1[2] = { 45462, 45462 };								// Frappe de peste 45462
-			uint32 branche3_2[2] = { 55090, 55090 };								// Frappe du Fléau 55090 
-			uint32 branche3_3[2] = { 85948, 85948 };								// Frappe purulente 85948
-			uint32 branche3_4[2] = { 50842, 50842 };								// Furoncle sanglant 50842 
+			uint32 branche3_agro[3] = { 300233, 130736, 130736 };					// Poussée de fièvre 300233, Faucheur d’âme 130736
+			uint32 branche3_1[2] = { 300199, 300199 };								// Frappe de peste 300199
+			uint32 branche3_2[2] = { 172680, 172680 };								// Frappe du Fléau 172680 
+			uint32 branche3_3[2] = { 300235, 300235 };								// Frappe purulente 300235
+			uint32 branche3_4[2] = { 92025, 92025 };								// Furoncle sanglant 92025 
 
 			// Spells Chaos
 			uint32 Spell_branche4_agro;
@@ -121,11 +121,11 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 			uint32 Spell_branche4_2;
 			uint32 Spell_branche4_3;
 			uint32 Spell_branche4_4;
-			uint32 branche4_agro[3] = { 300061, 300061, 45524 };					// Choc impie 300061, Strangulation 47476, Chaînes de glace 45524
-			uint32 branche4_1[2] = { 300051, 300051 };								// Javelot de givre 300051
-			uint32 branche4_2[2] = { 300052, 300052 };								// Javelot de peste 300052
-			uint32 branche4_3[2] = { 300050, 300050 };								// Javelot de sang 300050
-			uint32 branche4_4[2] = { 300061, 300060 };								// Choc impie 300061, Souffle de givre 300060
+			uint32 branche4_agro[3] = { 300240, 300240, 45524 };					// Choc impie 300240, Strangulation 47476, Chaînes de glace 45524
+			uint32 branche4_1[2] = { 300237, 300237 };								// Javelot de givre 300237
+			uint32 branche4_2[2] = { 300238, 300238 };								// Javelot de peste 300238
+			uint32 branche4_3[2] = { 300236, 300236 };								// Javelot de sang 300236
+			uint32 branche4_4[2] = { 300240, 300239 };								// Choc impie 300240, Souffle de givre 300239
 			
 			// Emotes
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
@@ -172,7 +172,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 
 					Pet_Dk = Liste_Pet_Dk[urand(0, 4)];
 
-					Bonus_Armure(125);															// Bonus d'armure +25%
+					//Bonus_Armure(125);															// Bonus d'armure +25%
 					ResteADistance = 5;
 					break;
 
@@ -189,7 +189,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 
 					Pet_Dk = Liste_Pet_Dk[urand(0, 4)];
 
-					Bonus_Armure(175);															// Bonus d'armure +75%
+					//Bonus_Armure(175);															// Bonus d'armure +75%
 					ResteADistance = 5;
 					break;
 
@@ -206,7 +206,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 
 					Pet_Dk = Liste_Pet_Dk[urand(0, 4)];
 
-					Bonus_Armure(125);
+					//Bonus_Armure(125);
 					ResteADistance = 5;
 					break;
 
@@ -223,7 +223,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 
 					Spell_Cible_trop_loin = 47476;												// Nova de sang 300059, Strangulation 47476
 
-					Bonus_Armure(100);
+					//Bonus_Armure(100);
 					ResteADistance = urand(10,15);
 					Cooldown_ResteADistance = 1000;
 					break;
@@ -293,6 +293,8 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 			}
 			void UpdateAI(uint32 diff) override
 			{
+				if (me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED) || me->HasUnitState(UNIT_STATE_CANNOT_TURN) || me->HasUnitState(UNIT_STATE_CONTROLLED) || me->HasUnitState(UNIT_STATE_POSSESSED) || me->HasUnitState(UNIT_STATE_CONFUSED_MOVE))
+					return;
 				// ################################################################################################################################################
 				// Emotes hors combat & mouvement #################################################################################################################
 				// ################################################################################################################################################
@@ -721,7 +723,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 					} else if(Random == 2 || Random == 3 )									// 2 chances sur 5 Tourne_Au_Tour 
 					{
 						Tourne_Au_Tour_En_Combat();
-						Cooldown_ResteADistance = 4000;
+						Cooldown_ResteADistance = urand(4000, 6000);
 					}
 				}
 				else Cooldown_ResteADistance -= diff;

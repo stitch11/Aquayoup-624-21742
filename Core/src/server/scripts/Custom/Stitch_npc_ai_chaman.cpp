@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : CHAMAN Ver 2020-11-07
+// AI generique npc par classe : CHAMAN Ver 2021-07-27
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_chaman',`AIName` = '' WHERE (entry = 15100002);
@@ -64,28 +64,28 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 			uint32 Totem_incendiaire = 3599;
 			uint32 Totem_peau_de_pierre = 78222;
 			uint32 Totem_de_magma = 8190;											// Totem de magma
-			uint32 Horion_de_terre = 8042;											// Horion de terre 
-			uint32 Horion_de_givre = 8056;											// Horion de givre
+			uint32 Horion_de_terre = 13728;											// Horion de terre 
+			uint32 Horion_de_givre = 12548;											// Horion de givre
 
 			// Spells Restauration
 			uint32 Spell_branche1_agro;
 			uint32 Spell_branche1_1;
 			uint32 Spell_branche1_2;
 			uint32 Spell_branche1_3;
-			uint32 branche1_agro[4] = { 8050, 8056, 3599, 73393 };					// Horion de flammes 8050 - Horion de givre 8056 - Totem incendiaire 3599 - Totem de flot de mana 73393
-			uint32 branche1_1[2] = { 403, 403 };									// Eclair 403
-			uint32 branche1_2[2] = { 8056, 8042 };									// Horion de givre 8056 - Horion de terre 8042 (stun 2s)
-			uint32 branche1_3[2] = { 8050, 57994 };									// Horion de flammes 8050 30s - Cisaille de vent 57994
+			uint32 branche1_agro[4] = { 15039, 12548, 3599, 73393 };				// Horion de flammes 15039 - Horion de givre 12548 - Totem incendiaire 3599 - Totem de flot de mana 73393
+			uint32 branche1_1[2] = { 9532, 9532 };									// Eclair 9532
+			uint32 branche1_2[2] = { 12548, 13728 };								// Horion de givre 12548 - Horion de terre 13728 (stun 2s)
+			uint32 branche1_3[2] = { 15039, 57994 };								// Horion de flammes 15039 30s - Cisaille de vent 57994
 			
 			// Definitions des Spells Elementaire
 			uint32 Spell_branche2_agro;
 			uint32 Spell_branche2_1;
 			uint32 Spell_branche2_2;
 			uint32 Spell_branche2_3;
-			uint32 branche2_agro[5] = { 8050, 8056, 3599, 2484, 78222 };			// Horion de flammes 8050 - Horion de givre 8056 - Totem incendiaire 3599 - Totem de lien terrestre 2484 - Totem de peau de pierre 78222
-			uint32 branche2_1[4] = { 403, 403, 403, 421 };							// Eclair 403 - Chaîne d'éclairs 421 
-			uint32 branche2_2[3] = { 51505, 51505 ,8056 };							// Explosion de lave 51505 - Horion de givre 8056 8s
-			uint32 branche2_3[4] = { 8050, 8050, 8042, 57994 };						// Horion de flammes 8050 30s - Horion de terre 8042 (stun 2s) - Cisaille de vent 57994
+			uint32 branche2_agro[5] = { 15039, 12548, 3599, 2484, 78222 };			// Horion de flammes 15039 - Horion de givre 12548 - Totem incendiaire 3599 - Totem de lien terrestre 2484 - Totem de peau de pierre 78222
+			uint32 branche2_1[4] = { 9532, 9532, 9532, 28167 };						// Eclair 9532 - Chaîne d'éclairs 28167 
+			uint32 branche2_2[3] = { 178091, 178091 ,12548 };						// Explosion de lave 178091 - Horion de givre 12548 8s
+			uint32 branche2_3[4] = { 15039, 15039, 13728, 57994 };					// Horion de flammes 15039 30s - Horion de terre 13728 (stun 2s) - Cisaille de vent 57994
 
 			// Spells Amelioration
 			uint32 Spell_branche3_agro;
@@ -93,9 +93,9 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 			uint32 Spell_branche3_2;
 			uint32 Spell_branche3_3;
 			uint32 branche3_agro[4] = { 370, 370, 2484, 3599 };						// Purge 370 (retire 1 buf), Totem de lien terrestre 2484, Totem incendiaire 3599
-			uint32 branche3_1[2] = { 300200, 300200 };								// Frappe primordiale 300200
-			uint32 branche3_2[3] = { 17364, 60103, 8056 };							// Horion de givre 8056 8s - Frappe-tempête 17364 - Fouet de lave 60103
-			uint32 branche3_3[2] = { 8050, 8042 };									// Horion de flammes 8050 - Cisaille de vent 57994 -  Horion de givre 8056 8s - Horion de terre 8042 (stun 2s)
+			uint32 branche3_1[2] = { 79926, 79926 };								// Frappe primordiale 79926
+			uint32 branche3_2[3] = { 172779, 147093, 12548 };						// Horion de givre 12548 8s - Frappe-tempête 172779 - Fouet de lave 147093
+			uint32 branche3_3[2] = { 15039, 13728 };								// Horion de flammes 15039 - Cisaille de vent 57994 -  Horion de givre 12548 8s - Horion de terre 13728 (stun 2s)
 
 			// Emotes
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
@@ -216,6 +216,8 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 			}
 			void UpdateAI(uint32 diff) override
 			{
+				if (me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED) || me->HasUnitState(UNIT_STATE_CANNOT_TURN) || me->HasUnitState(UNIT_STATE_CONTROLLED) || me->HasUnitState(UNIT_STATE_POSSESSED) || me->HasUnitState(UNIT_STATE_CONFUSED_MOVE))
+					return;
 				// ################################################################################################################################################
 				// Emotes hors combat & mouvement #################################################################################################################
 				// ################################################################################################################################################

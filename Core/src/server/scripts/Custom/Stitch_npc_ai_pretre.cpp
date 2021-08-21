@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : PRETRE Ver 2020-11-01
+// AI generique npc par classe : PRETRE Ver 2021-08-02
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_pretre',`AIName` = '' WHERE (entry = 15100003);
@@ -68,10 +68,10 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 			uint32 Spell_branche1_1;
 			uint32 Spell_branche1_2;
 			uint32 Spell_branche1_3;
-			uint32 branche1_agro[4] = { 15487, 15487, 34433, 64044 };				// Ombrefiel 34433, Horreur psychique 64044 (fear 5s), Silence 15487 5s
-			uint32 branche1_1[4] = { 15407, 15407, 15407, 48045 };					// Fouet mental 15407, Incandescence mentale 48045
-			uint32 branche1_2[2] = { 8092, 73510 };									// Attaque mentale 8092, Pointe mentale 73510
-			uint32 branche1_3[3] = { 34914, 2944, 589 };							// Toucher vampirique 34914,  Peste dévorante 2944, Mot de l’ombre:Douleur 589
+			uint32 branche1_agro[4] = { 15487, 15487, 172884, 64044 };				// Ombrefiel 172884, Horreur psychique 64044 (fear 5s), Silence 15487 5s
+			uint32 branche1_1[4] = { 183324, 183324, 183324, 60440 };				// Fouet mental 183324, Incandescence mentale 60440
+			uint32 branche1_2[2] = { 92713, 145550 };								// Attaque mentale 92713, Pointe mentale 145550
+			uint32 branche1_3[3] = { 34914, 2944, 34941 };							// Toucher vampirique 34914,  Peste dévorante 2944, Mot de l’ombre:Douleur 34941
 
 			// Spells Discipline
 			uint32 Spell_branche2_agro;	//    
@@ -79,9 +79,9 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 			uint32 Spell_branche2_2;
 			uint32 Spell_branche2_3;
 			uint32 branche2_agro[6] = { 15487, 15487, 15487, 88625, 88625, 64044 };	// Horreur psychique 64044 (fear 5s), Silence 15487 5s , Mot sacré : Châtier 88625 (stun 3s) , 
-			uint32 branche2_1[2] = { 585, 585 };									// Châtiment 585  
-			uint32 branche2_2[3] = { 14914, 14914 ,14914 };							// Flammes sacrées 14914, Pénitence 47540 dmg/heal
-			uint32 branche2_3[3] = { 589, 589, 589 };								// Mot de l’ombre:Douleur 589
+			uint32 branche2_1[2] = { 168380, 168380 };								// Châtiment 168380  
+			uint32 branche2_2[3] = { 18165, 18165 ,165721 };						// Flammes sacrées 18165, Pénitence 165721
+			uint32 branche2_3[3] = { 34941, 34941, 34941 };							// Mot de l’ombre:Douleur 34941
 
 			// Emotes
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
@@ -180,6 +180,8 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 			}
 			void UpdateAI(uint32 diff) override
 			{
+				if (me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED) || me->HasUnitState(UNIT_STATE_CANNOT_TURN) || me->HasUnitState(UNIT_STATE_CONTROLLED) || me->HasUnitState(UNIT_STATE_POSSESSED) || me->HasUnitState(UNIT_STATE_CONFUSED_MOVE))
+					return;
 				// ################################################################################################################################################
 				// Emotes hors combat & mouvement #################################################################################################################
 				// ################################################################################################################################################
@@ -275,7 +277,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 						}
 						else Cooldown_Spell1 -= diff;
 
-						Heal_En_Combat_Caster(diff);
+						//Heal_En_Combat_Caster(diff);
 						break;
 
 					case 2: // Spécialisation Discipline ##################################################################################################################

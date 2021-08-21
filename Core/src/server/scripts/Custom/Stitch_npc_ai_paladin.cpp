@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : PALADIN Ver 2020-11-07
+// AI generique npc par classe : PALADIN Ver 2021-07-27
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_paladin',`AIName` = '' WHERE (entry = 15100006);
@@ -58,7 +58,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			uint32 Buf_branche2 = 20165;											// Sceau de clairvoyance 20165, Sceau de protection de mana 20154,
 			uint32 Buf_branche2a = 31821;											// Aura de dévotion 31821, Aura de dévotion 52442 (armure+25%)
 			uint32 Buf_branche3 = 31801;											// Sceau de clairvoyance 20165, Sceau de vérité 31801
-			uint32 Buf_branche3a = 31850;											// Ardent défenseur 31850 (dmg -20% 10s),     Bénédiction des rois 72043, Protection divine 498, Aura de dévotion 52442 (armure+25%) 
+			uint32 Buf_branche3a = 31850;											// Ardent défenseur 31850 (dmg -20% 10s), Bénédiction des rois 72043, Protection divine 498, Aura de dévotion 52442 (armure+25%) 
 			uint32 Spell_Heal_Caster = 19750;  										// Eclair lumineux 19750
 			uint32 Spell_Heal_Heal = 177551;  										// Lumière sacrée 82326/177551
 
@@ -67,20 +67,20 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			uint32 Spell_branche1_1;
 			uint32 Spell_branche1_2;
 			uint32 Spell_branche1_3;
-			uint32 branche1_agro[4] = { 853, 853, 96231, 62124 };					// Marteau de la justice 853 (stun 6s), Réprimandes 96231 (interrompt 4s), Rétribution 62124
-			uint32 branche1_1[2] = { 20271, 20271 };								// Jugement 20271
-			uint32 branche1_2[2] = { 35395, 35395 };								// Frappe du croisé 35395
-			uint32 branche1_3[3] = { 879, 53595, 53385 };							// Exorcisme 879, Marteau du vertueux 53595 6s, Tempête divine 53385
+			uint32 branche1_agro[4] = { 853, 853, 853, 62124 };						// Marteau de la justice 853 (stun 6s), Réprimandes 96231 (interrompt 4s), Rétribution(agro) 62124
+			uint32 branche1_1[2] = { 57774, 57774 };								// Jugement 57774
+			uint32 branche1_2[2] = { 66003, 66003 };								// Frappe du croisé 66003
+			uint32 branche1_3[3] = { 79964, 150628, 79970 };						// Exorcisme 79964, Marteau du vertueux 150628 6s, Tempête divine 79970
 			
 			// Spells Sacré
 			uint32 Spell_branche2_agro;
 			uint32 Spell_branche2_1;
 			uint32 Spell_branche2_2;
 			uint32 Spell_branche2_3;
-			uint32 branche2_agro[4] = { 2812, 2812, 853, 96231 };					// Dénoncer 2812 , Marteau de la justice 853 (stun 6s), Réprimandes 96231 (interrompt 4s)
-			uint32 branche2_1[2] = { 20271, 20271 };								// Jugement 20271
-			uint32 branche2_2[2] = { 35395, 35395 };								// Frappe du croisé 35395
-			uint32 branche2_3[2] = { 20473, 20473 };								// Horion sacré 20473
+			uint32 branche2_agro[4] = { 853, 96231, 96231, 96231 };					// Dénoncer 2812 , Marteau de la justice 853 (stun 6s), Réprimandes 96231 (interrompt 4s)
+			uint32 branche2_1[2] = { 57774, 57774 };								// Jugement 57774
+			uint32 branche2_2[2] = { 66003, 66003 };								// Frappe du croisé 66003
+			uint32 branche2_3[2] = { 32771, 32771 };								// Horion sacré 32771
 
 			// Spells Protection
 			uint32 Spell_branche3_agro;
@@ -88,9 +88,9 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			uint32 Spell_branche3_2;
 			uint32 Spell_branche3_3;
 			uint32 branche3_agro[3] = { 853, 96231, 62124 };						// Marteau de la justice 853 (stun 6s), Réprimandes 96231 (interrompt 4s), Rétribution 62124
-			uint32 branche3_1[2] = { 20271, 20271 };								// Jugement 20271
-			uint32 branche3_2[2] = { 53600, 53600 };								// Frappe du croisé 35395, Bouclier du vertueux 53600
-			uint32 branche3_3[2] = { 31935, 26573 };								// Bouclier du vengeur 31935 (interrompt 3s), Consécration 26573, 
+			uint32 branche3_1[2] = { 57774, 57774 };								// Jugement 57774
+			uint32 branche3_2[2] = { 53600, 53600 };								// Frappe du croisé 66003, Bouclier du vertueux 53600
+			uint32 branche3_3[2] = { 162638, 26573 };								// Bouclier du vengeur 162638 (interrompt 3s), Consécration 26573, 
 
 			// Emotes
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
@@ -126,6 +126,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 					me->CastSpell(me, Buf_branche1, true);
 					me->CastSpell(me, Buf_branche1a, true);
 					me->LoadEquipment(1, true);													// creature_equip_template 1
+					Bonus_Armure(125);
 
 					Spell_branche1_agro = branche1_agro[urand(0, 3)];
 					Spell_branche1_1 = branche1_1[urand(0, 1)];
@@ -138,6 +139,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 					me->CastSpell(me, Buf_branche2, true);										// Buf2 sur lui meme
 					me->CastSpell(me, Buf_branche2a, true);
 					me->LoadEquipment(2, true);													// creature_equip_template 2
+					Bonus_Armure(125);
 
 					Spell_branche2_agro = branche2_agro[urand(0, 3)];
 					Spell_branche2_1 = branche2_1[urand(0, 1)];
@@ -150,6 +152,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 					me->CastSpell(me, Buf_branche3, true);										// Buf3 sur lui meme
 					me->CastSpell(me, Buf_branche3a, true);
 					me->LoadEquipment(3, true);													// creature_equip_template 3
+					Bonus_Armure(125);
 
 					Spell_branche3_agro = branche3_agro[urand(0, 2)];
 					Spell_branche3_1 = branche3_1[urand(0, 1)];
@@ -214,6 +217,8 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			}
 			void UpdateAI(uint32 diff) override
 			{
+				if (me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED) || me->HasUnitState(UNIT_STATE_CANNOT_TURN) || me->HasUnitState(UNIT_STATE_CONTROLLED) || me->HasUnitState(UNIT_STATE_POSSESSED) || me->HasUnitState(UNIT_STATE_CONFUSED_MOVE))
+					return;
 				// ################################################################################################################################################
 				// Emotes hors combat & mouvement #################################################################################################################
 				// ################################################################################################################################################

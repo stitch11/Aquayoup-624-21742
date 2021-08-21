@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour Aquayoup
-// AI generique npc par classe : MOINE Ver 2020-11-07
+// AI generique npc par classe : MOINE Ver 2021-08-19
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_voleur',`AIName` = '' WHERE (entry = 15100010);
@@ -74,28 +74,29 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 
 			// Spells Maitre-Brasseur
 			uint32 Spell_branche1_agro;												// 
-			uint32 Liste_branche1_agro[3] = { 121253, 109132, 109132 };				// Fracasse-tonneau 121253, Roulade 109132
-			uint32 Spell_branche1_1 = 100780;										// Coup direct 100780
-			uint32 Spell_branche1_2 = 100787;										// Paume du tigre 100787
+			uint32 Liste_branche1_agro[3] = { 172780, 109132, 109132 };				// Fracasse-tonneau 172780, Roulade 109132
+			uint32 Spell_branche1_1 = 119004;										// Violent coup direct 119004
+			uint32 Spell_branche1_2 = 165132;										// Paume du tigre 165132
 			uint32 Spell_branche1_3 = 100784;										// Frappe du voile noir 100784
 			uint32 Spell_branche1_4 ; 
-			uint32 Liste_branche1_4[3] = { 101546, 115181, 115080 };				// Coup tournoyant de la grue 101546, Souffle de feu 115181, Toucher mortel 115080
+			uint32 Liste_branche1_4[3] = { 138710, 115181, 115080 };				// Coup tournoyant de la grue 138710, Souffle de feu 115181, Toucher mortel 115080
 						
 			// SpellsTisse-Brume
 			uint32 Spell_branche2_agro ;											// Paralysie 115078, Pique de main 116705 
 			uint32 Liste_branche2_agro[2] = { 121253, 109132};						// Fracasse-tonneau 121253, Roulade 109132
-			uint32 Spell_branche2_1 = 100780;										// Coup direct 100780
-			uint32 Spell_branche2_2 = 100780;										// Coup direct 100780
-			uint32 Spell_branche2_3 = 115080;										// Toucher mortel 115080
+			uint32 Spell_branche2_1 = 119004;										// Violent coup direct 119004
+			uint32 Spell_branche2_2 = 119004;										// Violent coup direct 119004
+			uint32 Spell_branche2_3 = 300245;										// Toucher mortel 300245 (stun 2s)
 			uint32 Spell_branche2_4 = 115072;										// Extraction du mal 115072 (damage+heal)
 			
 			// Spells Marche-vent
 			uint32 Spell_branche3_agro;  
-			uint32 Liste_branche3_agro[3] = { 116095, 101545, 101546 };				// Handicap 116095, Coup du serpent volant 101545, Pique de main 116705, Coup tournoyant de la grue 101546
-			uint32 Spell_branche3_1 = 100780;										// Coup direct 100780
-			uint32 Spell_branche3_2 = 122470;										// Toucher du karma 122470 6s
-			uint32 Spell_branche3_3= 116095;										// Coup de pied du soleil levant 107418 8s, Handicap 116095 15s
-			uint32 Spell_branche3_4 = 113656;										// Poings de fureur 113656 15s
+			uint32 Liste_branche3_agro[3] = { 116095, 101545, 138710 };				// Handicap 116095, Coup du serpent volant 101545, Pique de main 116705, Coup tournoyant de la grue 138710
+			uint32 Spell_branche3_1 = 119004;										// Violent coup direct 119004
+			uint32 Spell_branche3_2 = 300246;										// Toucher du karma 300246
+			uint32 Spell_branche3_3;
+			uint32 Liste_branche3_3[2] = { 130784, 116095 };						// Coup de pied du soleil levant 107418 8s, Handicap 116095 15s
+			uint32 Spell_branche3_4 = 165144;										// Poings de fureur 165144
 
 			// Emotes
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
@@ -156,6 +157,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 					Buf_branche3a = Liste_Buf_branche3a[urand(0, 2)];							
 					me->CastSpell(me, Buf_branche3a, true);
 
+					Spell_branche3_3 = Liste_branche3_3[urand(0, 1)];
 					VisuelPowerEnergy();
 					break;
 
@@ -217,6 +219,8 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 			}
 			void UpdateAI(uint32 diff) override
 			{
+				if (me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED) || me->HasUnitState(UNIT_STATE_CANNOT_TURN) || me->HasUnitState(UNIT_STATE_CONTROLLED) || me->HasUnitState(UNIT_STATE_POSSESSED) || me->HasUnitState(UNIT_STATE_CONFUSED_MOVE))
+					return;
 				// ################################################################################################################################################
 				// Emotes hors combat & mouvement #################################################################################################################
 				// ################################################################################################################################################
@@ -256,7 +260,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 								me->CastSpell(victim, Spell_branche1_agro, true); 
 							}		
 
-							//Bonus_Armure(125);																			// Bonus d'armure +25%
+							Bonus_Armure(200);																			// Bonus d'armure +100%
 							break;
 
 						case 2: // Si Tisse-Brume -----------------------------------------------------------------------------------------------------------------
@@ -269,7 +273,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 								DoCastVictim(Spell_branche2_agro); 
 							}						
 
-							//Bonus_Armure(125);																			// Bonus d'armure +25%
+							Bonus_Armure(175);																			// Bonus d'armure +75%
 							break;
 
 						case 3: // Si Marche-vent  ----------------------------------------------------------------------------------------------------------------
@@ -282,7 +286,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 								me->CastSpell(victim, Spell_branche3_agro, true); 
 							}		
 
-							//Bonus_Armure(125);																			// Bonus d'armure +25%
+							Bonus_Armure(175);																			// Bonus d'armure +75%
 							break;
 							// ####################################################################################################################################
 						}
@@ -316,7 +320,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 							me->CastSpell(victim, Spell_branche1_1, true);
 							//Bonus_Degat_Arme_Done(40);
 							DoMeleeAttackIfReady();													// Combat en mélée
-							Cooldown_Spell1 = 4500;
+							Cooldown_Spell1 = 3500;
 						}
 						else Cooldown_Spell1 -= diff;
 
@@ -324,7 +328,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 						if (Cooldown_Spell2 <= diff)
 						{
 							me->CastSpell(victim, Spell_branche1_2, true);
-							Cooldown_Spell2 = 4500;
+							Cooldown_Spell2 = 3500;
 						}
 						else Cooldown_Spell2 -= diff;
 
@@ -364,30 +368,30 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 						// Spell1 sur la cible
 						if (Cooldown_Spell1 <= diff)
 						{
-							Bonus_Degat_Arme_Done(-35);												// Reduction des degats infligés
+							//Bonus_Degat_Arme_Done(-35);												// Reduction des degats infligés
 							me->CastSpell(victim, Spell_branche2_1, true);
-							Bonus_Degat_Arme_Done(35);	
+							//Bonus_Degat_Arme_Done(35);	
 							DoMeleeAttackIfReady();													// Combat en mélée
-							Cooldown_Spell1 = 4500;
+							Cooldown_Spell1 = 3500;
 						}
 						else Cooldown_Spell1 -= diff;
 
 						// Spell2 sur la cible
 						if (Cooldown_Spell2 <= diff)
 						{
-							Bonus_Degat_Arme_Done(-35);												// Reduction des degats infligés
+							//Bonus_Degat_Arme_Done(-35);												// Reduction des degats infligés
 							me->CastSpell(victim, Spell_branche2_2, true);
-							Bonus_Degat_Arme_Done(35);
-							Cooldown_Spell2 = 5500;
+							//Bonus_Degat_Arme_Done(35);
+							Cooldown_Spell2 = 4500;
 						}
 						else Cooldown_Spell2 -= diff;
 
 						// Spell3 sur la cible
 						if (Cooldown_Spell3 <= diff)
 						{
-							Bonus_Degat_Arme_Done(-15);												// Reduction des degats infligés
+							//Bonus_Degat_Arme_Done(-15);												// Reduction des degats infligés
 							me->CastSpell(victim, Spell_branche2_3, true);
-							Bonus_Degat_Arme_Done(15);
+							//Bonus_Degat_Arme_Done(15);
 							Cooldown_Spell3 = urand(6000,8000);
 						}
 						else Cooldown_Spell3 -= diff;

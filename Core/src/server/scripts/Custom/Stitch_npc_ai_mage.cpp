@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : MAGE Ver 2020-10-24
+// AI generique npc par classe : MAGE Ver 2021-07-29
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_mage',`AIName` = '' WHERE (entry = 15100005);
@@ -57,7 +57,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 			uint32 Buf_branche1;	
 			uint32 Buf_branche1_liste[2] = { 1459, 36749 };								// Illumination des Arcanes 1459, Puissance arcanique 36749 (Puissance des sorts +25/1h)
 			uint32 Buf_branche2 ;
-			uint32 Buf_branche2_liste[2] = { 30482, 140468 };							// Armure de la fournaise 30482 (physique -10%, Lueur de la flamme 140468 (dmg -20%)
+			uint32 Buf_branche2_liste[2] = { 79849, 140468 };							// Armure de la fournaise 79849 (s10/lvl si touché, crotique +5%), Lueur de la flamme 140468 (dmg -20%, cumulable)
 			uint32 Buf_branche3 ;
 			uint32 Buf_branche3_liste[2] = { 111264, 1459 };							// Garde glaciale 111264 (3 mélées 30s), Illumination des Arcanes 1459
 			uint32 Spell_Heal_Caster = 12051;											// Evocation 12051
@@ -69,9 +69,9 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 			uint32 Spell_branche1_3;
 			uint32 Spell_branche1_4;
 			uint32 branche1_agro[3] = { 30449, 102051, 31589 };							// Vol de sort 30449, Givregueule 102051 (silence 8s), Lenteur 31589
-			uint32 branche1_1[2] = { 44425, 44425 };									// Barrage des Arcanes 44425
-			uint32 branche1_2[2] = { 30451, 30451 };									// Déflagration des Arcanes 30451
-			uint32 branche1_3[2] = { 5143, 5143 };										// Projectiles des Arcanes 5143 ,Éclair des Arcanes (rose) 38204
+			uint32 branche1_1[2] = { 145437, 145437 };									// Barrage des Arcanes 145437
+			uint32 branche1_2[3] = { 145434, 145434,128192 };							// Déflagration des Arcanes 145434,Lance d'esprit 128192
+			uint32 branche1_3[2] = { 191293, 191293 };									// Projectiles des Arcanes 191293 
 
 			// Spells Feu
 			uint32 Spell_branche2_agro;    
@@ -79,19 +79,19 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 			uint32 Spell_branche2_2;
 			uint32 Spell_branche2_3;
 			uint32 Spell_branche2_4 = 31661;											// Souffle du dragon 31661 (Recharge 20s,12m)
-			uint32 branche2_agro[4] = { 2120, 30449, 102051 , 2139 };					// Choc de flammes 2120, Vol de sort 30449, Givregueule 102051 (silence 8s), Contresort 2139
-			uint32 branche2_1[2] = { 133, 133 };										// Boule de feu 133 
-			uint32 branche2_2[2] = { 2136, 2948 };										// Trait de feu 2136 , Brûlure 2948 
-			uint32 branche2_3[2] = { 108853, 108853 };									// Déflagration infernale 108853
+			uint32 branche2_agro[4] = { 56858, 30449, 102051 , 2139 };					// Choc de flammes 56858, Vol de sort 30449, Givregueule 102051 (silence 8s), Contresort 2139
+			uint32 branche2_1[2] = { 9053, 9053 };										// Boule de feu 9053 
+			uint32 branche2_2[2] = { 38391, 38391 };									// Brûlure 38391 
+			uint32 branche2_3[2] = { 14145, 14145 };									// Trait de feu 14145
 
 			// Spells Givre
 			uint32 Spell_branche3_agro;  
 			uint32 Spell_branche3_1;
 			uint32 Spell_branche3_2;
 			uint32 Spell_branche3_3;
-			uint32 branche3_agro[3] = { 140485, 84714, 2139 };							// Piège à runes gelé 140485 (gele 20s,20m), Sol gelé 84714, Contresort 2139, Invocation d'un élémentaire d'eau 31687
-			uint32 branche3_1[2] = { 116, 116 };										// Eclair de givre 116
-			uint32 branche3_2[2] = { 30455, 30455 };									// Javelot de glace 30455
+			uint32 branche3_agro[4] = { 140485, 84714, 2139, 124935 };					// Piège à runes gelé 140485 (gele 20s,20m), Sol gelé 84714, Contresort 2139, Torrent 124935
+			uint32 branche3_1[4] = { 71318, 71318, 71318,34425 };								// Eclair de givre 71318,Trait d'eau 34425	
+			uint32 branche3_2[2] = { 49906, 49906 };									// Javelot de glace 49906
 			uint32 branche3_3[2] = { 120, 122 };										// Cône de froid 120 (Recharge 12s,12m) , Nova de givre 122
 			
 			// Emotes
@@ -135,7 +135,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 					// Tirages aléatoires des spells Arcane 
 					Spell_branche1_agro = branche1_agro[urand(0, 2)];
 					Spell_branche1_1 = branche1_1[urand(0, 1)];
-					Spell_branche1_2 = branche1_2[urand(0, 1)];
+					Spell_branche1_2 = branche1_2[urand(0, 2)];
 					Spell_branche1_3 = branche1_3[urand(0, 1)];
 					break;
 
@@ -160,7 +160,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 
 					// Tirages aléatoires des spells Givre 
 					Spell_branche3_agro = branche3_agro[urand(0, 3)];
-					Spell_branche3_1 = branche3_1[urand(0, 1)];
+					Spell_branche3_1 = branche3_1[urand(0, 3)];
 					Spell_branche3_2 = branche3_2[urand(0, 1)];
 					Spell_branche3_3 = branche3_3[urand(0, 1)];
 					break;
@@ -207,6 +207,8 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 			}
 			void UpdateAI(uint32 diff) override
 			{
+				if (me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED) || me->HasUnitState(UNIT_STATE_CANNOT_TURN) || me->HasUnitState(UNIT_STATE_CONTROLLED) || me->HasUnitState(UNIT_STATE_POSSESSED) || me->HasUnitState(UNIT_STATE_CONFUSED_MOVE))
+					return;
 				// ################################################################################################################################################
 				// Emotes hors combat & mouvement #################################################################################################################
 				// ################################################################################################################################################
@@ -323,7 +325,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						if (Cooldown_Spell1 <= diff && !me->HasUnitState(UNIT_STATE_MOVE))
 						{
 							DoCastVictim(Spell_branche2_1);
-							Cooldown_Spell1 = 3500;
+							Cooldown_Spell1 = 3000;
 						}
 						else Cooldown_Spell1 -= diff;
 
@@ -366,8 +368,8 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot)
 						if (Cooldown_Spell1 <= diff && !me->HasUnitState(UNIT_STATE_MOVE))
 						{
-							DoCastVictim(Spell_branche3_1, true);
-							Cooldown_Spell1 = 3500;
+							DoCastVictim(Spell_branche3_1/*, true*/);
+							Cooldown_Spell1 = 3000;
 						}
 						else Cooldown_Spell1 -= diff;
 

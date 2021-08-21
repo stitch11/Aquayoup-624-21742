@@ -62,12 +62,12 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			uint32 liste_agro[2] = { 133308, 79444 };								// Lancer le filet 133308 (25m 5s), Empaler 79444 (Jette une lance 60m) 
 
 			uint32 Spell_1;
-			uint32 liste_spell_1[4] = { 78, 126799, 118326, 172851 };				// Frappe héroïque 78, Frappe tranchante 126799, Attaque vicieuse 118326, Enchaînement 172851
+			uint32 liste_spell_1[4] = { 57846, 126799, 118326, 172851 };			// Frappe héroïque 57846, Frappe tranchante 126799, Attaque vicieuse 118326, Enchaînement 172851
 
 			uint32 Spell_2 = 0;
-			uint32 liste_spell_2[4] = { 127171, 118532, 36991, 78660 };				// Fendoir vicieux 15/lvl + 2/lvl/1s cumulable 5 fois 127171, Entaille infectée 118532, Pourfendre 36991, Dévaster 78660
+			uint32 liste_spell_2[4] = { 127171, 118532, 772, 62317 };				// Fendoir vicieux 15/lvl + 2/lvl/1s cumulable 5 fois 127171, Entaille infectée 118532, Pourfendre 772, Dévaster 62317	
 
-			uint32 Lancer_une_Arme = 42332;											// 8-40m Empaler
+			uint32 Lancer_une_Arme = 79444;											// 8-40m Empaler
 			uint32 Tir_Arc = 95826;
 			uint32 Tir_Fusil = 6660;
 			uint32 Tir_1 = 42332;
@@ -124,7 +124,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			void JustRespawned() override
 			{
 				me->GetMotionMaster()->MoveTargetedHome();								// Retour home pour rafraichir client
-				me->SetSpeedRate(MOVE_RUN, 1.01f);
+				//me->SetSpeedRate(MOVE_RUN, 1.01f);
 				me->SetReactState(REACT_AGGRESSIVE);
 
 				Init_AI();
@@ -152,10 +152,12 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			void JustReachedHome() override
 			{
 				me->SetReactState(REACT_AGGRESSIVE);
-				me->SetSpeedRate(MOVE_RUN, 1.01f);										// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
+				//me->SetSpeedRate(MOVE_RUN, 1.01f);										// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
 			}
 			void UpdateAI(uint32 diff) override
 			{
+				if (me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED) || me->HasUnitState(UNIT_STATE_CANNOT_TURN) || me->HasUnitState(UNIT_STATE_CONTROLLED) || me->HasUnitState(UNIT_STATE_POSSESSED) || me->HasUnitState(UNIT_STATE_CONFUSED_MOVE))
+					return;
 				// ################################################################################################################################################
 				// Emotes hors combat & mouvement #################################################################################################################
 				// ################################################################################################################################################
