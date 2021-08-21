@@ -32,6 +32,8 @@ uint32 SPELL_POUR_VISUEL = 14867;
 uint32 PERTE_DE_DURABILITE = 45317;         //  Perte de 10 % de la durabilité
 uint32 DISPARITION6S = 35205;
 
+
+
 namespace {
 
 class Player_Even_Action_handler : public PlayerScript {
@@ -43,16 +45,38 @@ public:
     // Routines de test d"evenements 
 	// ################################################################################################################################################
 
-    // Connexion d'un joueur ou 1ere connexion joueur
+
     void OnLogin(Player* player, bool firstLogin) override
     {
+		uint8 SpecActive = player->GetSpecId(player->GetActiveTalentGroup());
+		uint8 _class = player->getClass();
+
         Apprentissage_Ou_Additem_Suivant_classes_races(player);
 
         // 1ere connexion joueur
         if (firstLogin)
         {
-
         }
+
+		switch (_class)
+		{
+		case CLASS_WARRIOR: break;
+		case CLASS_PALADIN: break;
+		case CLASS_HUNTER: break;
+		case CLASS_ROGUE: break;
+		case CLASS_PRIEST: break;
+		case CLASS_DEATH_KNIGHT: break;
+		case CLASS_SHAMAN: break;
+		case CLASS_MAGE: break;
+		case CLASS_WARLOCK: break;
+		case CLASS_MONK: break;
+		case CLASS_DRUID:break;
+		default:
+			break;
+
+		}
+
+		player->UpdateAllStats();
 
     }
 
@@ -74,11 +98,23 @@ public:
     void OnPlayerUpdate(Player* player, uint32 p_time)
     {
         if (!player->IsInWorld()) { return; }
+
     }
 
+	void OnPlayerEnterZone(Player* player)
+	{
+	}
+
+
+
+	//player->CastSpell(player, 14867, true);		// Pour visuel
+
     ////// TMP a voir/vérifier : public: /* CreatureScript */
-    // 
+    // void OnPlayerTalentsReset(Player* player, bool noCost)
     // void OnPlayerEnter(map, player) {}
+	// void ScriptMgr::OnPlayerEnterMap(Map* map, Player* player)
+	// OnPlayerEnterZone(Player* player) {}
+	// void OnPlayerLeaveZone(Player* player)
     // void OnPlayerLogin(Player* player, bool firstLogin) {}
     // void OnPlayerRepop(Player* player) {}
     // void OnPlayerKilledByCreature(Creature* /*killer*/, Player* player/*killed*/) {}
@@ -92,6 +128,8 @@ public:
     // void Player::OnCombatExit()
     // void OnPlayerSpellCast(Player* player, Spell* spell, bool skipCheck) {}
     // void OnAccountLogin(uint32 /*accountId*/) {}
+	// void OnCombatExit();
+
 
 	// ################################################################################################################################################
     // Routines d'actions secondaires suite a un évènement 
@@ -189,6 +227,7 @@ case CLASS_MONK:
 case CLASS_DRUID:
     break;
 }
+
 	switch (_race)
 {
 case RACE_HUMAN:

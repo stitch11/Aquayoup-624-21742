@@ -92,7 +92,10 @@ public: Stitch_npc_ai_level_scale_caster() : CreatureScript("Stitch_npc_ai_level
 					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);
 				}
 
-				if (!UpdateVictim() || me->isPossessed() || me->IsCharmed() || me->HasAuraType(SPELL_AURA_MOD_FEAR))
+
+				if (me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED) || me->HasUnitState(UNIT_STATE_CANNOT_TURN) || me->HasUnitState(UNIT_STATE_CONTROLLED) || me->HasUnitState(UNIT_STATE_POSSESSED) || me->HasUnitState(UNIT_STATE_CONFUSED_MOVE))
+					return;
+				if ( !UpdateVictim() )
 					return;
 
 				mouvementmob(6);
