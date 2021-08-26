@@ -7483,8 +7483,10 @@ void Player::_ApplyItemBonuses(Item* item, uint8 slot, bool apply)
                 HandleStatModifier(UNIT_MOD_STAT_SPIRIT, BASE_VALUE, float(val), apply);
                 ApplyStatBuffMod(STAT_SPIRIT, CalculatePct(val, GetModifierValue(UNIT_MOD_STAT_SPIRIT, BASE_PCT_EXCLUDE_CREATE)), apply);
                 break;
+
+//Stitch ITEM rate Endurance /2.45 
             case ITEM_MOD_STAMINA:                          //modify stamina
-                HandleStatModifier(UNIT_MOD_STAT_STAMINA, BASE_VALUE, float(val), apply);
+                HandleStatModifier(UNIT_MOD_STAT_STAMINA, BASE_VALUE, float(val)/2.45, apply);
                 ApplyStatBuffMod(STAT_STAMINA, CalculatePct(val, GetModifierValue(UNIT_MOD_STAT_STAMINA, BASE_PCT_EXCLUDE_CREATE)), apply);
                 break;
             case ITEM_MOD_DEFENSE_SKILL_RATING:
@@ -7568,7 +7570,7 @@ void Player::_ApplyItemBonuses(Item* item, uint8 slot, bool apply)
                 ApplyRatingMod(CR_RESILIENCE_PLAYER_DAMAGE_TAKEN, int32(val), apply);
                 break;
 
-//Stitch rate Item Hate *1.332 : 10 item = 1% stat
+//Stitch ITEM rate Hate *1.332 : 10 item = 1% stat
             case ITEM_MOD_HASTE_RATING:                                                  
 				ApplyRatingMod(CR_HASTE_MELEE, int32(val) * 1.332, apply);
 				ApplyRatingMod(CR_HASTE_RANGED, int32(val) * 1.332, apply);
