@@ -14483,7 +14483,7 @@ uint32 Unit::GetModelForForm(ShapeshiftForm form) const
 					default:
 					{
 						if (Player::TeamForRace(_race) == ALLIANCE)
-							return 892;
+							return 599;	//892
 						else
 							return 8571;
 					}
