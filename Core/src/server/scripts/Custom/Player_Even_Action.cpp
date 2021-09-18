@@ -60,7 +60,26 @@ public:
 
 		switch (_class)
 		{
-		case CLASS_WARRIOR: break;
+		case CLASS_WARRIOR: 
+			// Rafraichissement posture a la connexion 
+			if (player->HasAura(2457))
+			{
+				player->RemoveAurasDueToSpell(2457);	// Posture de combat
+				player->AddAura(2457, player);
+			}
+			if (player->HasAura(71))
+			{
+				player->RemoveAurasDueToSpell(71);		// Posture défensive  
+				player->AddAura(71, player);
+			}
+
+			if (player->HasAura(156291))
+			{
+				player->RemoveAurasDueToSpell(156291);	// Posture du gladiateur
+				player->AddAura(156291, player);
+			}
+
+			break;
 		case CLASS_PALADIN: break;
 		case CLASS_HUNTER: break;
 		case CLASS_ROGUE: break;
@@ -70,6 +89,22 @@ public:
 		case CLASS_MAGE: break;
 		case CLASS_WARLOCK: break;
 		case CLASS_MONK: break;
+			// Rafraichissement posture a la connexion 
+			if (player->HasAura(103985))
+			{
+				player->RemoveAurasDueToSpell(103985);	// Posture du tigre féroce		
+				player->AddAura(103985, player);
+			}
+			if (player->HasAura(115069))
+			{
+				player->RemoveAurasDueToSpell(115069);	// Posture du buffle vigoureux	
+				player->AddAura(115069, player);
+			}
+			if (player->HasAura(154436))
+			{
+				player->RemoveAurasDueToSpell(154436);	// Posture de la grue fougueuse
+				player->AddAura(154436, player);
+			}
 		case CLASS_DRUID:break;
 		default:
 			break;
