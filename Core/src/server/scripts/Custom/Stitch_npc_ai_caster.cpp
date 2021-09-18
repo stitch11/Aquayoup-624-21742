@@ -76,12 +76,12 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 
 			// Mage Feu
 			uint32 Liste_Spell_agro_1[4] = { 31589, 2120, 11366, 2136 };		// Lenteur 31589, Choc de flammes 2120, Double explosions pyrotechniques 11366, Trait de feu 2136
-			uint32 Liste_Spell_2_1[2] = { 108853, 2948 };						// Déflagration infernale 108853, Brûlure 2948
+			uint32 Liste_Spell_2_1[2] = { 108853, 38391 };						// Déflagration infernale 108853, Brûlure 38391
 			// Mage Givre
 			uint32 Liste_Spell_agro_2[3] = { 30449, 44572, 2139 };				// Vol de sort 30449, Congélation 44572, Contresort 2139
 			uint32 Liste_Spell_2_2[2] = { 120, 30455 };							// Cône de froid 120, Javelot de glace 30455
 			// Demo
-			uint32 Liste_Spell_2_3[4] = { 172, 172, 980, 30108 };				// Corruption 172, Immolation 348, Agonie 980, Affliction instable 30108
+			uint32 Liste_Spell_2_3[4] = { 172, 44267, 980, 30108 };				// Corruption 172, Immolation 44267, Agonie 980, Affliction instable 30108
 			// Druide
 			uint32 Liste_Spell_agro_4[3] = { 78674, 102355, 33844 };			// Eruption stellaire 78674, Essaim de lucioles 102355, Sarments 33844
 			uint32 Liste_Spell_1_4[2] = { 119577, 5176 };						// Colère (verte) 119577, Colère (jaune) 5176
@@ -157,7 +157,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 						break;
 					case 3: // Demo
 						Buf_1 = 79934;  												// Armure démoniaque
-						Spell_agro = 348;												// Immolation
+						Spell_agro = 44267;												// Immolation
 						Spell_1 = 686;													// Trait de l'ombre
 						Spell_2 = Liste_Spell_2_3[urand(0, 3)];
 						Spell_respawn_evade = 0;										// Sombre intention (puissance des sorts + 10 % )

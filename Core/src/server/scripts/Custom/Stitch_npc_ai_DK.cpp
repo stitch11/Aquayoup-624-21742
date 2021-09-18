@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : DK Ver 2021-08-04
+// AI generique npc par classe : DK Ver 2021-09-01
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_dk',`AIName` = '' WHERE (entry = 15100009);
@@ -59,17 +59,17 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 			uint32 Cooldown_Strangulation = urand(3000,10000);
 
 			// Spells Divers    
-			uint32 Buf_branche1 = 48263;											// Présence de sang 48263/50689
+			uint32 Buf_branche1 = 50689;											// Présence de sang 48263/50689
 			uint32 Buf_branche1a = 57330;											// Vétéran de la Troisième guerre 50029 (endu+10%), Cor de l’hiver 57330
 			uint32 Buf_branche2 = 48266;											// Présence de givre 48266
 			uint32 Buf_branche2a = 31821;											// Puissance des terres gelées 81333 (mélée+35%), Pilier de givre 51271 (force+15% insensible mouvement), 
 			uint32 Buf_branche3 = 48265;											// Présence impie 48265
 			uint32 Buf_branche3a = 49222;											// Carapace anti-magie 48707, Bouclier d’os 49222, Invocation d'une gargouille 49206, Réanimation morbide 46584
 			uint32 Buf_branche4 = 300049;											// Présence du Chaos 300049
-			uint32 Buf_branche4a = 115994;											// Chancre impie 115994
+			uint32 Buf_branche4a = 300248;											// Chancre impie 300248
 			uint32 Spell_Heal_1 = 48982;  											// Connexion runique 48982
 			uint32 Spell_Heal_2 = 46283;  											// Voile mortel 46283
-			uint32 Spell_Cible_trop_loin = 300060;									// Poigne_de_la_mort 49576/30010, Nova de sang 300059, Souffle de givre 300060
+			uint32 Spell_Cible_trop_loin = 300239;									// Poigne_de_la_mort 49576/30010, Nova de sang 300059, Souffle de givre 300239
 			uint32 Peste_de_sang = 60950;											// 3s/12s
 			uint32 fievre_de_givre = 67719;											// 12s, vit -25%
 			uint32 Peste_necrotique = 300232;										// 3s/30s
@@ -88,7 +88,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 			uint32 branche1_agro[3] = { 49576, 300233, 130736 };					// Poigne de la mort 49576, Poussée de fièvre 300233, Faucheur d’âme 130736
 			uint32 branche1_1[2] = { 300198, 300198 };								// Frappe de sang 300198   
 			uint32 branche1_2[2] = { 45470, 45470 };								// Frappe de mort 45470
-			uint32 branche1_3[2] = { 79885, 79885 };								// Frappe au cœur 79885
+			uint32 branche1_3[2] = { 165760, 165760 };								// Frappe au cœur 165760
 			uint32 branche1_4[2] = { 43265, 92025 };								// Mort et décomposition 43265, Furoncle sanglant 92025
 
 			// Spells Givre

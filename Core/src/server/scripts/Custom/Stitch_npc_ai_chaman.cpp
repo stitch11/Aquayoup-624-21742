@@ -533,11 +533,11 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 					{
 						if (Random = 1)
 						{
-							DoCastVictim(Horion_de_terre);									// Horion de terre 8042 (stun 2s) - 1 chance sur 8
+							DoCastVictim(Horion_de_terre);									// Horion de terre 13728 (stun 2s) - 1 chance sur 8
 						}
 						else if (Random = 2)
 						{
-							DoCastVictim(Horion_de_givre);									// Horion de givre 8056 8s - 1 chance sur 8
+							DoCastVictim(Horion_de_givre);									// Horion de givre 12548 8s - 1 chance sur 8
 						}
 						Cooldown_Charge = urand(15000, 20000);
 						Cooldown_ResteADistance = urand(2000, 4000);						// Sinon bugue Totem de magma 8190

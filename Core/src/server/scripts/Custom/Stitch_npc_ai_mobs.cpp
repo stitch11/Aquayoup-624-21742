@@ -168,7 +168,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 			//--- family : tirage aléatoire des spells
 			// 1	Loup - CREATURE_FAMILY_WOLF 
-			uint32 liste_spell_A_1[3] = { 85835, 113687, 113687 };				// Mutiler 85835, morsure 113687
+			uint32 liste_spell_A_1[3] = { 300206, 113687, 113687 };				// Mutiler 300206, morsure 113687
 			uint32 liste_spell_B_1[4] = { 3427, 9080, 9080, 50075 };			// Blessure infectée 3427, Brise-genou 9080, Chair mutilée 50075 (dégâts +25x5)
 			uint32 liste_agro_1[2] = { 75355,75355 };							// Hurlement horrible 75355 (vit. d'attaque -10%/15s) 
 			uint32 liste_Buf_1[6] = { 59737, 3149, 3149, 15727, 15727, 8599 };	// vitesse 59737, Hurlement furieux	3149 (force +15), Rugissement démoralisant 15727, Enrager 8599 (+DPS,+Vit dattaque)
@@ -223,7 +223,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 			// 11    Raptor - CREATURE_FAMILY_RAPTOR
 			uint32 liste_spell_A_11[2] = { 113687, 113687 };					// Morsure 113687, 
-			uint32 liste_spell_B_11[4] = { 30639, 136870, 118576, 36991 };		// Morsure carnivore 30639, Heurt de queue 136870 (repousse legerement, armure -10%/20s, cumulable 10 fois), Kigrince 118576 (canalisé 3s, cone 10/lvl), Pourfendre 36991/772
+			uint32 liste_spell_B_11[4] = { 30639, 136870, 118576, 772 };		// Morsure carnivore 30639, Heurt de queue 136870 (repousse legerement, armure -10%/20s, cumulable 10 fois), Kigrince 118576 (canalisé 3s, cone 10/lvl), Pourfendre 772
 			uint32 liste_agro_11[3] = { 89712, 50231, 18328 };					// Griffure bondissante 89712 (bond), agro 50231, Cri incapacitant 18328 (vit -60%)	
 			uint32 liste_Buf_11[3] = { 22863, 1160, 8599 };						// Vitesse 22863 (10s 30%), Cri démoralisant 1160, Enrager 8599 (+degat physique+vit dattaque,visuel rouge)
 
@@ -283,8 +283,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 			// 27    Serpent des vents - CREATURE_FAMILY_WIND_SERPENT
 			uint32 liste_spell_A_27[2] = { 24187, 24187 };						// griffe 24187
-			uint32 liste_spell_B_27[3] = { 9532, 9532, 12058 };					// eclair 9532, chaine d'eclair	12058
-			uint32 liste_agro_27[2] = { 8056, 57994 };							// Horion de givre 8056, Cisaille de vent 57994
+			uint32 liste_spell_B_27[3] = { 9532, 9532, 28167 };					// eclair 9532, chaine d'eclair	28167
+			uint32 liste_agro_27[2] = { 12548, 57994 };							// Horion de givre 12548, Cisaille de vent 57994
 			uint32 liste_Buf_27[3] = { 324, 324, 32182 };						// Bouclier de foudre 324, Héroïsme 32182
 
 			// 29 Gangregarde (Felguard) - CREATURE_FAMILY_FELGUARD
@@ -294,20 +294,20 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 liste_Buf_29[2] = { 0, 0 };									//
 
 			// 30    Faucon dragon - CREATURE_FAMILY_DRAGONHAWK
-			uint32 liste_spell_A_30[2] = { 29722, 29722 };						// Incinérer 29722, Brulure 2948, Bouffée d’air 128134
+			uint32 liste_spell_A_30[2] = { 44519, 44519 };						// Incinérer 44519, Brulure 38391, Bouffée d’air 128134
 			uint32 liste_spell_B_30[2] = { 51219, 51219 };						// Souffle de flammes 51219
 			uint32 liste_agro_30[2] = { 0, 0 };									// 
 			uint32 liste_Buf_30[2] = { 79849, 29718 };							// Armure de la fournaise 79849, Armure des éléments 29718 (resistance magie 200)
 
 			// 31    Ravageur - CREATURE_FAMILY_RAVAGER
 			uint32 liste_spell_A_31[2] = { 113687, 113687 };					// Morsure 113687 
-			uint32 liste_spell_B_31[4] = { 36991, 33745, 83639, 33745 };		// Pourfendre 36991, Lacerer 33745, Bain de sang 83639 (6 attaque rapide 7/lvl 3s)
+			uint32 liste_spell_B_31[4] = { 772, 33745, 83639, 33745 };			// Pourfendre 772, Lacerer 33745, Bain de sang 83639 (6 attaque rapide 7/lvl 3s)
 			uint32 liste_agro_31[2] = { 89712, 50231 };							// Griffure bondissante 89712 (bond), agro 50231
 			uint32 liste_Buf_31[4] = { 33907, 33907, 106898, 15727 };			// Epines 33907, Ruée rugissante 106898 (vit +60%), Rugissement démoralisant 15727 (Réduit PA mêlée des ennemis 10m/20s)
 
 			// 34    Raie du Neant - CREATURE_FAMILY_NETHER_RAY
 			uint32 liste_spell_A_34[2] = { 113687, 113687 };					// Morsure 113687 
-			uint32 liste_spell_B_34[2] = { 12058, 12058 };						// Chaine d'eclair 12058	
+			uint32 liste_spell_B_34[2] = { 28167, 28167 };						// Chaine d'eclair 28167	
 			uint32 liste_agro_34[2] = { 0, 0 };									// 
 			uint32 liste_Buf_34[2] = { 0, 0 };									// 
 
@@ -354,7 +354,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 liste_Buf_43[2] = { 118682, 152571 };						// Taper du pied 118682, encorner 152571
 
 			// 44    Guepe - CREATURE_FAMILY_WASP
-			uint32 liste_spell_A_44[2] = { 37838, 37838 };						// Mutiler 85835, Sangsue 37838 (drain pv)
+			uint32 liste_spell_A_44[2] = { 37838, 37838 };						// Mutiler 300206, Sangsue 37838 (drain pv)
 			uint32 liste_spell_B_44[2] = { 128425, 128425 };					// Résine corrosive 128425
 			uint32 liste_agro_44[2] = { 0, 0 };									// 
 			uint32 liste_Buf_44[2] = { 22863, 22863 };							// Vitesse 22863 (10s/30%)
@@ -421,14 +421,14 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 			// 108   Infernal - CREATURE_FAMILY_INFERNAL
 			uint32 liste_spell_A_108[2] = { 82616, 82616 };						// Frappe focalisée 82616, Violent coup direct 119004
-			uint32 liste_spell_B_108[2] = { 348, 6253 };						// Immolation 348, revers 6253 (stun 2s)	
-			uint32 liste_agro_108[3] = { 6353, 105174, 177288 };				// Feu de l'âme 6353 , Main de Gul’dan 105174, Onde de chaos 177288
+			uint32 liste_spell_B_108[2] = { 44267, 6253 };						// Immolation 44267, revers 6253 (stun 2s)	
+			uint32 liste_agro_108[3] = { 131381, 176725, 177288 };				// Feu de l'âme 131381 , Main de Gul’dan 176725, Onde de chaos 177288
 			uint32 liste_Buf_108[4] = { 104773, 109773, 79849, 79849 };			// Résolution interminable 104773, Sombre intention 109773, Armure De La Fournaise 79849
 
 			// 116   elementaire de feu - CREATURE_FAMILY_FIREELEMENTAL
 			uint32 liste_spell_A_116[2] = { 119004, 119004 };					// Violent coup direct 119004
 			uint32 liste_spell_B_116[2] = { 9053, 9053 };						// Boule de feu 9053
-			uint32 liste_agro_116[2] = { 348, 348 };							// Immolation 348
+			uint32 liste_agro_116[2] = { 44267, 44267 };						// Immolation 44267
 			uint32 liste_Buf_116[2] = { 79849, 79849 };							// Armure de la fournaise 79849
 
 			// 117   elementaire de terre - CREATURE_FAMILY_EARTHELEMENTAL

@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : Chasseur Ver 2021-08-16
+// AI generique npc par classe : Chasseur Ver 2021-09-01
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_chasseur',`AIName` = '' WHERE (entry = 15100004);
@@ -62,7 +62,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 			uint32 Buf_branche1_liste[2] = { 109212, 109212 };							// Engagement spirituel 109212
 			uint32 Buf_branche2;
 			uint32 Buf_branche2_liste[2] = { 109260, 109260 };							// Faucon de fer 109260
-			uint32 Spell_Heal_Caster = 19801;  											// Piqure du moustique 19801
+			uint32 Spell_Heal_Caster = 300247;  										// Piqure du moustique 300247
 
 
 			// Spells Survie
@@ -71,11 +71,11 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 			uint32 Spell_branche1_2;
 			uint32 Spell_branche1_3;
 			uint32 Spell_branche1_4;
-			uint32 branche1_agro[5] = { 82939, 82939, 82941, 82941, 145663 };			// Piège explosif a distance 82939, Piège de glace a distance 82941, Marque du chasseur 145663
+			uint32 branche1_agro[5] = { 145663, 145663, 82941, 82941, 145663 };			// Piège explosif a distance 82939, Piège de glace a distance 82941, Marque du chasseur 145663
 			uint32 branche1_1[2] = { 171943, 171943 };									// Tir des arcanes 171943 
 			uint32 branche1_2[3] = { 300241, 5116, 5116 };								// Tir explosif 300241, Trait de choc 5116 6s
 			uint32 branche1_3[3] = { 145654, 145654, 48098 };							// Tir du cobra 145654 , Flèches multiples 48098 3s
-			uint32 branche1_4[2] = { 3674, 31975 };										// Flèche noire 3674 18s, Morsure de serpent 31975 15s 
+			uint32 branche1_4[2] = { 80003, 35511 };									// Flèche noire 80003 18s, Morsure de serpent 35511 15s 
 
 			// Spells Bete
 			uint32 Spell_branche2_agro;	//    
@@ -83,11 +83,11 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 			uint32 Spell_branche2_2;
 			uint32 Spell_branche2_3;
 			uint32 branche2_agro[6] = { 13813, 13809, 19386, 19577, 19386, 19577 };				// Piège explosif 13813, Piège de glace 13809, Piqûre de wyverne 19386, Intimidation 19577
-			uint32 branche2_1[2] = { 171943, 171943 };											// Tir des arcanes 171943 
+			uint32 branche2_1[2] = { 171943, 80015 };											// Tir des arcanes 171943 
 			uint32 branche2_2[2] = { 80015, 80015 };											// Tir assuré 80015
 			uint32 branche2_3[2] = { 19574, 34026 };											// Courroux bestial 19574 60s, Ordre de tuer 34026 30s
 			uint32 Pet_Chasseur;
-			uint32 Pet_Chasseur_Liste[7] = { 3612, 7488, 7906, 8274, 7909, 32730, 3621 };		// Tigre 3612, Loup 7488, Lion 7906, Sanglier 8274, Gorille 7909, Ravageur 32730, Panthere noire 3621
+			uint32 Pet_Chasseur_Liste[7] = { 3612, 7488, 7906, 8274, 7909, 32730, 3621 };		// Tigre 3612 (698), Loup 7488 (3862), Lion 7906 (5438), Sanglier 8274 (4535), Gorille 7909 (5442), Ravageur 32730 (19461), Panthere noire 3621 (756)
 
 
 			// Emotes

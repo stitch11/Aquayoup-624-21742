@@ -87,7 +87,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			uint32 Spell_branche3_2;
 			uint32 Spell_branche3_3;
 			uint32 branche3_agro[3] = { 22863, 89712, 59737 };						// Vitesse +30% 22863, Griffure bondissante 89712 (Etourdi 2s),vitesse +100% 59737
-			uint32 branche3_1[2] = { 31289, 85835 };								// Griffe 31289, Mutiler 85835
+			uint32 branche3_1[2] = { 31289, 300206 };								// Griffe 31289, Mutiler 300206
 			uint32 branche3_2[2] = { 113687, 138765 };								// Morsure 113687, Écraser 138765 (armure -10%/30s)
 			uint32 branche3_3[4] = { 300220, 300220, 83639, 30639 };				// Griffure 300220, Bain de sang 83639 (6 attaque /3s), Morsure carnivore 30639
 

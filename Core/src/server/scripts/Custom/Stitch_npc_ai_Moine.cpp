@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour Aquayoup
-// AI generique npc par classe : MOINE Ver 2021-08-19
+// AI generique npc par classe : MOINE Ver 2021-09-02
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_voleur',`AIName` = '' WHERE (entry = 15100010);
@@ -77,13 +77,13 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 			uint32 Liste_branche1_agro[3] = { 172780, 109132, 109132 };				// Fracasse-tonneau 172780, Roulade 109132
 			uint32 Spell_branche1_1 = 119004;										// Violent coup direct 119004
 			uint32 Spell_branche1_2 = 165132;										// Paume du tigre 165132
-			uint32 Spell_branche1_3 = 100784;										// Frappe du voile noir 100784
+			uint32 Spell_branche1_3 = 164394;										// Frappe du voile noir 164394
 			uint32 Spell_branche1_4 ; 
-			uint32 Liste_branche1_4[3] = { 138710, 115181, 115080 };				// Coup tournoyant de la grue 138710, Souffle de feu 115181, Toucher mortel 115080
+			uint32 Liste_branche1_4[3] = { 138710, 147416, 300245 };				// Coup tournoyant de la grue 138710, Souffle de feu 147416, Toucher mortel 300245
 						
 			// SpellsTisse-Brume
 			uint32 Spell_branche2_agro ;											// Paralysie 115078, Pique de main 116705 
-			uint32 Liste_branche2_agro[2] = { 121253, 109132};						// Fracasse-tonneau 121253, Roulade 109132
+			uint32 Liste_branche2_agro[2] = { 172780, 109132};						// Fracasse-tonneau 172780, Roulade 109132
 			uint32 Spell_branche2_1 = 119004;										// Violent coup direct 119004
 			uint32 Spell_branche2_2 = 119004;										// Violent coup direct 119004
 			uint32 Spell_branche2_3 = 300245;										// Toucher mortel 300245 (stun 2s)
@@ -95,7 +95,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 			uint32 Spell_branche3_1 = 119004;										// Violent coup direct 119004
 			uint32 Spell_branche3_2 = 300246;										// Toucher du karma 300246
 			uint32 Spell_branche3_3;
-			uint32 Liste_branche3_3[2] = { 130784, 116095 };						// Coup de pied du soleil levant 107418 8s, Handicap 116095 15s
+			uint32 Liste_branche3_3[2] = { 130784, 116095 };						// Coup de pied du soleil levant 130784 8s, Handicap 116095 15s
 			uint32 Spell_branche3_4 = 165144;										// Poings de fureur 165144
 
 			// Emotes
