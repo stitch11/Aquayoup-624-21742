@@ -1076,7 +1076,25 @@ void Unit::CalculateSpellDamageTaken(SpellNonMeleeDamage* damageInfo, int32 dama
     else
         damage = 0;
 
-    damageInfo->damage = damage;
+	//Stitch FunDamageProgressif : Dommage progressif suivant le lvl pour les mobs et joueurs- Defaut/Arcade : 0.015f
+    //damageInfo->damage = damage;
+	float _level = damageInfo->attacker->getLevel();
+	float damageTMP;
+
+	if (Player const* player = ToPlayer())
+	{
+			damageTMP = (_level * 0.015f) + 1.0f;				// Si Joueur
+			damageInfo->damage = damage * damageTMP;
+	}
+	else
+	{
+			damageTMP = (_level * 0.025f) + 1.0f;				// Si mobs
+			damageInfo->damage = damage * damageTMP;
+	}
+
+
+
+
 }
 
 void Unit::DealSpellDamage(SpellNonMeleeDamage const* damageInfo, bool durabilityLoss)
