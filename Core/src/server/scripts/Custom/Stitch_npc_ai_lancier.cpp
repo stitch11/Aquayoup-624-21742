@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour https:\\Aquayoup.123.fr
-// AI generique npc par classe : Lancier Ver 2020-11-06 (caster simple, combat a distance si 8-30 sinon combat au corp a corp 0-8m)
+// AI generique npc par classe : Lancier Ver 2021-10-08 (caster simple, combat a distance si 8-30 sinon combat au corp a corp 0-8m)
 //
 // ScriptName = Stitch_npc_ai_lancier : npc d'exemple : 15100014
 // le "lancer une arme" , "Tir a l'arc" ou "Tir au fusil" est automatique de 8 a 40m et est tributaire de pickpocketloot
@@ -212,11 +212,11 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 						{
 							me->StopMoving();
 							me->SetSheath(SHEATH_STATE_MELEE);													// S'équipe d'armes au contact
-							Bonus_Degat_Arme_Done(100);
+							//Bonus_Degat_Arme_Done(100);
 							DoCast(victim, Spell_1);
 							DoMeleeAttackIfReady();																// Combat en mélée
-							Bonus_Degat_Arme_Done(-100);
-							Cooldown_Spell1 = urand(2000,2500);
+							//Bonus_Degat_Arme_Done(-100);
+							Cooldown_Spell1 = urand(3000,3500);
 						}
 						else Cooldown_Spell1 -= diff;
 
@@ -225,7 +225,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 						{
 							me->SetSheath(SHEATH_STATE_MELEE);
 							me->CastSpell(victim, Spell_2, true);
-							Cooldown_Spell2 = 6000;
+							Cooldown_Spell2 = urand(6000, 8000);
 						}
 						else Cooldown_Spell2 -= diff;
 					}
@@ -239,7 +239,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 							if (Tir_1 == Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_MELEE);	}				// S'équipe d'armes au contact
 
 							DoCast(victim, Tir_1);
-							Cooldown_Spell1 = urand(1500,2000);
+							Cooldown_Spell1 = urand(1500,2500);
 						}
 						else Cooldown_Spell1 -= diff;
 					}
