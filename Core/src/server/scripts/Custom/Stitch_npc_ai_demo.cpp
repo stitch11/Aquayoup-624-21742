@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : DEMO Ver 2021-07-31
+// AI generique npc par classe : DEMO Ver 2021-10-15
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_demo',`AIName` = '' WHERE (entry = 15100004);
@@ -60,7 +60,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 			uint32 Buf_branche2_liste[2] = { 104773, 104773 };							// Résolution interminable 104773 degat -40% 8s , Rune de puissance 116011 PS +40% 10s
 			uint32 Buf_branche3 ;
 			uint32 Buf_branche3_liste[2] = { 104773, 104773 };							// Résolution interminable 104773 degat -40% 8s , Rune de puissance 116011 PS +40% 10s 
-			uint32 Spell_Heal_Caster = 689;  											// Drain de vie 689
+			uint32 Spell_Heal_Caster = 46155;  											// Drain de vie 46155
 			uint32 Armure_Demoniaque = 79934;											// Armure_Demoniaque
 			uint32 Gangrarmure = 79954;													// Gangrarmure
 

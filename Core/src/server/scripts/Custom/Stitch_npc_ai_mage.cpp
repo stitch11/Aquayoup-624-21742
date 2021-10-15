@@ -90,7 +90,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 			uint32 Spell_branche3_2;
 			uint32 Spell_branche3_3;
 			uint32 branche3_agro[4] = { 140485, 84714, 2139, 124935 };					// Piège à runes gelé 140485 (gele 20s,20m), Sol gelé 84714, Contresort 2139, Torrent 124935
-			uint32 branche3_1[4] = { 71318, 71318, 71318,34425 };								// Eclair de givre 71318,Trait d'eau 34425	
+			uint32 branche3_1[4] = { 71318, 71318, 71318,34425 };						// Eclair de givre 71318,Trait d'eau 34425	
 			uint32 branche3_2[2] = { 49906, 49906 };									// Javelot de glace 49906
 			uint32 branche3_3[2] = { 120, 122 };										// Cône de froid 120 (Recharge 12s,12m) , Nova de givre 122
 			
