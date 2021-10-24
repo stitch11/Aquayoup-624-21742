@@ -1,6 +1,6 @@
 //###########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : DRUIDE Ver 2021-08-01
+// AI generique npc par classe : DRUIDE Ver 2021-10-24
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_druide',`AIName` = '' WHERE (entry = 15100001);
@@ -52,7 +52,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			uint32 Buf_branche2 = 15727;											// Rugissement démoralisant 15727
 			uint32 Buf_branche3 = 33907;											// Epines 33907, Hurlement furieux 3149 (force +15, Rouge)
 			uint32 Buf_branche4 = 33907;											// Epines 33907
-			uint32 Drain_de_vie = 689;												// Drain de vie 
+			uint32 Drain_de_vie = 46155;											// Drain de vie 46155/689
 			uint32 Charge_ours = 32323;												// Charge
 			uint32 BOND_Aleatoire = 70485;											// BOND Aleatoire
 			uint32 Empaler_et_tirer = 82742;										// Empaler et tirer
@@ -67,7 +67,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			uint32 Spell_branche1_2;
 			uint32 Spell_branche1_3;
 			uint32 branche1_agro[4] = { 21668, 21668, 21668, 33844 };				// Feu stellaire 21668, Sarments (4s) 33844
-			uint32 branche1_1[2] = { 149466, 149466 };								// Colère (verte) 149466 
+			uint32 branche1_1[2] = { 119577, 119577 };								// Colère (verte) 119577 
 			uint32 branche1_2[2] = { 98995, 770 };									// Éruption stellaire 98995, Lucioles 770
 			uint32 branche1_3[2] = { 15798, 21668 };								// Eclat lunaire 15798, Feu stellaire 21668
 																					
