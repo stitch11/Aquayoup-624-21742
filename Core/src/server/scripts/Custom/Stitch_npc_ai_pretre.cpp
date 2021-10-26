@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : PRETRE Ver 2021-08-02
+// AI generique npc par classe : PRETRE Ver 2021-10-26
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_pretre',`AIName` = '' WHERE (entry = 15100003);
@@ -56,7 +56,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 			uint32 Buf_all = 21562;													// Mot de pouvoir : Robustesse 21562
 			uint32 Buf_branche1 = 15473;											// Forme d'Ombre 15473
 			uint32 Buf_branche2 = 81700;											// Archange 81700 (soin +20% 15s)
-			uint32 Spell_Heal_Caster = 8004;  										// Rénovation 139 (rend pv a l'instant + 12s)
+			uint32 Spell_Heal_Caster = 8004;  										// Afflux de soins	
 			uint32 Spell_Heal_Heal = 139;  											// Rénovation 139 (rend pv a l'instant + 12s)
 			uint32 Etreinte_Vampirique = 15286;										// Etreinte vampirique
 			uint32 Nova_Sacree = 132157;											// Nova sacrée dmg/heal 12m
@@ -71,7 +71,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 			uint32 branche1_agro[4] = { 15487, 15487, 172884, 64044 };				// Ombrefiel 172884, Horreur psychique 64044 (fear 5s), Silence 15487 5s
 			uint32 branche1_1[4] = { 183324, 183324, 183324, 60440 };				// Fouet mental 183324, Incandescence mentale 60440
 			uint32 branche1_2[2] = { 92713, 145550 };								// Attaque mentale 92713, Pointe mentale 145550
-			uint32 branche1_3[3] = { 34914, 2944, 34941 };							// Toucher vampirique 34914,  Peste dévorante 2944, Mot de l’ombre:Douleur 34941
+			uint32 branche1_3[3] = { 300231, 138490, 34941 };						// Toucher vampirique 300231,  Peste dévorante 138490, Mot de l’ombre:Douleur 34941
 
 			// Spells Discipline
 			uint32 Spell_branche2_agro;	//    
@@ -464,7 +464,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 
 						if (me->GetHealth() < (me->GetMaxHealth()*0.40))							// Si PV < 40%
 						{
-							DoCast(me, Soins_Rapides);												// Soins rapides 2061 Soins_Rapides
+							DoCast(me, Soins_Rapides);												// Soins rapides 2061 
 						}
 						Cooldown_Spell_Heal = 3000;
 					}
@@ -480,7 +480,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 							}
 							if (target->GetHealth() < (target->GetMaxHealth()*0.40))				// Si PV < 40%
 							{
-								DoCast(target, Soins_Rapides);									// 1 chance sur 2 : Soins rapides 2061 Soins_Rapides
+								DoCast(target, Soins_Rapides);										// 1 chance sur 2 : Soins rapides 2061 
 							}
 							Cooldown_Spell_Heal = 4000;
 						}
