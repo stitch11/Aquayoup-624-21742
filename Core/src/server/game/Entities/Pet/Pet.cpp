@@ -1312,6 +1312,16 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 					SetReactState(REACT_DEFENSIVE);
 					break;
 				}
+
+				case 95577: //  Vrilles du Vide (Talent Pretre)
+				{
+					SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK)));
+					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 4));
+					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 6));
+					SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);				// ROOT
+					break;
+				}
+				
 				
 				default:
 				//Stitch Degat par defaut des Guardian 
