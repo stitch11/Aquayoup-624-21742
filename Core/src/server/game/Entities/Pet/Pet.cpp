@@ -1131,7 +1131,7 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 					m_charmInfo->InitPetActionBar();
 					break;
 				}
-				case 19668: // Shadowfiend
+				case 19668: // Shadowfiend(Ombrefiel)
 				{
 					if (!pInfo)
 					{
@@ -1321,6 +1321,22 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 					SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);				// ROOT
 					break;
 				}
+				
+				case 62982: // torve-esprit (Talent Pretre)
+				{
+					if (!pInfo)
+					{
+						SetCreateMana(28 + 10 * petlevel);
+						SetCreateHealth(28 + 30 * petlevel);
+					}
+
+					int32 bonus_dmg = int32(GetOwner()->SpellBaseDamageBonusDone(SPELL_SCHOOL_MASK_SHADOW)* 0.3f);
+					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float((petlevel * 4 - petlevel) + bonus_dmg));
+					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float((petlevel * 4 + petlevel) + bonus_dmg));
+					break;
+				}
+
+
 				
 				
 				default:
