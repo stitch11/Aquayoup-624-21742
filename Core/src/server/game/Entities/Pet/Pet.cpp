@@ -1131,7 +1131,7 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 					m_charmInfo->InitPetActionBar();
 					break;
 				}
-				case 19668: // Shadowfiend(Ombrefiel)
+				case 19668: // Shadowfiend (Ombrefiel)
 				{
 					if (!pInfo)
 					{

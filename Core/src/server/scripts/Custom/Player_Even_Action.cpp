@@ -247,7 +247,7 @@ case CLASS_DEATH_KNIGHT:
     if (_level >= 10)
     {
         player->LearnSpell(50977, true); // Porte de la mort
-        player->LearnSpell(53428, true); // Destrier de la mort cramoisi
+        player->LearnSpell(73313, true); // Destrier de la mort cramoisi
     }
     break;
 case CLASS_SHAMAN:
