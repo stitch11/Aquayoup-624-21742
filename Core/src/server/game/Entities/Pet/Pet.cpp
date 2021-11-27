@@ -1336,7 +1336,14 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 					break;
 				}
 
-
+				case 77726: //  Renvoi de l’Ombre (Talent pretre)
+				{
+					SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK)));
+					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 4));
+					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 6));
+					m_charmInfo->InitPetActionBar();
+					break;
+				}
 				
 				
 				default:
