@@ -3900,7 +3900,8 @@ void Spell::EffectAddComboPoints(SpellEffIndex /*effIndex*/)
     if (damage <= 0)
         return;
 
-    m_caster->m_movedPlayer->AddComboPoints(damage, this);
+    //m_caster->m_movedPlayer->AddComboPoints(damage, this);
+	m_caster->m_movedPlayer->AddComboPoints(1, this);	//Stitch bug combo
 }
 
 void Spell::EffectDuel(SpellEffIndex effIndex)
