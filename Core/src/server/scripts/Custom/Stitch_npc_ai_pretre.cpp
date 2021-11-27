@@ -49,7 +49,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 			uint32 Cooldown_Spell_Heal = 3000;										// Cooldown pour la fréquence du heal
 			uint32 Cooldown_RegenMana = 3000;										// Cooldown pour le regen du mana
 			uint32 Cooldown_ResteADistance = 2000;									// Test si en contact pour s'eloigner
-			uint32 Cooldown_Spell_Bouclier = 4000;									// Cooldown pour mot de pouvoir : bouclier
+			uint32 Cooldown_Spell_Bouclier = 60000;									// Cooldown pour mot de pouvoir : bouclier
 			uint32 Cooldown_Npc_Emotes = urand(5000, 8000);
 
 			// Spells Divers
