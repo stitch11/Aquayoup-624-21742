@@ -939,9 +939,20 @@ public:
             {
                 uint32 combo = GetCaster()->ToPlayer()->GetComboPoints();
 
+
+
                 if (roll_chance_i(blade->GetAmount() * combo))
-                    if (Aura* dot = GetHitUnit()->GetAura(SPELL_ROGUE_RUPTURE, GetCaster()->GetGUID()))
-                        dot->RefreshDuration();
+                    //if (Aura* dot = GetHitUnit()->GetAura(SPELL_ROGUE_RUPTURE, GetCaster()->GetGUID()))
+                    //    dot->RefreshDuration();
+
+					//Stitch Spell Rupture du voleur consomme les combos
+					if (Aura* dot = GetHitUnit()->GetAura(SPELL_ROGUE_RUPTURE, GetCaster()->GetGUID()))
+				{
+					dot->RefreshDuration();
+					GetCaster()->ToPlayer()->ClearComboPoints();
+				}
+
+
 
             }
         }
