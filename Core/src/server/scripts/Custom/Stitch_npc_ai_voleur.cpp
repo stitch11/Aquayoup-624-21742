@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour Aquayoup
-// AI generique npc par classe : VOLEUR Ver 2021-09-01
+// AI generique npc par classe : VOLEUR Ver 2021-12-06
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_voleur',`AIName` = '' WHERE (entry = 15100010);
@@ -56,7 +56,7 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 			// Spells Divers
 			uint32 Liste_Buf_branche1[5] = { 31209, 2983, 1784, 31220, 5171 };		// Pied léger 31209 (vit+10%), Sprint 2983,  Camouflage 1784, Vocation pernicieuse 31220 (-ag+15,Armure +100%), Débiter 5171
 			uint32 Buf_branche1;								
-			uint32 Liste_Buf_branche1a[3] = { 145421, 8679, 3408 };					// Poison mortel 145421, Poison douloureux 8679, Poison affaiblissant 3408
+			uint32 Liste_Buf_branche1a[3] = { 2823, 8679, 3408 };					// Poison mortel 2823, Poison douloureux 8679, Poison affaiblissant 3408
 			uint32 Buf_branche1a;
 			
 			uint32 Vampire_Berserker = 300124;										// Vampire Berserker 300124
