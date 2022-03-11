@@ -131,6 +131,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 Spell_Charge_Stun = 87187;									// Charge farouche 87187 (8-25 m ours, stun 4s)
 			uint32 Spell_Charge_Repousse = 19196;								// charge afflux 
 			uint32 Spell_Charge = 20508;										// Charge (dmg et sans effet) 93515, charge avec trainée 20508, charge 32323 (sonne 2s,8-25m ) 
+			uint32 Spell_Charge_Stun2s = 32323;									// Charge 32323 (sonne 2s,8-25m ) 
 			uint32 Spell_Poursuite = 30151;										// Poursuite 30151 (Gangregarde : charge, vit + 30 %/6s, >8m, recharge 15s)
 			uint32 Spell_Vitesse_Flamboyante = 108843;							// 6s 150 %
 			uint32 Spell_Vitesse_4s = 137573;									// vitesse + 70 % / 4s
@@ -615,7 +616,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						ResteADistance = 5;
 						Spell_Trop_Loin = Spell_Charge;																		//
 						Cooldown_Trop_Loin = 5000;
-						Cooldown_Trop_Loin_Defaut = urand(6000,7000);
+						Cooldown_Trop_Loin_Defaut = urand(5000,7000);
 						break;
 					case 6:		// Crocodile - CREATURE_FAMILY_CROCOLISK
 						me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
@@ -2540,10 +2541,16 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				{
 					if ( (Dist >= 8) && Dist <= 25)
 					{
-						if (Spell_Trop_Loin != 0)
-						{
-							DoCastAOE(Spell_Trop_Loin, true);
+						uint8 TMP = urand(1, 4);
+						if (Spell_Trop_Loin != 0 && TMP >1)
+						{ 
+							DoCastAOE(Spell_Trop_Loin, true); 
 						}
+						else
+							DoCastAOE(Spell_Charge_Stun2s, true);
+
+
+
 					Cooldown_Principal_B = Cooldown_Principal_B_Defaut;
 					Cooldown_Trop_Loin = Cooldown_Trop_Loin_Defaut;
 					}
@@ -2572,6 +2579,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				{
 					if (Dist <= 3)
 					{
+					me->SetSpeedRate(MOVE_RUN, 1.3f);
 					Tourne_Au_Tour_Aleatoire(15);
 					Cooldown_Principal_A = 3000;
 					Cooldown_Trop_Loin = 2000;
