@@ -205,8 +205,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 liste_Buf_6[2] = { 0, 0 };									// 
 
 			// 7 	Oiseau charogniar - CREATURE_FAMILY_CARRION_BIRD
-			uint32 liste_spell_A_7[3] = { 55079, 115132, 134537 };				// Rapace 55079, Plongeon 115132, Coup de bec 134537
-			uint32 liste_spell_B_7[3] = { 30639, 163716, 124515 };				// Morsure carnivore 30639, Griffure de serres 163716, Barrage de coups de bec 124515
+			uint32 liste_spell_A_7[3] = { 134537, 115132, 134537 };				// Coup de bec 134537, Plongeon 115132, Coup de bec 134537
+			uint32 liste_spell_B_7[4] = { 30639, 163716, 124515, 55079 };		// Morsure carnivore 30639, Griffure de serres 163716, Barrage de coups de bec 124515, Rapace 55079
 			uint32 liste_agro_7[2] = { 89712, 18328 };							// Griffure_bondissante 89712, Cri incapacitant 18328 (vit -60%)
 			uint32 liste_Buf_7[5] = { 44531, 44531, 183883, 3149, 70485 };		// Célérité 44531, *Hurlement de rage 183883 (vit, dps +25%/12s), Hurlement furieux 3149, Bond_Aleatoire 70485
 
@@ -647,7 +647,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					case 7:		// Oiseau charogniar - CREATURE_FAMILY_CARRION_BIRD
 						me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 						Spell_A = liste_spell_A_7[urand(0, 2)];
-						Spell_B = liste_spell_B_7[urand(0, 2)];
+						Spell_B = liste_spell_B_7[urand(0, 3)];
 						Spell_B_Non_Cumulable = 0;
 						Spell_agro = liste_agro_7[urand(0, 1)];
 						Spell_respawn_evade = 0;
@@ -2544,10 +2544,10 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						uint8 TMP = urand(1, 4);
 						if (Spell_Trop_Loin != 0 && TMP >1)
 						{ 
-							DoCastAOE(Spell_Trop_Loin, true); 
+							DoCastAOE(Spell_Trop_Loin, true);			// 3 chance sur 4 de ne pas stun
 						}
 						else
-							DoCastAOE(Spell_Charge_Stun2s, true);
+							DoCastAOE(Spell_Charge_Stun2s, true);		// 1 chance sur 4 de stun
 
 
 
