@@ -107,8 +107,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 Cooldown_Principal_A_Defaut = 2000;								// Cooldown_Anti_Bug_Figer_Defaut
 			uint32 Cooldown_Spell_Heal;												// Heal ou sort de sauvegarde si perte de pv
 			uint32 Cooldown_Spell_Heal_defaut;
-			uint32 Cooldown_Principal_B = 2000;										// Test si en contact , Cooldown_ResteADistance
-			uint32 Cooldown_Principal_B_Defaut = 4000;								// Cooldown_ResteADistance_Defaut
+			uint32 Cooldown_Principal_B = 6000;										// Test si en contact , Cooldown_ResteADistance
+			uint32 Cooldown_Principal_B_Defaut = 8000 + ((urand(0, 4) * 500));		// Cooldown_ResteADistance_Defaut
 			uint32 Cooldown_Trop_Loin = 4000;
 			uint32 Cooldown_Trop_Loin_Defaut = 10000;
 			uint32 Base_Cooldown_Cast_A = 4000;										// Cooldown de base pour l'attaque principal, il est utilisé avec des valeurs ajouté en +-, sert a definir Cooldown_SpellA_defaut
@@ -205,7 +205,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 liste_Buf_6[2] = { 0, 0 };									// 
 
 			// 7 	Oiseau charogniar - CREATURE_FAMILY_CARRION_BIRD
-			uint32 liste_spell_A_7[3] = { 134537, 115132, 134537 };				// Coup de bec 134537, Plongeon 115132, Coup de bec 134537
+			uint32 liste_spell_A_7[3] = { 115388, 115132, 115388 };				// Coup de bec 115388, Plongeon 115132
 			uint32 liste_spell_B_7[4] = { 30639, 163716, 124515, 55079 };		// Morsure carnivore 30639, Griffure de serres 163716, Barrage de coups de bec 124515, Rapace 55079
 			uint32 liste_agro_7[2] = { 89712, 18328 };							// Griffure_bondissante 89712, Cri incapacitant 18328 (vit -60%)
 			uint32 liste_Buf_7[5] = { 44531, 44531, 183883, 3149, 70485 };		// Célérité 44531, *Hurlement de rage 183883 (vit, dps +25%/12s), Hurlement furieux 3149, Bond_Aleatoire 70485
@@ -1764,6 +1764,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				} else	// Ou lecture des spells dans creature_template->spells1-6 --------------------------------------------------------------------------------
 				{ 
 					Spell_A = me->m_spells[0]; 
+
 					if (me->m_spells[1] != 0) 
 					{ Spell_B = me->m_spells[1]; } 
 					else  Spell_B = 0;
