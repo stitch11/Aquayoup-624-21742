@@ -56,6 +56,7 @@ public:
         // 1ere connexion joueur
         if (firstLogin)
         {
+			player->LearnSpell(300251, true);      // Nuit Claire : Rend les nuits ou lieux sombres plus clair.
         }
 
 		switch (_class)
