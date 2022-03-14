@@ -108,12 +108,12 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 Cooldown_Spell_Heal;												// Heal ou sort de sauvegarde si perte de pv
 			uint32 Cooldown_Spell_Heal_defaut;
 			uint32 Cooldown_Principal_B = 6000;										// Test si en contact , Cooldown_ResteADistance
-			uint32 Cooldown_Principal_B_Defaut = 8000 + ((urand(0, 4) * 500));		// Cooldown_ResteADistance_Defaut
+			uint32 Cooldown_Principal_B_Defaut = 6000 + ((urand(0, 4) * 500));		// Cooldown_ResteADistance_Defaut
 			uint32 Cooldown_Trop_Loin = 4000;
 			uint32 Cooldown_Trop_Loin_Defaut = 10000;
 			uint32 Base_Cooldown_Cast_A = 4000;										// Cooldown de base pour l'attaque principal, il est utilisé avec des valeurs ajouté en +-, sert a definir Cooldown_SpellA_defaut
 			uint32 Base_Cooldown_Cast_B = 10000;										// Idem pour le sort secondaire, généralement un DOT
-			uint32 AI_Random;
+			uint32 AI_Random = 1;
 
 
 			// Spells 
@@ -1728,7 +1728,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Spell_Trop_Loin = 0;														
 						Cooldown_Trop_Loin = urand(3000, 5000);
 						Cooldown_Trop_Loin_Defaut = urand(3000, 5000);
-						AI_Random = urand(1, 2);
+						AI_Random = 1;
 						break;
 
 
@@ -2621,14 +2621,14 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				{
 					if (Dist < ResteADistance)
 					{
-						Random = urand(1, 2);
+						Random = urand(1, 3);
 						if (Random == 1)
 						{
-							Tourne_Au_Tour_Aleatoire(2);														// 1 chances sur 2 : tourne au tour de sa victime
+							Tourne_Au_Tour_Aleatoire(2);														// 1 chances sur 3 : tourne au tour de sa victime
 						}
 						else 
 						{
-							Recule_ou_Avance( 1 - urand(5,11) );												// 1 chances sur 2 : Recule
+							Recule_ou_Avance( 1 - urand(7,11) );												// 2 chances sur 3 : Recule
 						}
 						Cooldown_Principal_B = Cooldown_Principal_B_Defaut;
 						Cooldown_Principal_A = 2000 + urand(0,1500);
