@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour https:\\Aquayoup.123.fr
-// AI generique npc par classe : Lancier Ver 2021-10-08 (caster simple, combat a distance si 8-30 sinon combat au corp a corp 0-8m)
+// AI generique npc par classe : Lancier Ver 2022-03-16 (caster simple, combat a distance si 8-30m, sinon combat au corp a corp 0-8m)
 //
 // ScriptName = Stitch_npc_ai_lancier : npc d'exemple : 15100014
 // le "lancer une arme" , "Tir a l'arc" ou "Tir au fusil" est automatique de 8 a 40m et est tributaire de pickpocketloot
@@ -62,7 +62,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			uint32 liste_agro[2] = { 133308, 79444 };								// Lancer le filet 133308 (25m 5s), Empaler 79444 (Jette une lance 60m) 
 
 			uint32 Spell_1;
-			uint32 liste_spell_1[4] = { 57846, 126799, 118326, 172851 };			// Frappe héroïque 57846, Frappe tranchante 126799, Attaque vicieuse 118326, Enchaînement 172851
+			uint32 liste_spell_1[4] = { 29426, 126799, 118326, 172851 };			// Frappe héroïque 29426, Frappe tranchante 126799, Attaque vicieuse 118326, Enchaînement 172851
 
 			uint32 Spell_2 = 0;
 			uint32 liste_spell_2[4] = { 127171, 118532, 772, 62317 };				// Fendoir vicieux 15/lvl + 2/lvl/1s cumulable 5 fois 127171, Entaille infectée 118532, Pourfendre 772, Dévaster 62317	
@@ -84,6 +84,11 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				// ################################################################################################################################################
 				// Définition des spells
 				// ################################################################################################################################################
+				// spell1 : Attaque principale
+				// spell2 : Dot
+				// spell3 : spell lancé a l'agro
+				// spell4 : spell lancé a l'évade ou respawn
+				// spell5 : Buf
 
 				// Si aucun spell défini dans creature_template->spell[1] : tirage aléatoire des sorts
 				if (me->m_spells[0] == 0) 
@@ -116,7 +121,8 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				// ################################################################################################################################################
 				// Divers
 				// ################################################################################################################################################
-				me->SetSheath(SHEATH_STATE_MELEE);													// S'equipe de l'arme au contact
+				//me->SetSheath(SHEATH_STATE_MELEE);													// S'equipe de l'arme au contact
+				if (Tir_1 != Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_RANGED); }				// S'équipe d'arc ou fusil
 				me->SetReactState(REACT_AGGRESSIVE);
 				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);								// ROOT
 				// ################################################################################################################################################
@@ -238,6 +244,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 							if (Tir_1 != Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_RANGED); }				// S'équipe d'arc ou fusil
 							if (Tir_1 == Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_MELEE);	}				// S'équipe d'armes au contact
 
+							me->StopMoving();
 							DoCast(victim, Tir_1);
 							Cooldown_Spell1 = urand(1500,2500);
 						}

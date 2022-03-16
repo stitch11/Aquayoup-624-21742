@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour https:\\Aquayoup.123.fr
-// AI generique npc par famille : Mobs Ver 2020-12-08 (family)
+// AI generique npc par famille : Mobs Ver 2022-15-03 (family)
 //
 // Si spell[1] = 0 : alors affectation aléatoire de tous les spells(prédéfini dans le core), sinon utilisera les spells définis dans creature_template spell[1 a 5]
 // BETE
@@ -108,7 +108,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 Cooldown_Spell_Heal;												// Heal ou sort de sauvegarde si perte de pv
 			uint32 Cooldown_Spell_Heal_defaut;
 			uint32 Cooldown_Principal_B = 6000;										// Test si en contact , Cooldown_ResteADistance
-			uint32 Cooldown_Principal_B_Defaut = 6000 + ((urand(0, 4) * 500));		// Cooldown_ResteADistance_Defaut
+			uint32 Cooldown_Principal_B_Defaut = 5000 + ((urand(0, 4) * 500));		// Cooldown_ResteADistance_Defaut
 			uint32 Cooldown_Trop_Loin = 4000;
 			uint32 Cooldown_Trop_Loin_Defaut = 10000;
 			uint32 Base_Cooldown_Cast_A = 4000;										// Cooldown de base pour l'attaque principal, il est utilisé avec des valeurs ajouté en +-, sert a definir Cooldown_SpellA_defaut
