@@ -56,8 +56,8 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 
 			// Definitions des variables Cooldown et le 1er lancement
 			uint32 Cooldown_Spell1 = 1000;
-			uint32 Cooldown_Spell2 = 3000;
-			uint32 Cooldown_Spell2_defaut = 4000;
+			uint32 Cooldown_Spell2 = 4000;
+			uint32 Cooldown_Spell2_defaut = urand(7000,10000);
 			uint32 Cooldown_ResteADistance = 2000;									// Test si en contact
 			uint32 Cooldown_ResteADistance_Defaut = 4000;
 			uint32 Cooldown_Anti_Bug_Figer = 2000;
@@ -335,8 +335,11 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 						// Spell2 sur la cible  -------------------------------------------------------------------------------------------------------------------
 						if (Cooldown_Spell2 <= diff && Spell_2 != 0)
 						{
-							me->CastSpell(victim, Spell_2, true);
-							Cooldown_Spell2 = Cooldown_Spell2_defaut;
+							if (!victim->HasAura(Spell_2))
+							{
+								me->CastSpell(victim, Spell_2, true);
+								Cooldown_Spell2 = Cooldown_Spell2_defaut;
+							}
 						}
 						else Cooldown_Spell2 -= diff;
 
