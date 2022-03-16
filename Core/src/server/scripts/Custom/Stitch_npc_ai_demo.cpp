@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : DEMO Ver 2021-10-15
+// AI generique npc par classe : DEMO Ver 2022-03-16
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_demo',`AIName` = '' WHERE (entry = 15100004);
@@ -321,6 +321,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 					// Spell1 sur la cible chaque (Sort Régulié)
 					if (Cooldown_Spell1 <= diff)
 					{
+						me->StopMoving();
 						DoCastVictim(Spell_branche1_1);
 						Cooldown_Spell1 = 3500;
 					}
@@ -340,6 +341,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 					// Spell1 sur la cible chaque (Sort Régulié)
 					if (Cooldown_Spell1 <= diff)
 					{
+						me->StopMoving();
 						DoCastVictim(Spell_branche2_1);
 						Cooldown_Spell1 = 3500;
 					}
@@ -391,6 +393,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 					// Spell1 sur la cible chaque (Sort Régulié)
 					if (Cooldown_Spell1 <= diff)
 					{
+						me->StopMoving();
 						DoCastVictim(Spell_branche3_1);
 						Cooldown_Spell1 = 3000;
 					}

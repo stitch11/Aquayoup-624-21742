@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : DK Ver 2021-09-01
+// AI generique npc par classe : DK Ver 2022-03-16
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_dk',`AIName` = '' WHERE (entry = 15100009);
@@ -596,6 +596,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 							if (Cooldown_Spell1 <= diff)
 							{
 								//DoCast(victim, Spell_branche4_1);
+								me->StopMoving();
 								DoCastVictim(Spell_branche4_1);
 								Cooldown_Spell1 = 7500;
 								DoMeleeAttackIfReady();						// Combat en mélée

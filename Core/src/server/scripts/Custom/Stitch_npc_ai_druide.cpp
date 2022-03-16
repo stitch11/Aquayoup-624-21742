@@ -1,6 +1,6 @@
 //###########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : DRUIDE Ver 2021-10-24
+// AI generique npc par classe : DRUIDE Ver 2022-03-16
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_druide',`AIName` = '' WHERE (entry = 15100001);
@@ -377,6 +377,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 						if (Cooldown_Spell3 <= diff)
 						{
 							//DoCastVictim(Spell_branche1_3);
+							me->StopMoving();
 							me->CastSpell(victim, Spell_branche1_3, true);
 							Cooldown_Spell3 = urand(10000, 12000);
 						}

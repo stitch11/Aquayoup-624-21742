@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : MAGE Ver 2021-07-29
+// AI generique npc par classe : MAGE Ver 2022-03-16
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_mage',`AIName` = '' WHERE (entry = 15100005);
@@ -288,6 +288,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						if (Cooldown_Spell3 <= diff)
 						{
 							//me->CastSpell(victim, Spell_branche1_3, true);
+							me->StopMoving();
 							DoCastVictim(Spell_branche1_3);
 							Cooldown_Spell3 = 10000;
 						}
@@ -324,6 +325,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						// Spell1 sur la cible chaque (Sort Régulié)
 						if (Cooldown_Spell1 <= diff && !me->HasUnitState(UNIT_STATE_MOVE))
 						{
+							me->StopMoving();
 							DoCastVictim(Spell_branche2_1);
 							Cooldown_Spell1 = 3000;
 						}
@@ -368,6 +370,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot)
 						if (Cooldown_Spell1 <= diff && !me->HasUnitState(UNIT_STATE_MOVE))
 						{
+							me->StopMoving();
 							DoCastVictim(Spell_branche3_1/*, true*/);
 							Cooldown_Spell1 = 3000;
 						}
