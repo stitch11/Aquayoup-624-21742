@@ -325,10 +325,13 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 						// Spell1 sur la cible  -------------------------------------------------------------------------------------------------------------------
 						if (Cooldown_Spell1 <= diff && Spell_1 !=0)
 						{
-							me->StopMoving();
-							DoCast(victim, Spell_1);
-							DoMeleeAttackIfReady();																// Combat en mélée
-							Cooldown_Spell1 = urand(3500,4000);
+							if (!me->HasUnitState(UNIT_STATE_MOVE))
+							{
+								me->StopMoving();
+								DoCast(victim, Spell_1);
+								DoMeleeAttackIfReady();																// Combat en mélée
+								Cooldown_Spell1 = urand(3500,4000);
+							}
 						}
 						else Cooldown_Spell1 -= diff;
 

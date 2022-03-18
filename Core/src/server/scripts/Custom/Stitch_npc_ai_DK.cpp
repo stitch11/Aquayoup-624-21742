@@ -595,11 +595,14 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 							// Spell1 sur la cible chaque (Sort Régulié)
 							if (Cooldown_Spell1 <= diff)
 							{
-								//DoCast(victim, Spell_branche4_1);
-								me->StopMoving();
-								DoCastVictim(Spell_branche4_1);
-								Cooldown_Spell1 = 7500;
-								DoMeleeAttackIfReady();						// Combat en mélée
+								if (!me->HasUnitState(UNIT_STATE_MOVE))
+								{
+									//DoCast(victim, Spell_branche4_1);
+									me->StopMoving();
+									DoCastVictim(Spell_branche4_1);
+									Cooldown_Spell1 = 7500;
+									DoMeleeAttackIfReady();						// Combat en mélée
+								}
 							}
 							else Cooldown_Spell1 -= diff;
 

@@ -305,8 +305,11 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						// Spell1 sur la cible 
 						if (Cooldown_Spell1 <= diff)
 						{
-							DoCastVictim(Spell_branche1_1);
-							Cooldown_Spell1 = 4000;
+							if (!me->HasUnitState(UNIT_STATE_MOVE))
+							{
+								DoCastVictim(Spell_branche1_1);
+								Cooldown_Spell1 = 4000;
+							}
 						}
 						else Cooldown_Spell1 -= diff;
 						break;

@@ -321,9 +321,12 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 					// Spell1 sur la cible chaque (Sort Régulié)
 					if (Cooldown_Spell1 <= diff)
 					{
-						me->StopMoving();
-						DoCastVictim(Spell_branche1_1);
-						Cooldown_Spell1 = 3500;
+						if (!me->HasUnitState(UNIT_STATE_MOVE))
+						{
+							me->StopMoving();
+							DoCastVictim(Spell_branche1_1);
+							Cooldown_Spell1 = 3500;
+						}
 					}
 					else Cooldown_Spell1 -= diff;
 					break;
@@ -341,9 +344,12 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 					// Spell1 sur la cible chaque (Sort Régulié)
 					if (Cooldown_Spell1 <= diff)
 					{
-						me->StopMoving();
-						DoCastVictim(Spell_branche2_1);
-						Cooldown_Spell1 = 3500;
+						if (!me->HasUnitState(UNIT_STATE_MOVE))
+						{
+							me->StopMoving();
+							DoCastVictim(Spell_branche2_1);
+							Cooldown_Spell1 = 3500;
+						}
 					}
 					else Cooldown_Spell1 -= diff;
 
@@ -393,9 +399,12 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 					// Spell1 sur la cible chaque (Sort Régulié)
 					if (Cooldown_Spell1 <= diff)
 					{
-						me->StopMoving();
-						DoCastVictim(Spell_branche3_1);
-						Cooldown_Spell1 = 3000;
+						if (!me->HasUnitState(UNIT_STATE_MOVE))
+						{
+							me->StopMoving();
+							DoCastVictim(Spell_branche3_1);
+							Cooldown_Spell1 = 3000;
+						}
 					}
 					else Cooldown_Spell1 -= diff;
 					break;

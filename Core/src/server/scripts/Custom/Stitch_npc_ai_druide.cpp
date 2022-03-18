@@ -394,8 +394,11 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 						// Spell1 sur la cible chaque (Sort Régulié)
 						if (Cooldown_Spell1 <= diff)
 						{
-							DoCastVictim(Spell_branche1_1);
-							Cooldown_Spell1 = 3000;
+							if (!me->HasUnitState(UNIT_STATE_MOVE))
+							{
+								DoCastVictim(Spell_branche1_1);
+								Cooldown_Spell1 = 3000;
+							}
 						}
 						else Cooldown_Spell1 -= diff;
 
