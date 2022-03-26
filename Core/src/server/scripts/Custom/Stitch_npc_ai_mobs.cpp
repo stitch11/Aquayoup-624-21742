@@ -112,7 +112,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 Cooldown_Trop_Loin = 4000;
 			uint32 Cooldown_Trop_Loin_Defaut = 10000;
 			uint32 Base_Cooldown_Cast_A = 4000;										// Cooldown de base pour l'attaque principal, il est utilisé avec des valeurs ajouté en +-, sert a definir Cooldown_SpellA_defaut
-			uint32 Base_Cooldown_Cast_B = 10000;										// Idem pour le sort secondaire, généralement un DOT
+			uint32 Base_Cooldown_Cast_B = 10000;									// Idem pour le sort secondaire, généralement un DOT
 			uint32 AI_Random = 1;
 
 
@@ -139,7 +139,9 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 Spell_Bondir_Guerrier = 145763;								// Bondir 8-40m
 			uint32 Spell_Invisible = 1784;										// Invisibilitée fufu
 			uint32 Spell_No_ModelID = 137358;									// ModelID non visible , arme && aura visible 
-			uint32 Spell_Senterre = 79690;										// visuel terre Forage de tunnel Passif gris
+			uint32 Spell_Senterre = 79690;										// visuel terre Forage de tunnel Passif gris percistant
+			uint32 Spell_Senterre_sans_fumee = 84863;							// visuel terre Forage de tunnel Passif gris  
+			uint32 Spell_Sedeterre_sans_fumee = 164339;							// visuel explosion de fumée   
 			uint32 Spell_Gaz_Corrosif = 126437;
 			uint32 Spell_Armure_De_Givre = 165743;
 			uint32 Spell_Armure_De_La_Fournaise = 79849;
@@ -445,6 +447,11 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 liste_Buf_130[2] = { 0, 0 };									// 
 
 
+			// 155	CUSTOM - CREATURE_FAMILY_SENTERRE
+			uint32 liste_spell_A_155[2] = { 119004, 119004 };					// Violent coup direct 119004
+			uint32 liste_spell_B_155[4] = { 84867, 79872, 84867, 79872 };		// Balayage fracassant (cum 5 fois) 84867, Onde de choc 79872
+			uint32 liste_agro_155[2] = { 113967, 35328 };						// Barbelés d'épines 113967, Sang diapré 35328 (Impossible d'utiliser Camouflage)
+			uint32 liste_Buf_155[2] = { 22863, 22863 };							// Vitesse 22863 (10s/30%)
 
 
 			uint32 Start_Agro = 0;
@@ -475,7 +482,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// m_spells[5] : Heal(lui meme uniquement)				- Correspond a spell6 de creature_template
 
 					// Forcer la famille de mob par creature_template->pickpocketloot
-					if (ForceFamily != 0) { Crfamily = ForceFamily; }
+					if (ForceFamily > 0 && ForceFamily < 201) { Crfamily = ForceFamily; }
 
 					// Tirage aléatoire des spells ----------------------------------------------------------------------------------------------------------------
 					if (me->m_spells[0] == 0)
@@ -616,7 +623,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						ResteADistance = 5;
 						Spell_Trop_Loin = Spell_Charge;																		//
 						Cooldown_Trop_Loin = 5000;
-						Cooldown_Trop_Loin_Defaut = urand(5000,7000);
+						Cooldown_Trop_Loin_Defaut = urand(5000,6000);
 						break;
 					case 6:		// Crocodile - CREATURE_FAMILY_CROCOLISK
 						me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
@@ -1728,9 +1735,33 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Spell_Trop_Loin = 0;														
 						Cooldown_Trop_Loin = urand(3000, 5000);
 						Cooldown_Trop_Loin_Defaut = urand(3000, 5000);
-						AI_Random = 1;
+						AI_Random = urand(1, 2);
 						break;
-
+					case 155:	// CUSTOM - CREATURE_FAMILY_SENTERRE
+						me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+						Spell_A = liste_spell_A_155[urand(0, 1)];
+						Spell_B = liste_spell_B_155[urand(0, 3)];
+						Spell_B_Non_Cumulable = 0;
+						Spell_agro = liste_agro_155[urand(0, 1)];
+						Spell_respawn_evade = 0;
+						Buf_A = liste_Buf_155[urand(0, 1)];
+						Spell_Heal = 0;
+						Cooldown_SpellA = 1000;
+						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A + 250;
+						Cooldown_SpellB = 3000;
+						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B + 3000);
+						Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 2000;
+						Cooldown_SpellB_rapide_defaut = Base_Cooldown_Cast_B;
+						Cooldown_Spell_Heal_defaut = 0;
+						Cooldown_Principal_A = 2000;
+						Cooldown_Principal_A_Defaut = 2000;
+						Cooldown_Principal_B = urand(5000, 7000);
+						Cooldown_Principal_B_Defaut = urand(7000, 9000);
+						ResteADistance = 5;
+						Spell_Trop_Loin = 0;																			// 	
+						Cooldown_Trop_Loin = 6000;
+						Cooldown_Trop_Loin_Defaut = urand(8000, 10000);
+						break;
 
 
 
@@ -1806,12 +1837,20 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				{
 					if (Crfamily == 20 || Crfamily == 42) { Senterre(); }
 				}
+
+
+				if (Crfamily == 155) 
+				{ 
+					Senterre_sans_fumee(); 
+				}
+
+
 				// -------------------------------
 				// -------------------------------
 			}
 			void EnterCombat(Unit* /*who*/) override
 			{
-				if (Crfamily == 20)
+				if (Crfamily == 20 || Crfamily == 42 || Crfamily == 155)
 				{
 					Se_Deterre();
 				}
@@ -1843,6 +1882,11 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				if (Random == 1)
 				{
 					if (Crfamily == 20 || Crfamily == 42) { Senterre(); }
+				}
+
+				if (Crfamily == 155)
+				{
+					Senterre_sans_fumee();
 				}
 				// -------------------------------
 
@@ -1915,11 +1959,11 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						}
 						// ---------------------------
 
-						Random = urand(1, 4);
-						if (Random == 1 && Buf_A != 0) { me->CastSpell(me, Buf_A, true); }								// 1 chance sur 4 de lancer au sort de buf a l'agro
+						Random = urand(1, 2);
+						if (Random == 1 && Buf_A != 0) { me->CastSpell(me, Buf_A, true); }							// 1 chance sur 2 de lancer au sort de buf a l'agro
 
-						Random = urand(1, 4);
-						if (Random == 1 && Spell_agro != 0) { me->CastSpell(victim, Spell_agro, true); }				// 1 Chance sur 4 de lancer le sort sur la cible a d'agro
+						Random = urand(1, 5);
+						if (Random < 4 && Spell_agro != 0) { me->CastSpell(victim, Spell_agro, true); }				// 3 Chance sur 5 de lancer le sort sur la cible a d'agro
 					}
 
 					// ############################################################################################################################################
@@ -2186,7 +2230,9 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							else 
 								Mouvement_Contact_Basique(diff);
 							break;
-
+						case 155:	// CUSTOM - CREATURE_FAMILY_SENTERRE
+							Mouvement_Contact_Basique(diff);
+							break;
 
 						default:
 							Mouvement_Contact_Basique(diff);
@@ -2540,7 +2586,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// ------ CHARGE -----------------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Trop_Loin <= diff)
 				{
-					if ( (Dist >= 8) && Dist <= 25)
+					if ( (Dist >= 6) && Dist <= 25)
 					{
 						uint8 TMP = urand(1, 4);
 						if (Spell_Trop_Loin != 0 && TMP >1)
@@ -2799,12 +2845,22 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			void Senterre()
 			{
 				me->CastSpell(me, Spell_No_ModelID, true);										// Masque le ModelID
-				me->CastSpell(me, Spell_Senterre, true);													// Fumée et terre remuée
+				me->CastSpell(me, Spell_Senterre, true);										// Fumée et terre remuée Persistant
+				me->CastSpell(me, Spell_Sedeterre_sans_fumee, true);							// Pour visuel sedeterrer
+				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Non selectionnable
+			}
+			void Senterre_sans_fumee()
+			{
+				me->CastSpell(me, Spell_Senterre_sans_fumee, true);								// Fumée et terre remuée Temporaire
+				me->CastSpell(me, Spell_Sedeterre_sans_fumee, true);							// Pour visuel sedeterrer
+				me->CastSpell(me, Spell_No_ModelID, true);										// Masque le ModelID
 				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Non selectionnable
 			}
 			void Se_Deterre()
 			{
-				me->RemoveAurasDueToSpell(Spell_Senterre);												// Retire fumée et terre remuée
+				me->RemoveAurasDueToSpell(Spell_Senterre);										// Retire fumée et terre remuée Persistant
+				me->RemoveAurasDueToSpell(Spell_Senterre_sans_fumee);							// Retire fumée et terre remuée Temporaire
+				me->RemoveAurasDueToSpell(Spell_Sedeterre_sans_fumee);							// Visuel explosion de fumée
 				me->RemoveAurasDueToSpell(Spell_No_ModelID);									// Retire invisible
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Selectionnable
 			}
