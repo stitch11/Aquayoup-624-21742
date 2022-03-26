@@ -427,7 +427,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 	{
 		if (Crtype == CREATURE_TYPE_UNDEAD || Crtype == CREATURE_TYPE_ELEMENTAL)
 		{
-			SetSpeedRate(MOVE_WALK, 0.5f);				// hors combat
+			SetSpeedRate(MOVE_WALK, 0.35f);				// hors combat
 			SetSpeedRate(MOVE_RUN, 0.8f);				// en combat
 			SetSpeedRate(MOVE_SWIM, 0.4f);				// en nageant
 		}
@@ -475,8 +475,8 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 		if (Crfamily == CREATURE_FAMILY_BIRD_OF_PREY || Crfamily == CREATURE_FAMILY_BAT || Crfamily == CREATURE_FAMILY_DRAGONHAWK || Crfamily == CREATURE_FAMILY_MOTH || Crfamily == CREATURE_FAMILY_CARRION_BIRD)
 		{
 			SetSpeedRate(MOVE_WALK, 1.5f);				// hors combat
-			SetSpeedRate(MOVE_RUN, 1.5f);				// en combat
-			SetSpeedRate(MOVE_FLIGHT, 1.5f);			// en volant
+			SetSpeedRate(MOVE_RUN, 1.75f);				// en combat
+			SetSpeedRate(MOVE_FLIGHT, 1.75f);			// en volant
 		}
 		// Loup, felin, sanglier, Raptor, Hyene, Ravageur,Renard, Porc-epic, Serpent,Ravageur
 		if (Crfamily == CREATURE_FAMILY_WOLF || Crfamily == CREATURE_FAMILY_CAT || Crfamily == CREATURE_FAMILY_BOAR || Crfamily == CREATURE_FAMILY_RAPTOR || Crfamily == CREATURE_FAMILY_HYENA || Crfamily == CREATURE_FAMILY_RAVAGER || Crfamily == CREATURE_FAMILY_FOX || Crfamily == CREATURE_FAMILY_SERPENT || Crfamily == CREATURE_FAMILY_RAVAGER)
