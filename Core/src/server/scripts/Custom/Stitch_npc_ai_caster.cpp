@@ -124,9 +124,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					else if (ForceBranche == 4) { Random = 4; }														// Druide forcé
 					else if (ForceBranche == 5) { Random = 5; }														// Pretre forcé
 					else if (ForceBranche == 6) { Random = 6; }														// DK Chaos forcé
-					else { 
-						Random = urand(1, 6); 
-					}
+					else { Random = urand(1, 6); }
 
 					// Tirage aléatoire d'une pseudo classe
 					switch (Random)
@@ -330,7 +328,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 								me->StopMoving();
 								DoCast(victim, Spell_1);
 								DoMeleeAttackIfReady();																// Combat en mélée
-								Cooldown_Spell1 = urand(3500,4000);
+								Cooldown_Spell1 = urand(3000,3500);
 							}
 						}
 						else Cooldown_Spell1 -= diff;
