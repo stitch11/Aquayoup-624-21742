@@ -108,7 +108,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 Cooldown_Spell_Heal;												// Heal ou sort de sauvegarde si perte de pv
 			uint32 Cooldown_Spell_Heal_defaut;
 			uint32 Cooldown_Principal_B = 6000;										// Test si en contact , Cooldown_ResteADistance
-			uint32 Cooldown_Principal_B_Defaut = 5000 + ((urand(0, 4) * 500));		// Cooldown_ResteADistance_Defaut
+			uint32 Cooldown_Principal_B_Defaut = 5000 + ((urand(0, 4) * 500));		// Cooldown_ResteADistance_Defaut, tourne au tour , etc
 			uint32 Cooldown_Trop_Loin = 4000;
 			uint32 Cooldown_Trop_Loin_Defaut = 10000;
 			uint32 Base_Cooldown_Cast_A = 4000;										// Cooldown de base pour l'attaque principal, il est utilisé avec des valeurs ajouté en +-, sert a definir Cooldown_SpellA_defaut
@@ -459,11 +459,18 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			void InitializeAI()
 			{
 				// --- Spécificitée par family ---
-				Random = urand(1, 3);
-				if (Random == 1)
-				{
-					if (Crfamily == 20 || Crfamily == 42) { Senterre(); }
-				}
+					if (Crfamily == 20 || Crfamily == 42) 
+					{ 
+						Random = urand(1, 3);
+						if (Random == 1)
+						{
+							Senterre(); 
+						}
+					}
+					if (Crfamily == 155)
+					{
+						Senterre_sans_fumee();
+					}
 				// -------------------------------
 			}
 			void Init_AI()
@@ -1832,17 +1839,20 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				if (Random == 1 && Spell_respawn_evade != 0) { me->CastSpell(me, Spell_respawn_evade, true); }		// 1/3 Chance de lancer le sort sur lui au respawn ou evade
 
 				// --- Spécificitée par family ---
-				Random = urand(1, 3);
-				if (Random == 1)
-				{
-					if (Crfamily == 20 || Crfamily == 42) { Senterre(); }
-				}
-
-
-				if (Crfamily == 155) 
-				{ 
-					Senterre_sans_fumee(); 
-				}
+					if (Crfamily == 20 || Crfamily == 42) 
+					{ 
+						Random = urand(1, 3);
+						if (Random == 1)
+						{
+							
+							Senterre(); 
+						}
+					}
+					
+					if (Crfamily == 155) 
+					{ 
+						Senterre_sans_fumee(); 
+					}
 
 
 				// -------------------------------
@@ -1878,10 +1888,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				//me->SetSpeedRate(MOVE_RUN, 1.01f);		
 
 
-				Random = urand(1, 3);
-				if (Random == 1)
+				// --- Spécificitée par family ---
+				if (Crfamily == 20 || Crfamily == 42)
 				{
-					if (Crfamily == 20 || Crfamily == 42) { Senterre(); }
+					Random = urand(1, 3);
+					if (Random == 1)
+					{
+
+						Senterre();
+					}
 				}
 
 				if (Crfamily == 155)
