@@ -110,10 +110,9 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				}
 
 				// Forcer le choix par creature_template->pickpocketloot . Lancier = 0 , Archer = 1 , Fusilier = 2
-				if (ForceBranche == 0) { Tir_1 = Lancer_une_Arme; }									// Lance une arme
 				if (ForceBranche == 1) { Tir_1 = Tir_Arc; }											// Tir a l'arc
-				if (ForceBranche == 2) { Tir_1 = Tir_Fusil;	}										// Tir au fusil
-				
+				else if (ForceBranche == 2) { Tir_1 = Tir_Fusil;	}								// Tir au fusil
+				else { Tir_1 = Lancer_une_Arme; }													// Lance une arme				
 
 				
 
