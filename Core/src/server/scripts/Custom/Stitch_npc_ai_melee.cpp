@@ -274,16 +274,16 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 				{
 					if (Dist < 8)
 					{
-					Random = urand(1, 5);
+					Random = urand(1, 4);
 					if (Random == 1 || Random == 2)
 					{
-						Tourne_Au_Tour_En_Combat();											// 2 chances sur 5 tourne au tour de sa victime
+						Tourne_Au_Tour_En_Combat();											// 2 chances sur 4 tourne au tour de sa victime
 					}
 					else if (Random == 3)
 					{
-						Avance_3m_En_Combat();												// 1 chances sur 5 avance
+						Avance_3m_En_Combat();												// 1 chances sur 4 avance
 					}
-					Cooldown_ResteADistance = urand(7000, 10000);
+					Cooldown_ResteADistance = urand(5000, 6000);
 					}
 				}
 				else Cooldown_ResteADistance -= diff;
