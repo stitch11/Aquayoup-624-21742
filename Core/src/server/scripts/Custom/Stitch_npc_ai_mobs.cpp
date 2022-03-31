@@ -1822,6 +1822,39 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					if (me->m_spells[5] != 0) 
 					{ Spell_Heal = me->m_spells[5]; }
 					else  Spell_Heal = 0;
+
+					// Mouvement_Caster_Puis_Contact
+					switch (Crfamily)
+					{
+					case 3:
+					case 23:
+					case 27:
+					case 34:
+					case 38:
+					case 42:
+					case 100:
+						me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+						Spell_B_Non_Cumulable = 0;
+						Spell_respawn_evade = 0;
+						Buf_A = 0;
+						Spell_Heal = 0;
+						Cooldown_SpellA = 1000;
+						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+						Cooldown_SpellB = 1500;
+						Cooldown_SpellB_defaut = urand(4500,6000);
+						Cooldown_SpellB_rapide = 3500;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
+						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;												// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
+						Cooldown_Spell_Heal_defaut = 60000;
+						Cooldown_Principal_A = 2000;
+						Cooldown_Principal_A_Defaut = 2000;
+						Cooldown_Principal_B = 1000;
+						Cooldown_Principal_B_Defaut = 1000;
+						ResteADistance = 10;
+						Spell_Trop_Loin = 0;
+						Cooldown_Trop_Loin = 8000;
+						Cooldown_Trop_Loin_Defaut = urand(8000, 10000);
+						break;
+					}
 				}
 
 				// Divers  ----------------------------------------------------------------------------------------------------------------------------------------
@@ -2021,8 +2054,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 					// ############################################################################################################################################
 					// MOUVEMENT
-						if ( me->HasUnitState(UNIT_STATE_ROOT) )
-							return;
+						//if ( me->HasUnitState(UNIT_STATE_ROOT) )
+						//	return;
 
 						switch (Crfamily)
 						{
@@ -2322,7 +2355,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					return;
 
 				Unit* victim = me->GetVictim();
-				Dist = me->GetDistance(victim);
 
 				if (Cooldown_Principal_B <= diff)
 				{
@@ -2341,7 +2373,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					{
 						Cooldown_SpellB_defaut = Cooldown_SpellB_rapide;								// Cadence de tir SpellB rapide
 
-						if (me->isMoving())
+					if (me->isMoving())
 						{
 							//float x, y, z, mapid;
 							x = (victim->GetPositionX());
@@ -2351,6 +2383,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, -0.85f);				// Indispensable pour stoper le mouvement
 							me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 						}
+						me->StopMoving(); 
 						me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
 					}
 					Cooldown_Principal_B = Cooldown_Principal_B_Defaut;
