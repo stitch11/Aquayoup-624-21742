@@ -53,6 +53,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			uint32 Mana;
 			uint32 MaxMana = me->GetMaxPower(POWER_MANA);
 			uint32 ForceBranche;
+			uint8 npcfixe = me->GetCreatureTemplate()->pickpocketLootId;
 
 			// Definitions des variables Cooldown et le 1er lancement
 			uint32 Cooldown_Spell1 = 1000;
@@ -395,7 +396,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				{
 					// Mouvement aléatoire si cible < 4m & mana > 10%  ---------------------------------------------------------------------------------------------
 
-					if (Dist <5 && (Mana > MaxMana / 10))
+					if (Dist <5 && (Mana > MaxMana / 10) && npcfixe != 1)
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 						me->SetSpeedRate(MOVE_RUN, 1.0f);
