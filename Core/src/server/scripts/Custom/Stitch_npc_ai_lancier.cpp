@@ -191,10 +191,10 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 
 						// Spell a lancer a l'agro ------------------------------------------------------------------------------------------------------------------------
 						Random = urand(1, 3);
-						if (Random == 1 && Buf_1 != 0) { me->CastSpell(me, Buf_1, true); }
+						if (Random != 1 && Buf_1 != 0) { me->CastSpell(me, Buf_1, true); }				// 2/3 de ce buf
 
 						Random = urand(1, 3);
-						if (Random == 1 && Spell_agro != 0 && Dist > 8) { DoCastAOE(Spell_agro,true); }	// 1/3 Chance de lancer le sort d'agro
+						if (Random != 1 && Spell_agro != 0 && Dist > 8) { DoCastAOE(Spell_agro,true); }	// 2/3 Chance de lancer le sort d'agro
 
 					}
 
