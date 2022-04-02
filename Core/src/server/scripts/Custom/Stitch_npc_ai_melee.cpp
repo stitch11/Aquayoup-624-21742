@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour https:\\Aquayoup.123.fr
-// AI generique npc par classe : Mélée Ver 2022-03-15 (warrior simple, combat au corp a corp)
+// AI generique npc par classe : Mélée Ver 2022-04-02 (warrior simple, combat au corp a corp)
 // 
 // ScriptName = Stitch_npc_ai_melee : npc d'exemple : 15100012
 // spell1 : Attaque principale
@@ -46,6 +46,10 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 			uint32 Cooldown_Npc_Emotes = urand(5000, 8000);
 			uint32 Cooldown_Trop_Loin = 3000;
 
+			uint32 Cooldown_Spell_Heal = 5000;
+			uint32 Cooldown_Spell_Heal_defaut = 8000;
+			uint32 Spell_Heal = 0;
+
 			// Spells
 			uint32 Buf_1 = 12712;													
 			uint32 liste_Buf[5] = { 12712, 6673, 1160, 159362, 8599 };										// Soldat aguerri 12712 (2 mains= dmg+15%), Cri de guerre 6673, Cri démoralisant 1160 (8s 10m Soi-même), Folie sanguinaire 159362 (pv 1%/3s), Enrager 8599
@@ -89,6 +93,8 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 					if (me->m_spells[2] != 0) { Spell_agro = me->m_spells[2]; }
 					if (me->m_spells[3] != 0) { Spell_evade = me->m_spells[3]; }
 					if (me->m_spells[4] != 0) { Buf_1 = me->m_spells[4]; }
+					if (me->m_spells[5] != 0) { Spell_Heal = me->m_spells[5]; }
+					
 				}
 
 
@@ -177,6 +183,8 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 							// ####################################################################################################################################
 					}
 
+					// Ce heal s'il a un sort de heal -------------------------------------------------------------------------------------------------------------
+					Heal_En_Combat_Caster(diff);
 
 					// ############################################################################################################################################
 					// Combat 
@@ -334,6 +342,23 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 				mapid = victim->GetMapId();
 				me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
 				me->GetMotionMaster()->MovePoint(mapid, x, y, z);
+			}
+			void Heal_En_Combat_Caster(uint32 diff)
+			{
+				//if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_MOVE))
+				//return;
+
+				if (Cooldown_Spell_Heal <= diff && Spell_Heal != 0)
+				{
+					// heal sur lui meme-------------------------------------------------------------------------------------------------------------------------------
+					if ((me->GetHealth() < (me->GetMaxHealth()*0.60)))								// Si PV < 60%
+					{
+						//DoCast(me, Spell_Heal);
+						DoCastAOE(Spell_Heal);
+						Cooldown_Spell_Heal = Cooldown_Spell_Heal_defaut;
+					}
+				}
+				else Cooldown_Spell_Heal -= diff;
 			}
 
 			void Bonus_Degat_Arme_Done(int val) // 

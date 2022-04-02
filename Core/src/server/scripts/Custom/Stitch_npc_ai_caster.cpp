@@ -288,10 +288,8 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					Dist = me->GetDistance(victim);
 
 					// Ce heal s'il a un sort de heal -------------------------------------------------------------------------------------------------------------
-					if (Spell_Heal != 0 && Spell_Heal != 0)
-					{
 						Heal_En_Combat_Caster(diff);
-					}
+
 
 					if (Start_Agro == 0)
 					{
