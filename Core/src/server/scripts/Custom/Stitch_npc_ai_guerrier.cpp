@@ -252,7 +252,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 					Unit* victim = me->GetVictim();
 					Dist = me->GetDistance(victim);
 
-					if (Start_Agro == 0 && Dist <6)
+					if (Start_Agro == 0)
 					{
 						Start_Agro = 1;
 
@@ -263,20 +263,20 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						{
 						case 1: // Si Armes -----------------------------------------------------------------------------------------------------------------------
 							Random = urand(1, 2);
-							if (Random == 1 && UpdateVictim()) { DoCastVictim(Spell_branche1_agro); }		// 1/2 Chance de lancer le sort d'agro
+							if (Random == 1 && UpdateVictim()) { DoCastVictim(Spell_branche1_agro); }	// 1/2 Chance de lancer le sort d'agro
 
 							//Bonus_Armure(125);															// Bonus d'armure +25%
 							break;
 
 						case 2: // Si Fureur ----------------------------------------------------------------------------------------------------------------------
 							Random = urand(1, 2);
-							if (Random == 1 && UpdateVictim()) { DoCastVictim(Spell_branche2_agro); }		// 1/2 Chance de lancer le sort d'agro
+							if (Random == 1 && UpdateVictim()) { DoCastVictim(Spell_branche2_agro); }	// 1/2 Chance de lancer le sort d'agro
 
 							//Bonus_Armure(125);															// Bonus d'armure +25%
 							break;
 
 						case 3: // Si Protection ------------------------------------------------------------------------------------------------------------------
-							DoCastVictim(Spell_branche3_agro); 												// Lancer le sort d'agro
+							DoCastVictim(Spell_branche3_agro); 											// Lancer le sort d'agro
 
 							//Bonus_Armure(200);															// Bonus d'armure +100%
 							break;

@@ -241,7 +241,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 
 					if (Start_Agro == 0)
 					{
-						
+						Start_Agro = 1;
 
 						// ########################################################################################################################################
 						// Spell a lancer a l'agro 
@@ -249,24 +249,18 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 						switch (BrancheSpe)
 						{
 						case 1: // Si Restauration ----------------------------------------------------------------------------------------------------------------
-							Start_Agro = 1;
 							Random = urand(1, 2);
 							if (Random == 1) { me->CastSpell(victim, Spell_branche1_agro, true); }		// 1/2 Chance de lancer le sort d'agro
 							break;
 
 						case 2: // Si Elementaire -----------------------------------------------------------------------------------------------------------------
-							Start_Agro = 1;
 							Random = urand(1, 2);
 							if (Random == 1) { me->CastSpell(victim, Spell_branche2_agro, true); }		// 1/2 Chance de lancer le sort d'agro
 							break;
 
 						case 3: // Si Amelioration ----------------------------------------------------------------------------------------------------------------
-							if (Dist < 6)
-							{
-								Start_Agro = 1;
-								Random = urand(1, 2);
-								if (Random == 1) { me->CastSpell(victim, Spell_branche3_agro, true); }		// 1/2 Chance de lancer le sort d'agro
-							}
+							Random = urand(1, 2);
+							if (Random == 1) { me->CastSpell(victim, Spell_branche3_agro, true); }		// 1/2 Chance de lancer le sort d'agro
 							break;
 
 							// ####################################################################################################################################
