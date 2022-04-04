@@ -98,10 +98,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 				}
 
 
-				// Spell a lancer a l'agro ------------------------------------------------------------------------------------------------------------------------
 
-				Random = urand(1, 2);
-				if (Random == 1 && Buf_1 != 0) { me->CastSpell(me, Buf_1, true); }
 
 				// ################################################################################################################################################
 				// Divers
@@ -169,7 +166,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 					Unit* victim = me->GetVictim();
 					Dist = me->GetDistance(victim);
 
-					if (Start_Agro == 0)
+					if (Start_Agro == 0 && Dist < 6)
 					{
 						Start_Agro = 1;
 
@@ -178,10 +175,15 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 						// ########################################################################################################################################
 
 							Random = urand(1, 2);
-							if (Random == 1 && Spell_agro != 0) { me->CastSpell(victim, Spell_agro, true); }	// 1/2 Chance de lancer le sort d'agro
+							if (Random == 1 && Spell_agro != 0) 
+							{ me->CastSpell(victim, Spell_agro, true); }	// 1/2 Chance de lancer le sort d'agro
 
-							// ####################################################################################################################################
+							Random = urand(1, 2);
+							if (Random == 1 && Buf_1 != 0)
+								{ me->CastSpell(me, Buf_1, true); }			// 1/2 Chance de lancer le Buf
+					
 					}
+						// ####################################################################################################################################
 
 					// Ce heal s'il a un sort de heal -------------------------------------------------------------------------------------------------------------
 					Heal_En_Combat_Caster(diff);
@@ -204,8 +206,11 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 						// Spell2 sur la cible
 						if (Cooldown_Spell2 <= diff && Spell_2 != 0)
 						{
-							me->CastSpell(victim, Spell_2, true);
-							Cooldown_Spell2 = urand(6000, 8000);
+							if (!me->GetSpellHistory()->HasCooldown(Spell_2))
+							{
+								me->CastSpell(victim, Spell_2, true);
+								Cooldown_Spell2 = urand(6000, 8000);
+							}
 						}
 						else Cooldown_Spell2 -= diff;
 					}

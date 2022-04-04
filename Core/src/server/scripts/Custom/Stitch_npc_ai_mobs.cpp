@@ -114,7 +114,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 Base_Cooldown_Cast_A = 4000;										// Cooldown de base pour l'attaque principal, il est utilisé avec des valeurs ajouté en +-, sert a definir Cooldown_SpellA_defaut
 			uint32 Base_Cooldown_Cast_B = 10000;									// Idem pour le sort secondaire, généralement un DOT
 			uint32 AI_Random = 1;
-
+			uint32 Start_Agro = 0;
+			uint32 Start_Agro2 = 0;
 
 			// Spells 
 			uint32 Spell_A;
@@ -454,7 +455,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 liste_Buf_155[2] = { 22863, 22863 };							// Vitesse 22863 (10s/30%)
 
 
-			uint32 Start_Agro = 0;
 
 			void InitializeAI()
 			{
@@ -1904,6 +1904,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			void EnterEvadeMode(EvadeReason /*why*/) override
 			{
 				Start_Agro = 0;
+				Start_Agro2 = 0;
 				Spell_B_Non_Cumulable = 0;
 				RetireBugDeCombat();
 				me->AddUnitState(UNIT_STATE_EVADE);
@@ -1995,23 +1996,38 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Heal_En_Combat(diff);
 					}
 
-						// Spell a lancer a l'agro ----------------------------------------------------------------------------------------------------------------
+						// Spell Duver a lancer a l'agro ----------------------------------------------------------------------------------------------------------------
 					if (Start_Agro == 0)
 					{
 						Start_Agro = 1;
 
 						// ------ Scorpion, Ver ------
-						if (Crfamily == 20 || Crfamily == 42) 
+						if (Crfamily == 20 || Crfamily == 42)
 						{
 							Se_Deterre();
 						}
 						// ---------------------------
+					}
 
-						Random = urand(1, 2);
-						if (Random == 1 && Buf_A != 0) { me->CastSpell(me, Buf_A, true); }							// 1 chance sur 2 de lancer au sort de buf a l'agro
 
-						Random = urand(1, 5);
-						if (Random < 4 && Spell_agro != 0) { me->CastSpell(victim, Spell_agro, true); }				// 3 Chance sur 5 de lancer le sort sur la cible a d'agro
+						// ########################################################################################################################################
+						// Spell a lancer a l'agro 
+						// ########################################################################################################################################
+					if (Start_Agro2 == 0 && Dist < 6)
+					{
+						Start_Agro2 = 1;
+
+						Random = urand(1, 5);									// 3 Chance sur 5 de lancer le sort sur la cible a d'agro
+						if (Random < 4 && Spell_agro != 0)
+							{
+								me->CastSpell(victim, Spell_agro, true);
+							}
+
+						Random = urand(1, 2);									// 1 chance sur 2 de lancer un buf a l'agro
+						if (Random == 1 && Buf_A != 0)
+							{
+								me->CastSpell(me, Buf_A, true);
+							}
 					}
 
 					// ############################################################################################################################################
