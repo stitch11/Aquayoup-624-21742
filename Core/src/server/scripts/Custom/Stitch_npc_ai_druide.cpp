@@ -589,7 +589,11 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					if ((Dist <6) && (Mana > MaxMana / 20))
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
-						//me->SetSpeedRate(MOVE_RUN, 1.1f);
+						
+						if (!me->HasAura(116) && !me->HasAura(31589) && !me->HasAura(6136) && !me->HasAura(8056) && !me->HasAura(9080) && !me->HasAura(69917) && !me->HasAura(45477) && !me->HasAura(300051) && !me->HasAura(60192) && !me->HasAura(116095))		// Eclair de givre, Lenteur, Armure de givre, Horion de givre, Brise-genou, fievre_de_givre, Toucher de glace, Javelot de givre, Gèl de zone, Handicap
+						{
+							me->SetSpeedRate(MOVE_RUN, 1.2f); // Uniquement si non ralenti par un spell joueur
+						}
 
 						float x, y, z, mapid;
 						x = (me->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
@@ -603,9 +607,9 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				else Cooldown_ResteADistance -= diff;
 
 				// Speed normal si distance > 10m ------------------------------------------------------------------------------------------------------------------
-				if (Dist> 10 && me->GetSpeedRate(MOVE_RUN) == 1.1f)
+				if (Dist> 10 && me->GetSpeedRate(MOVE_RUN) == 1.2f)
 				{
-					//me->SetSpeedRate(MOVE_RUN, 1.01f);
+					me->SetSpeedRate(MOVE_RUN, 1.0f);
 				}
 
 				// Mouvement OFF si Mana > 5% & distance >= 6m & <= 10m ---------------------------------------------------------------------------------------------
