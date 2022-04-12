@@ -71,30 +71,30 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 			uint32 Posture_defensive = 71;
 
 			// Spells Armes
-			uint32 Spell_branche1_agro;
-			uint32 Spell_branche1_1;
-			uint32 Spell_branche1_2;
-			uint32 Spell_branche1_3;
+			uint32 Spell_branche1_agro = 0;
+			uint32 Spell_branche1_1 = 0;
+			uint32 Spell_branche1_2 = 0;
+			uint32 Spell_branche1_3 = 0;
 			uint32 branche1_agro[2] = { 100, 355 };									// Charge 100, Provocation 355
 			uint32 branche1_1[2] = { 29426, 29426 };								// Frappe héroïque 29426
 			uint32 branche1_2[3] = { 167105, 125436, 77558 };						// Frappe du colosse 167105 (posture de combat 6s), Découpe d'os 125436, Frappe sanglante 77558
 			uint32 branche1_3[3] = { 6552, 772, 118532 };							// Volée de coups 6552 (interrompt 4s), Pourfendre 772 (18s), Entaille infectée 118532
 			
 			// Spells Fureur
-			uint32 Spell_branche2_agro;
-			uint32 Spell_branche2_1;
-			uint32 Spell_branche2_2;
-			uint32 Spell_branche2_3;
+			uint32 Spell_branche2_agro = 0;
+			uint32 Spell_branche2_1 = 0;
+			uint32 Spell_branche2_2 = 0;
+			uint32 Spell_branche2_3 = 0;
 			uint32 branche2_agro[2] = { 6544, 355 };								// Bond héroïque 6544, Provocation 355
 			uint32 branche2_1[2] = { 126799, 126799 };								// Frappe héroïque 29426 , Frappe tranchante 126799
 			uint32 branche2_2[2] = { 1680, 85288 };									// tourbillon unique 1680, Coup déchainé 85288
 			uint32 branche2_3[2] = { 8147, 125436 };								// Coup de tonnerre 8147, Découpe d'os 125436
 
 			// Spells Protection
-			uint32 Spell_branche3_agro;
-			uint32 Spell_branche3_1;
-			uint32 Spell_branche3_2;
-			uint32 Spell_branche3_3;
+			uint32 Spell_branche3_agro = 0;
+			uint32 Spell_branche3_1 = 0;
+			uint32 Spell_branche3_2 = 0;
+			uint32 Spell_branche3_3 = 0;
 			uint32 branche3_agro[2] = { 355, 355 };									// Provocation 355
 			uint32 branche3_1[2] = { 118326, 118326 };								// Frappe héroïque 29426, Attaque vicieuse 118326
 			uint32 branche3_2[2] = { 53600, 62317 };								// Bouclier du vertueux 53600, Dévaster 62317

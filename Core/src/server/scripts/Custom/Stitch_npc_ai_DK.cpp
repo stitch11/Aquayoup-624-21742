@@ -80,11 +80,11 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 			uint32 Liste_Pet_Dk[5] = { 46584, 46584, 46584, 49206 ,49206 };			// Réanimation morbide 46584, Armée des morts 42650, Invocation d'une gargouille 49206 
 
 			// Spells Sang
-			uint32 Spell_branche1_agro;
-			uint32 Spell_branche1_1;
-			uint32 Spell_branche1_2;
-			uint32 Spell_branche1_3;
-			uint32 Spell_branche1_4;
+			uint32 Spell_branche1_agro = 0;
+			uint32 Spell_branche1_1 = 0;
+			uint32 Spell_branche1_2 = 0;
+			uint32 Spell_branche1_3 = 0;
+			uint32 Spell_branche1_4 = 0;
 			uint32 branche1_agro[3] = { 49576, 300233, 130736 };					// Poigne de la mort 49576, Poussée de fièvre 300233, Faucheur d’âme 130736
 			uint32 branche1_1[2] = { 300198, 300198 };								// Frappe de sang 300198   
 			uint32 branche1_2[2] = { 45470, 45470 };								// Frappe de mort 45470
@@ -92,11 +92,11 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 			uint32 branche1_4[2] = { 43265, 92025 };								// Mort et décomposition 43265, Furoncle sanglant 92025
 
 			// Spells Givre
-			uint32 Spell_branche2_agro;
-			uint32 Spell_branche2_1;
-			uint32 Spell_branche2_2;
-			uint32 Spell_branche2_3;
-			uint32 Spell_branche2_4; 
+			uint32 Spell_branche2_agro = 0;
+			uint32 Spell_branche2_1 = 0;
+			uint32 Spell_branche2_2 = 0;
+			uint32 Spell_branche2_3 = 0;
+			uint32 Spell_branche2_4 = 0;
 			uint32 branche2_agro[4] = { 45524, 45524, 47528, 47528 };				// Chaînes de glace 45524, Gel de l'esprit 47528 
 			uint32 branche2_1[2] = { 300197, 300197 };								// Toucher de glace 300197
 			uint32 branche2_2[2] = { 49143, 49143 };								// Frappe de givre 49143, 
@@ -104,11 +104,11 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 			uint32 branche2_4[2] = { 49184, 49184 };								// Rafale hurlante 49184
 			
 			// Spells Impie
-			uint32 Spell_branche3_agro;
-			uint32 Spell_branche3_1;
-			uint32 Spell_branche3_2;
-			uint32 Spell_branche3_3;
-			uint32 Spell_branche3_4;
+			uint32 Spell_branche3_agro = 0;
+			uint32 Spell_branche3_1 = 0;
+			uint32 Spell_branche3_2 = 0;
+			uint32 Spell_branche3_3 = 0;
+			uint32 Spell_branche3_4 = 0;
 			uint32 branche3_agro[3] = { 300233, 130736, 130736 };					// Poussée de fièvre 300233, Faucheur d’âme 130736
 			uint32 branche3_1[2] = { 300199, 300199 };								// Frappe de peste 300199
 			uint32 branche3_2[2] = { 172680, 172680 };								// Frappe du Fléau 172680 
@@ -116,11 +116,11 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 			uint32 branche3_4[2] = { 92025, 92025 };								// Furoncle sanglant 92025 
 
 			// Spells Chaos
-			uint32 Spell_branche4_agro;
-			uint32 Spell_branche4_1;
-			uint32 Spell_branche4_2;
-			uint32 Spell_branche4_3;
-			uint32 Spell_branche4_4;
+			uint32 Spell_branche4_agro = 0;
+			uint32 Spell_branche4_1 = 0;
+			uint32 Spell_branche4_2 = 0;
+			uint32 Spell_branche4_3 = 0;
+			uint32 Spell_branche4_4 = 0;
 			uint32 branche4_agro[3] = { 300240, 300240, 45524 };					// Choc impie 300240, Strangulation 47476, Chaînes de glace 45524
 			uint32 branche4_1[2] = { 300237, 300237 };								// Javelot de givre 300237
 			uint32 branche4_2[2] = { 300238, 300238 };								// Javelot de peste 300238

@@ -54,22 +54,22 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 
 			// Spells Divers
 			uint32 Buf_all = 79954;														// Armure démoniaque 79934 , Gangrarmure 79954 
-			uint32 Buf_branche1;	
+			uint32 Buf_branche1 = 0;
 			uint32 Buf_branche1_liste[2] = { 104773, 104773 };							// Résolution interminable 104773 degat -40% 8s , Rune de puissance 116011 PS +40% 10s
-			uint32 Buf_branche2 ;
+			uint32 Buf_branche2 = 0;
 			uint32 Buf_branche2_liste[2] = { 104773, 104773 };							// Résolution interminable 104773 degat -40% 8s , Rune de puissance 116011 PS +40% 10s
-			uint32 Buf_branche3 ;
+			uint32 Buf_branche3 = 0;
 			uint32 Buf_branche3_liste[2] = { 104773, 104773 };							// Résolution interminable 104773 degat -40% 8s , Rune de puissance 116011 PS +40% 10s 
 			uint32 Spell_Heal_Caster = 46155;  											// Drain de vie 46155
 			uint32 Armure_Demoniaque = 79934;											// Armure_Demoniaque
 			uint32 Gangrarmure = 79954;													// Gangrarmure
 
 			// Spells Affliction
-			uint32 Spell_branche1_agro;
-			uint32 Spell_branche1_1;
-			uint32 Spell_branche1_2;
-			uint32 Spell_branche1_3;
-			uint32 Spell_branche1_4;
+			uint32 Spell_branche1_agro = 0;
+			uint32 Spell_branche1_1 = 0;
+			uint32 Spell_branche1_2 = 0;
+			uint32 Spell_branche1_3 = 0;
+			uint32 Spell_branche1_4 = 0;
 			uint32 branche1_agro[2] = { 35183, 35183 };									// Affliction instable 35183
 			uint32 branche1_1[2] = { 9613, 9613 };										// Trait de l'ombre 9613
 			uint32 branche1_2[2] = { 300230, 300230 };									// Agonie 300230 
@@ -77,10 +77,10 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 			uint32 branche1_4[2] = { 171788, 171788 };									// Hanter 171788
 
 			// Spells Demonologie
-			uint32 Spell_branche2_agro;	//    
-			uint32 Spell_branche2_1;
-			uint32 Spell_branche2_2;
-			uint32 Spell_branche2_3;
+			uint32 Spell_branche2_agro = 0;	//    
+			uint32 Spell_branche2_1 = 0;
+			uint32 Spell_branche2_2 = 0;
+			uint32 Spell_branche2_3 = 0;
 			uint32 branche2_agro[2] = { 131381, 105174 };								// Feu de l'âme 131381, Main de Gul’dan 176725
 			uint32 branche2_1[2] = { 9613, 9613 };										// Trait de l'ombre 9613
 			uint32 branche2_2[2] = { 300230, 300230 };									// Agonie 300230 , corruption 39621
@@ -89,10 +89,10 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 			uint32 Pet_Demo_Liste[5] = { 30146, 30146, 30146, 30146, 30146 };			// Gangregarde 30146, Succube 712, Chasseur corrompu 691, Marcheur du Vide 697, Diablotin 688
 
 			// Spells Destruction
-			uint32 Spell_branche3_agro;
-			uint32 Spell_branche3_1;
-			uint32 Spell_branche3_2;
-			uint32 Spell_branche3_3;
+			uint32 Spell_branche3_agro = 0;
+			uint32 Spell_branche3_1 = 0;
+			uint32 Spell_branche3_2 = 0;
+			uint32 Spell_branche3_3 = 0;
 			uint32 branche3_agro[2] = { 77069, 77069 };									// Trait du chaos 77069
 			uint32 branche3_1[2] = { 44519, 44519 };									// Incinérer 44519
 			uint32 branche3_2[2] = { 154083, 154083 };									// Conflagration 154083

@@ -118,12 +118,12 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 Start_Agro2 = 0;
 
 			// Spells 
-			uint32 Spell_A;
-			uint32 Spell_B;
-			uint32 Spell_agro;
-			uint32 Spell_respawn_evade;
-			uint32 Buf_A;
-			uint32 Spell_Heal;
+			uint32 Spell_A = 0;
+			uint32 Spell_B = 0;
+			uint32 Spell_agro = 0;
+			uint32 Spell_respawn_evade = 0;
+			uint32 Buf_A = 0;
+			uint32 Spell_Heal = 0;
 			uint32 Spell_Trop_Loin = 0; 
 			uint32 Spell_Bond_Aleatoire = 70485;								// BOND Aleatoire
 			uint32 Spell_Instincts_de_survie = 61336;

@@ -37,7 +37,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 			uint32 DistanceDeCast = 30;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
 			uint32 ResteADistance = 5;												// Distance max a laquelle un npc s'approchera
 			uint32 Dist;															// Distance entre le npc et sa cible
-			uint32 Mana;
+			uint32 Mana = 0;
 			uint32 MaxMana = me->GetMaxPower(POWER_ENERGY);
 			Unit* victim = me->GetVictim();										 
 			
@@ -56,15 +56,15 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 
 			// Spells Divers
 			uint32 Buf_branche1 = 115069;											// Posture du buffle vigoureux 115069, Posture du tigre féroce 103985
-			uint32 Buf_branche1a;
+			uint32 Buf_branche1a = 0;
 			uint32 Liste_Buf_branche1a[2] = { 116781, 115203 };						// Héritage du tigre blanc 116781 (F,AG,Int +10%), Boisson fortifiante 115203 (pv +20%), 
 			
 			uint32 Buf_branche2 = 115070;											// Posture du serpent avisé 115070
-			uint32 Buf_branche2a;													// 
+			uint32 Buf_branche2a = 0;													// 
 			uint32 Liste_Buf_branche2a[2] = { 115203, 115203 };						// Boisson fortifiante 115203 (pv +20%), Cocon de vie 116849
 
 			uint32 Buf_branche3 = 103985;											// Posture du tigre féroce 103985
-			uint32 Buf_branche3a;													// 
+			uint32 Buf_branche3a = 0;													// 
 			uint32 Liste_Buf_branche3a[3] = { 115176, 115203, 115203 };				// Méditation zen 115176 (degat -90%/8s), Boisson fortifiante 115203 (pv +20%)
 
 			uint32 Spell_Heal1 = 116694;  											// Déferlante de brume 116694
@@ -73,16 +73,16 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 			uint32 Spell_Trop_Loin = 109132;										// Roulade 109132
 
 			// Spells Maitre-Brasseur
-			uint32 Spell_branche1_agro;												// 
+			uint32 Spell_branche1_agro = 0;												// 
 			uint32 Liste_branche1_agro[3] = { 172780, 109132, 109132 };				// Fracasse-tonneau 172780, Roulade 109132
 			uint32 Spell_branche1_1 = 119004;										// Violent coup direct 119004
 			uint32 Spell_branche1_2 = 165132;										// Paume du tigre 165132
 			uint32 Spell_branche1_3 = 164394;										// Frappe du voile noir 164394
-			uint32 Spell_branche1_4 ; 
+			uint32 Spell_branche1_4 = 0;
 			uint32 Liste_branche1_4[3] = { 138710, 147416, 300245 };				// Coup tournoyant de la grue 138710, Souffle de feu 147416, Toucher mortel 300245
 						
 			// SpellsTisse-Brume
-			uint32 Spell_branche2_agro ;											// Paralysie 115078, Pique de main 116705 
+			uint32 Spell_branche2_agro = 0;											// Paralysie 115078, Pique de main 116705 
 			uint32 Liste_branche2_agro[2] = { 172780, 109132};						// Fracasse-tonneau 172780, Roulade 109132
 			uint32 Spell_branche2_1 = 119004;										// Violent coup direct 119004
 			uint32 Spell_branche2_2 = 119004;										// Violent coup direct 119004
@@ -90,11 +90,11 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 			uint32 Spell_branche2_4 = 115072;										// Extraction du mal 115072 (damage+heal)
 			
 			// Spells Marche-vent
-			uint32 Spell_branche3_agro;  
+			uint32 Spell_branche3_agro = 0;
 			uint32 Liste_branche3_agro[3] = { 116095, 101545, 138710 };				// Handicap 116095, Coup du serpent volant 101545, Pique de main 116705, Coup tournoyant de la grue 138710
 			uint32 Spell_branche3_1 = 119004;										// Violent coup direct 119004
 			uint32 Spell_branche3_2 = 300246;										// Toucher du karma 300246
-			uint32 Spell_branche3_3;
+			uint32 Spell_branche3_3 = 0;
 			uint32 Liste_branche3_3[2] = { 130784, 116095 };						// Coup de pied du soleil levant 130784 8s, Handicap 116095 15s
 			uint32 Spell_branche3_4 = 165144;										// Poings de fureur 165144
 

@@ -58,19 +58,19 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 
 			// Spells Divers
 			uint32 Buf_all = 31519;														// Aura de précision (60s) 31519
-			uint32 Buf_branche1;
+			uint32 Buf_branche1 = 0;
 			uint32 Buf_branche1_liste[2] = { 109212, 109212 };							// Engagement spirituel 109212
-			uint32 Buf_branche2;
+			uint32 Buf_branche2 = 0;
 			uint32 Buf_branche2_liste[2] = { 109260, 109260 };							// Faucon de fer 109260
 			uint32 Spell_Heal_Caster = 300247;  										// Piqure du moustique 300247
 
 
 			// Spells Survie
-			uint32 Spell_branche1_agro;
-			uint32 Spell_branche1_1;
-			uint32 Spell_branche1_2;
-			uint32 Spell_branche1_3;
-			uint32 Spell_branche1_4;
+			uint32 Spell_branche1_agro = 0;
+			uint32 Spell_branche1_1 = 0;
+			uint32 Spell_branche1_2 = 0;
+			uint32 Spell_branche1_3 = 0;
+			uint32 Spell_branche1_4 = 0;
 			uint32 branche1_agro[5] = { 145663, 145663, 82941, 82941, 145663 };			// Piège explosif a distance 82939, Piège de glace a distance 82941, Marque du chasseur 145663
 			uint32 branche1_1[2] = { 171943, 171943 };									// Tir des arcanes 171943 
 			uint32 branche1_2[3] = { 300241, 5116, 5116 };								// Tir explosif 300241, Trait de choc 5116 6s
@@ -78,10 +78,10 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 			uint32 branche1_4[2] = { 80003, 35511 };									// Flèche noire 80003 18s, Morsure de serpent 35511 15s 
 
 			// Spells Bete
-			uint32 Spell_branche2_agro;	//    
-			uint32 Spell_branche2_1;
-			uint32 Spell_branche2_2;
-			uint32 Spell_branche2_3;
+			uint32 Spell_branche2_agro = 0;	//    
+			uint32 Spell_branche2_1 = 0;
+			uint32 Spell_branche2_2 = 0;
+			uint32 Spell_branche2_3 = 0;
 			uint32 branche2_agro[6] = { 13813, 13809, 19386, 19577, 19386, 19577 };				// Piège explosif 13813, Piège de glace 13809, Piqûre de wyverne 19386, Intimidation 19577
 			uint32 branche2_1[2] = { 171943, 80015 };											// Tir des arcanes 171943 
 			uint32 branche2_2[2] = { 80015, 80015 };											// Tir assuré 80015

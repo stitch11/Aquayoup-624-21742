@@ -63,30 +63,30 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			uint32 Spell_Heal_Heal = 177551;  										// Lumière sacrée 82326/177551
 
 			// Spells Vindice
-			uint32 Spell_branche1_agro;
-			uint32 Spell_branche1_1;
-			uint32 Spell_branche1_2;
-			uint32 Spell_branche1_3;
+			uint32 Spell_branche1_agro = 0;
+			uint32 Spell_branche1_1 = 0;
+			uint32 Spell_branche1_2 = 0;
+			uint32 Spell_branche1_3 = 0;
 			uint32 branche1_agro[4] = { 853, 853, 853, 62124 };						// Marteau de la justice 853 (stun 6s), Réprimandes 96231 (interrompt 4s), Rétribution(agro) 62124
 			uint32 branche1_1[2] = { 57774, 57774 };								// Jugement 57774
 			uint32 branche1_2[2] = { 66003, 66003 };								// Frappe du croisé 66003
 			uint32 branche1_3[3] = { 79964, 150628, 79970 };						// Exorcisme 79964, Marteau du vertueux 150628 6s, Tempête divine 79970
 			
 			// Spells Sacré
-			uint32 Spell_branche2_agro;
-			uint32 Spell_branche2_1;
-			uint32 Spell_branche2_2;
-			uint32 Spell_branche2_3;
+			uint32 Spell_branche2_agro = 0;
+			uint32 Spell_branche2_1 = 0;
+			uint32 Spell_branche2_2 = 0;
+			uint32 Spell_branche2_3 = 0;
 			uint32 branche2_agro[4] = { 853, 96231, 96231, 96231 };					// Dénoncer 2812 , Marteau de la justice 853 (stun 6s), Réprimandes 96231 (interrompt 4s)
 			uint32 branche2_1[2] = { 57774, 57774 };								// Jugement 57774
 			uint32 branche2_2[2] = { 66003, 66003 };								// Frappe du croisé 66003
 			uint32 branche2_3[2] = { 32771, 32771 };								// Horion sacré 32771
 
 			// Spells Protection
-			uint32 Spell_branche3_agro;
-			uint32 Spell_branche3_1;
-			uint32 Spell_branche3_2;
-			uint32 Spell_branche3_3;
+			uint32 Spell_branche3_agro = 0;
+			uint32 Spell_branche3_1 = 0;
+			uint32 Spell_branche3_2 = 0;
+			uint32 Spell_branche3_3 = 0;
 			uint32 branche3_agro[3] = { 853, 96231, 62124 };						// Marteau de la justice 853 (stun 6s), Réprimandes 96231 (interrompt 4s), Rétribution 62124
 			uint32 branche3_1[2] = { 57774, 57774 };								// Jugement 57774
 			uint32 branche3_2[2] = { 53600, 53600 };								// Frappe du croisé 66003, Bouclier du vertueux 53600

@@ -55,22 +55,22 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 
 			// Spells Divers
 			uint32 Liste_Buf_branche1[5] = { 31209, 2983, 1784, 31220, 5171 };		// Pied léger 31209 (vit+10%), Sprint 2983,  Camouflage 1784, Vocation pernicieuse 31220 (-ag+15,Armure +100%), Débiter 5171
-			uint32 Buf_branche1;								
+			uint32 Buf_branche1 = 0;
 			uint32 Liste_Buf_branche1a[3] = { 2823, 8679, 3408 };					// Poison mortel 2823, Poison douloureux 8679, Poison affaiblissant 3408
-			uint32 Buf_branche1a;
+			uint32 Buf_branche1a = 0;
 			
 			uint32 Vampire_Berserker = 300124;										// Vampire Berserker 300124
 			uint32 Buf_branche2 = 300137;											// Peau de demon 300137 (armure+100% esquive/parade+2%), 
 			uint32 Liste_Buf_branche2a[3] = { 2823, 2823, 3408 };					// Poison mortel 2823, Poison affaiblissant 3408
-			uint32 Buf_branche2a;													//  
+			uint32 Buf_branche2a = 0;													//  
 			uint32 Spell_Heal1 = 97462;  											// Evasion 5277 (esquive +100%/10s)
 			uint32 Spell_Lancer = 121733;
 
 			// Spells Voleur
 			uint32 Spell_branche1_agro;
-			uint32 Spell_branche1_1;
-			uint32 Spell_branche1_2;
-			uint32 Spell_branche1_3;
+			uint32 Spell_branche1_1 = 0;
+			uint32 Spell_branche1_2 = 0;
+			uint32 Spell_branche1_3 = 0;
 			uint32 branche1_agro[3] = { 2094, 121733, 79140 };						// Cécité 2094, Lancer 121733, Vendetta 79140
 			uint32 branche1_1[2] = { 172028, 80588 };								// Attaque pernicieuse 172028, Estropier 80588
 			uint32 branche1_2[2] = { 41177, 41177 };								// Eviscération 41177

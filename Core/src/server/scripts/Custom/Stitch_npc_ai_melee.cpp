@@ -31,10 +31,10 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 		{
 			Stitch_npc_ai_meleeAI(Creature* creature) : ScriptedAI(creature) { }
 
-			uint32 Random;
+			uint32 Random = 0;
 			uint32 DistanceDeCast = 30;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
 			uint32 ResteADistance = 5;												// Distance max a laquelle un npc s'approchera
-			uint32 Dist;															// Distance entre le npc et sa cible
+			uint32 Dist = 0;															// Distance entre le npc et sa cible
 			Unit* victim = me->GetVictim();										 
 			
 			// Definitions des variables Cooldown et le 1er lancement
@@ -55,9 +55,9 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 			uint32 liste_Buf[5] = { 12712, 6673, 1160, 159362, 8599 };										// Soldat aguerri 12712 (2 mains= dmg+15%), Cri de guerre 6673, Cri démoralisant 1160 (8s 10m Soi-même), Folie sanguinaire 159362 (pv 1%/3s), Enrager 8599
 			uint32 Spell_agro = 0;
 			uint32 liste_agro[3] = { 100, 355, 145763 };													// Charge 100, Provocation 355, Bondir 8-40m 145763
-			uint32 Spell_1;
+			uint32 Spell_1 = 0;
 			uint32 liste_spell_1[8] = { 29426, 126799, 118326, 172851, 38742, 99409, 100431, 115530 };		// Frappe héroïque 29426, Frappe tranchante 126799, Attaque vicieuse 118326, Enchaînement 172851, Enchaînement gangrené 38742, Enchaînement noir 99409, Enchaînement enflammé 100431, Fendoir spirituel 115530
-			uint32 Spell_2;
+			uint32 Spell_2 = 0;
 			uint32 liste_spell_2[9] = { 127171, 131662, 8147, 118532, 125436, 772, 772, 8147, 8147 };		// Fendoir vicieux 15/lvl + 2/lvl/1s cumulable 5 fois 127171, Coups de couteau 131662, Entaille infectée 118532, Découpe d'os 125436, Pourfendre 772, Coup de tonnerre 8147
 			uint32 Spell_evade = 108843;																	// Vitesse flamboyante 6s 150% 108843
 			uint32 Spell_trop_Loin = 100;																	// Charge 100
@@ -86,6 +86,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 					Spell_1 = liste_spell_1[urand(0, 7)];
 					Spell_2 = liste_spell_2[urand(0, 8)];
 					Spell_agro = liste_agro[urand(0, 2)];
+					Buf_1 = liste_Buf[urand(0, 4)];
 				} else 
 				{ 
 					Spell_1 = me->m_spells[0]; 
@@ -206,7 +207,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 						// Spell2 sur la cible
 						if (Cooldown_Spell2 <= diff && Spell_2 != 0)
 						{
-							if (!me->GetSpellHistory()->HasCooldown(Spell_2))
+							if (!victim->HasAura(Spell_2))
 							{
 								me->CastSpell(victim, Spell_2, true);
 								Cooldown_Spell2 = urand(6000, 8000);

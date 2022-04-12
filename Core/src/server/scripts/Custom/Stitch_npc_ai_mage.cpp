@@ -54,30 +54,30 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 
 			// Spells Divers
 			uint32 Buf_all = 165743;													// Armure de givre 165743, Armure du mage 6118
-			uint32 Buf_branche1;	
+			uint32 Buf_branche1 = 0;
 			uint32 Buf_branche1_liste[2] = { 1459, 36749 };								// Illumination des Arcanes 1459, Puissance arcanique 36749 (Puissance des sorts +25/1h)
-			uint32 Buf_branche2 ;
+			uint32 Buf_branche2 = 0;
 			uint32 Buf_branche2_liste[2] = { 79849, 140468 };							// Armure de la fournaise 79849 (s10/lvl si touché, crotique +5%), Lueur de la flamme 140468 (dmg -20%, cumulable)
-			uint32 Buf_branche3 ;
+			uint32 Buf_branche3 = 0;
 			uint32 Buf_branche3_liste[2] = { 111264, 1459 };							// Garde glaciale 111264 (3 mélées 30s), Illumination des Arcanes 1459
 			uint32 Spell_Heal_Caster = 12051;											// Evocation 12051
 
 			// Spells Arcane
-			uint32 Spell_branche1_agro;
-			uint32 Spell_branche1_1;
-			uint32 Spell_branche1_2;
-			uint32 Spell_branche1_3;
-			uint32 Spell_branche1_4;
+			uint32 Spell_branche1_agro = 0;
+			uint32 Spell_branche1_1 = 0;
+			uint32 Spell_branche1_2 = 0;
+			uint32 Spell_branche1_3 = 0;
+			uint32 Spell_branche1_4 = 0;
 			uint32 branche1_agro[3] = { 30449, 102051, 31589 };							// Vol de sort 30449, Givregueule 102051 (silence 8s), Lenteur 31589
 			uint32 branche1_1[2] = { 145437, 145437 };									// Barrage des Arcanes 145437
 			uint32 branche1_2[3] = { 145434, 145434,128192 };							// Déflagration des Arcanes 145434,Lance d'esprit 128192
 			uint32 branche1_3[2] = { 191293, 191293 };									// Projectiles des Arcanes 191293 
 
 			// Spells Feu
-			uint32 Spell_branche2_agro;    
-			uint32 Spell_branche2_1;
-			uint32 Spell_branche2_2;
-			uint32 Spell_branche2_3;
+			uint32 Spell_branche2_agro = 0;
+			uint32 Spell_branche2_1 = 0;
+			uint32 Spell_branche2_2 = 0;
+			uint32 Spell_branche2_3 = 0;
 			uint32 Spell_branche2_4 = 31661;											// Souffle du dragon 31661 (Recharge 20s,12m)
 			uint32 branche2_agro[4] = { 56858, 30449, 102051 , 2139 };					// Choc de flammes 56858, Vol de sort 30449, Givregueule 102051 (silence 8s), Contresort 2139
 			uint32 branche2_1[2] = { 9053, 9053 };										// Boule de feu 9053 
@@ -85,10 +85,10 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 			uint32 branche2_3[2] = { 14145, 14145 };									// Trait de feu 14145
 
 			// Spells Givre
-			uint32 Spell_branche3_agro;  
-			uint32 Spell_branche3_1;
-			uint32 Spell_branche3_2;
-			uint32 Spell_branche3_3;
+			uint32 Spell_branche3_agro = 0;
+			uint32 Spell_branche3_1 = 0;
+			uint32 Spell_branche3_2 = 0;
+			uint32 Spell_branche3_3 = 0;
 			uint32 branche3_agro[4] = { 140485, 84714, 2139, 124935 };					// Piège à runes gelé 140485 (gele 20s,20m), Sol gelé 84714, Contresort 2139, Torrent 124935
 			uint32 branche3_1[4] = { 71318, 71318, 71318,34425 };						// Eclair de givre 71318,Trait d'eau 34425	
 			uint32 branche3_2[2] = { 49906, 49906 };									// Javelot de glace 49906

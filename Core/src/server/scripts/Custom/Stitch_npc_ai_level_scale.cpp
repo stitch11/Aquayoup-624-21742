@@ -37,7 +37,7 @@ public: Stitch_npc_ai_level_scale_caster() : CreatureScript("Stitch_npc_ai_level
 
 			uint32 spellbuf = me->m_spells[0];
 			uint32 spellagro = me->m_spells[1];
-			uint32 spellagrornd;
+			uint32 spellagrornd = 0;
 			uint32 distancedecast = 20.0f;
 			uint32 spell = me->m_spells[2];
 			uint32 spelldot = me->m_spells[3];

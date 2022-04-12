@@ -68,30 +68,30 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 			uint32 Horion_de_givre = 12548;											// Horion de givre
 
 			// Spells Restauration
-			uint32 Spell_branche1_agro;
-			uint32 Spell_branche1_1;
-			uint32 Spell_branche1_2;
-			uint32 Spell_branche1_3;
+			uint32 Spell_branche1_agro = 0;
+			uint32 Spell_branche1_1 = 0;
+			uint32 Spell_branche1_2 = 0;
+			uint32 Spell_branche1_3 = 0;
 			uint32 branche1_agro[4] = { 15039, 12548, 3599, 73393 };				// Horion de flammes 15039 - Horion de givre 12548 - Totem incendiaire 3599 - Totem de flot de mana 73393
 			uint32 branche1_1[2] = { 9532, 9532 };									// Eclair 9532
 			uint32 branche1_2[2] = { 12548, 13728 };								// Horion de givre 12548 - Horion de terre 13728 (stun 2s)
 			uint32 branche1_3[2] = { 15039, 57994 };								// Horion de flammes 15039 30s - Cisaille de vent 57994
 			
 			// Definitions des Spells Elementaire
-			uint32 Spell_branche2_agro;
-			uint32 Spell_branche2_1;
-			uint32 Spell_branche2_2;
-			uint32 Spell_branche2_3;
+			uint32 Spell_branche2_agro = 0;
+			uint32 Spell_branche2_1 = 0;
+			uint32 Spell_branche2_2 = 0;
+			uint32 Spell_branche2_3 = 0;
 			uint32 branche2_agro[5] = { 15039, 12548, 3599, 2484, 78222 };			// Horion de flammes 15039 - Horion de givre 12548 - Totem incendiaire 3599 - Totem de lien terrestre 2484 - Totem de peau de pierre 78222
 			uint32 branche2_1[4] = { 9532, 9532, 9532, 28167 };						// Eclair 9532 - Chaîne d'éclairs 28167 
 			uint32 branche2_2[3] = { 178091, 178091 ,12548 };						// Explosion de lave 178091 - Horion de givre 12548 8s
 			uint32 branche2_3[4] = { 15039, 15039, 13728, 57994 };					// Horion de flammes 15039 30s - Horion de terre 13728 (stun 2s) - Cisaille de vent 57994
 
 			// Spells Amelioration
-			uint32 Spell_branche3_agro;
-			uint32 Spell_branche3_1;
-			uint32 Spell_branche3_2;
-			uint32 Spell_branche3_3;
+			uint32 Spell_branche3_agro = 0;
+			uint32 Spell_branche3_1 = 0;
+			uint32 Spell_branche3_2 = 0;
+			uint32 Spell_branche3_3 = 0;
 			uint32 branche3_agro[4] = { 370, 370, 2484, 3599 };						// Purge 370 (retire 1 buf), Totem de lien terrestre 2484, Totem incendiaire 3599
 			uint32 branche3_1[2] = { 79926, 79926 };								// Frappe primordiale 79926
 			uint32 branche3_2[3] = { 172779, 147093, 12548 };						// Horion de givre 12548 8s - Frappe-tempête 172779 - Fouet de lave 147093

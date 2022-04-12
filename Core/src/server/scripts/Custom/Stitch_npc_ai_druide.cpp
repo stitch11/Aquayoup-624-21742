@@ -62,40 +62,40 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			uint32 Griffure_Bondissante = 89712;									// Griffure Bondissante (saut sur la cible + stun)
 
 			// Spells Equilibre
-			uint32 Spell_branche1_agro;
-			uint32 Spell_branche1_1;
-			uint32 Spell_branche1_2;
-			uint32 Spell_branche1_3;
+			uint32 Spell_branche1_agro = 0;
+			uint32 Spell_branche1_1 = 0;
+			uint32 Spell_branche1_2 = 0;
+			uint32 Spell_branche1_3 = 0;
 			uint32 branche1_agro[4] = { 21668, 21668, 21668, 33844 };				// Feu stellaire 21668, Sarments (4s) 33844
 			uint32 branche1_1[2] = { 119577, 119577 };								// Colère (verte) 119577 
 			uint32 branche1_2[2] = { 98995, 770 };									// Éruption stellaire 98995, Lucioles 770
 			uint32 branche1_3[2] = { 15798, 21668 };								// Eclat lunaire 15798, Feu stellaire 21668
 																					
 			// Definitions des Spells Ours
-			uint32 Spell_branche2_agro;
-			uint32 Spell_branche2_1;
-			uint32 Spell_branche2_2;
-			uint32 Spell_branche2_3;
+			uint32 Spell_branche2_agro = 0;
+			uint32 Spell_branche2_1 = 0;
+			uint32 Spell_branche2_2 = 0;
+			uint32 Spell_branche2_3 = 0;
 			uint32 branche2_agro[3] = { 32323, 22863, 19196 };						// Charge 32323, Vitesse 22863 (30%) , charge afflux 19196 (charge+renverse)
 			uint32 branche2_1[2] = { 300206, 84867 };								// Mutiler 300206, Balayage fracassant 84867
 			uint32 branche2_2[2] = { 300207, 300208 };								// Mutilation (mob ours) 300207, Rosser Ours 300208
 			uint32 branche2_3[5] = { 131172, 300209, 138766, 10887, 127987 };		// Rugissement perçant 138766 (interrompt ,empêchant les sorts de la même école pendant 6 sec)
 																					// Coup de tete 131172, Coup de crâne 300209 (dps+interrompt  4s), faucher la foule 10887 (interomp, repousse 10 m), *Morsure hémorragique 127987
 			// Spells Felin
-			uint32 Spell_branche3_agro;
-			uint32 Spell_branche3_1;
-			uint32 Spell_branche3_2;
-			uint32 Spell_branche3_3;
+			uint32 Spell_branche3_agro = 0;
+			uint32 Spell_branche3_1 = 0;
+			uint32 Spell_branche3_2 = 0;
+			uint32 Spell_branche3_3 = 0;
 			uint32 branche3_agro[3] = { 22863, 89712, 59737 };						// Vitesse +30% 22863, Griffure bondissante 89712 (Etourdi 2s),vitesse +100% 59737
 			uint32 branche3_1[2] = { 31289, 300206 };								// Griffe 31289, Mutiler 300206
 			uint32 branche3_2[2] = { 113687, 138765 };								// Morsure 113687, Écraser 138765 (armure -10%/30s)
 			uint32 branche3_3[4] = { 300220, 300220, 83639, 30639 };				// Griffure 300220, Bain de sang 83639 (6 attaque /3s), Morsure carnivore 30639
 
 			// Spells Tréant 
-			uint32 Spell_branche4_agro;
-			uint32 Spell_branche4_1;
-			uint32 Spell_branche4_2;
-			uint32 Spell_branche4_3;
+			uint32 Spell_branche4_agro = 0;
+			uint32 Spell_branche4_1 = 0;
+			uint32 Spell_branche4_2 = 0;
+			uint32 Spell_branche4_3 = 0;
 			uint32 branche4_agro[3] = { 33844, 82742, 82742 };						// Sarments 4s 33844, *Empaler et tirer 82742
 			uint32 branche4_1[3] = { 131193, 119004, 38742 };						// Choc 131193, Violent coup direct 119004, Enchaînement gangrené 38742
 			uint32 branche4_2[4] = { 80515, 113967, 113967, 118682 };				// Frénésie immortelle 80515 (Canalisée 5s), Barbelés d'épines 113967, Taper du pied 118682
