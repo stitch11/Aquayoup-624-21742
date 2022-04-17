@@ -54,7 +54,7 @@ public:
         Apprentissage_Ou_Additem_Suivant_classes_races(player);
 
         // 1ere connexion joueur
-        if (firstLogin)
+        if (firstLogin) // ne marche pas
         {
 			player->LearnSpell(300251, true);      // Nuit Claire : Rend les nuits ou lieux sombres plus clair.
         }
