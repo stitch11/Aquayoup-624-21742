@@ -1996,7 +1996,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Heal_En_Combat(diff);
 					}
 
-						// Spell Duver a lancer a l'agro ----------------------------------------------------------------------------------------------------------------
+						// Spell Diver a lancer a l'agro ----------------------------------------------------------------------------------------------------------------
 					if (Start_Agro == 0)
 					{
 						Start_Agro = 1;
@@ -2626,7 +2626,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				{
 					if (Dist < 6)
 					{
-						Tourne_Au_Tour_Aleatoire_Volant( urand(6, 10) );
+						me->CastSpell(me, Spell_Vitesse_4s, true);
+						Tourne_Au_Tour_Aleatoire_Volant( urand(8, 12) );
 						Cooldown_Principal_A = 3000;
 						Cooldown_Principal_B = Cooldown_Principal_B_Defaut + ((urand(0, 2) * 1000));
 					}
@@ -2652,13 +2653,14 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				{
 					if ( (Dist >= 6) && Dist <= 25)
 					{
+						me->CastSpell(me, Spell_Vitesse_4s, true);
 						uint8 TMP = urand(1, 4);
-						if (Spell_Trop_Loin != 0 && TMP >1)
+						if (Spell_Trop_Loin != 0 && TMP >2)
 						{ 
-							DoCastAOE(Spell_Trop_Loin, true);			// 3 chance sur 4 de ne pas stun
+							DoCastAOE(Spell_Trop_Loin, true);			// 2 chance sur 4 de ne pas stun
 						}
 						else
-							DoCastAOE(Spell_Charge_Stun2s, true);		// 1 chance sur 4 de stun
+							DoCastAOE(Spell_Charge_Stun2s, true);		// 2 chance sur 4 de stun
 
 
 
@@ -2690,7 +2692,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				{
 					if (Dist <= 3)
 					{
-					me->SetSpeedRate(MOVE_RUN, 1.3f);
+					me->CastSpell(me, Spell_Vitesse_4s, true);
 					Tourne_Au_Tour_Aleatoire(15);
 					Cooldown_Principal_A = 3000;
 					Cooldown_Trop_Loin = 2000;
