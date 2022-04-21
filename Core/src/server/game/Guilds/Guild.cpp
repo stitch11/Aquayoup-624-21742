@@ -342,7 +342,7 @@ void Guild::RankInfo::SetBankTabSlotsAndRights(GuildBankRightsAndSlots rightsAnd
 {
     if (m_rankId == GR_GUILDMASTER)                     // Prevent loss of leader rights
         rightsAndSlots.SetGuildMasterValues();
-
+	 
     GuildBankRightsAndSlots& guildBR = m_bankTabRightsAndSlots[rightsAndSlots.GetTabId()];
     guildBR = rightsAndSlots;
 
@@ -3418,3 +3418,122 @@ void Guild::HandleNewsSetSticky(WorldSession* session, uint32 newsId, bool stick
     news->WritePacket(newsPacket);
     session->SendPacket(newsPacket.Write());
 }
+
+//################################################################################################
+//Stitch GUILDE AQUAYOUP Creation de la guilde de base
+//################################################################################################
+bool Guild::CreationDeLaStitchGuild(Player* _player, std::string const& _nomGuilde, std::string _messageGuilde/* = ""*/)
+{
+	if (!_player)
+		return false;
+	
+	WorldSession* _session = _player->GetSession();
+	if (!_session)
+		return false;
+
+	// Recherche de la guilde de base
+	Guild* guilde = sGuildMgr->GetGuildByName(_nomGuilde);
+
+	if (!guilde) // si la guilde n'existe pas
+	{
+		delete guilde;
+		// Creation de la guilde de base
+
+		if (!Create(_player, _nomGuilde, _messageGuilde)) // si probleme de creation de la guilde
+		{
+
+			SendCommandResult(_session, GUILD_COMMAND_CREATE_GUILD, ERR_GUILD_NAME_EXISTS_S, _nomGuilde);
+			// Impossible de la creer ... gros probleme ...
+			return false;
+		}
+		else // sinon la guilde est cree
+		{
+			sGuildMgr->AddGuild(this); // memorisation de la guilde
+			//
+			// initialisation de la guilde de base
+
+			// numero de la guilde
+			uint64 guilde_Id = GetId();
+			// nombre de rangs de base soit 4 +1 pour les boucles
+			const uint8 maxGuilde_Right = GR_INITIATE + 1;
+
+			std::string ConfDroit = "";
+			std::string Idx = "";
+			// Nom de base des rangs de la guilde
+			std::string guildeNomRang[maxGuilde_Right] = { "Maitre de guilde", "Officier", "Vétérant", "Membre", "Initié" };
+
+			// droits des rangs
+			uint32 guildedRights[maxGuilde_Right] = {14548927, 14548927, 4980763, 4980755, 786435 };
+			// retrait en piece par jour pour les rangs
+			uint32 guildeRankMoney[maxGuilde_Right] = {4294967295, 3000000, 2000000, 1000000, 100000 };
+			// droit pour les retraits par rang
+			int8 guildeBankRights[maxGuilde_Right] = {-1,   7,   3,   3, 3 };
+			// nombre de retraits de piles par jour pour les rangs
+			int32 guildeBankSlots[maxGuilde_Right] = {-1, 500, 500, 100, 0 };
+
+			for (uint8 idxDroit = 0; idxDroit < maxGuilde_Right; ++idxDroit)
+			{
+				// index en texte
+				Idx = std::to_string(idxDroit);
+
+				// Nom de base des rangs de la guilde
+				ConfDroit = "Stitch.Guild.NomRang" + Idx;
+				guildeNomRang[idxDroit] = sConfigMgr->GetStringDefault(ConfDroit, guildeNomRang[idxDroit]);
+				// droits des rangs
+				ConfDroit = "Stitch.Guild.DroitRang" + Idx;
+				guildedRights[idxDroit] = sConfigMgr->GetIntDefault(ConfDroit, guildedRights[idxDroit]);
+				// retrait en piece par jour pour les rangs
+				ConfDroit = "Stitch.Guild.Or" + Idx;
+				guildeRankMoney[idxDroit] = sConfigMgr->GetIntDefault(ConfDroit, guildeRankMoney[idxDroit]);
+				// droit pour les retraits par rang
+				ConfDroit = "Stitch.Guild.DroitObj" + Idx;
+				guildeBankRights[idxDroit] = sConfigMgr->GetIntDefault(ConfDroit, guildeBankRights[idxDroit]);
+				// nombre de retraits de piles par jour pour les rangs
+				ConfDroit = "Stitch.Guild.Obj" + Idx;
+				guildeBankSlots[idxDroit] = sConfigMgr->GetIntDefault(ConfDroit, guildeBankSlots[idxDroit]);
+
+			}
+
+			SQLTransaction trans = CharacterDatabase.BeginTransaction();
+			
+			_ModifyBankMoney(trans, sConfigMgr->GetIntDefault("Stitch.Guild.monnaie", 1000000000),true); // modification du nombre de pieces
+			CharacterDatabase.CommitTransaction(trans); // ecriture des pieces dans la db
+
+			uint8 tabId = _GetPurchasedTabsSize();
+			//
+			// initialisation des onglets de bank 
+			while (tabId < GUILD_BANK_MAX_TABS)
+			{
+				_CreateNewBankTab();
+				//
+				// initialisation des 4 rangs de base +1 pour la boucle
+				for (uint8 rankId = 0; rankId < maxGuilde_Right; ++rankId)
+				{
+					GuildBankRightsAndSlots rightsAndSlots(tabId, guildeBankRights[rankId], guildeBankSlots[rankId]);
+					_SetRankBankTabRightsAndSlots(rankId, rightsAndSlots, true);
+
+					if (RankInfo* rankInfo = GetRankInfo(rankId))
+					{
+						rankInfo->SetRights(guildedRights[rankId]);
+						rankInfo->SetName(guildeNomRang[rankId]);
+						rankInfo->SetBankMoneyPerDay(guildeRankMoney[rankId]);
+					}
+				}
+				tabId++;
+			}
+		}
+	}
+	else
+	{
+		// Ajout du nouveau membre
+		guilde->AddMember(_player->GetGUID(), GR_MEMBER);
+
+		// Informe le joueur qu'il a rejoint la guilde
+		std::ostringstream Texte;
+		Texte << "|cffffffff|>>> Bienvenue dans la Guilde " << _player->GetGuildName() << " , " << _player->GetName() << " ! <<<";
+
+		ChatHandler(_player->GetSession()).SendSysMessage(Texte.str().c_str());
+	}
+	return true;
+}
+

@@ -115,6 +115,7 @@ void GuildMgr::LoadGuilds()
 {
     // 1. Load all guilds
     TC_LOG_INFO("server.loading", "Loading guilds definitions...");
+
     {
         uint32 oldMSTime = getMSTime();
 

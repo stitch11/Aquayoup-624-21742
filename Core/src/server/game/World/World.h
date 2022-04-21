@@ -864,11 +864,9 @@ class TC_GAME_API World
         std::string m_dataPath;
 
 //Stitch Guilde Auto
-		std::string m_GuildName;								
-		std::string m_GuildMessage;
-
-
-
+		std::string m_GuildName = "";								
+		std::string m_GuildMessage = "";
+//
 
         // for max speed access
         static float m_MaxVisibleDistanceOnContinents;

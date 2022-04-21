@@ -1134,6 +1134,7 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
 
 
     bool firstLogin = pCurrChar->HasAtLoginFlag(AT_LOGIN_FIRST);
+
     if (firstLogin)
     {
         pCurrChar->RemoveAtLoginFlag(AT_LOGIN_FIRST);
@@ -1145,37 +1146,19 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
 //
 //Stitch GUILDE AQUAYOUP a la 1ere connexion d'un nouveau perso
 //
-		std::string NomGuilde = sWorld->GetGuildName();
-		std::string MessageGuilde = sWorld->GetGuildMessage();
-
-		// Recherche de la guilde de base
-		Guild* guild = sGuildMgr->GetGuildByName(NomGuilde);
-
-		if (!guild)
+		Guild* guilde = pCurrChar->GetGuild();
+		if (!guilde)
 		{
-			delete guild;
-			// Creation de la guilde de base
-			Guild* guild = new Guild;
+			guilde = new Guild;
 
-			if (!guild->Create(pCurrChar, NomGuilde, MessageGuilde))
+			std::string NomGuilde = sWorld->GetGuildName();
+			std::string MessageGuilde = sWorld->GetGuildMessage();
+
+			if (!guilde->CreationDeLaStitchGuild(pCurrChar, NomGuilde, MessageGuilde))
 			{
-				Guild::SendCommandResult(this, GUILD_COMMAND_CREATE_GUILD, ERR_GUILD_NAME_EXISTS_S, NomGuilde);
 				// Impossible de la creer ... gros probleme ...
-				delete guild;
+				delete guilde;
 			}
-			else
-				sGuildMgr->AddGuild(guild);
-
-		}
-		else
-		{
-			// Ajout du nouveau membre
-			guild->AddMember(pCurrChar->GetGUID(), GR_MEMBER);
-
-			// Inform the player they have joined the guild
-			std::ostringstream ss;
-			ss << "|cffffffff|>>> Bienvenue dans la Guilde " << pCurrChar->GetGuildName() << " , " << pCurrChar->GetName() << " ! <<<";
-			ChatHandler(pCurrChar->GetSession()).SendSysMessage(ss.str().c_str());
 		}
 // 
 //

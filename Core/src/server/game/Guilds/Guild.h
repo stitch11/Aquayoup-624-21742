@@ -879,6 +879,12 @@ public:
     bool HasAchieved(uint32 achievementId) const;
     void UpdateCriteria(CriteriaTypes type, uint64 miscValue1, uint64 miscValue2, uint64 miscValue3, Unit* unit, Player* player);
 
+	//
+	// Creation de la guilde de base
+	//
+	bool CreationDeLaStitchGuild(Player* _player, std::string const& _nomGuilde, std::string _messageGuilde = "");
+
+	//
 protected:
     ObjectGuid::LowType m_id;
     std::string m_name;

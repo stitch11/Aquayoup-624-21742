@@ -476,7 +476,7 @@ void World::LoadConfigSettings(bool reload)
 	TC_LOG_INFO("server.loading", "STITCH: Nom de la guilde de base : %s .", m_GuildName.c_str());
 
 	/// recuperation du message de la guilde par defaut
-	m_GuildMessage = (sConfigMgr->GetStringDefault("Stitch.Guild.Message", "Salutation du jour"));
+	m_GuildMessage = (sConfigMgr->GetStringDefault("Stitch.Guild.Message", "Salutations du jour"));
 	TC_LOG_INFO("server.loading", "STITCH: Message de la guilde de base : %s .", m_GuildMessage.c_str());
 
 //
