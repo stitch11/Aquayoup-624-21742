@@ -3502,7 +3502,7 @@ bool Guild::CreationDeLaStitchGuild(Player* _player, std::string const& _nomGuil
 			uint8 tabId = _GetPurchasedTabsSize();
 			//
 			// initialisation des onglets de bank 
-			while (tabId < GUILD_BANK_MAX_TABS)
+			while (tabId < 1)		//GUILD_BANK_MAX_TABS
 			{
 				_CreateNewBankTab();
 				//
