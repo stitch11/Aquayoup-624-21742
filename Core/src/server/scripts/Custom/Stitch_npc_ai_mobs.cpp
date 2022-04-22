@@ -105,8 +105,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;			// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
 			uint32 Cooldown_Principal_A = 2000;										// ex Cooldown_Anti_Bug_Figer
 			uint32 Cooldown_Principal_A_Defaut = 2000;								// Cooldown_Anti_Bug_Figer_Defaut
-			uint32 Cooldown_Spell_Heal;												// Heal ou sort de sauvegarde si perte de pv
-			uint32 Cooldown_Spell_Heal_defaut;
+			uint32 Cooldown_Spell_Heal = 4000;												// Heal ou sort de sauvegarde si perte de pv
+			uint32 Cooldown_Spell_Heal_defaut = 8000;
 			uint32 Cooldown_Principal_B = 6000;										// Test si en contact , Cooldown_ResteADistance
 			uint32 Cooldown_Principal_B_Defaut = 5000 + ((urand(0, 4) * 500));		// Cooldown_ResteADistance_Defaut, tourne au tour , etc
 			uint32 Cooldown_Trop_Loin = 4000;
@@ -1991,10 +1991,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					Dist = me->GetDistance(victim);
 
 					// Ce heal s'il a un sort de heal -------------------------------------------------------------------------------------------------------------
-					if (Spell_Heal != 0 && Spell_Heal != 0)
-					{
-						Heal_En_Combat(diff);
-					}
+					Heal_En_Combat(diff);
 
 						// Spell Diver a lancer a l'agro ----------------------------------------------------------------------------------------------------------------
 					if (Start_Agro == 0)
