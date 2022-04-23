@@ -420,7 +420,9 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 				{
 					if (Dist >= 8)
 					{
-					float x, y, z, mapid;
+						float x = 0.0f, y = 0.0f, z = 0.0f;
+						uint32 mapid = 0;
+
 					x = (victim->GetPositionX() + urand(0, 2) - 1);
 					y = (victim->GetPositionY() + urand(0, 2) - 1);
 					z = victim->GetPositionZ();
@@ -473,7 +475,9 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
-				float x, y, z, mapid;
+				float x = 0.0f, y = 0.0f, z = 0.0f;
+				uint32 mapid = 0;
+
 				x = (victim->GetPositionX() + urand(0, 2) - 1);
 				y = (victim->GetPositionY() + urand(0, 2) - 1);
 				z = victim->GetPositionZ();
@@ -489,7 +493,9 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
-				float x, y, z, mapid;
+				float x = 0.0f, y = 0.0f, z = 0.0f;
+				uint32 mapid = 0;
+
 				x = (victim->GetPositionX());
 				y = (victim->GetPositionY());
 				z = victim->GetPositionZ();

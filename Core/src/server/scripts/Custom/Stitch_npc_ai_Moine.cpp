@@ -522,7 +522,10 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 				{
 					if (Dist >= ResteADistance+3)
 					{
-						float x, y, z, mapid;
+
+						float x = 0.0f, y = 0.0f, z = 0.0f;
+						uint32 mapid = 0;
+
 						x = (victim->GetPositionX() + urand(0, 4) - 2);
 						y = (victim->GetPositionY() + urand(0, 4) - 2);
 						z = victim->GetPositionZ();
@@ -573,7 +576,9 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
-				float x, y, z, mapid;
+				float x = 0.0f, y = 0.0f, z = 0.0f;
+				uint32 mapid = 0;
+
 				x = (victim->GetPositionX() + urand(0, 4) - 2);
 				y = (victim->GetPositionY() + urand(0, 4) - 2);
 				z = victim->GetPositionZ();
@@ -589,7 +594,9 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
-				float x, y, z, mapid;
+				float x = 0.0f, y = 0.0f, z = 0.0f;
+				uint32 mapid = 0;
+
 				x = (victim->GetPositionX());
 				y = (victim->GetPositionY());
 				z = victim->GetPositionZ();

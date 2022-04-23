@@ -590,12 +590,14 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 						
-						if (!me->HasAura(116) && !me->HasAura(31589) && !me->HasAura(6136) && !me->HasAura(8056) && !me->HasAura(9080) && !me->HasAura(69917) && !me->HasAura(45477) && !me->HasAura(300051) && !me->HasAura(60192) && !me->HasAura(116095))		// Eclair de givre, Lenteur, Armure de givre, Horion de givre, Brise-genou, fievre_de_givre, Toucher de glace, Javelot de givre, Gèl de zone, Handicap
+						if (AuraLenteur() == false)
 						{
-							me->SetSpeedRate(MOVE_RUN, 1.2f); // Uniquement si non ralenti par un spell joueur
+							me->SetSpeedRate(MOVE_RUN, 1.2f); // Uniquement si non ralenti par un spell 
 						}
 
-						float x, y, z, mapid;
+						float x = 0.0f, y = 0.0f, z = 0.0f;
+						uint32 mapid = 0;
+
 						x = (me->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
 						y = (me->GetPositionY() + urand(0, ResteADistance * 2) - ResteADistance);
 						z = me->GetPositionZ();
@@ -696,7 +698,9 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				// Si la cible >= 6m (pour éviter bug de rester figé) ---------------------------------------------------------------------------------------------
 				if (Dist >= 6 && Cooldown_Anti_Bug_Figer <= diff)
 				{
-					float x, y, z, mapid;
+					float x = 0.0f, y = 0.0f, z = 0.0f;
+					uint32 mapid = 0;
+
 					x = (victim->GetPositionX() + urand(0, 4) - 2);
 					y = (victim->GetPositionY() + urand(0, 4) - 2);
 					z = victim->GetPositionZ();
@@ -787,6 +791,16 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				else Cooldown_Charge -= diff;
 
 			}
+			bool AuraLenteur()
+			{
+				// recherche si aura de lenteur presente
+				// Eclair_de_givre 116/71318, Lenteur 31589, Armure_de_givre 6136, Horion_de_givre 8056/12548, Brise_genou 9080/1715, Fievre_de_givre 69917/67719
+				// Toucher_de_glace 45477/300197, Javelot_de_givre 300051/300237, Gel_de_zone 60192, Handicap 116095, 			
+
+				if (me->HasAura(116) || me->HasAura(31589) || me->HasAura(6136) || me->HasAura(8056) || me->HasAura(9080) || me->HasAura(69917) || me->HasAura(45477) || me->HasAura(300051) || me->HasAura(60192) || me->HasAura(116095) || me->HasAura(71318) || me->HasAura(12548) || me->HasAura(1715) || me->HasAura(67719) || me->HasAura(300197) || me->HasAura(300237))
+					return true;
+				else return false;
+			}
 
 			void Tourne_Au_Tour_En_Combat()
 			{
@@ -796,7 +810,9 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
-				float x, y, z, mapid;
+				float x = 0.0f, y = 0.0f, z = 0.0f;
+				uint32 mapid = 0;
+
 				x = (victim->GetPositionX() + urand(0, 4) - 2);
 				y = (victim->GetPositionY() + urand(0, 4) - 2);
 				z = victim->GetPositionZ();
@@ -812,7 +828,9 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
-				float x, y, z, mapid;
+				float x = 0.0f, y = 0.0f, z = 0.0f;
+				uint32 mapid = 0;
+
 				x = (victim->GetPositionX());
 				y = (victim->GetPositionY());
 				z = victim->GetPositionZ();

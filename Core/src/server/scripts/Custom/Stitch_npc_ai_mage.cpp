@@ -459,7 +459,9 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 							me->SetSpeedRate(MOVE_RUN, 1.2f); // Uniquement si non ralenti par un spell joueur
 						}
 
-						float x, y, z, mapid;
+						float x = 0.0f, y = 0.0f, z = 0.0f;
+						uint32 mapid = 0;
+
 						x = (me->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
 						y = (me->GetPositionY() + urand(0, ResteADistance * 2) - ResteADistance);
 						z = me->GetPositionZ();

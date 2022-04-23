@@ -474,7 +474,9 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 				// Si la cible >= 6m (pour éviter bug de rester figé) --------------------------------------------------------------------------------------------
 				if ((Dist >= 6) && (Cooldown_Anti_Bug_Figer <= diff))
 				{
-					float x, y, z, mapid;
+					float x = 0.0f, y = 0.0f, z = 0.0f;
+					uint32 mapid = 0;
+
 					x = (victim->GetPositionX() + urand(0, 2) - 1);
 					y = (victim->GetPositionY() + urand(0, 2) - 1);
 					z = victim->GetPositionZ();
@@ -510,7 +512,9 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
-				float x, y, z, mapid;
+				float x = 0.0f, y = 0.0f, z = 0.0f;
+				uint32 mapid = 0;
+
 				x = (victim->GetPositionX() + urand(0, 2) - 1);
 				y = (victim->GetPositionY() + urand(0, 2) - 1);
 				z = victim->GetPositionZ();
@@ -526,7 +530,9 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
-				float x, y, z, mapid;
+				float x = 0.0f, y = 0.0f, z = 0.0f;
+				uint32 mapid = 0;
+
 				x = (victim->GetPositionX());
 				y = (victim->GetPositionY());
 				z = victim->GetPositionZ();

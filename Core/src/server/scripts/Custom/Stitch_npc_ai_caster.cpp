@@ -44,23 +44,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 		struct Stitch_npc_ai_casterAI : public ScriptedAI
 		{
 			Stitch_npc_ai_casterAI(Creature* creature) : ScriptedAI(creature) { }
-//
-			enum auraLenteur
-			{
-				Eclair_de_givre = 116,
-				Lenteur = 31589,
-				Armure_de_givre = 6136,
-				Horion_de_givre = 8056,
-				Brise_genou = 9080,
-				Fievre_de_givre = 69917,
-				Toucher_de_glace = 45477,
-				Javelot_de_givre = 300051,
-				Gel_de_zone = 60192,
-				Handicap = 116095,
 
-				finAuraLenteur
-			};
-//
 			uint32 Random;
 			uint32 DistanceDeCast = 30;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
 			uint32 ResteADistance = 12;												// Distance max a laquelle un npc s'approchera
@@ -114,25 +98,9 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			// Emotes
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
 
-			//uint32 _auraLenteur[10];// = { Eclair_de_givre, Lenteur, Armure_de_givre, Horion_de_givre, Brise_genou, Fievre_de_givre, Toucher_de_glace, Javelot_de_givre, Gel_de_zone, Handicap };
 
 			uint32 Start_Agro = 0;
 			
-			bool AuraLenteur()
-			{
-
-				// recherche si aura de lenteur presente
-				uint8 _aura = 0; // Premiere aura
-				while(auraLenteur(_aura) != finAuraLenteur) // boucle tant que pas derniere aura 
-				{
-					// si aura presente
-					if (me->HasAura(auraLenteur(_aura)))
-						return true;
-					_aura++;
-				}
-				// return false car aucune aura de lenteur presente
-				return false;
-			}
 
 			void Init_AI()
 			{
@@ -150,15 +118,6 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 
 				if (me->m_spells[0] == 0) 
 				{ 
-					//uint32 _auraLenteur[10];// = { Eclair_de_givre, Lenteur, Armure_de_givre, Horion_de_givre, Brise_genou, Fievre_de_givre, Toucher_de_glace, Javelot_de_givre, Gel_de_zone, Handicap };
-					//// Initialise donnees de recherche aura de lenteur
-					//for (uint8 _aura = 0; _aura < max_auraLenteur; ++_aura)
-					//{
-					//	// si aura presente
-					//	_auraLenteur[_aura] = auraLenteur(_aura);
-					//		// return true
-					//}
-
 					// Forcer le choix de la classe par creature_template->pickpocketloot
 					ForceBranche = me->GetCreatureTemplate()->pickpocketLootId;
 					if (ForceBranche == 1) { Random = 1; }															// Mage feu forcé
@@ -440,13 +399,14 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 
-						//if (!me->HasAura(116) && !me->HasAura(31589) && !me->HasAura(6136) && !me->HasAura(8056) && !me->HasAura(9080) && !me->HasAura(69917) && !me->HasAura(45477) && !me->HasAura(300051) && !me->HasAura(60192) && !me->HasAura(116095))		// Eclair de givre, Lenteur, Armure de givre, Horion de givre, Brise-genou, fievre_de_givre, Toucher de glace, Javelot de givre, Gèl de zone, Handicap
-						if(!AuraLenteur())
+						if(AuraLenteur() == false)
 						{
-							me->SetSpeedRate(MOVE_RUN, 1.2f); // Uniquement si non ralenti par un spell joueur
+							me->SetSpeedRate(MOVE_RUN, 1.2f); // Uniquement si non ralenti par un spell 
 						}
 
-						float x, y, z, mapid;
+						float x = 0.0f, y = 0.0f, z = 0.0f;
+						uint32 mapid = 0;
+
 						x = (me->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
 						y = (me->GetPositionY() + urand(0, ResteADistance * 2) - ResteADistance);
 						z = me->GetPositionZ();
@@ -485,6 +445,16 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					DoMeleeAttackIfReady();																// Combat en mélée
 				}
 			}
+			bool AuraLenteur()
+			{
+				// recherche si aura de lenteur presente
+				// Eclair_de_givre 116/71318, Lenteur 31589, Armure_de_givre 6136, Horion_de_givre 8056/12548, Brise_genou 9080/1715, Fievre_de_givre 69917/67719
+				// Toucher_de_glace 45477/300197, Javelot_de_givre 300051/300237, Gel_de_zone 60192, Handicap 116095, 			
+
+				if (me->HasAura(116) || me->HasAura(31589) || me->HasAura(6136) || me->HasAura(8056) || me->HasAura(9080) || me->HasAura(69917) || me->HasAura(45477) || me->HasAura(300051) || me->HasAura(60192) || me->HasAura(116095) || me->HasAura(71318) || me->HasAura(12548) || me->HasAura(1715) || me->HasAura(67719) || me->HasAura(300197) || me->HasAura(300237) )
+					return true; 
+				else return false;
+			}
 
 			void Tourne_Au_Tour_En_Combat()
 			{
@@ -494,7 +464,9 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
-				float x, y, z, mapid;
+				float x = 0.0f, y = 0.0f, z = 0.0f;
+				uint32 mapid = 0;
+
 				x = (victim->GetPositionX() + urand(0, 4) - 2);
 				y = (victim->GetPositionY() + urand(0, 4) - 2);
 				z = victim->GetPositionZ();
@@ -510,7 +482,9 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
-				float x, y, z, mapid;
+				float x = 0.0f, y = 0.0f, z = 0.0f;
+				uint32 mapid = 0;
+
 				x = (victim->GetPositionX());
 				y = (victim->GetPositionY());
 				z = victim->GetPositionZ();

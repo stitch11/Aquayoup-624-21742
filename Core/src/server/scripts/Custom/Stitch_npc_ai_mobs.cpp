@@ -93,7 +93,9 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 Crfamily = me->GetCreatureTemplate()->family;
 			uint32 ForceFamily = me->GetCreatureTemplate()->pickpocketLootId;
 			uint32 Ordre_De_Charge = 0;
-			float x, y, z, mapid;
+			float x = 0.0f, y = 0.0f, z = 0.0f;
+			uint32 mapid = 0;
+
 			uint8 Spell_B_Non_Cumulable;											// == 1 : Spell_B ne sera pas appliqué s'il est deja actif sur la cible . Par exemple pour Brise-genou
 
 			// Definitions des variables Cooldown et le 1er lancement
@@ -2328,7 +2330,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 						//me->SetSpeedRate(MOVE_RUN, 1.01f);
 
-						//float x, y, z, mapid;
 						x = (me->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
 						y = (me->GetPositionY() + urand(0, ResteADistance * 2) - ResteADistance);
 						z = me->GetPositionZ();
@@ -2388,7 +2389,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 					if (me->isMoving())
 						{
-							//float x, y, z, mapid;
 							x = (victim->GetPositionX());
 							y = (victim->GetPositionY());
 							z = victim->GetPositionZ();
@@ -2851,7 +2851,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
-				float x, y, z, mapid;
 				x = (victim->GetPositionX() + urand(0, Distance*2) - Distance);	// 4 pour contact
 				y = (victim->GetPositionY() + urand(0, Distance*2) - Distance);	// 4 pour contact
 				z = victim->GetPositionZ();
@@ -2870,7 +2869,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
-				float x, y, z, mapid;
 				x = (victim->GetPositionX() + urand(0, Distance * 2) - Distance);	// 4 pour contact
 				y = (victim->GetPositionY() + urand(0, Distance * 2) - Distance);	// 4 pour contact
 				z = victim->GetPositionZ() + urand(3,6);
@@ -2897,7 +2895,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
-				//float x, y, z, mapid;
 				x = (victim->GetPositionX());
 				y = (victim->GetPositionY());
 				z = victim->GetPositionZ();
