@@ -30,7 +30,7 @@
 
 uint32 SPELL_POUR_VISUEL = 14867;
 uint32 PERTE_DE_DURABILITE = 45317;         //  Perte de 10 % de la durabilité
-uint32 DISPARITION6S = 35205;
+uint32 DISPARITIONS = 35205;
 
 
 
@@ -54,8 +54,8 @@ public:
         Apprentissage_Ou_Additem_Suivant_classes_races(player);
 
         // 1ere connexion joueur
-        if (firstLogin) // ne marche pas
-        {
+		if(firstLogin == true)						// a tester
+		{
 			player->LearnSpell(300251, true);      // Nuit Claire : Rend les nuits ou lieux sombres plus clair.
         }
 
@@ -89,7 +89,7 @@ public:
 		case CLASS_SHAMAN: break;
 		case CLASS_MAGE: break;
 		case CLASS_WARLOCK: break;
-		case CLASS_MONK: break;
+		case CLASS_MONK: 
 			// Rafraichissement posture a la connexion 
 			if (player->HasAura(103985))
 			{
@@ -106,6 +106,7 @@ public:
 				player->RemoveAurasDueToSpell(154436);	// Posture de la grue fougueuse
 				player->AddAura(154436, player);
 			}
+			break;
 		case CLASS_DRUID:break;
 		default:
 			break;
