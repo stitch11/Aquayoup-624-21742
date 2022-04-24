@@ -421,6 +421,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 	uint16 Crfamily = GetCreatureTemplate()->family;
 	uint16 Crspeed = GetCreatureTemplate()->speed_walk;
 
+
 // TYPE
 	//elementaire ,	Mort-vivant
 	if (Crspeed == 1.0f)
@@ -464,12 +465,14 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 // FAMILY
 	if (Crspeed == 1.0f)
 	{
+
+
 		//Rhinoceros, ours, Gorille, Hydre ,Infernal
 		if (Crfamily == CREATURE_FAMILY_RHINO || Crfamily == CREATURE_FAMILY_BEAR || Crfamily == CREATURE_FAMILY_GORILLA || Crfamily == CREATURE_FAMILY_HYDRA || Crfamily == CREATURE_FAMILY_INFERNAL)
 		{
 			SetSpeedRate(MOVE_WALK, 0.6f);				// hors combat
 			SetSpeedRate(MOVE_RUN, 1.3f);				// en combat
-			SetSpeedRate(MOVE_SWIM, 0.5f);				// en nageant
+			SetSpeedRate(MOVE_SWIM, 1.0f);				// en nageant
 		}
 		// Oiseau de proie,Chauve souris,Faucon dragon, Papillon de nuit,oiseau charognard
 		if (Crfamily == CREATURE_FAMILY_BIRD_OF_PREY || Crfamily == CREATURE_FAMILY_BAT || Crfamily == CREATURE_FAMILY_DRAGONHAWK || Crfamily == CREATURE_FAMILY_MOTH || Crfamily == CREATURE_FAMILY_CARRION_BIRD)
@@ -507,7 +510,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			SetSpeedRate(MOVE_SWIM, 0.5f);				// en nageant
 		}
 		//elementaire de feu, elem. de tempete,elementaire de terre,Water Elemental
-		if (Crfamily == CREATURE_FAMILY_FIREELEMENTAL || Crfamily == CREATURE_FAMILY_STORMELEMENTAL || Crfamily == CREATURE_FAMILY_EARTHELEMENTAL || Crfamily == CREATURE_FAMILY_MTWATERELEMENTAL)
+		if (Crfamily == CREATURE_FAMILY_FIREELEMENTAL || Crfamily == CREATURE_FAMILY_STORMELEMENTAL)
 		{
 			SetSpeedRate(MOVE_WALK, 1.8f);				// hors combat
 			SetSpeedRate(MOVE_RUN, 1.8f);				// en combat
@@ -526,17 +529,24 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			SetSpeedRate(MOVE_RUN, 1.0f);				// en combat
 			SetSpeedRate(MOVE_SWIM, 0.8f);				// en nageant
 		}
+		//Elementaire d'eau
+		if (Crfamily == CREATURE_FAMILY_WATER_ELEMENTAL || Crfamily == CREATURE_FAMILY_MTWATERELEMENTAL)
+		{
+			SetSpeedRate(MOVE_WALK, 0.7f);				// hors combat
+			SetSpeedRate(MOVE_RUN, 1.2f);				// en combat
+			SetSpeedRate(MOVE_SWIM, 0.8f);				// en nageant
+		}
+		//Elementaire de terre
+		if (Crfamily == CREATURE_FAMILY_EARTHELEMENTAL  )
+		{
+			SetSpeedRate(MOVE_WALK, 0.7f);				// hors combat
+			SetSpeedRate(MOVE_RUN, 1.0f);				// en combat
+			SetSpeedRate(MOVE_SWIM, 0.6f);				// en nageant
+		}
 
-		
 	}
 
-
-
-
-
-
-
-
+	
 
 
 
@@ -664,13 +674,7 @@ void Creature::Update(uint32 diff)
 
     UpdateMovementFlags();
 
-//Stitch Vitesse de nage en combat : bete , Elementaire 
-	uint16 Crtype = GetCreatureTemplate()->type;
-	uint16 Crfamily = GetCreatureTemplate()->family;
-	if (IsInCombat() & ((Crtype == CREATURE_TYPE_BEAST && Crfamily ==0 ) || Crtype == CREATURE_TYPE_ELEMENTAL))
-		SetSpeedRate(MOVE_SWIM, 2.5f); 
-	else
-		SetSpeedRate(MOVE_SWIM, 1.0f);
+
 
 
 
