@@ -1925,6 +1925,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 
 				// --- Spécificitée par family ---
+				//Scorpion, ver
 				if (Crfamily == 20 || Crfamily == 42)
 				{
 					Random = urand(1, 3);
@@ -1935,7 +1936,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					}
 				}
 
-				if (Crfamily == 155)
+				if (Crfamily == 155 && (me->GetMotionMaster()->GetCurrentMovementGeneratorType() == IDLE_MOTION_TYPE))	//RANDOM_MOTION_TYPE
 				{
 					Senterre_sans_fumee();
 				}
