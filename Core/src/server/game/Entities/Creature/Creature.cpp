@@ -543,7 +543,13 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			SetSpeedRate(MOVE_RUN, 1.0f);				// en combat
 			SetSpeedRate(MOVE_SWIM, 0.6f);				// en nageant
 		}
-
+		//Custom 155
+		if (Crfamily == 155)
+		{
+			SetSpeedRate(MOVE_WALK, 0.25f);				// hors combat
+			SetSpeedRate(MOVE_RUN, 1.0f);				// en combat
+			SetSpeedRate(MOVE_SWIM, 0.4f);				// en nageant
+		}
 	}
 
 	

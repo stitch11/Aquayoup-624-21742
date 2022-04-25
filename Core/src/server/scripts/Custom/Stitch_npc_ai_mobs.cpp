@@ -1884,7 +1884,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						}
 					}
 					
-					if (Crfamily == 155) 
+					//Custom
+					if (Crfamily == 155)
 					{ 
 						Senterre_sans_fumee(); 
 					}
@@ -1895,12 +1896,12 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			}
 			void EnterCombat(Unit* /*who*/) override
 			{
+				Init_AI();
+
 				if (Crfamily == 20 || Crfamily == 42 || Crfamily == 155)
 				{
 					Se_Deterre();
 				}
-
-				Init_AI();
 
 			}
 			void EnterEvadeMode(EvadeReason /*why*/) override
@@ -1936,7 +1937,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					}
 				}
 
-				if (Crfamily == 155 && (me->GetMotionMaster()->GetCurrentMovementGeneratorType() == IDLE_MOTION_TYPE))	//RANDOM_MOTION_TYPE
+				//Custom
+				if (Crfamily == 155)
 				{
 					Senterre_sans_fumee();
 				}
@@ -2912,6 +2914,10 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			}
 			void Senterre_sans_fumee()
 			{
+				//Custom
+				if (Crfamily == 155 && (me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE))
+					return;
+
 				me->CastSpell(me, Spell_Senterre_sans_fumee, true);								// Fumée et terre remuée Temporaire
 				me->CastSpell(me, Spell_Sedeterre_sans_fumee, true);							// Pour visuel sedeterrer
 				me->CastSpell(me, Spell_No_ModelID, true);										// Masque le ModelID
@@ -2924,6 +2930,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				me->RemoveAurasDueToSpell(Spell_Sedeterre_sans_fumee);							// Visuel explosion de fumée
 				me->RemoveAurasDueToSpell(Spell_No_ModelID);									// Retire invisible
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Selectionnable
+
 			}
 
 			// ------ DIVERS ------
