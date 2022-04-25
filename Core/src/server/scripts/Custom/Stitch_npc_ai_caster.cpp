@@ -220,6 +220,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 
 					Random = urand(1, 2);
 					if (Random == 1 && Buf_1 != 0) { me->CastSpell(me, Buf_1, true); }
+					if (Spell_respawn_evade != 0) { me->CastSpell(me, Spell_respawn_evade, true); }
 
 				// ################################################################################################################################################
 				// Divers
