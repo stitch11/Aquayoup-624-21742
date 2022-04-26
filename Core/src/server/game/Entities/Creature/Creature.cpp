@@ -494,11 +494,16 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 		case CREATURE_FAMILY_CAT:				// felin
 		case CREATURE_FAMILY_BOAR:				// sanglier
 		case CREATURE_FAMILY_RAPTOR:			// Raptor
-		case CREATURE_FAMILY_HYENA:				// Hyene
 		case CREATURE_FAMILY_RAVAGER:			// Ravageur
+			SetSpeedRate(MOVE_WALK, 0.6f);							// hors combat
+			SetSpeedRate(MOVE_RUN, 1.2f);							// en combat
+			SetSpeedRate(MOVE_SWIM, 0.5f);							// en nageant
+			break;
+
+		case CREATURE_FAMILY_HYENA:				// Hyene
 		case CREATURE_FAMILY_FOX:				// Renard
-			SetSpeedRate(MOVE_WALK, 0.8f);							// hors combat
-			SetSpeedRate(MOVE_RUN, 1.3f);							// en combat
+			SetSpeedRate(MOVE_WALK, 0.5f);							// hors combat
+			SetSpeedRate(MOVE_RUN, 1.0f);							// en combat
 			SetSpeedRate(MOVE_SWIM, 0.5f);							// en nageant
 			break;
 
