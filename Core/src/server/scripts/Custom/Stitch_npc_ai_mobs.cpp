@@ -2009,6 +2009,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Se_Deterre();
 						}
 						// ---------------------------
+						me->CastSpell(me, Spell_respawn_evade, true);
 					}
 
 
