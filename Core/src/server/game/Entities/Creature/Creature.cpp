@@ -490,7 +490,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 		case CREATURE_FAMILY_CARRION_BIRD:		// oiseau charognard
 			SetSpeedRate(MOVE_WALK, 1.5f);							// hors combat
 			SetSpeedRate(MOVE_RUN, 1.75f);							// en combat
-			SetSpeedRate(MOVE_FLIGHT, 1.75f);						// en volant
+			SetSpeedRate(MOVE_FLIGHT, 1.5f);						// en volant
 			break;
 
 		case CREATURE_FAMILY_WOLF:				// Loup
@@ -574,9 +574,9 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 
 		case CREATURE_FAMILY_WATER_ELEMENTAL:		//Elementaire d'eau
 		case CREATURE_FAMILY_MTWATERELEMENTAL:		//Elementaire d'eau
-			SetSpeedRate(MOVE_WALK, 0.7f);							// hors combat
-			SetSpeedRate(MOVE_RUN, 2.2f);							// en combat
-			SetSpeedRate(MOVE_SWIM, 1.0f);							// en nageant
+			SetSpeedRate(MOVE_WALK, 0.8f);							// hors combat
+			SetSpeedRate(MOVE_RUN, 1.0);							// en combat
+			SetSpeedRate(MOVE_SWIM, 0.7f);							// en nageant
 			break;
 
 		case CREATURE_FAMILY_EARTHELEMENTAL:		//Elementaire de terre
@@ -822,7 +822,7 @@ void Creature::Update(uint32 diff)
 		case CREATURE_FAMILY_WATER_ELEMENTAL:		//Elementaire d'eau
 		case CREATURE_FAMILY_MTWATERELEMENTAL:		//Elementaire d'eau
 		case 155:									//Custom 155
-			SetSpeedRate(MOVE_SWIM, 1.0f);							// en nageant
+			SetSpeedRate(MOVE_SWIM, 1.5f);							// en nageant
 			break;
 
 		case CREATURE_FAMILY_CRAB:					// Crabe
