@@ -1922,8 +1922,11 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			void JustReachedHome() override
 			{
 				me->SetReactState(REACT_AGGRESSIVE);
-				//me->SetSpeedRate(MOVE_RUN, 1.01f);		
 
+				me->UpdateSpeed(MOVE_WALK);
+				me->UpdateSpeed(MOVE_RUN);
+				me->UpdateSpeed(MOVE_SWIM);
+				me->UpdateSpeed(MOVE_FLIGHT);
 
 				// --- Spécificitée par family ---
 				//Scorpion, ver

@@ -402,10 +402,11 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
     SetFloatValue(UNIT_MOD_CAST_SPEED, 1.0f);
     SetFloatValue(UNIT_MOD_CAST_HASTE, 1.0f);
 
-    SetSpeedRate(MOVE_WALK,   cinfo->speed_walk);
-    SetSpeedRate(MOVE_RUN,    cinfo->speed_run);
-    SetSpeedRate(MOVE_SWIM,   1.0f); // using 1.0 rate
-    SetSpeedRate(MOVE_FLIGHT, 1.0f); // using 1.0 rate
+
+    //SetSpeedRate(MOVE_WALK,   cinfo->speed_walk);
+    //SetSpeedRate(MOVE_RUN,    cinfo->speed_run);
+    //SetSpeedRate(MOVE_SWIM,   1.0f); // using 1.0 rate
+    //SetSpeedRate(MOVE_FLIGHT, 1.0f); // using 1.0 rate
 
 
 //Stitch Pas d'equipement pour les betes
@@ -418,13 +419,15 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 
 
 
+
+
 	// Stitch vitesse de deplacement des creatures par type & famille
 	// UPDATE `creature_template` SET `speed_walk` = 1, `speed_run` = 1 WHERE `speed_walk` <1.5 AND `type` = 4 OR `type` = 5 OR `type` =  6 OR `type` =  9 OR `type` = 8 OR `type` = 12 OR `type` = 13 OR `type` = 14 OR `type` = 7 OR `type` = 10 OR `type` = 1;
-	uint16 Crtype = GetCreatureTemplate()->type;
-	uint16 Crfamily = GetCreatureTemplate()->family;
+	uint32 Crtype = GetCreatureTemplate()->type;
+	uint32 Crfamily = GetCreatureTemplate()->family;
 	float Crspeed = GetCreatureTemplate()->speed_walk;
 
-	if (Crspeed == 1.0f)
+	if (Crspeed == 1.0f && !IsInCombat())
 	{
 		switch (Crtype)
 		{
@@ -507,12 +510,17 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			SetSpeedRate(MOVE_SWIM, 0.5f);							// en nageant
 			break;
 
-		case CREATURE_FAMILY_CROCOLISK:			// crocodile
+		case CREATURE_FAMILY_CROCOLISK:			// crocodile------------------------------------------------------
+			SetSpeedRate(MOVE_WALK, 0.6f);							// hors combat
+			SetSpeedRate(MOVE_RUN, 0.8f);							// en combat
+			SetSpeedRate(MOVE_SWIM, 0.6f);							// en nageant
+			break;
+
 		case CREATURE_FAMILY_CRAB:				// Crabe
 		case CREATURE_FAMILY_TURTLE:			// Tortue
 			SetSpeedRate(MOVE_WALK, 0.4f);							// hors combat
 			SetSpeedRate(MOVE_RUN, 0.8f);							// en combat
-			SetSpeedRate(MOVE_SWIM, 1.0f);							// en nageant
+			SetSpeedRate(MOVE_SWIM, 0.4f);							// en nageant
 			break;
 
 		case CREATURE_FAMILY_SERPENT:			// Serpent
@@ -576,7 +584,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			SetSpeedRate(MOVE_RUN, 1.0f);							// en combat
 			SetSpeedRate(MOVE_SWIM, 0.6f);							// en nageant
 			break;
-		
+
 		case 155:									//Custom 155
 			SetSpeedRate(MOVE_WALK, 0.25f);							// hors combat
 			SetSpeedRate(MOVE_RUN, 1.0f);							// en combat
@@ -592,7 +600,9 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 
 		}
 
+
 	}
+
 
 	
 
@@ -716,6 +726,125 @@ void Creature::Update(uint32 diff)
     }
 
     UpdateMovementFlags();
+
+
+
+
+	//Stitch Vitesse de nage en combat : bete , Elementaire 
+	uint32 Crtype = GetCreatureTemplate()->type;
+	uint32 Crfamily = GetCreatureTemplate()->family;
+	float Crspeed = GetCreatureTemplate()->speed_walk;
+
+	if (Crspeed == 1.0f && IsInCombat())
+	{
+		switch (Crtype)
+		{
+		case CREATURE_TYPE_UNDEAD:
+		case CREATURE_TYPE_ELEMENTAL:
+			SetSpeedRate(MOVE_SWIM, 0.4f);							// en nageant
+			break;
+
+		case CREATURE_TYPE_GIANT:			// Geant 
+			SetSpeedRate(MOVE_SWIM, 0.8f);							// en nageant
+			break;
+
+		case CREATURE_TYPE_MECHANICAL:		// Machine
+			SetSpeedRate(MOVE_SWIM, 0.65f);							// en nageant
+			break;
+
+		case CREATURE_TYPE_CRITTER:			// Bestiole
+		case CREATURE_TYPE_NON_COMBAT_PET:	// Mascotte pacifique
+		case CREATURE_TYPE_WILD_PET:		// Mascotte sauvage
+		case CREATURE_TYPE_GAS_CLOUD:		// Nuage de gaz
+			SetSpeedRate(MOVE_SWIM, 0.5f);							// en nageant
+			break;
+
+		case CREATURE_TYPE_HUMANOID:		// Humanoide
+		case CREATURE_TYPE_NOT_SPECIFIED:	// Non specifié
+			SetSpeedRate(MOVE_SWIM, 0.6f);							// en nageant
+			break;
+
+		default:
+			break;
+		}
+
+
+		switch (Crfamily)
+		{
+		case CREATURE_FAMILY_GORILLA:				// Gorille
+		case CREATURE_FAMILY_INFERNAL:				// Infernal
+		case CREATURE_FAMILY_SERPENT:				// Serpent
+		case CREATURE_FAMILY_GHOUL:					// Goule
+		case CREATURE_FAMILY_MONKEY:				// Singe
+		case CREATURE_FAMILY_ZOMBIE:				// Zombie
+		case CREATURE_FAMILY_SPIDER:				// Araignee
+		case CREATURE_FAMILY_SCORPID:				// Scorpion
+		case CREATURE_FAMILY_GOAT:					// Chevre
+		case CREATURE_FAMILY_STAG:					// Cerf
+		case CREATURE_FAMILY_PORCUPINE:				// Porc epic
+		case CREATURE_FAMILY_RYLAK:
+		case CREATURE_FAMILY_BEETLE:				// Goul
+		case CREATURE_FAMILY_WIND_SERPENT:			// Serpent des vents
+		case CREATURE_FAMILY_NETHER_RAY:			// Raie du Neant
+		case CREATURE_FAMILY_WASP:					// Guepe
+			SetSpeedRate(MOVE_SWIM, 0.5f);							// en nageant
+			break;
+
+		case CREATURE_FAMILY_RHINO:					// Rhinoceros
+		case CREATURE_FAMILY_BEAR:					// ours
+		case CREATURE_FAMILY_HYENA:					// Hyene
+		case CREATURE_FAMILY_FOX:					// Renard
+		case CREATURE_FAMILY_WORM:					// Ver
+		case CREATURE_FAMILY_IMP:					// Imp
+		case CREATURE_FAMILY_HORSE_CUSTOM:			// Cheval
+		case CREATURE_FAMILY_SUCCUBUS:				// Succube
+		case CREATURE_FAMILY_DOOMGUARD:				// Doomguard
+		case CREATURE_FAMILY_VOIDLORD:				// Seigneur du Vide
+			SetSpeedRate(MOVE_SWIM, 0.6f);							// en nageant
+			break;
+
+		case CREATURE_FAMILY_WOLF:					// Loup
+		case CREATURE_FAMILY_CAT:					// felin
+		case CREATURE_FAMILY_BOAR:					// sanglier
+		case CREATURE_FAMILY_RAPTOR:				// Raptor
+		case CREATURE_FAMILY_RAVAGER:				// Ravageur
+		case CREATURE_FAMILY_CRANE:					// Grue
+		case CREATURE_FAMILY_WATERSTRIDER:			// Trotteur aquatique
+			SetSpeedRate(MOVE_SWIM, 0.7f);							// en nageant
+			break;
+
+		case CREATURE_FAMILY_EARTHELEMENTAL:		//Elementaire de terre
+		case CREATURE_FAMILY_FIREELEMENTAL:			// elementaire de feu
+		case CREATURE_FAMILY_STORMELEMENTAL:		// elementaire de tempete
+			SetSpeedRate(MOVE_SWIM, 0.8f);							// en nageant:
+			break;
+
+		case CREATURE_FAMILY_WATER_ELEMENTAL:		//Elementaire d'eau
+		case CREATURE_FAMILY_MTWATERELEMENTAL:		//Elementaire d'eau
+		case 155:									//Custom 155
+			SetSpeedRate(MOVE_SWIM, 1.0f);							// en nageant
+			break;
+
+		case CREATURE_FAMILY_CRAB:					// Crabe
+		case CREATURE_FAMILY_TURTLE:				// Tortue
+			SetSpeedRate(MOVE_SWIM, 1.75f);
+			break;
+
+		case CREATURE_FAMILY_CROCOLISK:				// crocodile------------------------------------------------------
+		case CREATURE_FAMILY_HYDRA:					// Hydre
+		case CREATURE_FAMILY_BASILISK:				// Basilic
+				SetSpeedRate(MOVE_SWIM, 2.0f);
+			break;
+
+		default:
+			break;
+
+
+		}
+
+
+	}
+
 
 
 
