@@ -3691,7 +3691,10 @@ enum CreatureFamily
     CREATURE_FAMILY_ABYSSAL             = 148,
     CREATURE_FAMILY_RYLAK               = 149,
     CREATURE_FAMILY_RIVERBEAST          = 150,
-    CREATURE_FAMILY_STAG                = 151
+    CREATURE_FAMILY_STAG                = 151,
+	CREATURE_FAMILY_MURLOC = 152
+
+
 };
 
 enum CreatureTypeFlags
