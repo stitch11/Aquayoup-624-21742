@@ -426,6 +426,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 	uint32 Crtype = GetCreatureTemplate()->type;
 	uint32 Crfamily = GetCreatureTemplate()->family;
 	float Crspeed = GetCreatureTemplate()->speed_walk;
+	uint32 Crentry = GetCreatureTemplate()->Entry;
 
 	if (Crspeed == 1.0f && !IsInCombat())
 	{
@@ -606,9 +607,12 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 
 		}
 
-
 	}
-
+	// Civils
+	if (Crentry >= 1000100 && Crentry <= 1001000)
+	{
+		SetSpeedRate(MOVE_WALK, frand(0.5f, 1.2f));							// hors combat
+	}
 
 	
 

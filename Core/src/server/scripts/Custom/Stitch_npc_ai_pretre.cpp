@@ -119,7 +119,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 										
 					me->LoadEquipment(1, true);																		// creature_equip_template 1
 
-					// Tirages aléatoires des spells Affliction 
+					// Tirages aléatoires des spells Ombre
 					Spell_branche1_agro = branche1_agro[urand(0, 3)];
 					Spell_branche1_1 = branche1_1[urand(0, 3)];
 					Spell_branche1_2 = branche1_2[urand(0, 1)];
@@ -131,7 +131,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 
 					me->LoadEquipment(2, true);																		// creature_equip_template 2
 
-					// Tirages aléatoires des spells Demonologie 
+					// Tirages aléatoires des spells Discipline 
 					Spell_branche2_agro = branche2_agro[urand(0, 5)];
 					Spell_branche2_1 = branche2_1[urand(0, 1)];
 					Spell_branche2_2 = branche2_2[urand(0, 2)];
