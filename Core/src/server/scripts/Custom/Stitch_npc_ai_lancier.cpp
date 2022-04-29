@@ -184,6 +184,17 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 					Unit* victim = me->GetVictim();
 					Dist = me->GetDistance(victim);
 
+					if (Dist < 6)
+					{
+						me->SetSheath(SHEATH_STATE_MELEE);												// S'équipe d'armes au contact
+					}
+					else
+					{
+						if (Tir_1 != Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_RANGED); }				// S'équipe d'arc ou fusil
+						if (Tir_1 == Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_MELEE); }				// S'équipe d'armes au contact
+					}
+
+
 					if (Start_Agro == 0)
 					{
 						Start_Agro = 1;
@@ -216,7 +227,6 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 						if (Cooldown_Spell1 <= diff && Spell_1 !=0)
 						{
 							me->StopMoving();
-							me->SetSheath(SHEATH_STATE_MELEE);													// S'équipe d'armes au contact
 							//Bonus_Degat_Arme_Done(100);
 							DoCast(victim, Spell_1);
 							DoMeleeAttackIfReady();																// Combat en mélée
@@ -224,25 +234,21 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 							Cooldown_Spell1 = urand(3000,3500);
 						}
 						else Cooldown_Spell1 -= diff;
-
+					}
 						// Spell2 sur la cible  
 						if (Cooldown_Spell2 <= diff && Spell_2 != 0)
 						{
-							me->SetSheath(SHEATH_STATE_MELEE);
 							me->CastSpell(victim, Spell_2, true);
 							Cooldown_Spell2 = urand(6000, 8000);
 						}
 						else Cooldown_Spell2 -= diff;
-					}
+
 					// Combat a distance --------------------------------------------------------------------------------------------------------------------------
 					if (Dist >= 6)
 					{
 						// Spell1 sur la cible  
 						if (Cooldown_Spell1 <= diff)
 						{
-							if (Tir_1 != Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_RANGED); }				// S'équipe d'arc ou fusil
-							if (Tir_1 == Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_MELEE);	}				// S'équipe d'armes au contact
-
 							me->StopMoving();
 							DoCast(victim, Tir_1);
 							Cooldown_Spell1 = urand(1500,2500);
