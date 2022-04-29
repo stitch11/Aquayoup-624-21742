@@ -512,7 +512,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			break;
 
 		case CREATURE_FAMILY_CROCOLISK:			// crocodile------------------------------------------------------
-			SetSpeedRate(MOVE_WALK, 0.6f);							// hors combat
+			SetSpeedRate(MOVE_WALK, 0.4f);							// hors combat
 			SetSpeedRate(MOVE_RUN, 0.8f);							// en combat
 			SetSpeedRate(MOVE_SWIM, 0.6f);							// en nageant
 			break;
@@ -823,7 +823,7 @@ void Creature::Update(uint32 diff)
 			SetSpeedRate(MOVE_SWIM, 0.7f);							// en nageant
 			break;
 
-		case CREATURE_FAMILY_EARTHELEMENTAL:		//Elementaire de terre
+		case CREATURE_FAMILY_EARTHELEMENTAL:		// Elementaire de terre
 		case CREATURE_FAMILY_FIREELEMENTAL:			// elementaire de feu
 		case CREATURE_FAMILY_STORMELEMENTAL:		// elementaire de tempete
 			SetSpeedRate(MOVE_SWIM, 0.8f);							// en nageant:
@@ -833,9 +833,9 @@ void Creature::Update(uint32 diff)
 			SetSpeedRate(MOVE_SWIM, 1.2f);							// en nageant
 			break;
 
-		case CREATURE_FAMILY_WATER_ELEMENTAL:		//Elementaire d'eau
-		case CREATURE_FAMILY_MTWATERELEMENTAL:		//Elementaire d'eau
-		case 155:									//Custom 155
+		case CREATURE_FAMILY_WATER_ELEMENTAL:		// Elementaire d'eau
+		case CREATURE_FAMILY_MTWATERELEMENTAL:		// Elementaire d'eau
+		case 155:									// Custom 155
 			SetSpeedRate(MOVE_SWIM, 1.5f);							// en nageant
 			break;
 
@@ -851,7 +851,7 @@ void Creature::Update(uint32 diff)
 			break;
 
 		default:
-			SetSpeedRate(MOVE_SWIM, 1.75f);
+			SetSpeedRate(MOVE_SWIM, 0.7f);
 			break;
 
 
