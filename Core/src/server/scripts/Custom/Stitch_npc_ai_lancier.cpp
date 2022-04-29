@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour https:\\Aquayoup.123.fr
-// AI generique npc par classe : Lancier Ver 2022-03-16 (caster simple, combat a distance si 8-30m, sinon combat au corp a corp 0-8m)
+// AI generique npc par classe : Lancier Ver 2022-04-30 (caster simple, combat a distance si 8-30m, sinon combat au corp a corp 0-8m)
 //
 // ScriptName = Stitch_npc_ai_lancier : npc d'exemple : 15100014
 // le "lancer une arme" , "Tir a l'arc" ou "Tir au fusil" est automatique de 8 a 40m et est tributaire de pickpocketloot
@@ -10,7 +10,7 @@
 // spell3 : spell lancé a l'agro
 // spell4 : spell lancé a l'évade ou respawn
 // spell5 : Buf
-//
+// spell6 : Heal(tir sur cible)
 //
 // Si spell1 = 0 : tirage aléatoire des spells
 
@@ -53,6 +53,8 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			uint32 Cooldown_Npc_Emotes = urand(5000, 8000);
 			uint32 Cooldown_RegenMana = 5000;
 			uint32 Cooldown_RegenMana_defaut = 3500;
+			uint32 Cooldown_Spell_Heal = 5000;
+			uint32 Cooldown_Spell_Heal_defaut = 6000;
 
 			// Spells
 			uint32 Buf_1 = 0;
@@ -72,6 +74,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			uint32 Tir_Fusil = 6660;
 			uint32 Tir_1 = 42332;
 			uint32 Spell_respawn_evade = 22812; 									// Ecorce 22812;
+			uint32 Spell_Heal = 0;													// Tir dur cible (pour drain)
 
 			// Emotes
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
@@ -89,6 +92,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				// spell3 : spell lancé a l'agro
 				// spell4 : spell lancé a l'évade ou respawn
 				// spell5 : Buf
+				// spell6 : Heal(tir sur cible)
 
 				// Si aucun spell défini dans creature_template->spell[1] : tirage aléatoire des sorts
 				if (me->m_spells[0] == 0) 
@@ -103,10 +107,11 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				else 
 				{ 
 					Spell_1 = me->m_spells[0]; 
-					Spell_2 = me->m_spells[1];
-					Spell_agro = me->m_spells[2]; 
-					Spell_respawn_evade = me->m_spells[3];
-					Buf_1 = me->m_spells[4];
+					if (me->m_spells[1] != 0) { Spell_2 = me->m_spells[1]; }
+					if (me->m_spells[2] != 0) { Spell_agro = me->m_spells[2]; }
+					if (me->m_spells[3] != 0) { Spell_respawn_evade = me->m_spells[3]; }
+					if (me->m_spells[4] != 0) { Buf_1 = me->m_spells[4]; }
+					if (me->m_spells[5] != 0) { Spell_Heal = me->m_spells[5]; }
 				}
 
 				// Forcer le choix par creature_template->pickpocketloot . Lancier = 0 , Archer = 1 , Fusilier = 2
@@ -184,14 +189,19 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 					Unit* victim = me->GetVictim();
 					Dist = me->GetDistance(victim);
 
+					// Ce heal s'il a un sort de Heal(tir sur cible) -----------------------------------------------------------------
+					Heal_En_Combat_Caster(diff);
+
+					//----------------------------------------------------------------------------------------------------------------
+
 					if (Dist < 6)
 					{
 						me->SetSheath(SHEATH_STATE_MELEE);												// S'équipe d'armes au contact
 					}
 					else
 					{
-						if (Tir_1 != Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_RANGED); }				// S'équipe d'arc ou fusil
-						if (Tir_1 == Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_MELEE); }				// S'équipe d'armes au contact
+						if (Tir_1 != Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_RANGED); }			// S'équipe d'arc ou fusil
+						if (Tir_1 == Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_MELEE); }			// S'équipe d'armes au contact
 					}
 
 
@@ -337,7 +347,23 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				else Cooldown_ResteADistance -= diff;
 
 			}
+			void Heal_En_Combat_Caster(uint32 diff)
+			{
+				//if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_MOVE))
+				//return;
 
+				if (Cooldown_Spell_Heal <= diff && Spell_Heal != 0)
+				{
+					// Heal(tir sur cible) -------------------------------------------------------------------------------------------------------------------------------
+					if ((me->GetHealth() < (me->GetMaxHealth()*0.75)))								// Si PV =< 75%
+					{
+						//DoCast(me, Spell_Heal);
+						me->CastSpell(victim, Spell_Heal, true);
+						Cooldown_Spell_Heal = Cooldown_Spell_Heal_defaut;
+					}
+				}
+				else Cooldown_Spell_Heal -= diff;
+			}
 			void Bonus_Degat_Arme_Done(int val) // 
 			{
 				// +- Bonus en % de degat des armes infligées a victim
