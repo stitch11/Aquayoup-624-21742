@@ -432,6 +432,12 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 	{
 		switch (Crtype)
 		{
+		case CREATURE_TYPE_BEAST:
+			SetSpeedRate(MOVE_WALK, 0.6f);							// hors combat
+			SetSpeedRate(MOVE_RUN, 1.1f);							// en combat
+			SetSpeedRate(MOVE_SWIM, 0.5f);							// en nageant
+			break;
+
 		case CREATURE_TYPE_UNDEAD:
 		case CREATURE_TYPE_ELEMENTAL:
 			SetSpeedRate(MOVE_WALK, 0.35f);							// hors combat
@@ -455,6 +461,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 		case CREATURE_TYPE_NON_COMBAT_PET:	// Mascotte pacifique
 		case CREATURE_TYPE_WILD_PET:		// Mascotte sauvage
 		case CREATURE_TYPE_GAS_CLOUD:		// Nuage de gaz
+
 			SetSpeedRate(MOVE_WALK, 0.3f);							// hors combat
 			SetSpeedRate(MOVE_RUN, 1.0f);							// en combat
 			SetSpeedRate(MOVE_SWIM, 0.5f);							// en nageant
@@ -467,7 +474,23 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			SetSpeedRate(MOVE_SWIM, 0.6f);							// en nageant
 			break;
 
+		case CREATURE_TYPE_DEMON:
+		case CREATURE_TYPE_DRAGONKIN:
+			SetSpeedRate(MOVE_WALK, 1.0f);							// hors combat
+			SetSpeedRate(MOVE_RUN, 1.1f);							// en combat
+			SetSpeedRate(MOVE_SWIM, 0.7f);							// en nageant
+			break;
+
+		case CREATURE_TYPE_ABERRATION:
+			SetSpeedRate(MOVE_WALK, 0.7f);							// hors combat
+			SetSpeedRate(MOVE_RUN, 0.8f);							// en combat
+			SetSpeedRate(MOVE_SWIM, 0.9f);							// en nageant
+			break;
+
 		default:
+			SetSpeedRate(MOVE_WALK, 0.5f);							// hors combat
+			SetSpeedRate(MOVE_RUN, 1.0f);							// en combat
+			SetSpeedRate(MOVE_SWIM, 0.8f);							// en nageant
 			break;
 		}
 
@@ -599,9 +622,6 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			break;
 
 		default:
-			SetSpeedRate(MOVE_WALK, 0.5f);							// hors combat
-			SetSpeedRate(MOVE_RUN, 1.0f);							// en combat
-			SetSpeedRate(MOVE_SWIM, 0.8f);							// en nageant
 			break;
 
 
