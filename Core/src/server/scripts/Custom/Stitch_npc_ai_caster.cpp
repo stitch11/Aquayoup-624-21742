@@ -47,7 +47,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 
 			uint32 Random;
 			uint32 DistanceDeCast = 30;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
-			uint32 ResteADistance = 12;												// Distance max a laquelle un npc s'approchera
+			uint32 ResteADistance = 15;												// Distance max a laquelle un npc s'approchera
 			uint32 Dist;															// Distance entre le npc et sa cible
 			Unit* victim = me->GetVictim();										 
 			uint32 Mana;
@@ -60,7 +60,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			uint32 Cooldown_Spell2 = 4000;
 			uint32 Cooldown_Spell2_defaut = urand(7000,10000);
 			uint32 Cooldown_ResteADistance = 2000;									// Test si en contact
-			uint32 Cooldown_ResteADistance_Defaut = 3500;
+			uint32 Cooldown_ResteADistance_Defaut = 3000;
 			uint32 Cooldown_Anti_Bug_Figer = 2000;
 			uint32 Cooldown_Npc_Emotes = urand(5000, 8000);
 			uint32 Cooldown_Spell_Heal = 5000;

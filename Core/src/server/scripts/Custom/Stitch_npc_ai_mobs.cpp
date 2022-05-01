@@ -113,8 +113,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 Cooldown_Principal_B_Defaut = 5000 + ((urand(0, 4) * 500));		// Cooldown_ResteADistance_Defaut, tourne au tour , etc
 			uint32 Cooldown_Trop_Loin = 4000;
 			uint32 Cooldown_Trop_Loin_Defaut = 10000;
-			uint32 Base_Cooldown_Cast_A = 4000;										// Cooldown de base pour l'attaque principal, il est utilisé avec des valeurs ajouté en +-, sert a definir Cooldown_SpellA_defaut
-			uint32 Base_Cooldown_Cast_B = 10000;									// Idem pour le sort secondaire, généralement un DOT
+			uint32 Base_Cooldown_Cast_A = 3500;										// Cooldown de base pour l'attaque principal, il est utilisé avec des valeurs ajouté en +-, sert a definir Cooldown_SpellA_defaut
+			uint32 Base_Cooldown_Cast_B = 8000;									// Idem pour le sort secondaire, généralement un DOT
 			uint32 AI_Random = 1;
 			uint32 Start_Agro = 0;
 			uint32 Start_Agro2 = 0;
