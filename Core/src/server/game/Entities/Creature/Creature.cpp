@@ -482,9 +482,9 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			break;
 
 		case CREATURE_TYPE_ABERRATION:
-			SetSpeedRate(MOVE_WALK, 0.7f);							// hors combat
-			SetSpeedRate(MOVE_RUN, 0.8f);							// en combat
-			SetSpeedRate(MOVE_SWIM, 0.9f);							// en nageant
+			SetSpeedRate(MOVE_WALK, 0.3f);							// hors combat
+			SetSpeedRate(MOVE_RUN, 0.6f);							// en combat
+			SetSpeedRate(MOVE_SWIM, 0.6f);							// en nageant
 			break;
 
 		default:
@@ -523,7 +523,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 		case CREATURE_FAMILY_RAPTOR:			// Raptor
 		case CREATURE_FAMILY_RAVAGER:			// Ravageur
 			SetSpeedRate(MOVE_WALK, 0.6f);							// hors combat
-			SetSpeedRate(MOVE_RUN, 1.2f);							// en combat
+			SetSpeedRate(MOVE_RUN, 1.3f);							// en combat
 			SetSpeedRate(MOVE_SWIM, 0.5f);							// en nageant
 			break;
 
