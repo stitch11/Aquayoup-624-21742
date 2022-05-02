@@ -616,6 +616,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			break;
 
 		case CREATURE_FAMILY_MURLOC:
+		case CREATURE_FAMILY_NAGA:
 			SetSpeedRate(MOVE_WALK, 0.5f);							// hors combat
 			SetSpeedRate(MOVE_RUN, 1.0f);							// en combat
 			SetSpeedRate(MOVE_SWIM, 0.8f);							// en nageant
@@ -867,6 +868,7 @@ void Creature::Update(uint32 diff)
 		case CREATURE_FAMILY_CROCOLISK:				// crocodile------------------------------------------------------
 		case CREATURE_FAMILY_HYDRA:					// Hydre
 		case CREATURE_FAMILY_BASILISK:				// Basilic
+		case CREATURE_FAMILY_NAGA:					// Naga
 				SetSpeedRate(MOVE_SWIM, 2.0f);
 			break;
 

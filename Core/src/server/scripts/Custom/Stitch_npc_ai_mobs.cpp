@@ -449,11 +449,17 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 liste_agro_130[2] = { 35313, 12097 };						// Regard hypnotique 35313 (stun 6s, 5-30m), Perce-armure 12097 (armure -75%/15s 5m)
 			uint32 liste_Buf_130[2] = { 0, 0 };									// 
 
-			// 152   Basilic - CREATURE_FAMILY_MURLOCK
+			// 152   Murloc - CREATURE_FAMILY_MURLOCK
 			uint32 liste_spell_A_152[2] = { 131662, 24187 };					// Coups de couteau vicieux 131662, griffe 24187
 			uint32 liste_spell_B_152[3] = { 42332, 42332, 88876 };				// Lancer une arme 8-40m 42332,Venin paralysant 88876
 			uint32 liste_agro_152[2] = { 0, 0 };								// 
 			uint32 liste_Buf_152[2] = { 0, 0 };									// 
+
+			// 153   Naga - CREATURE_FAMILY_NAGA
+			uint32 liste_spell_A_153[2] = { 29426, 126799 };					// Frappe heroique 29426, Frappe tranchante 126799
+			uint32 liste_spell_B_153[3] = { 772, 772, 127171 };					// Pourfendre 772, Fendoir vicieux 127171
+			uint32 liste_agro_153[2] = { 6533, 0 };								// Filet
+			uint32 liste_Buf_153[2] = { 6673, 1160 };							// Cri de guerre 6673,Cri démoralisant 1160
 
 			// 155	CUSTOM - CREATURE_FAMILY_SENTERRE
 			uint32 liste_spell_A_155[2] = { 119004, 119004 };					// Violent coup direct 119004
@@ -1779,6 +1785,33 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						AI_Random = urand(1, 4);
 						break;
 
+					case 153:		// Naga
+						me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+						Spell_A = liste_spell_A_153[urand(0, 1)];
+						Spell_B = liste_spell_B_153[urand(0, 2)];
+						Spell_B_Non_Cumulable = 1;
+						Spell_agro = liste_agro_153[urand(0, 1)];
+						Spell_respawn_evade = 0;
+						Buf_A = liste_Buf_153[urand(0, 1)];
+						Spell_Heal = 0;
+						Cooldown_SpellA = 1000;
+						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+						Cooldown_SpellB = 2500;
+						Cooldown_SpellB_defaut = Base_Cooldown_Cast_B + 4000;
+						Cooldown_SpellB_rapide = 0;
+						Cooldown_SpellB_rapide_defaut = 0;
+						Cooldown_Spell_Heal_defaut = 30000;
+						Cooldown_Principal_A = 1000;																		// Temp de test pour aller sur la cible
+						Cooldown_Principal_A_Defaut = 1000;
+						Cooldown_Principal_B = 6000;																		// Temp de test pour mouvement (s'eloigner, passer dans le dos,...)
+						Cooldown_Principal_B_Defaut = 8000 + ((urand(0, 4) * 500));
+						ResteADistance = 5;
+						Spell_Trop_Loin = 0;
+						Cooldown_Trop_Loin = 6000;																			// Temp de test ci la cible est trop loin (pour charge etc)
+						Cooldown_Trop_Loin_Defaut = 6000;
+						AI_Random = urand(1, 5);
+						break;
+
 					case 155:	// CUSTOM - CREATURE_FAMILY_SENTERRE
 						me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 						Spell_A = liste_spell_A_155[urand(0, 1)];
@@ -2347,6 +2380,19 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							} else
 								Mouvement_Contact_Basique(diff);
 							break;
+						case 153: // Naga
+							if (AI_Random == 1)
+							{
+								Mouvement_Contact_Prudent(diff);
+							}
+							else if (AI_Random == 2)
+							{
+								Mouvement_Contact_Tournant_Aleatoire(diff);
+							}
+							else
+								Mouvement_Contact_Basique(diff);
+							break;
+
 						case 155:	// CUSTOM - CREATURE_FAMILY_SENTERRE
 							Mouvement_Contact_Basique(diff);
 							break;
