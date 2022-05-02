@@ -1,5 +1,5 @@
 //################################################################################################################################################################################################
-//  Copyright (C) Novembre 2020 Stitch pour Aquayoup
+//  Copyright (C) 2 Mai 2022 Stitch pour Aquayoup
 // npc a l'agro s'adapte au level de l'agresseur + AI generique
 // Ces mobs utilisent les sorts definit dans Creature_Template->spellx
 // Il est possible de modifier le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
@@ -21,6 +21,7 @@
 //            UPDATE `creature_template` SET `spell1` = 974, `spell2` = 57994, `spell3` = 9532, `spell4` = 8056, `spell5` = 77472, `BaseAttackTime` = 2000, `RangeAttackTime` = 2000 WHERE(entry = 15000320);
 //################################################################################################################################################################################################
 
+#include "CreatureTextMgr.h"
 
 //################################################################################################
 //Stitch Stitch_npc_ai_level_scale_caster - A l'agro s'adapte au level de l'agresseur - AI Caster
@@ -35,6 +36,7 @@ public: Stitch_npc_ai_level_scale_caster() : CreatureScript("Stitch_npc_ai_level
 		{
 			Stitch_npc_ai_level_scale_casterAI(Creature* creature) : ScriptedAI(creature) { }
 
+			uint32 Random = 0;
 			uint32 spellbuf = me->m_spells[0];
 			uint32 spellagro = me->m_spells[1];
 			uint32 spellagrornd = 0;
@@ -72,6 +74,14 @@ public: Stitch_npc_ai_level_scale_caster() : CreatureScript("Stitch_npc_ai_level
 				if (spellagrornd <30)
 				{
 				DoSpellAttackIfReady(spellagro);
+				}
+
+				// Message a l'agro , ci le mob a plusieurs lignes (creature_text groupid>0) il y a de forte chance que ce soit pour un dialogue
+				// et non un simple message a l'agro. Donc on l'ignore.
+				Random = urand(1, 5);
+				if (!sCreatureTextMgr->TextExist(me->GetEntry(), 1) && Random == 1)
+				{
+					Talk(0);
 				}
 
 			}

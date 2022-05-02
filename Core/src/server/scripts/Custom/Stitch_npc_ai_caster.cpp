@@ -1,6 +1,6 @@
 //#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour https:\\Aquayoup.123.fr
-// AI generique npc par classe : Caster Ver 2020-11-04 (caster simple, combat a distance)
+// AI generique npc par classe : Caster Ver 2022-05-02 (caster simple, combat a distance)
 //
 // ScriptName = Stitch_npc_ai_caster : npc d'exemple : 15100013
 // spell1 : Attaque principale
@@ -31,7 +31,7 @@
 // (15100013, 1, 854, 0, 0, 0);	## Baton
 //###########################################################################################################################################################################################################################################
 
-
+#include "CreatureTextMgr.h"
 
 //################################################################################################
 //StitchAI AI Caster
@@ -296,6 +296,14 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					if (Start_Agro == 0)
 					{
 						Start_Agro = 1;
+
+						// Message a l'agro , ci le mob a plusieurs lignes (creature_text groupid>0) il y a de forte chance que ce soit pour un dialogue
+						// et non un simple message a l'agro. Donc on l'ignore.
+						Random = urand(1, 5);
+						if (!sCreatureTextMgr->TextExist(me->GetEntry(), 1) && Random == 1)
+						{
+							Talk(0);
+						}
 
 						// ########################################################################################################################################
 						// Spell a lancer a l'agro 

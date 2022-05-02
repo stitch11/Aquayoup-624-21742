@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour https:\\Aquayoup.123.fr
-// AI generique npc par famille : Mobs Ver 2022-15-03 (family)
+// AI generique npc par famille : Mobs Ver 2022-05-02 (family)
 //
 // Si spell[1] = 0 : alors affectation aléatoire de tous les spells(prédéfini dans le core), sinon utilisera les spells définis dans creature_template spell[1 a 5]
 // BETE
@@ -71,6 +71,7 @@
 //###########################################################################################################################################################################################################################################
 
 
+#include "CreatureTextMgr.h"
 
 //################################################################################################
 //StitchAI AI Mobs
@@ -2075,6 +2076,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					if (Start_Agro == 0)
 					{
 						Start_Agro = 1;
+
+						// Message a l'agro , ci le mob a plusieurs lignes (creature_text groupid>0) il y a de forte chance que ce soit pour un dialogue
+						// et non un simple message a l'agro. Donc on l'ignore.
+						Random = urand(1, 5);
+						if (!sCreatureTextMgr->TextExist(me->GetEntry(), 1) && Random == 1)
+						{
+							Talk(0);
+						}
+
 
 						// ------ Scorpion, Ver ------
 						if (Crfamily == 20 || Crfamily == 42)

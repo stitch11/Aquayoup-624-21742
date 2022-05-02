@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour https:\\Aquayoup.123.fr
-// AI generique npc par classe : Mélée Ver 2022-04-02 (warrior simple, combat au corp a corp)
+// AI generique npc par classe : Mélée Ver 2022-05-02 (warrior simple, combat au corp a corp)
 // 
 // ScriptName = Stitch_npc_ai_melee : npc d'exemple : 15100012
 // spell1 : Attaque principale
@@ -17,7 +17,7 @@
 // (15100012, 1, 88857, 0, 0, 0);	## Lance
 //###########################################################################################################################################################################################################################################
 
-
+#include "CreatureTextMgr.h"
 
 //################################################################################################
 //StitchAI AI Mélée
@@ -170,6 +170,14 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 					if (Start_Agro == 0 && Dist < 6)
 					{
 						Start_Agro = 1;
+
+						// Message a l'agro , ci le mob a plusieurs lignes (creature_text groupid>0) il y a de forte chance que ce soit pour un dialogue
+						// et non un simple message a l'agro. Donc on l'ignore.
+						Random = urand(1, 5);
+						if (!sCreatureTextMgr->TextExist(me->GetEntry(), 1) && Random == 1)
+						{
+							Talk(0);
+						}
 
 						// ########################################################################################################################################
 						// Spell a lancer a l'agro 

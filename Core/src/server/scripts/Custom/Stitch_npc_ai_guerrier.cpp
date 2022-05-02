@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour Aquayoup
-// AI generique npc par classe : GUERRIER Ver 2021-07-27
+// AI generique npc par classe : GUERRIER Ver 2022-05-02
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_guerrier',`AIName` = '' WHERE (entry = 15100007);
@@ -16,7 +16,7 @@
 // (15100007, 3, 1899, 6078, 0, 0);
 //###########################################################################################################################################################################################################################################
 
-
+#include "CreatureTextMgr.h"
 
 //################################################################################################
 //StitchAI AI Guerrier
@@ -255,6 +255,14 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 					if (Start_Agro == 0)
 					{
 						Start_Agro = 1;
+
+						// Message a l'agro , ci le mob a plusieurs lignes (creature_text groupid>0) il y a de forte chance que ce soit pour un dialogue
+						// et non un simple message a l'agro. Donc on l'ignore.
+						Random = urand(1, 5);
+						if (!sCreatureTextMgr->TextExist(me->GetEntry(), 1) && Random == 1)
+						{
+							Talk(0);
+						}
 
 						// ########################################################################################################################################
 						// Spell a lancer a l'agro 

@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour https:\\Aquayoup.123.fr
-// AI generique npc par classe : Lancier Ver 2022-04-30 (caster simple, combat a distance si 8-30m, sinon combat au corp a corp 0-8m)
+// AI generique npc par classe : Lancier Ver 2022-05-2 (caster simple, combat a distance si 8-30m, sinon combat au corp a corp 0-8m)
 //
 // ScriptName = Stitch_npc_ai_lancier : npc d'exemple : 15100014
 // le "lancer une arme" , "Tir a l'arc" ou "Tir au fusil" est automatique de 8 a 40m et est tributaire de pickpocketloot
@@ -21,7 +21,7 @@
 // (15100014, 1, 44654, 0,116459, 0);	## Lance + arc
 //###########################################################################################################################################################################################################################################
 
-
+#include "CreatureTextMgr.h"
 
 //################################################################################################
 //StitchAI AI Lancier
@@ -208,6 +208,17 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 					if (Start_Agro == 0)
 					{
 						Start_Agro = 1;
+
+
+
+						// Message a l'agro , ci le mob a plusieurs lignes (creature_text groupid>0) il y a de forte chance que ce soit pour un dialogue
+						// et non un simple message a l'agro. Donc on l'ignore.
+						Random = urand(1, 5);
+						if (!sCreatureTextMgr->TextExist(me->GetEntry(), 1) && Random == 1)
+						{
+							Talk(0);
+						}
+
 
 
 						// Spell a lancer a l'agro ------------------------------------------------------------------------------------------------------------------------

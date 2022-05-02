@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : DK Ver 2022-03-16
+// AI generique npc par classe : DK Ver 2022-05-02
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_dk',`AIName` = '' WHERE (entry = 15100009);
@@ -17,7 +17,7 @@
 //(15100009, 4, 88857, 0, 0, 0);
 //###########################################################################################################################################################################################################################################
 
-
+#include "CreatureTextMgr.h"
 
 //################################################################################################
 //StitchAI AI DK
@@ -319,6 +319,15 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 					{
 						Start_Agro = 1;
 						VisuelPowerRunic();
+
+
+						// Message a l'agro , ci le mob a plusieurs lignes (creature_text groupid>0) il y a de forte chance que ce soit pour un dialogue
+						// et non un simple message a l'agro. Donc on l'ignore.
+						Random = urand(1, 5);
+						if (!sCreatureTextMgr->TextExist(me->GetEntry(), 1) && Random == 1)
+						{
+							Talk(0);
+						}
 
 						// ########################################################################################################################################
 						// Spell a lancer a l'agro 
