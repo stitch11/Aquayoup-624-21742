@@ -344,7 +344,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 						{
 							me->StopMoving();
 							DoCastVictim(Spell_branche1_1);
-							Cooldown_Spell1 = 3500;
+							Cooldown_Spell1 = 4000;
 						}
 					}
 					else Cooldown_Spell1 -= diff;
@@ -499,7 +499,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 						z = me->GetPositionZ();
 						mapid = victim->GetMapId();
 						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
-						Cooldown_ResteADistance = 4000;
+						Cooldown_ResteADistance = 3000;
 					}
 				}
 				else Cooldown_ResteADistance -= diff;

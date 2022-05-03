@@ -783,7 +783,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 						z = me->GetPositionZ();
 						mapid = victim->GetMapId();
 						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
-						Cooldown_ResteADistance = 4000;
+						Cooldown_ResteADistance = 3000;
 					}
 				}
 				else Cooldown_ResteADistance -= diff;
