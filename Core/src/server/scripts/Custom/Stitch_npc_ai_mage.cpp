@@ -279,6 +279,11 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 
 					// ############################################################################################################################################
 					// Combat suivant la Spécialisation
+					if (me->HasUnitState(UNIT_STATE_CASTING))
+					{
+						me->ClearUnitState(UNIT_STATE_MOVING);
+					}
+
 					switch (BrancheSpe)
 					{
 					case 1: // Spécialisation Arcane ##############################################################################################################
@@ -296,7 +301,6 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						if (Cooldown_Spell3 <= diff)
 						{
 							//me->CastSpell(victim, Spell_branche1_3, true);
-							me->StopMoving();
 							DoCastVictim(Spell_branche1_3);
 							Cooldown_Spell3 = 10000;
 						}
@@ -336,9 +340,8 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						// Spell1 sur la cible chaque (Sort Régulié)
 						if (Cooldown_Spell1 <= diff && !me->HasUnitState(UNIT_STATE_MOVE))
 						{
-							me->StopMoving();
 							DoCastVictim(Spell_branche2_1);
-							Cooldown_Spell1 = 3000;
+							Cooldown_Spell1 = 4000;
 						}
 						else Cooldown_Spell1 -= diff;
 
@@ -381,9 +384,8 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot)
 						if (Cooldown_Spell1 <= diff && !me->HasUnitState(UNIT_STATE_MOVE))
 						{
-							me->StopMoving();
 							DoCastVictim(Spell_branche3_1/*, true*/);
-							Cooldown_Spell1 = 3000;
+							Cooldown_Spell1 = 4000;
 						}
 						else Cooldown_Spell1 -= diff;
 
@@ -447,7 +449,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 			}
 			void Mouvement_Caster(uint32 diff)
 			{
-				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING)/**/)
+				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
 					return;
 
 				Mana = me->GetPower(POWER_MANA);
@@ -475,7 +477,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						z = me->GetPositionZ();
 						mapid = victim->GetMapId();
 						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
-						Cooldown_ResteADistance = 4000;
+						Cooldown_ResteADistance = 3000;
 					}
 				}
 				else Cooldown_ResteADistance -= diff;
