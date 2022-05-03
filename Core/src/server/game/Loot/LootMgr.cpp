@@ -274,7 +274,10 @@ void LootStore::ReportNonExistingId(uint32 lootId) const
 
 void LootStore::ReportNonExistingId(uint32 lootId, const char* ownerType, uint32 ownerId) const
 {
-    TC_LOG_ERROR("sql.sql", "Table '%s' Entry %d does not exist but it is used by %s %d", GetName(), lootId, ownerType, ownerId);
+	if (lootId > 300) //Stitch pickpocketloot <300 utilisé par npc_ai_ 
+	{
+		TC_LOG_ERROR("sql.sql", "Table '%s' Entry %d does not exist but it is used by %s %d", GetName(), lootId, ownerType, ownerId);
+	}
 }
 
 //
