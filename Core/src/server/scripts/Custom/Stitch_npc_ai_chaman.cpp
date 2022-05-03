@@ -139,6 +139,17 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 
 					// Totem
 					me->CastSpell(me, Totem_guerisseur, true); 									// Totem guérisseur 5394 (12s)
+					
+					// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'interrieur
+					if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+					{
+						ResteADistance = 15;
+					}
+					else
+					{
+						ResteADistance = 10;
+					}
+
 					break;
 
 				case 2: // Si Elementaire -------------------------------------------------------------------------------------------------------------------------
@@ -153,6 +164,16 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 
 					// Totem
 					me->CastSpell(me, Totem_incendiaire, true);									// Totem incendiaire 3599
+
+					// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+					if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+					{
+						ResteADistance = urand(14, 16);
+					}
+					else
+					{
+						ResteADistance = 10;
+					}
 					break;
 
 				case 3: // Si Amelioration -------------------------------------------------------------------------------------------------------------------------

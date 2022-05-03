@@ -1918,10 +1918,19 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Cooldown_Principal_A_Defaut = 2000;
 						Cooldown_Principal_B = 1000;
 						Cooldown_Principal_B_Defaut = 1000;
-						ResteADistance = 10;
 						Spell_Trop_Loin = 0;
 						Cooldown_Trop_Loin = 8000;
 						Cooldown_Trop_Loin_Defaut = urand(8000, 10000);
+
+						// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+						if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+						{
+							ResteADistance = urand(12,16);
+						}
+						else
+						{
+							ResteADistance = urand(8,10);
+						}
 						break;
 
 					default:

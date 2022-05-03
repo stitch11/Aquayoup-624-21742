@@ -224,7 +224,17 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 					Spell_Cible_trop_loin = 47476;												// Nova de sang 300059, Strangulation 47476
 
 					//Bonus_Armure(100);
-					ResteADistance = urand(10,15);
+
+					// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+					if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+					{
+						ResteADistance = urand(14, 16);
+					}
+					else
+					{
+						ResteADistance = 10;
+					}
+
 					Cooldown_ResteADistance = 1000;
 					break;
 

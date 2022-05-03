@@ -34,7 +34,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			uint32 NbrDeSpe = 4;													// Nombre de Spécialisations
 			uint32 ForceBranche;
 			uint32 DistanceDeCast = 30;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
-			uint32 ResteADistance = 12;												// Distance max a laquelle un npc s'approchera
+			uint32 ResteADistance = 5;												// Distance max a laquelle un npc s'approchera
 			uint32 Dist;															// Distance entre le npc et sa cible
 			uint32 Random;
 			uint32 Mana;
@@ -164,6 +164,16 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					Spell_branche1_1 = branche1_1[urand(0, 1)];
 					Spell_branche1_2 = branche1_2[urand(0, 1)];
 					Spell_branche1_3 = branche1_3[urand(0, 1)];
+
+					// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+					if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+					{
+						ResteADistance = urand(14, 16);
+					}
+					else
+					{
+						ResteADistance = 10;
+					}
 					break;
 
 				case 2: // Si Ours --------------------------------------------------------------------------------------------------------------------------------
@@ -244,7 +254,6 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 
 			void EnterCombat(Unit* /*who*/) override
 			{
-				ResteADistance = 11 + urand(0, 5);
 				Init_AI();
 			}
 			void EnterEvadeMode(EvadeReason /*why*/) override

@@ -120,7 +120,15 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				else { Tir_1 = Lancer_une_Arme; }													// Lance une arme				
 
 				
-
+				// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+				if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+				{
+					ResteADistance = urand(14, 16);
+				}
+				else
+				{
+					ResteADistance = 10;
+				}
 
 				// ################################################################################################################################################
 				// Divers

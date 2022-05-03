@@ -112,6 +112,16 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 
 				me->CastSpell(me, Buf_all, true);																	// Buf_all sur lui meme
 
+				// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur 
+				if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+				{
+					ResteADistance = urand(14, 16);
+				}
+				else
+				{
+					ResteADistance = 10;
+				}
+
 				switch (BrancheSpe)
 				{
 				case 1: // Si Ombre -------------------------------------------------------------------------------------------------------------------------------

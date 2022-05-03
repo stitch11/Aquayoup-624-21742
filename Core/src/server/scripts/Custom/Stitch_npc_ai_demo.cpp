@@ -124,6 +124,16 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 
 				me->RemoveAllControlled();															// renvois pet
 
+				// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+				if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+				{
+					ResteADistance = urand(14, 16);
+				}
+				else
+				{
+					ResteADistance = 10;
+				}
+
 				// ################################################################################################################################################
 				// Tirages aléatoires des spells
 				// ################################################################################################################################################

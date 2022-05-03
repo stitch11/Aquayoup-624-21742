@@ -149,6 +149,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 					me->CastSpell(me, Buf_branche2a, true);
 
 					VisuelPowerMana();
+					VisuelPowerEnergy();
 					break;
 				case 3: // Si Marche-vent -------------------------------------------------------------------------------------------------------------------------
 					me->LoadEquipment(3, true);													// creature_equip_template 2
@@ -212,7 +213,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 				me->RemoveAura(Buf_branche3a);
 
 				Bonus_Armure(100);
-				//VisuelPowerEnergy();
+				VisuelPowerMana();
 
 				me->SetReactState(REACT_AGGRESSIVE);
 				//me->SetSpeedRate(MOVE_RUN, 1.01f);										// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
@@ -693,8 +694,9 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 		{
 				//me->SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_CLASS, 4);
 
-				me->SetMaxPower(POWER_MANA, 100);
-				me->SetPower(POWER_MANA, 100);
+				me->setPowerType(POWER_MANA);
+				me->SetPower(POWER_MANA, me->GetMaxPower(POWER_MANA));
+
 				me->setPowerType(POWER_ENERGY);
 				me->SetMaxPower(POWER_ENERGY, 100);
 				me->SetPower(POWER_ENERGY, 100);
@@ -702,8 +704,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 			void VisuelPowerMana()
 			{
 				me->setPowerType(POWER_MANA);
-				me->SetMaxPower(POWER_MANA, 100);
-				me->SetPower(POWER_MANA, 100);
+				me->SetPower(POWER_MANA, me->GetMaxPower(POWER_MANA));
 			}
 
 		};

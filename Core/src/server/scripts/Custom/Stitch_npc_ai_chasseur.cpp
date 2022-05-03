@@ -111,6 +111,15 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				}
 				if ((BrancheSpe > NbrDeSpe) || (BrancheSpe == 0)) { BrancheSpe = 2; }
 
+				// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+				if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+				{
+					ResteADistance = urand(14, 16);
+				}
+				else
+				{
+					ResteADistance = 10;
+				}
 
 				// ################################################################################################################################################
 				// Tirages aléatoires des spells

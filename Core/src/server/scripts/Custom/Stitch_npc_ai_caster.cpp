@@ -227,6 +227,17 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				// ################################################################################################################################################
 				me->SetSheath(SHEATH_STATE_MELEE);												// S'equipe de l'arme au contact
 				me->SetReactState(REACT_AGGRESSIVE);
+
+				// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+				if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+				{
+					ResteADistance = urand(14,16);
+				}
+				else
+				{
+					ResteADistance = 10;
+				}
+
 				// ################################################################################################################################################
 			}
 			void JustRespawned() override
