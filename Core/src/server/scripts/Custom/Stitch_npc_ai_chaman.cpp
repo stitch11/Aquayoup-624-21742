@@ -57,8 +57,8 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 			uint32 Buf_branche1 = 974;												// Bouclier de foudre 324 - Bouclier de terre 974 - Bouclier d’eau 52127
 			uint32 Buf_branche2 = 52127;											// Bouclier de foudre 324 - Bouclier de terre 974 - Bouclier d’eau 52127
 			uint32 Buf_branche3 = 324;												// Bouclier de foudre 324 - Bouclier de terre 974 - Bouclier d’eau 52127
-			uint32 Spell_Heal_Caster = 8004;  										// Afflux de soins 
-			uint32 Spell_Heal_Heal = 77472;  										// Vague de soins 
+			uint32 Spell_Heal_Caster = 300263;  									// Afflux de soins 300263/8004
+			uint32 Spell_Heal_Heal = 300264;  										// Vague de soins 300264/77472
 			uint32 Rappel_totemique = 36936;										// Rappel totemique : retire les totems invoqués
 			uint32 Totem_guerisseur = 5394;
 			uint32 Totem_incendiaire = 3599;
@@ -623,9 +623,8 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 			{
 				// recherche si aura de lenteur presente
 				// Eclair_de_givre 116/71318, Lenteur 31589, Armure_de_givre 6136, Horion_de_givre 8056/12548, Brise_genou 9080/1715, Fievre_de_givre 69917/67719
-				// Toucher_de_glace 45477/300197, Javelot_de_givre 300051/300237, Gel_de_zone 60192, Handicap 116095, 			
-
-				if (me->HasAura(116) || me->HasAura(31589) || me->HasAura(6136) || me->HasAura(8056) || me->HasAura(9080) || me->HasAura(69917) || me->HasAura(45477) || me->HasAura(300051) || me->HasAura(60192) || me->HasAura(116095) || me->HasAura(71318) || me->HasAura(12548) || me->HasAura(1715) || me->HasAura(67719) || me->HasAura(300197) || me->HasAura(300237))
+				// Toucher_de_glace 45477/300197, Javelot_de_givre 300051/300237, Gel_de_zone 60192, Handicap 116095, Sceau de justice 20170
+				if (me->HasAura(116) || me->HasAura(31589) || me->HasAura(6136) || me->HasAura(8056) || me->HasAura(9080) || me->HasAura(69917) || me->HasAura(45477) || me->HasAura(300051) || me->HasAura(60192) || me->HasAura(116095) || me->HasAura(71318) || me->HasAura(12548) || me->HasAura(1715) || me->HasAura(67719) || me->HasAura(300197) || me->HasAura(300237) || me->HasAura(20170))
 					return true;
 				else return false;
 			}

@@ -49,19 +49,19 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 			uint32 Cooldown_Spell_Heal = 3000;										// Cooldown pour la fréquence du heal
 			uint32 Cooldown_RegenMana = 3000;										// Cooldown pour le regen du mana
 			uint32 Cooldown_ResteADistance = 2000;									// Test si en contact pour s'eloigner
-			uint32 Cooldown_Spell_Bouclier = 60000;									// Cooldown pour mot de pouvoir : bouclier
+			uint32 Cooldown_Spell_Bouclier = 6000;									// Cooldown pour mot de pouvoir : bouclier
 			uint32 Cooldown_Npc_Emotes = urand(5000, 8000);
 
 			// Spells Divers
 			uint32 Buf_all = 21562;													// Mot de pouvoir : Robustesse 21562
 			uint32 Buf_branche1 = 15473;											// Forme d'Ombre 15473
 			uint32 Buf_branche2 = 81700;											// Archange 81700 (soin +20% 15s)
-			uint32 Spell_Heal_Caster = 8004;  										// Afflux de soins	
+			uint32 Spell_Heal_Caster = 2061;  										// Soins Rapides (light) 2061
 			uint32 Spell_Heal_Heal = 139;  											// Rénovation 139 (rend pv a l'instant + 12s)
 			uint32 Etreinte_Vampirique = 15286;										// Etreinte vampirique
 			uint32 Nova_Sacree = 132157;											// Nova sacrée dmg/heal 12m
 			uint32 Mot_de_pouvoir_Bouclier = 17;									// Mot de pouvoir : Bouclier
-			uint32 Soins_Rapides = 2061;											// Soins Rapides
+			uint32 Soins_Rapides = 300265;											// Soins Rapides 300265/2061
 
 			// Spells Ombre
 			uint32 Spell_branche1_agro = 0;
@@ -447,9 +447,8 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 			{
 				// recherche si aura de lenteur presente
 				// Eclair_de_givre 116/71318, Lenteur 31589, Armure_de_givre 6136, Horion_de_givre 8056/12548, Brise_genou 9080/1715, Fievre_de_givre 69917/67719
-				// Toucher_de_glace 45477/300197, Javelot_de_givre 300051/300237, Gel_de_zone 60192, Handicap 116095, 			
-
-				if (me->HasAura(116) || me->HasAura(31589) || me->HasAura(6136) || me->HasAura(8056) || me->HasAura(9080) || me->HasAura(69917) || me->HasAura(45477) || me->HasAura(300051) || me->HasAura(60192) || me->HasAura(116095) || me->HasAura(71318) || me->HasAura(12548) || me->HasAura(1715) || me->HasAura(67719) || me->HasAura(300197) || me->HasAura(300237))
+				// Toucher_de_glace 45477/300197, Javelot_de_givre 300051/300237, Gel_de_zone 60192, Handicap 116095, Sceau de justice 20170
+				if (me->HasAura(116) || me->HasAura(31589) || me->HasAura(6136) || me->HasAura(8056) || me->HasAura(9080) || me->HasAura(69917) || me->HasAura(45477) || me->HasAura(300051) || me->HasAura(60192) || me->HasAura(116095) || me->HasAura(71318) || me->HasAura(12548) || me->HasAura(1715) || me->HasAura(67719) || me->HasAura(300197) || me->HasAura(300237) || me->HasAura(20170))
 					return true;
 				else return false;
 			}
@@ -472,17 +471,17 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 			}
 			void Heal_En_Combat_Heal(uint32 diff)
 			{
+
 				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_MOVE))
 					return;
-				Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 1, DistanceDeCast, true);			// pour heal friend
 
 				// mot de pouvoir:bouclier sur lui meme ----------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Spell_Bouclier <= diff)
 				{
-					if (me->GetHealth() < (me->GetMaxHealth()*0.50))								// Si PV < 50%
+					if (me->GetHealth() < (me->GetMaxHealth()*0.40))									// Si PV < 40%
 					{
-						me->CastSpell(me, Mot_de_pouvoir_Bouclier, true);							// Utilise Mot de pouvoir : Bouclier chaque 30s 
-						Cooldown_Spell_Bouclier = 30000;
+						me->CastSpell(me, Mot_de_pouvoir_Bouclier, true);								// Utilise Mot de pouvoir : Bouclier chaque 90s 
+						Cooldown_Spell_Bouclier = 90000;
 					}
 				}
 				else Cooldown_Spell_Bouclier -= diff;
@@ -490,37 +489,45 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 				// Heal sur lui & Friend
 				if (Cooldown_Spell_Heal <= diff)
 				{
-					// heal sur lui meme ------------------------------------------------------------------------------------------------------------------------------
-					if (me->GetHealth() < (me->GetMaxHealth()*0.60))								// Si PV < 60%
-					{
-						me->CastSpell(me, Spell_Heal_Heal, true);
+					Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 1, DistanceDeCast, true);				// pour heal friend
 
-						if (me->GetHealth() < (me->GetMaxHealth()*0.40))							// Si PV < 40%
-						{
-							DoCast(me, Soins_Rapides);												// Soins rapides 2061 
-						}
+					// heal sur lui meme ------------------------------------------------------------------------------------------------------------------------------
+					if (me->GetHealth() < (me->GetMaxHealth()*0.70) && !me->HasAura(Spell_Heal_Heal))						// Si PV < 70%
+					{
+						me->CastSpell(me, Spell_Heal_Heal, true);															// Rénovation
 						Cooldown_Spell_Heal = 3000;
 					}
-
+					else if (me->GetHealth() < (me->GetMaxHealth()*0.50))													// Si PV < 50%
+					{
+						DoCast(me, Soins_Rapides);																			// Soins rapides 300265 
+						Cooldown_Spell_Heal = 3000;
+					}
 					// heal sur Friend ---------------------------------------------------------------------------------------------------------------------------------
-					else if (target = DoSelectLowestHpFriendly(DistanceDeCast))						// Distance de l'allié = 30m
+					else if (target = DoSelectLowestHpFriendly(DistanceDeCast) )												// Distance de l'allié = 30m
 					{
 						if (me->IsFriendlyTo(target) && (me != target))
 						{
-							if (target->GetHealth() < (target->GetMaxHealth()*0.60))				// Si PV < 60%
+							if (target->GetHealth() < (target->GetMaxHealth()*0.60) && !target->HasAura(Spell_Heal_Heal))		// Si PV < 60%
 							{
-								me->CastSpell(target, Spell_Heal_Heal, true);;
+								me->CastSpell(target, Spell_Heal_Heal, true);													// Rénovation
+								Cooldown_Spell_Heal = 4000;
 							}
-							if (target->GetHealth() < (target->GetMaxHealth()*0.40))				// Si PV < 40%
+							else if (target->GetHealth() < (target->GetMaxHealth()*0.40))										// Si PV < 40%
 							{
-								DoCast(target, Soins_Rapides);										// 1 chance sur 2 : Soins rapides 2061 
+								DoCast(target, Soins_Rapides);																	// Soins rapides 2061 
+								Cooldown_Spell_Heal = 4000;
 							}
-							Cooldown_Spell_Heal = 4000;
 						}
+
 					}
 				}
 				else Cooldown_Spell_Heal -= diff;
+			
 			}
+
+
+
+
 		};
 		
 		CreatureAI* GetAI(Creature* creature) const override

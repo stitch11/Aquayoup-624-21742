@@ -428,7 +428,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 	float Crspeed = GetCreatureTemplate()->speed_walk;
 	uint32 Crentry = GetCreatureTemplate()->Entry;
 
-	if (Crspeed == 1.0f && !IsInCombat())
+	if (Crspeed == 1.0f /*&& !IsInCombat()*/ )
 	{
 		switch (Crtype)
 		{
@@ -766,7 +766,7 @@ void Creature::Update(uint32 diff)
 	uint32 Crfamily = GetCreatureTemplate()->family;
 	float Crspeed = GetCreatureTemplate()->speed_walk;
 
-	if (Crspeed == 1.0f && IsInCombat())
+	if (Crspeed == 1.0f /*&& IsInCombat()*/ )
 	{
 		switch (Crtype)
 		{

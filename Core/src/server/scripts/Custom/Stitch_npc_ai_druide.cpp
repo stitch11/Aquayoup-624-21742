@@ -34,7 +34,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			uint32 NbrDeSpe = 4;													// Nombre de Spécialisations
 			uint32 ForceBranche;
 			uint32 DistanceDeCast = 30;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
-			uint32 ResteADistance = 10;												// Distance max a laquelle un npc s'approchera
+			uint32 ResteADistance = 12;												// Distance max a laquelle un npc s'approchera
 			uint32 Dist;															// Distance entre le npc et sa cible
 			uint32 Random;
 			uint32 Mana;
@@ -58,7 +58,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			uint32 Empaler_et_tirer = 82742;										// Empaler et tirer
 			uint32 Barbeles_depines = 113967;										// Barbelés d'épines 
 			uint32 Lenteur_Treant = 6146;											// Lenteur
-			uint32 Spell_Heal_Caster = 5185;  										// Toucher guérisseur 5185
+			uint32 Spell_Heal_Caster = 300261;  									// Toucher guérisseur 300261/5185
 			uint32 Griffure_Bondissante = 89712;									// Griffure Bondissante (saut sur la cible + stun)
 
 			// Spells Equilibre
@@ -395,7 +395,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 						if (Cooldown_Spell2 <= diff)
 						{
 							DoCastVictim(Spell_branche1_2);
-							Cooldown_Spell2 = urand(4000, 6000);
+							Cooldown_Spell2 = urand(5000, 6000);
 						}
 						else Cooldown_Spell2 -= diff;
 
@@ -405,7 +405,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 							if (!me->HasUnitState(UNIT_STATE_MOVE))
 							{
 								DoCastVictim(Spell_branche1_1);
-								Cooldown_Spell1 = 3000;
+								Cooldown_Spell1 = 3500;
 							}
 						}
 						else Cooldown_Spell1 -= diff;
@@ -611,13 +611,13 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 						z = me->GetPositionZ();
 						mapid = victim->GetMapId();
 						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
-						Cooldown_ResteADistance = 4000;
+						Cooldown_ResteADistance = 3000;
 					}
 				}
 				else Cooldown_ResteADistance -= diff;
 
 				// Speed normal si distance > 10m ------------------------------------------------------------------------------------------------------------------
-				if (Dist> 10 && me->GetSpeedRate(MOVE_RUN) == 1.2f)
+				if (Dist> ResteADistance && me->GetSpeedRate(MOVE_RUN) == 1.2f && AuraLenteur() == false)
 				{
 					me->SetSpeedRate(MOVE_RUN, 1.0f);
 				}
@@ -803,9 +803,8 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			{
 				// recherche si aura de lenteur presente
 				// Eclair_de_givre 116/71318, Lenteur 31589, Armure_de_givre 6136, Horion_de_givre 8056/12548, Brise_genou 9080/1715, Fievre_de_givre 69917/67719
-				// Toucher_de_glace 45477/300197, Javelot_de_givre 300051/300237, Gel_de_zone 60192, Handicap 116095, 			
-
-				if (me->HasAura(116) || me->HasAura(31589) || me->HasAura(6136) || me->HasAura(8056) || me->HasAura(9080) || me->HasAura(69917) || me->HasAura(45477) || me->HasAura(300051) || me->HasAura(60192) || me->HasAura(116095) || me->HasAura(71318) || me->HasAura(12548) || me->HasAura(1715) || me->HasAura(67719) || me->HasAura(300197) || me->HasAura(300237))
+				// Toucher_de_glace 45477/300197, Javelot_de_givre 300051/300237, Gel_de_zone 60192, Handicap 116095, Sceau de justice 20170
+				if (me->HasAura(116) || me->HasAura(31589) || me->HasAura(6136) || me->HasAura(8056) || me->HasAura(9080) || me->HasAura(69917) || me->HasAura(45477) || me->HasAura(300051) || me->HasAura(60192) || me->HasAura(116095) || me->HasAura(71318) || me->HasAura(12548) || me->HasAura(1715) || me->HasAura(67719) || me->HasAura(300197) || me->HasAura(300237) || me->HasAura(20170))
 					return true;
 				else return false;
 			}
@@ -855,9 +854,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				// Heal en combat ------------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Spell_Heal <= diff)
 				{
-					Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 1, DistanceDeCast, true);		// pour heal friend
-
-																									// heal sur lui meme
+																								// heal sur lui meme
 					if ((me->GetHealth() < (me->GetMaxHealth()*0.50)))								// Si PV < 50%
 					{
 						DoCast(me, Spell_Heal_Caster);
@@ -865,6 +862,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					}
 
 					// heal sur Friend 
+					Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 1, DistanceDeCast, true);		// pour heal friend
 					if (target = DoSelectLowestHpFriendly(DistanceDeCast))							// Distance de l'allié = 30m
 					{
 						if (me->IsFriendlyTo(target) && (me != target))

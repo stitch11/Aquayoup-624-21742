@@ -59,8 +59,8 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			uint32 Buf_branche2a = 31821;											// Aura de dévotion 31821, Aura de dévotion 52442 (armure+25%)
 			uint32 Buf_branche3 = 31801;											// Sceau de clairvoyance 20165, Sceau de vérité 31801
 			uint32 Buf_branche3a = 31850;											// Ardent défenseur 31850 (dmg -20% 10s), Bénédiction des rois 72043, Protection divine 498, Aura de dévotion 52442 (armure+25%) 
-			uint32 Spell_Heal_Caster = 19750;  										// Eclair lumineux 19750
-			uint32 Spell_Heal_Heal = 177551;  										// Lumière sacrée 82326/177551
+			uint32 Spell_Heal_Caster = 300262;  									// Eclair lumineux 300262
+			uint32 Spell_Heal_Heal = 177551;  										// Lumière sacrée 177551
 
 			// Spells Vindice
 			uint32 Spell_branche1_agro = 0;
@@ -560,7 +560,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 					if ((me->GetHealth() < (me->GetMaxHealth()*0.50)))								// Si PV < 50%
 					{
 						DoCast(me, Spell_Heal_Heal);
-						Cooldown_Spell_Heal = 8000;
+						Cooldown_Spell_Heal = 6000;
 					}
 
 					// heal sur Friend 
@@ -571,7 +571,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 							if (target->GetHealth() < (target->GetMaxHealth()*0.50))				// Si PV < 50%
 							{
 								DoCast(target, Spell_Heal_Heal);
-								Cooldown_Spell_Heal = 8000;
+								Cooldown_Spell_Heal = 6000;
 							}
 						}
 					}
