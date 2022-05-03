@@ -534,7 +534,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			SetSpeedRate(MOVE_SWIM, 0.5f);							// en nageant
 			break;
 
-		case CREATURE_FAMILY_CROCOLISK:			// crocodile------------------------------------------------------
+		case CREATURE_FAMILY_CROCOLISK:			// crocodile
 			SetSpeedRate(MOVE_WALK, 0.4f);							// hors combat
 			SetSpeedRate(MOVE_RUN, 0.8f);							// en combat
 			SetSpeedRate(MOVE_SWIM, 0.6f);							// en nageant
@@ -636,6 +636,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 	}
 
 	
+
 
 
     // Will set UNIT_FIELD_BOUNDINGRADIUS and UNIT_FIELD_COMBATREACH
@@ -766,7 +767,7 @@ void Creature::Update(uint32 diff)
 	uint32 Crfamily = GetCreatureTemplate()->family;
 	float Crspeed = GetCreatureTemplate()->speed_walk;
 
-	if (Crspeed == 1.0f /*&& IsInCombat()*/ )
+	if (Crspeed == 1.0f && IsInCombat() )
 	{
 		switch (Crtype)
 		{
@@ -854,6 +855,8 @@ void Creature::Update(uint32 diff)
 			SetSpeedRate(MOVE_SWIM, 1.2f);							// en nageant
 			break;
 
+		case CREATURE_FAMILY_CROCOLISK:				// crocodile
+		case CREATURE_FAMILY_BASILISK:				// Basilic
 		case CREATURE_FAMILY_WATER_ELEMENTAL:		// Elementaire d'eau
 		case CREATURE_FAMILY_MTWATERELEMENTAL:		// Elementaire d'eau
 		case 155:									// Custom 155
@@ -865,9 +868,7 @@ void Creature::Update(uint32 diff)
 			SetSpeedRate(MOVE_SWIM, 1.75f);
 			break;
 
-		case CREATURE_FAMILY_CROCOLISK:				// crocodile------------------------------------------------------
 		case CREATURE_FAMILY_HYDRA:					// Hydre
-		case CREATURE_FAMILY_BASILISK:				// Basilic
 		case CREATURE_FAMILY_NAGA:					// Naga
 				SetSpeedRate(MOVE_SWIM, 2.0f);
 			break;
@@ -882,7 +883,41 @@ void Creature::Update(uint32 diff)
 
 	}
 
+	// Stitch Les mobs font des bulles sous l'eau , si si c'est vrais
+	switch (Crfamily)
+	{
+	case CREATURE_FAMILY_MURLOC:
+	case CREATURE_FAMILY_NAGA:
+	case CREATURE_FAMILY_CROCOLISK:
+	case CREATURE_FAMILY_CRAB:
+	case CREATURE_FAMILY_TURTLE:
+	case CREATURE_FAMILY_SUCCUBUS:
+	case CREATURE_FAMILY_IMP:
+	case CREATURE_FAMILY_BEETLE:
+	case CREATURE_FAMILY_ZOMBIE:
+	case CREATURE_FAMILY_GHOUL:
+		if (this->IsInWater())
+		{
+			AddAura(59562, this);
+		}
+		else
+			RemoveAura(59562);
+		break;
+	}
 
+	switch (Crtype)
+	{
+	case CREATURE_TYPE_HUMANOID:
+	case CREATURE_TYPE_GIANT:
+	case CREATURE_TYPE_UNDEAD:
+		if (this->IsInWater())
+		{
+			AddAura(59562, this);
+		}
+		else
+			RemoveAura(59562);
+		break;
+	}
 
 
 
