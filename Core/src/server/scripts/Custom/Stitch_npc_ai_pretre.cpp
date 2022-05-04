@@ -39,6 +39,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 			uint32 Dist;															// Distance entre le npc et sa cible
 			uint32 Mana;
 			uint32 MaxMana = me->GetMaxPower(POWER_MANA);
+			uint32 MessageAlagro = 0;
 
 			Unit* victim = me->GetVictim();
 
@@ -90,6 +91,13 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 
 			void Init_AI()
 			{
+
+				// Message a l'agro forcé par spell(8)
+				if (me->m_spells[7] == 1)
+				{
+					MessageAlagro = 1;
+				}
+
 				// ################################################################################################################################################
 				// Forcer le choix de la Spécialisation par creature_template->pickpocketloot
 				// ################################################################################################################################################
@@ -220,7 +228,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 						// Message a l'agro , ci le mob a plusieurs lignes (creature_text groupid>0) il y a de forte chance que ce soit pour un dialogue
 						// et non un simple message a l'agro. Donc on l'ignore.
 						Random = urand(1, 5);
-						if (!sCreatureTextMgr->TextExist(me->GetEntry(), 1) && Random == 1)
+						if (!sCreatureTextMgr->TextExist(me->GetEntry(), 1) && Random == 1 || MessageAlagro == 1)
 						{
 							Talk(0);
 						}

@@ -39,6 +39,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			uint32 Random;
 			uint32 Mana;
 			uint32 MaxMana = me->GetMaxPower(POWER_MANA);
+			uint32 MessageAlagro = 0;
 
 			Unit* victim = me->GetVictim();											// La cible du npc
 
@@ -144,6 +145,12 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				// Tirages aléatoires des spells
 				// ################################################################################################################################################
 				// Spell a lancer a l'agro ------------------------------------------------------------------------------------------------------------------------
+
+				// Message a l'agro forcé par spell(8)
+				if (me->m_spells[7] == 1)
+				{
+					MessageAlagro = 1;
+				}
 
 				me->CastSpell(me, Buf_all, true);												// Buf_all sur lui meme pour toutes les Spécialitées
 				Start_Agro = 0;
@@ -322,7 +329,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 						// Message a l'agro , ci le mob a plusieurs lignes (creature_text groupid>0) il y a de forte chance que ce soit pour un dialogue
 						// et non un simple message a l'agro. Donc on l'ignore.
 						Random = urand(1, 5);
-						if (!sCreatureTextMgr->TextExist(me->GetEntry(), 1) && Random == 1)
+						if (!sCreatureTextMgr->TextExist(me->GetEntry(), 1) && Random == 1 || MessageAlagro == 1)
 						{
 							Talk(0);
 						}

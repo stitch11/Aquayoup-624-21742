@@ -44,6 +44,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 			uint32 Mana;
 			uint32 MaxMana = 100;
 			uint32 Start_Agro = 0;
+			uint32 MessageAlagro = 0;
 
 			Unit* victim = me->GetVictim();
 
@@ -124,6 +125,13 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				// ################################################################################################################################################
 				// Tirages aléatoires des spells
 				// ################################################################################################################################################
+
+				// Message a l'agro forcé par spell(8)
+				if (me->m_spells[7] == 1)
+				{
+					MessageAlagro = 1;
+				}
+				
 				switch (BrancheSpe)
 				{
 				case 1: // Si Branche 1 ---------------------------------------------------------------------------------------------------------------------------
@@ -233,7 +241,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 					// Message a l'agro , ci le mob a plusieurs lignes (creature_text groupid>0) il y a de forte chance que ce soit pour un dialogue
 					// et non un simple message a l'agro. Donc on l'ignore.
 					Random = urand(1, 5);
-					if (!sCreatureTextMgr->TextExist(me->GetEntry(), 1) && Random == 1)
+					if (!sCreatureTextMgr->TextExist(me->GetEntry(), 1) && Random == 1 || MessageAlagro == 1)
 					{
 						Talk(0);
 					}

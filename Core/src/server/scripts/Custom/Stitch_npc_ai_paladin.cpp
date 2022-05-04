@@ -40,7 +40,8 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			uint32 Mana;
 			uint32 MaxMana = me->GetMaxPower(POWER_MANA);
 			Unit* victim = me->GetVictim();										 
-			
+			uint32 MessageAlagro = 0;
+
 			// Definitions des variables Cooldown et le 1er lancement
 			uint32 Cooldown_Spell1 = 500;
 			uint32 Cooldown_Spell2 = 2000;
@@ -99,6 +100,13 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 
 			void Init_AI()
 			{
+
+				// Message a l'agro forcé par spell(8)
+				if (me->m_spells[7] == 1)
+				{
+					MessageAlagro = 1;
+				}
+
 				// ################################################################################################################################################
 				// Forcer le choix de la Spécialisation par creature_template->pickpocketloot
 				// ################################################################################################################################################
@@ -246,8 +254,8 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 
 						// Message a l'agro , ci le mob a plusieurs lignes (creature_text groupid>0) il y a de forte chance que ce soit pour un dialogue
 						// et non un simple message a l'agro. Donc on l'ignore.
-						Random = urand(1,5);
-						if (!sCreatureTextMgr->TextExist(me->GetEntry(), 1) && Random == 1)
+						Random = urand(1, 5);
+						if (!sCreatureTextMgr->TextExist(me->GetEntry(), 1) && Random == 1 || MessageAlagro == 1)
 						{
 							Talk(0);
 						}

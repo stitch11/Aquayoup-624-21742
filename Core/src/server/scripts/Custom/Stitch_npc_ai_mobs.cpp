@@ -96,6 +96,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 Ordre_De_Charge = 0;
 			float x = 0.0f, y = 0.0f, z = 0.0f;
 			uint32 mapid = 0;
+			uint32 MessageAlagro = 0;
 
 			uint8 Spell_B_Non_Cumulable;											// == 1 : Spell_B ne sera pas appliqué s'il est deja actif sur la cible . Par exemple pour Brise-genou
 
@@ -490,6 +491,12 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			void Init_AI()
 			{
 				Spell_B_Non_Cumulable = 0;
+
+				// Message a l'agro forcé par spell(8)
+				if (me->m_spells[7] == 1)
+				{
+					MessageAlagro = 1;
+				}
 
 				// ################################################################################################################################################
 				// Tirages aléatoires des spells
@@ -1939,6 +1946,11 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					}
 				}
 
+				// Message a l'agro forcé par spell(8)
+				if (me->m_spells[7] == 1)
+				{
+					MessageAlagro = 1;
+				}
 				// Divers  ----------------------------------------------------------------------------------------------------------------------------------------
 				me->SetReactState(REACT_AGGRESSIVE);
 
@@ -2089,7 +2101,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						// Message a l'agro , ci le mob a plusieurs lignes (creature_text groupid>0) il y a de forte chance que ce soit pour un dialogue
 						// et non un simple message a l'agro. Donc on l'ignore.
 						Random = urand(1, 5);
-						if (!sCreatureTextMgr->TextExist(me->GetEntry(), 1) && Random == 1)
+						if (!sCreatureTextMgr->TextExist(me->GetEntry(), 1) && Random == 1 || MessageAlagro == 1)
 						{
 							Talk(0);
 						}
