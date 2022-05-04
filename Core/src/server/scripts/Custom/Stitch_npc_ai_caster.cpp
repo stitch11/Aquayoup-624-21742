@@ -226,7 +226,6 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 
 					Random = urand(1, 2);
 					if (Random == 1 && Buf_1 != 0) { me->CastSpell(me, Buf_1, true); }
-					if (Spell_respawn_evade != 0) { me->CastSpell(me, Spell_respawn_evade, true); }
 
 				// ################################################################################################################################################
 				// Divers
@@ -327,9 +326,9 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 						// ########################################################################################################################################
 
 							Random = urand(1, 2);
-							//if (Random == 1 && Spell_agro != 0) { me->CastSpell(victim, Spell_agro, true); }	// 1/2 Chance de lancer le sort d'agro
 							if (Random == 1 && Spell_agro != 0) { DoCast(victim, Spell_agro); }	// 1/2 Chance de lancer le sort d'agro
 
+							if (Spell_respawn_evade != 0) { me->CastSpell(me, Spell_respawn_evade, true); }
 							// ####################################################################################################################################
 					}
 

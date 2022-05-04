@@ -239,6 +239,8 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 						Random = urand(1, 3);
 						if (Random != 1 && Spell_agro != 0 && Dist > 8) { DoCastAOE(Spell_agro,true); }	// 2/3 Chance de lancer le sort d'agro
 
+						if (Spell_respawn_evade != 0) { me->CastSpell(me, Spell_respawn_evade, true); }
+
 					}
 
 					// ############################################################################################################################################

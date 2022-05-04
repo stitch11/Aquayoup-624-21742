@@ -197,6 +197,9 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 							Random = urand(1, 2);
 							if (Random == 1 && Buf_1 != 0)
 								{ me->CastSpell(me, Buf_1, true); }			// 1/2 Chance de lancer le Buf
+
+							me->CastSpell(me, Spell_evade, true);
+							if (Spell_evade != 0) { me->CastSpell(me, Spell_evade, true); }
 					
 					}
 						// ####################################################################################################################################

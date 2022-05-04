@@ -492,12 +492,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			{
 				Spell_B_Non_Cumulable = 0;
 
-				// Message a l'agro forcé par spell(8)
-				if (me->m_spells[7] == 1)
-				{
-					MessageAlagro = 1;
-				}
-
 				// ################################################################################################################################################
 				// Tirages aléatoires des spells
 				// ################################################################################################################################################
@@ -2113,7 +2107,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Se_Deterre();
 						}
 						// ---------------------------
-						me->CastSpell(me, Spell_respawn_evade, true);
+
+						if (Spell_respawn_evade != 0) { me->CastSpell(me, Spell_respawn_evade, true); }
 					}
 
 
