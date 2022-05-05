@@ -97,7 +97,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			float x = 0.0f, y = 0.0f, z = 0.0f;
 			uint32 mapid = 0;
 			uint32 MessageAlagro = 0;
-
+			uint32 Spell_ContreAttaque = 0;
 			uint8 Spell_B_Non_Cumulable;											// == 1 : Spell_B ne sera pas appliqué s'il est deja actif sur la cible . Par exemple pour Brise-genou
 
 			// Definitions des variables Cooldown et le 1er lancement
@@ -120,6 +120,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 AI_Random = 1;
 			uint32 Start_Agro = 0;
 			uint32 Start_Agro2 = 0;
+			uint32 Cooldown_Spell_ContreAttaque = 4000;
+			uint32 Cooldown_Spell_ContreAttaque_defaut = 8000;
 
 			// Spells 
 			uint32 Spell_A = 0;
@@ -1941,10 +1943,11 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				}
 
 				// Message a l'agro forcé par spell(8)
-				if (me->m_spells[7] == 1)
-				{
-					MessageAlagro = 1;
-				}
+				if (me->m_spells[7] == 1) { MessageAlagro = 1; }
+
+				// Spell contre attaque si PV bas
+				if (me->m_spells[6] != 0) { Spell_ContreAttaque = me->m_spells[6]; }
+
 				// Divers  ----------------------------------------------------------------------------------------------------------------------------------------
 				me->SetReactState(REACT_AGGRESSIVE);
 
@@ -2175,6 +2178,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						//if ( me->HasUnitState(UNIT_STATE_ROOT) )
 						//	return;
 
+						ContreAttaque(diff);
 						switch (Crfamily)
 						{
 						case 1: // Loup
@@ -3057,7 +3061,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 			}
 
-			// ------ DIVERS ------
+
 			void Bonus_Degat_Arme_Done(int val) // 
 			{
 				// +- Bonus en % de degat des armes infligées a victim
@@ -3089,7 +3093,23 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					return true;
 				} else return false;
 			}
-
+			void ContreAttaque(uint32 diff)
+			{
+				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
+				if (Cooldown_Spell_ContreAttaque <= diff && Spell_ContreAttaque != 0)
+				{
+					if ((me->GetHealth() < (me->GetMaxHealth()*0.40)))									// Si PV =< 40%
+					{
+						Random = urand(1, 3);
+						if (Random != 1)
+						{
+							DoCastVictim(Spell_ContreAttaque);
+						}
+					}
+					Cooldown_Spell_ContreAttaque = Cooldown_Spell_ContreAttaque_defaut;
+				}
+				else Cooldown_Spell_ContreAttaque -= diff;
+			}
 
 
 		};

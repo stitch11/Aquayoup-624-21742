@@ -45,7 +45,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 			uint32 MaxMana = 100;
 			uint32 Start_Agro = 0;
 			uint32 MessageAlagro = 0;
-
+			uint32 Spell_ContreAttaque = 0;
 			Unit* victim = me->GetVictim();
 
 			// Definitions des variables Cooldown et le 1er lancement
@@ -57,6 +57,8 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 			uint32 Cooldown_RegenMana = 3000;											// Cooldown pour le regen du mana
 			uint32 Cooldown_ResteADistance = 2000;										// Test si en contact pour s'eloigner
 			uint32 Cooldown_Npc_Emotes = urand(5000, 8000);
+			uint32 Cooldown_Spell_ContreAttaque = 4000;
+			uint32 Cooldown_Spell_ContreAttaque_defaut = 8000;
 
 			// Spells Divers
 			uint32 Buf_all = 31519;														// Aura de précision (60s) 31519
@@ -127,11 +129,11 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				// ################################################################################################################################################
 
 				// Message a l'agro forcé par spell(8)
-				if (me->m_spells[7] == 1)
-				{
-					MessageAlagro = 1;
-				}
-				
+				if (me->m_spells[7] == 1) { MessageAlagro = 1; }
+
+				// Spell contre attaque si PV bas
+				if (me->m_spells[6] != 0) { Spell_ContreAttaque = me->m_spells[6]; }
+
 				switch (BrancheSpe)
 				{
 				case 1: // Si Branche 1 ---------------------------------------------------------------------------------------------------------------------------
@@ -372,6 +374,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 
 				// ################################################################################################################################################
 					Heal_En_Combat_Caster(diff);
+					ContreAttaque(diff);
 					Mouvement_Caster(diff);
 				}
 				// ################################################################################################################################################
@@ -501,6 +504,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 					}
 				}
 				else Cooldown_Spell_Heal -= diff;
+
 			}
 			void Def_Power()
 			{
@@ -509,7 +513,23 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				me->SetMaxPower(POWER_FOCUS, 100);
 				me->SetPower(POWER_FOCUS, 99);
 			}
-
+			void ContreAttaque(uint32 diff)
+			{
+				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
+				if (Cooldown_Spell_ContreAttaque <= diff && Spell_ContreAttaque != 0)
+				{
+					if ((me->GetHealth() < (me->GetMaxHealth()*0.40)))									// Si PV =< 40%
+					{
+						Random = urand(1, 3);
+						if (Random != 1)
+						{
+							DoCastVictim(Spell_ContreAttaque);
+						}
+					}
+					Cooldown_Spell_ContreAttaque = Cooldown_Spell_ContreAttaque_defaut;
+				}
+				else Cooldown_Spell_ContreAttaque -= diff;
+			}
 
 		};
 

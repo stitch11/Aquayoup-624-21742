@@ -41,7 +41,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 			uint32 Mana;
 			uint32 MaxMana = me->GetMaxPower(POWER_MANA);
 			uint32 MessageAlagro = 0;
-
+			uint32 Spell_ContreAttaque = 0;
 			Unit* victim = me->GetVictim();
 
 			// Definitions des variables Cooldown et le 1er lancement
@@ -53,6 +53,8 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 			uint32 Cooldown_RegenMana = 3000;											// Cooldown pour le regen du mana
 			uint32 Cooldown_ResteADistance = 2000;										// Test si en contact pour s'eloigner
 			uint32 Cooldown_Npc_Emotes = urand(5000, 8000);
+			uint32 Cooldown_Spell_ContreAttaque = 4000;
+			uint32 Cooldown_Spell_ContreAttaque_defaut = 8000;
 
 			// Spells Divers
 			uint32 Buf_all = 79954;														// Armure démoniaque 79934 , Gangrarmure 79954 
@@ -141,10 +143,10 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 				// Spell a lancer a l'agro ------------------------------------------------------------------------------------------------------------------------
 
 				// Message a l'agro forcé par spell(8)
-				if (me->m_spells[7] == 1)
-				{
-					MessageAlagro = 1;
-				}
+				if (me->m_spells[7] == 1) { MessageAlagro = 1; }
+
+				// Spell contre attaque si PV bas
+				if (me->m_spells[6] != 0) { Spell_ContreAttaque = me->m_spells[6]; }
 
 				switch (BrancheSpe)
 				{
@@ -439,6 +441,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 
 				// ################################################################################################################################################
 				Heal_En_Combat_Caster(diff);
+				ContreAttaque(diff);
 				Mouvement_Caster(diff);
 				}
 				// ################################################################################################################################################
@@ -557,10 +560,10 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 			{
 				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_MOVE))
 					return;
-
+				
+				// heal sur lui meme-------------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Spell_Heal <= diff)
 				{
-					// heal sur lui meme-------------------------------------------------------------------------------------------------------------------------------
 					if ((me->GetHealth() < (me->GetMaxHealth()*0.50)))								// Si PV < 50%
 					{
 						DoCastVictim(Spell_Heal_Caster);
@@ -568,8 +571,26 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 					}
 				}
 				else Cooldown_Spell_Heal -= diff;
-			}
 
+
+			}
+			void ContreAttaque(uint32 diff)
+			{
+				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
+				if (Cooldown_Spell_ContreAttaque <= diff && Spell_ContreAttaque != 0)
+				{
+					if ((me->GetHealth() < (me->GetMaxHealth()*0.40)))									// Si PV =< 40%
+					{
+						Random = urand(1, 3);
+						if (Random != 1)
+						{
+							DoCastVictim(Spell_ContreAttaque);
+						}
+					}
+					Cooldown_Spell_ContreAttaque = Cooldown_Spell_ContreAttaque_defaut;
+				}
+				else Cooldown_Spell_ContreAttaque -= diff;
+			}
 
 
 		};

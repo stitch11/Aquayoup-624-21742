@@ -40,7 +40,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 			uint32 Mana;
 			uint32 MaxMana = me->GetMaxPower(POWER_MANA);
 			uint32 MessageAlagro = 0;
-
+			uint32 Spell_ContreAttaque = 0;
 			Unit* victim = me->GetVictim();
 
 			// Definitions des variables Cooldown et le 1er lancement
@@ -52,6 +52,8 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 			uint32 Cooldown_ResteADistance = 2000;									// Test si en contact pour s'eloigner
 			uint32 Cooldown_Spell_Bouclier = 6000;									// Cooldown pour mot de pouvoir : bouclier
 			uint32 Cooldown_Npc_Emotes = urand(5000, 8000);
+			uint32 Cooldown_Spell_ContreAttaque = 4000;
+			uint32 Cooldown_Spell_ContreAttaque_defaut = 8000;
 
 			// Spells Divers
 			uint32 Buf_all = 21562;													// Mot de pouvoir : Robustesse 21562
@@ -93,10 +95,10 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 			{
 
 				// Message a l'agro forcé par spell(8)
-				if (me->m_spells[7] == 1)
-				{
-					MessageAlagro = 1;
-				}
+				if (me->m_spells[7] == 1) { MessageAlagro = 1; }
+
+				// Spell contre attaque si PV bas
+				if (me->m_spells[6] != 0) { Spell_ContreAttaque = me->m_spells[6]; }
 
 				// ################################################################################################################################################
 				// Forcer le choix de la Spécialisation par creature_template->pickpocketloot
@@ -355,6 +357,8 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 					}
 
 					// ####################################################################################################################################################
+
+					ContreAttaque(diff);
 					Mouvement_Caster(diff);
 				}
 				// ########################################################################################################################################################
@@ -470,7 +474,6 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 					return true;
 				else return false;
 			}
-
 			void Heal_En_Combat_Caster(uint32 diff)
 			{
 				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_MOVE))
@@ -542,8 +545,23 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 				else Cooldown_Spell_Heal -= diff;
 			
 			}
-
-
+			void ContreAttaque(uint32 diff)
+			{
+				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
+				if (Cooldown_Spell_ContreAttaque <= diff && Spell_ContreAttaque != 0)
+				{
+					if ((me->GetHealth() < (me->GetMaxHealth()*0.40)))									// Si PV =< 40%
+					{
+						Random = urand(1, 3);
+						if (Random != 1)
+						{
+							DoCastVictim(Spell_ContreAttaque);
+						}
+					}
+					Cooldown_Spell_ContreAttaque = Cooldown_Spell_ContreAttaque_defaut;
+				}
+				else Cooldown_Spell_ContreAttaque -= diff;
+			}
 
 
 		};

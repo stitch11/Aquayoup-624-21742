@@ -37,19 +37,20 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 			uint32 Dist = 0;															// Distance entre le npc et sa cible
 			Unit* victim = me->GetVictim();										 
 			uint32 MessageAlagro = 0;
+			uint32 Spell_ContreAttaque = 0;
 
 			// Definitions des variables Cooldown et le 1er lancement
 			uint32 Cooldown_Spell1 = 500;
 			uint32 Cooldown_Spell2 = 2000;
 			uint32 Cooldown_ResteADistance = 4000;									// Test si en contact
-
 			uint32 Cooldown_Anti_Bug_Figer = 2000;
 			uint32 Cooldown_Npc_Emotes = urand(5000, 8000);
 			uint32 Cooldown_Trop_Loin = 3000;
-
 			uint32 Cooldown_Spell_Heal = 5000;
 			uint32 Cooldown_Spell_Heal_defaut = 8000;
 			uint32 Spell_Heal = 0;
+			uint32 Cooldown_Spell_ContreAttaque = 4000;
+			uint32 Cooldown_Spell_ContreAttaque_defaut = 8000;
 
 			// Spells
 			uint32 Buf_1 = 12712;													
@@ -73,10 +74,10 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 			{
 
 				// Message a l'agro forcé par spell(8)
-				if (me->m_spells[7] == 1)
-				{
-					MessageAlagro = 1;
-				}
+				if (me->m_spells[7] == 1) { MessageAlagro = 1; }
+
+				// Spell contre attaque si PV bas
+				if (me->m_spells[6] != 0) { Spell_ContreAttaque = me->m_spells[6]; }
 
 				// ################################################################################################################################################
 				// Tirages aléatoires des spells
@@ -234,6 +235,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 						else Cooldown_Spell2 -= diff;
 					}
 
+					ContreAttaque(diff);
 					Mouvement_Contact(diff);
 
 					// ############################################################################################################################################
@@ -390,7 +392,6 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 				}
 				else Cooldown_Spell_Heal -= diff;
 			}
-
 			void Bonus_Degat_Arme_Done(int val) // 
 			{
 				// +- Bonus en % de degat des armes infligées a victim
@@ -405,6 +406,24 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 				me->SetCanModifyStats(true);
 				me->UpdateAllStats();
 			}
+			void ContreAttaque(uint32 diff)
+			{
+				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
+				if (Cooldown_Spell_ContreAttaque <= diff && Spell_ContreAttaque != 0)
+				{
+					if ((me->GetHealth() < (me->GetMaxHealth()*0.40)))									// Si PV =< 40%
+					{
+						Random = urand(1, 3);
+						if (Random != 1)
+						{
+							DoCastVictim(Spell_ContreAttaque);
+						}
+					}
+					Cooldown_Spell_ContreAttaque = Cooldown_Spell_ContreAttaque_defaut;
+				}
+				else Cooldown_Spell_ContreAttaque -= diff;
+			}
+
 		};
 
 

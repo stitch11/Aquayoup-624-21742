@@ -55,6 +55,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			uint32 ForceBranche;
 			uint8 npcfixe = me->GetCreatureTemplate()->pickpocketLootId;
 			uint32 MessageAlagro = 0;
+			uint32 Spell_ContreAttaque = 0;
 
 			// Definitions des variables Cooldown et le 1er lancement
 			uint32 Cooldown_Spell1 = 1000;
@@ -75,6 +76,8 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			uint32 Spell_2 = 0;
 			uint32 Spell_respawn_evade = 0;
 			uint32 Spell_Heal = 0;	
+			uint32 Cooldown_Spell_ContreAttaque = 4000;
+			uint32 Cooldown_Spell_ContreAttaque_defaut = 8000;
 
 			// Mage Feu
 			uint32 Liste_Spell_agro_1[4] = { 31589, 2120, 11366, 2136 };		// Lenteur 31589, Choc de flammes 2120, Double explosions pyrotechniques 11366, Trait de feu 2136
@@ -217,13 +220,13 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				}
 
 				// Message a l'agro forcé par spell(8)
-				if (me->m_spells[7] == 1)
-				{
-					MessageAlagro = 1;
-				}
+				if (me->m_spells[7] == 1) { MessageAlagro = 1; }
+
+				// Spell contre attaque si PV bas
+				if (me->m_spells[6] != 0) { Spell_ContreAttaque = me->m_spells[6]; }
+
 
 				// Spell a lancer a l'agro ------------------------------------------------------------------------------------------------------------------------
-
 					Random = urand(1, 2);
 					if (Random == 1 && Buf_1 != 0) { me->CastSpell(me, Buf_1, true); }
 
@@ -369,7 +372,8 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 						}
 						else Cooldown_Spell2 -= diff;
 
-					Mouvement_Caster(diff);
+						ContreAttaque(diff);
+						Mouvement_Caster(diff);
 
 					// ############################################################################################################################################
 				}
@@ -548,6 +552,25 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					}
 				}
 				else Cooldown_Spell_Heal -= diff;
+
+
+			}
+			void ContreAttaque(uint32 diff)
+			{
+				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
+				if (Cooldown_Spell_ContreAttaque <= diff && Spell_ContreAttaque != 0)
+				{
+					if ((me->GetHealth() < (me->GetMaxHealth()*0.40)))									// Si PV =< 40%
+					{
+						Random = urand(1, 3);
+						if (Random != 1)
+						{
+							DoCastVictim(Spell_ContreAttaque);
+						}
+					}
+					Cooldown_Spell_ContreAttaque = Cooldown_Spell_ContreAttaque_defaut;
+				}
+				else Cooldown_Spell_ContreAttaque -= diff;
 			}
 		};
 

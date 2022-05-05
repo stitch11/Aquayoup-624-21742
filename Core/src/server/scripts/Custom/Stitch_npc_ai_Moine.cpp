@@ -41,6 +41,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 			uint32 MaxMana = me->GetMaxPower(POWER_ENERGY);
 			Unit* victim = me->GetVictim();										 
 			uint32 MessageAlagro = 0;
+			uint32 Spell_ContreAttaque = 0;
 
 			// Definitions des variables Cooldown et le 1er lancement
 			uint32 Cooldown_Spell1 = 500;
@@ -54,6 +55,8 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 			uint32 Cooldown_Anti_Bug_Figer = 2000;
 			uint32 Cooldown_Npc_Emotes = urand(5000, 8000);
 			uint32 Cooldown_Trop_Loin = 8000;
+			uint32 Cooldown_Spell_ContreAttaque = 4000;
+			uint32 Cooldown_Spell_ContreAttaque_defaut = 8000;
 
 			// Spells Divers
 			uint32 Buf_branche1 = 115069;											// Posture du buffle vigoureux 115069, Posture du tigre féroce 103985
@@ -109,10 +112,10 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 			{
 
 				// Message a l'agro forcé par spell(8)
-				if (me->m_spells[7] == 1)
-				{
-					MessageAlagro = 1;
-				}
+				if (me->m_spells[7] == 1) { MessageAlagro = 1; }
+
+				// Spell contre attaque si PV bas
+				if (me->m_spells[6] != 0) { Spell_ContreAttaque = me->m_spells[6]; }
 
 				// ################################################################################################################################################
 				// Forcer le choix de la Spécialisation par creature_template->pickpocketloot
@@ -477,6 +480,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 
 					}
 
+					ContreAttaque(diff);
 					Mouvement_Contact(diff);
 
 					// ############################################################################################################################################
@@ -621,7 +625,6 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 				me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
 				me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 			}
-
 			void Heal_En_Combat_Melee(uint32 diff)
 			{
 				// Heal en combat ------------------------------------------------------------------------------------------------------------------------------
@@ -682,7 +685,6 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 					break;
 				}
 			}
-
 			void Bonus_Degat_Arme_Done(int val) // 
 			{
 				// +- Bonus en % de degat des armes infligées a victim
@@ -697,7 +699,6 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 				me->SetCanModifyStats(true);
 				me->UpdateAllStats();
 			}
-			
 			void VisuelPowerEnergy()
 		{
 				//me->SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_CLASS, 4);
@@ -713,6 +714,23 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 			{
 				me->setPowerType(POWER_MANA);
 				me->SetPower(POWER_MANA, me->GetMaxPower(POWER_MANA));
+			}
+			void ContreAttaque(uint32 diff)
+			{
+				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
+				if (Cooldown_Spell_ContreAttaque <= diff && Spell_ContreAttaque != 0)
+				{
+					if ((me->GetHealth() < (me->GetMaxHealth()*0.40)))									// Si PV =< 40%
+					{
+						Random = urand(1, 3);
+						if (Random != 1)
+						{
+							DoCastVictim(Spell_ContreAttaque);
+						}
+					}
+					Cooldown_Spell_ContreAttaque = Cooldown_Spell_ContreAttaque_defaut;
+				}
+				else Cooldown_Spell_ContreAttaque -= diff;
 			}
 
 		};

@@ -44,6 +44,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			uint32 MaxMana = me->GetMaxPower(POWER_MANA);
 			uint32 ForceBranche = me->GetCreatureTemplate()->pickpocketLootId;
 			uint32 MessageAlagro = 0;
+			uint32 Spell_ContreAttaque = 0;
 
 			// Definitions des variables Cooldown et le 1er lancement
 			uint32 Cooldown_Spell1 = 1000;
@@ -56,6 +57,8 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			uint32 Cooldown_RegenMana_defaut = 3500;
 			uint32 Cooldown_Spell_Heal = 5000;
 			uint32 Cooldown_Spell_Heal_defaut = 6000;
+			uint32 Cooldown_Spell_ContreAttaque = 4000;
+			uint32 Cooldown_Spell_ContreAttaque_defaut = 8000;
 
 			// Spells
 			uint32 Buf_1 = 0;
@@ -86,10 +89,10 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			{
 
 				// Message a l'agro forcé par spell(8)
-				if (me->m_spells[7] == 1)
-				{
-					MessageAlagro = 1;
-				}
+				if (me->m_spells[7] == 1) { MessageAlagro = 1; }
+
+				// Spell contre attaque si PV bas
+				if (me->m_spells[6] != 0) { Spell_ContreAttaque = me->m_spells[6]; }
 
 				// ################################################################################################################################################
 				// Définition des spells
@@ -290,6 +293,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 						else Cooldown_Spell1 -= diff;
 					}
 
+					ContreAttaque(diff);
 					Mouvement_Caster(diff);
 
 					// ############################################################################################################################################
@@ -376,17 +380,17 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				//if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_MOVE))
 				//return;
 
-				if (Cooldown_Spell_Heal <= diff && Spell_Heal != 0)
+				// Heal(lui meme) -------------------------------------------------------------------------------------------------------------------------------
+				if (Cooldown_Spell_Heal <= diff && Spell_Heal != 0 )
 				{
-					// Heal(tir sur cible) -------------------------------------------------------------------------------------------------------------------------------
-					if ((me->GetHealth() < (me->GetMaxHealth()*0.75)))								// Si PV =< 75%
+					if ((me->GetHealth() < (me->GetMaxHealth()*0.50)) && !me->HasAura(Spell_Heal))		// Si PV =< 50%
 					{
-						//DoCast(me, Spell_Heal);
-						me->CastSpell(victim, Spell_Heal, true);
-						Cooldown_Spell_Heal = Cooldown_Spell_Heal_defaut;
+						me->CastSpell(me, Spell_Heal, true);
 					}
+					Cooldown_Spell_Heal = Cooldown_Spell_Heal_defaut;
 				}
 				else Cooldown_Spell_Heal -= diff;
+
 			}
 			void Bonus_Degat_Arme_Done(int val) // 
 			{
@@ -395,8 +399,23 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				me->HandleStatModifier(UNIT_MOD_DAMAGE_OFFHAND, TOTAL_PCT, val, true);
 				me->HandleStatModifier(UNIT_MOD_DAMAGE_RANGED, TOTAL_PCT, val, true);
 			}
-
-
+			void ContreAttaque(uint32 diff)
+			{
+				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
+				if (Cooldown_Spell_ContreAttaque <= diff && Spell_ContreAttaque != 0)
+				{
+					if ((me->GetHealth() < (me->GetMaxHealth()*0.40)))									// Si PV =< 40%
+					{
+						Random = urand(1, 3);
+						if (Random != 1)
+						{
+							DoCastVictim(Spell_ContreAttaque);
+						}
+					}
+					Cooldown_Spell_ContreAttaque = Cooldown_Spell_ContreAttaque_defaut;
+				}
+				else Cooldown_Spell_ContreAttaque -= diff;
+			}
 
 		};
 

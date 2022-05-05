@@ -40,7 +40,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			uint32 Mana;
 			uint32 MaxMana = me->GetMaxPower(POWER_MANA);
 			uint32 MessageAlagro = 0;
-
+			uint32 Spell_ContreAttaque = 0;
 			Unit* victim = me->GetVictim();											// La cible du npc
 
 			uint32 Modelid_Branche2 = 2281;											// Modelid Ours 2281 , Gros Ours 1990
@@ -61,6 +61,8 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			uint32 Lenteur_Treant = 6146;											// Lenteur
 			uint32 Spell_Heal_Caster = 300261;  									// Toucher guérisseur 300261/5185
 			uint32 Griffure_Bondissante = 89712;									// Griffure Bondissante (saut sur la cible + stun)
+			uint32 Cooldown_Spell_ContreAttaque = 4000;
+			uint32 Cooldown_Spell_ContreAttaque_defaut = 8000;
 
 			// Spells Equilibre
 			uint32 Spell_branche1_agro = 0;
@@ -147,10 +149,11 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				// Spell a lancer a l'agro ------------------------------------------------------------------------------------------------------------------------
 
 				// Message a l'agro forcé par spell(8)
-				if (me->m_spells[7] == 1)
-				{
-					MessageAlagro = 1;
-				}
+				if (me->m_spells[7] == 1) { MessageAlagro = 1; }
+
+				// Spell contre attaque si PV bas
+				if (me->m_spells[6] != 0) { Spell_ContreAttaque = me->m_spells[6]; }
+
 
 				me->CastSpell(me, Buf_all, true);												// Buf_all sur lui meme pour toutes les Spécialitées
 				Start_Agro = 0;
@@ -426,6 +429,8 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 						}
 						else Cooldown_Spell1 -= diff;
 
+
+
 						Heal_En_Combat_Caster(diff);
 						Mouvement_Caster(diff);
 						break;
@@ -469,6 +474,8 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 							else Cooldown_Spell3 -= diff;
 						}
 
+
+
 						Mouvement_Ours(diff);
 						break;
 
@@ -509,6 +516,8 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 							}
 							else Cooldown_Spell3 -= diff;
 						}
+
+
 
 						Mouvement_Felin(diff);
 						break;
@@ -553,6 +562,8 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 							else Cooldown_Spell3 -= diff;
 						}
 
+
+
 						Mouvement_Treant(diff);
 						break;
 
@@ -562,6 +573,8 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 
 				}
 				// ################################################################################################################################################
+
+				ContreAttaque(diff);
 				Mouvement_All();
 			}
 
@@ -824,7 +837,6 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					return true;
 				else return false;
 			}
-
 			void Tourne_Au_Tour_En_Combat()
 			{
 				if (!UpdateVictim())
@@ -861,7 +873,6 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
 				me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 			}
-
 			void Heal_En_Combat_Caster(uint32 diff)
 			{
 				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_MOVE))
@@ -876,7 +887,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 						DoCast(me, Spell_Heal_Caster);
 						Cooldown_Spell_Heal = 4500;
 					}
-
+					
 					// heal sur Friend 
 					Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 1, DistanceDeCast, true);		// pour heal friend
 					if (target = DoSelectLowestHpFriendly(DistanceDeCast))							// Distance de l'allié = 30m
@@ -892,8 +903,8 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					}
 				}
 				else Cooldown_Spell_Heal -= diff;
-			}
 
+			}
 			void Bonus_Degat_Arme_Done(int val) // 
 			{
 				// +- Bonus en % de degat des armes infligées a victim
@@ -908,7 +919,6 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				me->SetCanModifyStats(true);
 				me->UpdateAllStats();
 			}
-
 			void VisuelMana()
 			{
 				me->setPowerType(POWER_MANA);
@@ -928,6 +938,23 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				me->setPowerType(POWER_ENERGY);
 				me->SetMaxPower(POWER_ENERGY, 100);
 				me->SetPower(POWER_ENERGY, 100);
+			}
+			void ContreAttaque(uint32 diff)
+			{
+				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
+				if (Cooldown_Spell_ContreAttaque <= diff && Spell_ContreAttaque != 0)
+				{
+					if ((me->GetHealth() < (me->GetMaxHealth()*0.40)))									// Si PV =< 40%
+					{
+						Random = urand(1, 3);
+						if (Random != 1)
+						{
+							DoCastVictim(Spell_ContreAttaque);
+						}
+					}
+					Cooldown_Spell_ContreAttaque = Cooldown_Spell_ContreAttaque_defaut;
+				}
+				else Cooldown_Spell_ContreAttaque -= diff;
 			}
 
 			//void JustDied(Unit * /*victim*/) override {}

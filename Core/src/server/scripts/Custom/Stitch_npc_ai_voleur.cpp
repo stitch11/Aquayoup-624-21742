@@ -40,6 +40,7 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 			uint32 MaxMana = me->GetMaxPower(POWER_ENERGY);
 			Unit* victim = me->GetVictim();										 
 			uint32 MessageAlagro = 0;
+			uint32 Spell_ContreAttaque = 0;
 
 			// Definitions des variables Cooldown et le 1er lancement
 			uint32 Cooldown_Spell1 = 500;
@@ -53,6 +54,8 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 			uint32 Cooldown_Anti_Bug_Figer = 2000;
 			uint32 Cooldown_Npc_Emotes = urand(5000, 8000);
 			uint32 Cooldown_Lancer = 1000;
+			uint32 Cooldown_Spell_ContreAttaque = 4000;
+			uint32 Cooldown_Spell_ContreAttaque_defaut = 8000;
 
 			// Spells Divers
 			uint32 Liste_Buf_branche1[5] = { 31209, 2983, 1784, 31220, 5171 };		// Pied léger 31209 (vit+10%), Sprint 2983,  Camouflage 1784, Vocation pernicieuse 31220 (-ag+15,Armure +100%), Débiter 5171
@@ -94,10 +97,10 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 			{
 
 				// Message a l'agro forcé par spell(8)
-				if (me->m_spells[7] == 1)
-				{
-					MessageAlagro = 1;
-				}
+				if (me->m_spells[7] == 1) { MessageAlagro = 1; }
+
+				// Spell contre attaque si PV bas
+				if (me->m_spells[6] != 0) { Spell_ContreAttaque = me->m_spells[6]; }
 
 				// ################################################################################################################################################
 				// Forcer le choix de la Spécialisation par creature_template->pickpocketloot
@@ -375,6 +378,7 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 						break;
 					}
 
+					ContreAttaque(diff);
 					Mouvement_Contact(diff);
 					// ############################################################################################################################################
 
@@ -519,7 +523,6 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 				me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
 				me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 			}
-
 			void Heal_En_Combat_Melee(uint32 diff)
 			{
 				// Heal en combat ------------------------------------------------------------------------------------------------------------------------------
@@ -535,7 +538,6 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 				}
 				else Cooldown_Spell_Heal -= diff;
 			}
-
 			void Bonus_Degat_Arme_Done(int val) // 
 			{
 				// +- Bonus en % de degat des armes infligées a victim
@@ -550,7 +552,6 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 				me->SetCanModifyStats(true);
 				me->UpdateAllStats();
 			}
-			
 			void VisuelPowerEnergy()
 		{
 				me->setPowerType(POWER_ENERGY);
@@ -564,6 +565,23 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 				me->SetMaxPower(POWER_DEMONIC_FURY, 100);
 				me->SetPower(POWER_DEMONIC_FURY, 100);
 		}
+			void ContreAttaque(uint32 diff)
+			{
+				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
+				if (Cooldown_Spell_ContreAttaque <= diff && Spell_ContreAttaque != 0)
+				{
+					if ((me->GetHealth() < (me->GetMaxHealth()*0.40)))									// Si PV =< 40%
+					{
+						Random = urand(1, 3);
+						if (Random != 1)
+						{
+							DoCastVictim(Spell_ContreAttaque);
+						}
+					}
+					Cooldown_Spell_ContreAttaque = Cooldown_Spell_ContreAttaque_defaut;
+				}
+				else Cooldown_Spell_ContreAttaque -= diff;
+			}
 
 		};
 		CreatureAI* GetAI(Creature* creature) const override

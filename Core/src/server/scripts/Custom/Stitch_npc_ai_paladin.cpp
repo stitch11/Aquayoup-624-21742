@@ -41,6 +41,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			uint32 MaxMana = me->GetMaxPower(POWER_MANA);
 			Unit* victim = me->GetVictim();										 
 			uint32 MessageAlagro = 0;
+			uint32 Spell_ContreAttaque = 0;
 
 			// Definitions des variables Cooldown et le 1er lancement
 			uint32 Cooldown_Spell1 = 500;
@@ -52,6 +53,8 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			uint32 Cooldown_ResteAuContact;
 			uint32 Cooldown_Anti_Bug_Figer = 2000;
 			uint32 Cooldown_Npc_Emotes = urand(5000, 8000);
+			uint32 Cooldown_Spell_ContreAttaque = 4000;
+			uint32 Cooldown_Spell_ContreAttaque_defaut = 8000;
 
 			// Spells Divers
 			uint32 Buf_branche1 = 20164;											// Sceau de justice 20164, Sceau de clairvoyance 20165, Sceau de vérité 30801, Sceau de méditation 105361
@@ -102,10 +105,10 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			{
 
 				// Message a l'agro forcé par spell(8)
-				if (me->m_spells[7] == 1)
-				{
-					MessageAlagro = 1;
-				}
+				if (me->m_spells[7] == 1) { MessageAlagro = 1; }
+
+				// Spell contre attaque si PV bas
+				if (me->m_spells[6] != 0) { Spell_ContreAttaque = me->m_spells[6]; }
 
 				// ################################################################################################################################################
 				// Forcer le choix de la Spécialisation par creature_template->pickpocketloot
@@ -435,8 +438,8 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 
 						}
 
-
-					Mouvement_Contact(diff);
+						ContreAttaque(diff);
+						Mouvement_Contact(diff);
 
 					// ############################################################################################################################################
 
@@ -556,7 +559,6 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 				me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
 				me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 			}
-
 			void Heal_En_Combat_Heal(uint32 diff)
 			{
 				// Heal en combat ------------------------------------------------------------------------------------------------------------------------------
@@ -616,7 +618,6 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 
 
 			}
-
 			void Bonus_Degat_Arme_Done(int val) // 
 			{
 				// +- Bonus en % de degat des armes infligées a victim
@@ -631,9 +632,23 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 				me->SetCanModifyStats(true);
 				me->UpdateAllStats();
 			}
-
-
-
+			void ContreAttaque(uint32 diff)
+			{
+				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
+				if (Cooldown_Spell_ContreAttaque <= diff && Spell_ContreAttaque != 0)
+				{
+					if ((me->GetHealth() < (me->GetMaxHealth()*0.40)))									// Si PV =< 40%
+					{
+						Random = urand(1, 3);
+						if (Random != 1)
+						{
+							DoCastVictim(Spell_ContreAttaque);
+						}
+					}
+					Cooldown_Spell_ContreAttaque = Cooldown_Spell_ContreAttaque_defaut;
+				}
+				else Cooldown_Spell_ContreAttaque -= diff;
+			}
 
 
 		};
