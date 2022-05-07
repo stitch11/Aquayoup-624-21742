@@ -75,7 +75,6 @@
  //Stitch FunRate
 #include "Config.h"
 uint32 m_FunSpeedCast;
-//uint32 m_FunPowerRegen;
 
 float baseMoveSpeed[MAX_MOVE_TYPE] =
 {
@@ -15503,14 +15502,12 @@ void Unit::RewardRage(uint32 baseRage)
 
     addRage *= sWorld->getRate(RATE_POWER_RAGE_INCOME);
 
-	//Stitch FunRate m_FunPowerRegen rage ours
+
+	//Stitch Regen rage ours ------------------------------------------------------------------------------------------------------------
 //    ModifyPower(POWER_RAGE, uint32(addRage * 1));
-	uint32 m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 2);
-	if (m_FunPowerRegen > 5 || m_FunPowerRegen < 1)
-	{
-		m_FunPowerRegen = 2;
-	}
-	ModifyPower(POWER_RAGE, uint32(addRage * m_FunPowerRegen * 35));
+	ModifyPower(POWER_RAGE, uint32(addRage * 35));
+
+
 }
 
 void Unit::StopAttackFaction(uint32 faction_id)

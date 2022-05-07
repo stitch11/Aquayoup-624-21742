@@ -106,7 +106,6 @@
 
  //Stitch FunRate FunPowerRegen mana
 #include "Config.h"
-uint32 m_FunPowerRegen;
 
 
 
@@ -1944,13 +1943,6 @@ void Player::RegenerateAll()
 	if (m_regenTimer <= 500)	//
 	    return;					//
 
-	//Stitch FunRate FunPowerRegen
-	m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 2);
-
-	if (m_FunPowerRegen > 5 || m_FunPowerRegen < 1)
-	{
-		m_FunPowerRegen = 2;
-	}
 
 
 	m_regenTimerCount += m_regenTimer;
@@ -2041,36 +2033,25 @@ void Player::Regenerate(Powers power)
 	float spellHaste = GetFloatValue(UNIT_MOD_CAST_SPEED);
 
 
-	//Stitch FunRate FunPowerRegen mana 
-	m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 2);
-	if (m_FunPowerRegen > 5 || m_FunPowerRegen < 1)
-	{
-		m_FunPowerRegen = 1;
-	}
 
 
+	//Stitch Regen -------------------------------------------------------------------------------------------
 	switch (power)
 	{
+
+	case POWER_DEMONIC_FURY:              // Fureur démoniaque (Vampire) 
 	case POWER_MANA:
 	{
 		float ManaIncreaseRate = sWorld->getRate(RATE_POWER_MANA);
 
 		if (IsInCombat()) // Trinity Updates Mana in intervals of 2s, which is correct
-		{
-			//Stitch FunRate FunPowerRegen mana
-			//			addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER) *  ManaIncreaseRate * ((0.001f * m_regenTimer) + CalculatePct(0.001f, spellHaste));
-			addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER) *  ManaIncreaseRate * ((0.003f * m_regenTimer * m_FunPowerRegen) + CalculatePct(0.001f, spellHaste));
-		}
+			addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER) *  ManaIncreaseRate * ((0.001f * m_regenTimer) + CalculatePct(0.001f, spellHaste));
 		else
-		{ 
-			//Stitch FunRate FunPowerRegen mana
-//			addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER) *  ManaIncreaseRate * ((0.001f * m_regenTimer) + CalculatePct(0.001f, spellHaste));
-			addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER) *  ManaIncreaseRate * ((0.005f * m_regenTimer * m_FunPowerRegen) + CalculatePct(0.001f, spellHaste));
-		}
-
-
+			//addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER) * /* ManaIncreaseRate * */((0.001f * m_regenTimer) + CalculatePct(0.001f, spellHaste));
+			addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER) * ((0.001f * m_regenTimer) + CalculatePct(0.001f, spellHaste));	//RATE_POWER_MANA uniquement en combat
 	}
 	break;
+
 	//Stitch FunRate FunPowerRegen : Type de Power "case POWER_xxx:"
 	case POWER_RAGE:	// Regenerate rage
 	{
@@ -2081,20 +2062,13 @@ void Player::Regenerate(Powers power)
 		}
 	}
 	break;
+
 	case POWER_FOCUS:
-		//addvalue += (6.0f + CalculatePct(6.0f, rangedHaste)) * sWorld->getRate(RATE_POWER_FOCUS);
-		addvalue += ((0.5f * m_FunPowerRegen+2) + CalculatePct((0.50f * m_FunPowerRegen+2), rangedHaste)) * sWorld->getRate(RATE_POWER_FOCUS) * m_FunPowerRegen;
+		addvalue += (6.0f + CalculatePct(6.0f, rangedHaste)) * sWorld->getRate(RATE_POWER_FOCUS);
 		break;
 
-	case POWER_ENERGY:	// Regenerate energy (rogue)
-		//addvalue += (0.01f + CalculatePct(0.01f, meleeHaste)) * sWorld->getRate(RATE_POWER_ENERGY);
-		meleeHaste = meleeHaste * (m_FunPowerRegen * 4);
-		addvalue += ((0.01f * m_regenTimer ) + CalculatePct(0.01f, meleeHaste)) * sWorld->getRate(RATE_POWER_ENERGY) /* * m_FunPowerRegen*/;
-
-		break;
-
-	case POWER_DEMONIC_FURY:              // Fureur démoniaque (Vampire)                              
-		addvalue += m_FunPowerRegen;
+	case POWER_ENERGY:                                              // Regenerate energy (rogue)
+		addvalue += ((0.01f * m_regenTimer) + CalculatePct(0.01f, meleeHaste)) * sWorld->getRate(RATE_POWER_ENERGY);
 		break;
 
 	case POWER_RUNIC_POWER:
@@ -24549,13 +24523,8 @@ uint32 Player::GetRuneTypeBaseCooldown(RuneType runeType) const
 
     cooldown *=  1.0f - (hastePct / 100.0f);
 
-//Stitch FunRate FunPowerRegen Rune
-	m_FunPowerRegen = sConfigMgr->GetIntDefault("FunPowerRegen", 2);
-	if (m_FunPowerRegen > 5 || m_FunPowerRegen < 1)
-	{
-		m_FunPowerRegen = 2;
-	}
-	cooldown = cooldown *2 / (m_FunPowerRegen *2);
+
+//Stitch Regen Rune ?!
 
 
     return cooldown;

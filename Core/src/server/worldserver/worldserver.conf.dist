@@ -27,7 +27,6 @@ Aquayoup.Solocraft = 1
 # FunHealSpell			- Defaut/Arcade : 2	- Coefficient de heal & Leech des sorts  fait par un joueur (1=50% | 2=normal | 3=150% | 4=200% etc)
 # FunSpeedCast			- Defaut/Arcade : 1	- Coefficient de temps pour lancer un sort (affichage non modifié) (1=Normal | 2=200% | 3=300% : tres lent)
 # FunArmor					- Defaut/Arcade : 1	- Coefficient d'armure (1=normal | 2=200% | 3=300% etc)
-# FunPowerRegen 		- Defaut/Arcade : 2	- Coefficient du regen (de 1:lent a 5:rapide) de mana , energie , focus , Fureur démoniaque , runes
 
 FunAllStat = 2
 FunDamageDefaut = 1
@@ -35,7 +34,7 @@ FunDamageSpell = 2
 FunHealSpell = 2
 FunSpeedCast = 1
 FunArmor	= 1
-FunPowerRegen = 2
+
 
 
 
@@ -2050,7 +2049,7 @@ Visibility.Notify.Period.InBGArenas   = 1000
 #                     1 - (Rate.Loyalty)
 
 Rate.Health            = 1
-Rate.Mana              = 1
+Rate.Mana              = 2
 Rate.Rage.Income       = 1
 Rate.Rage.Loss         = 1
 Rate.RunicPower.Income = 1
