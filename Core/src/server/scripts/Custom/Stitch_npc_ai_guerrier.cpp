@@ -176,7 +176,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 					me->LoadEquipment(3, true);													// creature_equip_template 2
 
 					// Tirages aléatoires des spells  
-					Spell_branche3_agro = branche2_agro[urand(0, 3)];
+					Spell_branche3_agro = branche3_agro[urand(0, 1)];
 					Spell_branche3_1 = branche3_1[urand(0, 1)];
 					Spell_branche3_2 = branche3_2[urand(0, 1)];
 					Spell_branche3_3 = branche3_3[urand(0, 2)];

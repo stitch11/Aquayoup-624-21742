@@ -365,7 +365,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 					if (Cooldown_Spell3 <= diff)
 					{
 						DoCastVictim(Spell_branche2_3);
-						Cooldown_Spell3 = urand(45000, 45000);
+						Cooldown_Spell3 = urand(40000, 45000);
 					}
 					else Cooldown_Spell3 -= diff;
 
