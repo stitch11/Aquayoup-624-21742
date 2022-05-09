@@ -1013,7 +1013,14 @@ void Unit::CalculateSpellDamageTaken(SpellNonMeleeDamage* damageInfo, int32 dama
                     // Apply crit_damage bonus for melee spells
                     if (Player* modOwner = GetSpellModOwner())
                         modOwner->ApplySpellMod(spellInfo->Id, SPELLMOD_CRIT_DAMAGE_BONUS, crit_bonus);
-                    damage += crit_bonus;
+
+
+
+					// Stitch critique Domage;
+					//damage += crit_bonus;
+					damage += crit_bonus / urand(2, 4);	
+
+
 
                     // Apply SPELL_AURA_MOD_ATTACKER_RANGED_CRIT_DAMAGE or SPELL_AURA_MOD_ATTACKER_MELEE_CRIT_DAMAGE
                     float critPctDamageMod = 0.0f;
@@ -8439,7 +8446,7 @@ uint32 Unit::SpellCriticalDamageBonus(SpellInfo const* spellProto, uint32 damage
     // Calculate critical bonus
     int32 crit_bonus = damage;
     float crit_mod = 0.0f;
-
+	
     switch (spellProto->DmgClass)
     {
         case SPELL_DAMAGE_CLASS_MELEE:                      // for melee based spells is 100%
@@ -8474,7 +8481,9 @@ uint32 Unit::SpellCriticalDamageBonus(SpellInfo const* spellProto, uint32 damage
 uint32 Unit::SpellCriticalHealingBonus(SpellInfo const* /*spellProto*/, uint32 damage, Unit* /*victim*/)
 {
     // Calculate critical bonus
-    int32 crit_bonus = damage;
+	// Stitch critique Heal;
+	int32 crit_bonus = damage / urand(2, 4);
+    //int32 crit_bonus = damage;
 
     damage += crit_bonus;
 
