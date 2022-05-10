@@ -14690,6 +14690,11 @@ uint32 Unit::GetModelForForm(ShapeshiftForm form) const
 //Stitch Toutes les classes pour toutes les races changeform MOONKIN
 			case FORM_MOONKIN_FORM:
 			{
+
+
+				break;	// Stitch : suppression visuel de la forme selenien : parce que j'ai du mala m'identifier a une chouette :)
+
+
 				switch (_race)
 				{
 					case RACE_NIGHTELF:
