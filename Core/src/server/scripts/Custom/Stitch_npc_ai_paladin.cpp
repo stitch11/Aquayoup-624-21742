@@ -137,7 +137,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 					me->CastSpell(me, Buf_branche1, true);
 					me->CastSpell(me, Buf_branche1a, true);
 					me->LoadEquipment(1, true);													// creature_equip_template 1
-					Bonus_Armure(125);
+					Bonus_Armure(125);															// Bonus d'armure +25%
 
 					Spell_branche1_agro = branche1_agro[urand(0, 3)];
 					Spell_branche1_1 = branche1_1[urand(0, 1)];
@@ -150,7 +150,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 					me->CastSpell(me, Buf_branche2, true);										// Buf2 sur lui meme
 					me->CastSpell(me, Buf_branche2a, true);
 					me->LoadEquipment(2, true);													// creature_equip_template 2
-					Bonus_Armure(125);
+					Bonus_Armure(125);															// Bonus d'armure +25%
 
 					Spell_branche2_agro = branche2_agro[urand(0, 3)];
 					Spell_branche2_1 = branche2_1[urand(0, 1)];
@@ -163,14 +163,13 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 					me->CastSpell(me, Buf_branche3, true);										// Buf3 sur lui meme
 					me->CastSpell(me, Buf_branche3a, true);
 					me->LoadEquipment(3, true);													// creature_equip_template 3
-					Bonus_Armure(125);
+					Bonus_Armure(125);															// Bonus d'armure +25%
 
 					Spell_branche3_agro = branche3_agro[urand(0, 2)];
 					Spell_branche3_1 = branche3_1[urand(0, 1)];
 					Spell_branche3_2 = branche3_2[urand(0, 1)];
 					Spell_branche3_3 = branche3_3[urand(0, 1)];
 
-					Bonus_Armure(120);															// Bonus d'armure +20%
 					break;
 				}
 				// ################################################################################################################################################
@@ -318,7 +317,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 							else Cooldown_RegenMana -= diff;
 
 							// Combat ---------------------------------------------------------------------------------------------------------------------------------
-							Bonus_Degat_Arme_Done(-50);										// Bonus de dégat 
+							Bonus_Degat_Arme_Done(-10);										// Bonus de dégat 
 
 																							// Spell1 sur la cible
 							if (Cooldown_Spell1 <= diff)
@@ -344,7 +343,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 							}
 							else Cooldown_Spell3 -= diff;
 
-							Bonus_Degat_Arme_Done(50);										// Retrait Bonus de dégat 
+							Bonus_Degat_Arme_Done(10);										// Retrait Bonus de dégat 
 
 							Heal_En_Combat_Melee(diff);
 							break;
@@ -361,7 +360,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 							}
 							else Cooldown_RegenMana -= diff;
 
-							Bonus_Degat_Arme_Done(-75);
+							Bonus_Degat_Arme_Done(-10);
 
 							// Combat ---------------------------------------------------------------------------------------------------------------------------------
 							// Spell1 sur la cible
@@ -390,7 +389,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 
 
 							Heal_En_Combat_Heal(diff);
-							Bonus_Degat_Arme_Done(75);										// Reduction des degats parce que trop trop puissant
+							Bonus_Degat_Arme_Done(10);										// Reduction des degats parce que trop trop puissant
 
 							break;
 
@@ -404,7 +403,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 							}
 							else Cooldown_RegenMana -= diff;
 
-							Bonus_Degat_Arme_Done(-50);
+							Bonus_Degat_Arme_Done(-20);
 
 							// Combat ---------------------------------------------------------------------------------------------------------------------------------
 							// Spell1 sur la cible chaque (Sort Régulié)
@@ -431,7 +430,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 							}
 							else Cooldown_Spell3 -= diff;
 
-							Bonus_Degat_Arme_Done(50);
+							Bonus_Degat_Arme_Done(20);
 
 							Heal_En_Combat_Melee(diff);
 							break;
