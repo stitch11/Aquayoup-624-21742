@@ -323,7 +323,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						else Cooldown_RegenRage -= diff;
 
 						// Combat ---------------------------------------------------------------------------------------------------------------------------------
-						Bonus_Degat_Arme_Done(-75);
+						Bonus_Degat_Arme_Done(-50);
 
 						// Spell1 sur la cible
 						
@@ -357,7 +357,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						}
 						else Cooldown_Spell3 -= diff;
 						
-						Bonus_Degat_Arme_Done(75);
+						Bonus_Degat_Arme_Done(50);
 
 						break;
 
@@ -417,7 +417,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						else Cooldown_RegenRage -= diff;
 
 						// Combat ---------------------------------------------------------------------------------------------------------------------------------
-						Bonus_Degat_Arme_Done(-75);
+						Bonus_Degat_Arme_Done(-50);
 
 						// Spell1 sur la cible chaque (Sort Régulié)
 						if (Cooldown_Spell1 <= diff)
@@ -444,7 +444,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						}
 						else Cooldown_Spell3 -= diff;
 
-						Bonus_Degat_Arme_Done(75);
+						Bonus_Degat_Arme_Done(50);
 						break;
 
 					}
