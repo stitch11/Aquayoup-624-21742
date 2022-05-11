@@ -730,22 +730,21 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
-				//DoMeleeAttackIfReady();
+				DoMeleeAttackIfReady();
 
 				// Si la cible >= 6m (pour éviter bug de rester figé) ---------------------------------------------------------------------------------------------
-				if (Dist >= 6 && Cooldown_Anti_Bug_Figer <= diff)
+				if (Dist >= 8 && Cooldown_Anti_Bug_Figer <= diff)
 				{
 					float x = 0.0f, y = 0.0f, z = 0.0f;
 					uint32 mapid = 0;
 
-
-					x = (victim->GetPositionX() + urand(0, 4) - 2);
-					y = (victim->GetPositionY() + urand(0, 4) - 2);
+					x = (victim->GetPositionX() /*+ urand(0, 4) - 2*/);
+					y = (victim->GetPositionY() /*+ urand(0, 4) - 2*/);
 					z = victim->GetPositionZ();
 					mapid = victim->GetMapId();
-					//me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
+					me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
 					me->GetMotionMaster()->MovePoint(mapid, x, y, z);
-					//me->GetMotionMaster()->MoveChase(victim, 1, frand(0, 6.2836f));			// Pour suivre la cible avec un angle
+					me->GetMotionMaster()->MoveChase(victim, 1, frand(0, 6.2836f));			// Pour suivre la cible avec un angle
 					Cooldown_Anti_Bug_Figer = 2000;
 				}
 				else Cooldown_Anti_Bug_Figer -= diff;
