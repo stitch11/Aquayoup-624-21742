@@ -1072,7 +1072,7 @@ void AddSC_rogue_spell_scripts()
     new spell_rog_killing_spree();
     new spell_rog_master_of_subtlety();
     new spell_rog_preparation();
-    new spell_rog_recuperate();
+//    new spell_rog_recuperate();
     new spell_rog_rupture();
 //    new spell_rog_shiv();
     new spell_rog_stealth();
