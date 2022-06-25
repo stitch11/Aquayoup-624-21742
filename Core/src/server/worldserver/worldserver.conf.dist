@@ -11,12 +11,6 @@ GuarderSight = 50.000000
 Guild.SaveInterval = 15
 Guild.UndeletableLevel = 4
 
-# Guilde ###
-# Stitch.Guild.Nom : Nom de la guilde par defaut (Tout nouveau perso en fait partie)
-# Stitch.Guild.Message : Guilde par defaut , /gquit pour la quiter , voir worldserver.conf pour changer le nom.
-Stitch.Guild.Nom = "AquaYoup"
-Stitch.Guild.Message = "Guilde par defaut , /gquit pour la quiter , voir worldserver.conf pour changer le nom"
-
 # Solocraft actif pour les instances (0 ou 1)
 Aquayoup.Solocraft = 1
 
@@ -34,6 +28,100 @@ FunDamageSpell = 2
 FunHealSpell = 2
 FunSpeedCast = 1
 FunArmor	= 1
+
+
+
+# Guilde ###########################################
+# 5 rangs de base comme suit :
+# - 0 : Chef de guilde
+# - 1 : Officiers
+# - 2 : Veterants
+# - 3 : Membres
+# - 4 : Initiés
+#
+# 8 onglets activés 
+# Le nom des rangs sont d'origine soit : Chef de guilde, Officier, Veterant, Membre, Initié
+#
+# Stitch.Guild.Nom : Nom de la guilde par defaut (Tout nouveau perso en fait partie)
+Stitch.Guild.Nom = "AquaYoup"
+
+# Stitch.Guild.Message : Guilde par defaut , /gquit pour la quitter , voir worldserver.conf pour changer le nom.
+Stitch.Guild.Message = "Guilde par defaut , /gquit pour la quitter , voir worldserver.conf pour changer le nom"
+
+# Stitch.Guild.monnaie : Argent de la guilde en pièce de cuivre
+Stitch.Guild.monnaie = 1000
+
+# Stitch.Guild.NomRang : Nom des rangs de la guilde
+Stitch.Guild.NomRang0 = "Chef de guilde"
+Stitch.Guild.NomRang1 = "Officier"
+Stitch.Guild.NomRang2 = "Veterant"
+Stitch.Guild.NomRang3 = "Membre"
+Stitch.Guild.NomRang4 = "Initie"
+
+# Stitch.Guild.DroitRang : Droits de modification des options de la guilde pour les Stitch.Guild.DroitRang0-4
+# GuildRankRights
+# {
+#    GR_RIGHT_NONE                       = 0x00000000,
+#    GR_RIGHT_GCHATLISTEN                = 0x00000001,
+#    GR_RIGHT_GCHATSPEAK                 = 0x00000002,
+#    GR_RIGHT_OFFCHATLISTEN              = 0x00000004,
+#    GR_RIGHT_OFFCHATSPEAK               = 0x00000008,
+#    GR_RIGHT_INVITE                     = 0x00000010,
+#    GR_RIGHT_REMOVE                     = 0x00000020,
+#    GR_RIGHT_ROSTER                     = 0x00000040,
+#    GR_RIGHT_PROMOTE                    = 0x00000080,
+#    GR_RIGHT_DEMOTE                     = 0x00000100,
+#    GR_RIGHT_UNK_200                    = 0x00000200,
+#    GR_RIGHT_UNK_400                    = 0x00000400,
+#    GR_RIGHT_UNK_800                    = 0x00000800,
+#    GR_RIGHT_SETMOTD                    = 0x00001000,
+#    GR_RIGHT_EDIT_PUBLIC_NOTE           = 0x00002000,
+#    GR_RIGHT_VIEWOFFNOTE                = 0x00004000,
+#    GR_RIGHT_EOFFNOTE                   = 0x00008000,
+#    GR_RIGHT_MODIFY_GUILD_INFO          = 0x00010000,
+#    GR_RIGHT_WITHDRAW_GOLD_LOCK         = 0x00020000,                   // remove money withdraw capacity
+#    GR_RIGHT_WITHDRAW_REPAIR            = 0x00040000,                   // withdraw for repair
+#    GR_RIGHT_WITHDRAW_GOLD              = 0x00080000,                   // withdraw gold
+#    GR_RIGHT_CREATE_GUILD_EVENT         = 0x00100000,                   // wotlk
+#    GR_RIGHT_ALL                        = 0x00DDFFBF
+# }
+Stitch.Guild.DroitRang0 = 14548927
+Stitch.Guild.DroitRang1 = 14548927
+Stitch.Guild.DroitRang2 = 4980763
+Stitch.Guild.DroitRang3 = 4980755
+Stitch.Guild.DroitRang4 = 786435
+
+# Stitch.Guild.Or : Argent retirable par grade et par jour, en pièce de cuivre
+Stitch.Guild.Or0 = 4294967295
+Stitch.Guild.Or1 = 1000000
+Stitch.Guild.Or2 = 500000
+Stitch.Guild.Or3 = 100000
+Stitch.Guild.Or4 = 10000
+
+# Stitch.Guild.DroitObj : Droits de retrait et d'ajout d'objets
+# GuildBankRights
+# {
+#    GUILD_BANK_RIGHT_VIEW_TAB           = 0x01,
+#    GUILD_BANK_RIGHT_PUT_ITEM           = 0x02,
+#    GUILD_BANK_RIGHT_UPDATE_TEXT        = 0x04,
+#    GUILD_BANK_RIGHT_DEPOSIT_ITEM       = GUILD_BANK_RIGHT_VIEW_TAB | GUILD_BANK_RIGHT_PUT_ITEM,
+#    GUILD_BANK_RIGHT_FULL               = -1
+# }
+Stitch.Guild.DroitObj0 = -1
+Stitch.Guild.DroitObj1 = 7
+Stitch.Guild.DroitObj2 = 3
+Stitch.Guild.DroitObj3 = 3
+Stitch.Guild.DroitObj4 = 3
+
+# Stitch.Guild.Obj : Nombre d'objets retirable par grade et par jour
+Stitch.Guild.Obj0 = -1
+Stitch.Guild.Obj1 = 500
+Stitch.Guild.Obj2 = 500
+Stitch.Guild.Obj3 = 100
+Stitch.Guild.Obj4 = 0
+########################
+
+
 
 
 
