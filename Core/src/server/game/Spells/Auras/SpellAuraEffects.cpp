@@ -1911,8 +1911,9 @@ void AuraEffect::HandleAuraModShapeshift(AuraApplication const* aurApp, uint8 mo
                 if (form == FORM_CAT_FORM)
                 {
                     int32 basePoints = std::min<int32>(oldPower, FurorChance);
-                    target->SetPower(POWER_ENERGY, 0);
+                    //target->SetPower(POWER_ENERGY, 0);
                     target->CastCustomSpell(target, 17099, &basePoints, NULL, NULL, true, NULL, this);
+
                 }
                 else if (roll_chance_i(FurorChance))
                     target->CastSpell(target, 17057, true);
