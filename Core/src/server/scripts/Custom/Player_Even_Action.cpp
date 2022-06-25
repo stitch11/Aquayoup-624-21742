@@ -236,6 +236,31 @@ case CLASS_ROGUE:
 			player->setPowerType(POWER_ENERGY);
 			player->SetMaxPower(POWER_ENERGY, 100);
 		}
+
+		//Le voleur vampire n'utilisera plus ces sorts
+		player->RemoveSpell(883);
+		player->RemoveSpell(1784);
+		player->RemoveSpell(6770);
+		player->RemoveSpell(1752);
+		player->RemoveSpell(31224);
+		player->RemoveSpell(2094);
+		player->RemoveSpell(73651);
+		player->RemoveSpell(1833);
+		player->RemoveSpell(1856);
+		player->RemoveSpell(8676);
+		player->RemoveSpell(703);
+		player->RemoveSpell(121411);
+		player->RemoveSpell(114018);
+		player->RemoveSpell(14185);
+		player->RemoveSpell(1776);
+		player->RemoveSpell(5938);
+		player->RemoveSpell(1966);
+		player->RemoveSpell(2098);
+		player->RemoveSpell(5277);
+		player->RemoveSpell(408);
+		player->RemoveSpell(108209);
+
+
 	}
     break;
 case CLASS_PRIEST:
@@ -251,6 +276,13 @@ case CLASS_DEATH_KNIGHT:
         player->LearnSpell(50977, true); // Porte de la mort
         player->LearnSpell(73313, true); // Destrier de la mort cramoisi
     }
+
+	if (player->GetUInt32Value(PLAYER_FIELD_CURRENT_SPEC_ID) == TALENT_SPEC_DEATHKNIGHT_CHAOS)
+	{
+		player->RemoveSpell(43265);//
+		player->RemoveSpell(49576);//
+	}
+
     break;
 case CLASS_SHAMAN:
     break;
