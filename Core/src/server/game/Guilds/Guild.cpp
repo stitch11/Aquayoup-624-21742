@@ -3496,7 +3496,7 @@ bool Guild::CreationDeLaStitchGuild(Player* _player, std::string const& _nomGuil
 
 			SQLTransaction trans = CharacterDatabase.BeginTransaction();
 			
-			_ModifyBankMoney(trans, sConfigMgr->GetIntDefault("Stitch.Guild.monnaie", 1000000000),true); // modification du nombre de pieces
+			_ModifyBankMoney(trans, sConfigMgr->GetIntDefault("Stitch.Guild.monnaie", 10000),true); // modification du nombre de pieces
 			CharacterDatabase.CommitTransaction(trans); // ecriture des pieces dans la db
 
 			uint8 tabId = _GetPurchasedTabsSize();
