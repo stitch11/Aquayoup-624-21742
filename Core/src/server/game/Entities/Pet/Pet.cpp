@@ -847,6 +847,8 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 
     SetModifierValue(UNIT_MOD_ARMOR, BASE_VALUE, float(petlevel*50));
 
+
+
     SetAttackTime(BASE_ATTACK, BASE_ATTACK_TIME);
     SetAttackTime(OFF_ATTACK, BASE_ATTACK_TIME);
     SetAttackTime(RANGED_ATTACK, BASE_ATTACK_TIME);
@@ -1214,6 +1216,16 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 					m_charmInfo->InitPetActionBar();
 					break;
 				}
+				case 78158: // Garde funeste 
+				{
+					setPowerType(POWER_ENERGY);
+					SetMaxPower(POWER_ENERGY, GetMaxPower(POWER_ENERGY));
+					SetModifierValue(UNIT_MOD_ARMOR, BASE_VALUE, float(GetOwner()->GetArmor()) * 0.25f);  // Bonus Armor (25% of player armor)
+					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float((petlevel * 9)));
+					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float((petlevel * 10)));
+					m_charmInfo->InitPetActionBar();
+					break;
+				}
 				case 417: // Felhunter/Chasseur corrompu 
 				{
 					setPowerType(POWER_ENERGY);
@@ -1344,7 +1356,8 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 					m_charmInfo->InitPetActionBar();
 					break;
 				}
-				
+
+
 				
 				default:
 				//Stitch Degat par defaut des Guardians
