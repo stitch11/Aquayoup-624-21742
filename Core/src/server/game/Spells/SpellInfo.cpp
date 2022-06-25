@@ -2578,8 +2578,8 @@ std::vector<SpellInfo::CostData> SpellInfo::CalcPowerCost(Unit const* caster, Sp
                 continue;
             }
 
-
-			/*
+			//Stitch manacost
+			/* 
             // Base powerCost
             int32 powerCost = power->ManaCost;
             // PCT cost from total amount
@@ -2610,15 +2610,15 @@ std::vector<SpellInfo::CostData> SpellInfo::CalcPowerCost(Unit const* caster, Sp
             }
 			*/
 
-			// Stitch Consommation mana + ajout ManaCostPerLevel , Ils ne sont pas cumulables ------------------------
+			//Stitch Consommation mana + ajout ManaCostPerLevel , Ils ne sont pas cumulables ------------------------
 			//if (power->PowerType == POWER_MANA) { powerCost = powerCost / 6.578; }
 
-			int32 powerCost_TMP = 0;
 
-			// Stitch Mana en Entier ------------------------------------------------
+
+			//Stitch Mana en Entier ------------------------------------------------
 			int32 powerCost = power->ManaCost;
 
-			// Stitch Mana en Percentage --------------------------------------------
+			//Stitch Mana en Percentage --------------------------------------------
 			if (power->ManaCostPercentage)
 			{
 				switch (power->PowerType)
@@ -2633,7 +2633,7 @@ std::vector<SpellInfo::CostData> SpellInfo::CalcPowerCost(Unit const* caster, Sp
 				}
 			}
 
-			// Stitch Mana par Level ------------------------------------------------
+			//Stitch Mana par Level ------------------------------------------------
 			if (power->ManaCostPerLevel)
 			{
 				switch (power->PowerType)
@@ -2648,7 +2648,7 @@ std::vector<SpellInfo::CostData> SpellInfo::CalcPowerCost(Unit const* caster, Sp
 				}
 			}
 
-			// Stitch Mana par Seconde ----------------------------------------------
+			//Stitch Mana par Seconde ----------------------------------------------
 			if (power->ManaCostPerSecond)
 			{
 				uint32 Cooldown_Mana_par_Seconde = 5000;
@@ -2669,9 +2669,11 @@ std::vector<SpellInfo::CostData> SpellInfo::CalcPowerCost(Unit const* caster, Sp
 				else Cooldown_Mana_par_Seconde -= 1;
 			}
 
-			// Stitch Mana % par Seconde ---------------------------------------------- (ne marche pas
+			//Stitch Mana % par Seconde ---------------------------------------------- (ne marche pas
 			if (power->ManaCostPercentagePerSecond)
 			{
+
+
 				uint32 Cooldown_Mana_Percentage_par_Seconde = 5000;
 				if (Cooldown_Mana_Percentage_par_Seconde <= 0)
 				{
@@ -2681,7 +2683,9 @@ std::vector<SpellInfo::CostData> SpellInfo::CalcPowerCost(Unit const* caster, Sp
 						powerCost += int32(CalculatePct(caster->GetMaxHealth(), power->ManaCostPercentagePerSecond));
 						break;
 					case POWER_MANA:
-						powerCost += int32(CalculatePct(caster->GetCreateMana(), power->ManaCostPercentagePerSecond));
+						//powerCost += int32(CalculatePct(caster->GetCreateMana(), power->ManaCostPercentagePerSecond));
+						powerCost += caster->GetMaxPower(POWER_MANA) / 100 * power->ManaCostPercentagePerSecond;
+
 						break;
 					}
 
@@ -2690,18 +2694,13 @@ std::vector<SpellInfo::CostData> SpellInfo::CalcPowerCost(Unit const* caster, Sp
 				else Cooldown_Mana_Percentage_par_Seconde -= 1;
 			}
 
-
-
-			
-			
-
-
-
-			// Stitch Mana Commun a tout type ------------------------------------------------
+			//Stitch Mana Commun a tout type ------------------------------------------------
 			if (power->ManaCostPerLevel)
 			{
 				switch (power->PowerType)
 				{
+				case POWER_MANA:
+					break;
 				case POWER_RAGE:
 				case POWER_FOCUS:
 				case POWER_ENERGY:
@@ -2716,16 +2715,6 @@ std::vector<SpellInfo::CostData> SpellInfo::CalcPowerCost(Unit const* caster, Sp
 					continue;
 				}
 			}
-
-
-
-
-
-
-
-
-
-
 
 
             if (power->HealthCostPercentage)

@@ -138,7 +138,7 @@ extern int main(int argc, char** argv)
     TC_LOG_INFO("server.worldserver", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     TC_LOG_INFO("server.worldserver", "xx Trinity 19/05/2016 - TrinityCore/tree/498725f3de8d18b26986c2c2e0ceec6c384a8016 xx");
 	TC_LOG_INFO("server.worldserver", "xx                                                                                xx");
-	TC_LOG_INFO("server.worldserver", "xx  Derniere maj du core 04/2021 - Stitch                                         xx");
+	TC_LOG_INFO("server.worldserver", "xx  Derniere maj du core 06/2022 - Stitch                                         xx");
     TC_LOG_INFO("server.worldserver", "xx                                                                                xx");
 	TC_LOG_INFO("server.worldserver", "xx * Toutes les Classes pour toutes les Races                                     xx");
 	TC_LOG_INFO("server.worldserver", "xx * Extension de classe Vampire pour le voleur                                   xx");
