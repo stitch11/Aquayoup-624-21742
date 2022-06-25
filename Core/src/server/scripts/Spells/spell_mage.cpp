@@ -351,7 +351,7 @@ struct ConjureRefreshmentData
 uint8 const MAX_CONJURE_REFRESHMENT_SPELLS = 9;
 ConjureRefreshmentData const _conjureData[MAX_CONJURE_REFRESHMENT_SPELLS] =
 {
-    { 33, 43, 92739 },
+    { 5, 43, 92739 },
     { 44, 53, 92799 },
     { 54, 63, 92802 },
     { 64, 73, 92805 },
