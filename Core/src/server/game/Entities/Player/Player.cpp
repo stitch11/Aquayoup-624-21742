@@ -2075,7 +2075,7 @@ void Player::Regenerate(Powers power)
 		if (!IsInCombat())
 		{
 			addvalue += -1.0f;      // remove 1 every 10 sec, first one removed 20s after leaving combat
-			UpdateAllStats();		// Stitch : pour le bug de rafraichissement de la puissance sacrée
+			UpdateAllStats();		//Stitch : pour le bug de rafraichissement de la puissance sacrée
 		}
 	}
 	break;

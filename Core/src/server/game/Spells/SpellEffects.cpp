@@ -419,7 +419,7 @@ void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
 
 
 
-		// Stitch Spell custom
+		//Stitch Spell custom
 		// -------------------------------------------------------------------------------
 		switch (m_spellInfo->Id)                     // better way to check unknown
 		{
@@ -3023,7 +3023,7 @@ void Spell::EffectWeaponDmg(SpellEffIndex effIndex)
 															
 															
 	//----------------------------------------------------------------------------------------------------------------------
-	// Stitch effect weapon
+	//Stitch effect weapon
     switch (m_spellInfo->SpellFamilyName)
     {
         case SPELLFAMILY_WARRIOR:

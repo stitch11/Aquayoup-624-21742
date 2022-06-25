@@ -1016,7 +1016,7 @@ void Unit::CalculateSpellDamageTaken(SpellNonMeleeDamage* damageInfo, int32 dama
 
 
 
-					// Stitch critique Domage;
+					//Stitch critique Domage;
 					//damage += crit_bonus;
 					damage += crit_bonus / urand(2, 4);	
 
@@ -8481,7 +8481,7 @@ uint32 Unit::SpellCriticalDamageBonus(SpellInfo const* spellProto, uint32 damage
 uint32 Unit::SpellCriticalHealingBonus(SpellInfo const* /*spellProto*/, uint32 damage, Unit* /*victim*/)
 {
     // Calculate critical bonus
-	// Stitch critique Heal;
+	//Stitch critique Heal;
 	int32 crit_bonus = damage / urand(2, 4);
     //int32 crit_bonus = damage;
 
@@ -14692,7 +14692,7 @@ uint32 Unit::GetModelForForm(ShapeshiftForm form) const
 			{
 
 
-				break;	// Stitch : suppression visuel de la forme selenien : parce que j'ai du mala m'identifier a une chouette :)
+				break;	//Stitch : suppression visuel de la forme selenien : parce que j'ai du mal a m'identifier a une chouette :)
 
 
 				switch (_race)
@@ -14775,6 +14775,7 @@ uint32 Unit::GetModelForForm(ShapeshiftForm form) const
 
 uint32 Unit::GetModelForTotem(PlayerTotemType totemType)
 {
+
     switch (getRace())
     {
 //Stitch Totem

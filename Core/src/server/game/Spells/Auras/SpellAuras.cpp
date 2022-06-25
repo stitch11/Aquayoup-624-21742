@@ -1591,13 +1591,11 @@ void Aura::HandleAuraSpecificPeriodics(AuraApplication const* aurApp, Unit* cast
         return;
 
 //Stitch FunRate periodic damage & heal
-	//uint32 m_FunDamageSpell;
-	//uint32 m_FunHealSpell;
 	uint32 m_FunDamageSpell = sConfigMgr->GetIntDefault("FunDamageSpell", 2);
 	uint32 m_FunHealSpell = sConfigMgr->GetIntDefault("FunHealSpell", 2);
 
-	if (m_FunDamageSpell < 1)	{		m_FunDamageSpell = 1;	}
-	if (m_FunHealSpell < 1)		{ m_FunHealSpell = 1; }
+	if (m_FunDamageSpell < 1)	{	m_FunDamageSpell = 1;	}
+	if (m_FunHealSpell < 1)		{	m_FunHealSpell = 1;		}
 
     for (AuraEffect* effect : GetAuraEffects())
     {
