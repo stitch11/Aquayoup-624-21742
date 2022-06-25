@@ -419,6 +419,41 @@ void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
 
 
 
+		// Stitch Spell custom
+		// -------------------------------------------------------------------------------
+		switch (m_spellInfo->Id)                     // better way to check unknown
+		{
+		
+		case 22568:		// ------ Druide Morsure féroce 
+		{
+			uint32 Combo_Points = GetCaster()->ToPlayer()->GetComboPoints();
+			if (Combo_Points > 0)
+			{
+				damage += (damage * Combo_Points * 2);
+				m_caster->SetPower(POWER_COMBO_POINTS, 0);
+			}
+			break;
+		}
+		case 22570:		// ------ Druide Estropier
+		{
+			uint32 Combo_Points = GetCaster()->ToPlayer()->GetComboPoints();
+			if (Combo_Points > 0)
+			{
+				damage += (damage * Combo_Points / 3);
+				m_caster->SetPower(POWER_COMBO_POINTS, 0);
+			}
+			break;
+		}
+
+		
+
+
+		}
+		// -------------------------------------------------------------------------------
+
+
+
+
         switch (m_spellInfo->SpellFamilyName)
         {
             case SPELLFAMILY_GENERIC:
@@ -433,6 +468,8 @@ void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
 
                     damage /= count;                    // divide to all targets
                 }
+
+
 
                 switch (m_spellInfo->Id)                     // better way to check unknown
                 {
@@ -466,17 +503,10 @@ void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
 
 
 
-
-
-
-
-
-
                }
                 break;
             }
-			//----------------------------------------------------------------------------------------------------------------------
-			// Stitch effect Spell
+
             case SPELLFAMILY_WARRIOR:
             {
                 // Victory Rush
@@ -550,24 +580,6 @@ void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
 			}
 			case SPELLFAMILY_DRUID:
             {
-				// -------------------------------------------------------------------------------
-				// Druide Morsure féroce 
-				if (m_spellInfo->Id == 22568)
-				{
-					uint8 Combo_Points = GetCaster()->ToPlayer()->GetComboPoints();
-					if (Combo_Points > 0)
-					{
-						damage = damage + (damage / (6 - Combo_Points));
-						m_caster->SetPower(POWER_COMBO_POINTS, 0);
-					}
-					break;
-				}
-				// -------------------------------------------------------------------------------
-
-
-
-
-
 				/*
                 // Ferocious Bite
                 if (m_caster->GetTypeId() == TYPEID_PLAYER && m_spellInfo->SpellFamilyFlags[3] & 0x1000)
@@ -578,6 +590,7 @@ void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
                     AddPct(damage, energy * 4);
                 }
 				*/
+
                 break;
             }
 
