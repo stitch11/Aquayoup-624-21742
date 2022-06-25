@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour https:\\Aquayoup.123.fr
-// AI generique npc par classe : Lancier Ver 2022-05-2 (caster simple, combat a distance si 8-30m, sinon combat au corp a corp 0-8m)
+// AI generique npc par classe : Lancier Ver 2022-05-23 (caster simple, combat a distance si 8-30m, sinon combat au corp a corp 0-8m)
 //
 // ScriptName = Stitch_npc_ai_lancier : npc d'exemple : 15100014
 // le "lancer une arme" , "Tir a l'arc" ou "Tir au fusil" est automatique de 8 a 40m et est tributaire de pickpocketloot
@@ -36,7 +36,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			Stitch_npc_ai_lancierAI(Creature* creature) : ScriptedAI(creature) { }
 
 			uint32 Random;
-			uint32 DistanceDeCast = 30;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
+			uint32 DistanceDeCast = 40;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
 			uint32 ResteADistance = 15;												// Distance max a laquelle un npc s'approchera
 			uint32 Dist;															// Distance entre le npc et sa cible
 			Unit* victim = me->GetVictim();										 
@@ -401,6 +401,9 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			}
 			void ContreAttaque(uint32 diff)
 			{
+				if (!UpdateVictim())
+					return;
+
 				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
 				if (Cooldown_Spell_ContreAttaque <= diff && Spell_ContreAttaque != 0)
 				{

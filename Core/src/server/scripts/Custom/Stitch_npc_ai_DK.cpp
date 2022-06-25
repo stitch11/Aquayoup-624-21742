@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : DK Ver 2022-05-02
+// AI generique npc par classe : DK Ver 2022-05-23
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_dk',`AIName` = '' WHERE (entry = 15100009);
@@ -35,7 +35,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 			uint32 NbrDeSpe = 4;													// Nombre de Spécialisations
 			uint32 ForceBranche;
 			uint32 Random;
-			uint32 DistanceDeCast = 30;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
+			uint32 DistanceDeCast = 40;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
 			uint32 ResteADistance = 5;												// Distance max a laquelle un npc s'approchera
 			uint32 Dist;															// Distance entre le npc et sa cible
 			uint32 Mana;
@@ -182,7 +182,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 
 					Pet_Dk = Liste_Pet_Dk[urand(0, 4)];
 
-					//Bonus_Armure(125);															// Bonus d'armure +25%
+					Bonus_Armure(150);															// Bonus d'armure +50%
 					ResteADistance = 5;
 					break;
 
@@ -199,7 +199,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 
 					Pet_Dk = Liste_Pet_Dk[urand(0, 4)];
 
-					//Bonus_Armure(175);															// Bonus d'armure +75%
+					Bonus_Armure(150);															// Bonus d'armure +50%
 					ResteADistance = 5;
 					break;
 
@@ -216,7 +216,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 
 					Pet_Dk = Liste_Pet_Dk[urand(0, 4)];
 
-					//Bonus_Armure(125);
+					Bonus_Armure(150);															// Bonus d'armure +50%
 					ResteADistance = 5;
 					break;
 
@@ -233,7 +233,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 
 					Spell_Cible_trop_loin = 47476;												// Nova de sang 300059, Strangulation 47476
 
-					//Bonus_Armure(100);
+					Bonus_Armure(150);															// Bonus d'armure +50%
 
 					// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
 					if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
@@ -291,7 +291,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 				me->RemoveAura(Buf_branche4);
 				me->RemoveAura(Buf_branche4a);
 
-				Bonus_Armure(100);													// Retire bonus d'armure
+				Bonus_Armure(100);														// Retire bonus d'armure
 				VisuelPowerRunic();
 			}
 			void JustReachedHome() override
@@ -305,10 +305,9 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 				me->RemoveAura(Buf_branche4);
 				me->RemoveAura(Buf_branche4a);
 
-				Bonus_Armure(100);													// Retire bonus d'armure
+				Bonus_Armure(100);														// Retire bonus d'armure
 
 				me->SetReactState(REACT_AGGRESSIVE);
-				//me->SetSpeedRate(MOVE_RUN, 1.01f);									// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
 				VisuelPowerRunic();
 			}
 			void UpdateAI(uint32 diff) override
@@ -718,7 +717,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 				// ------ ALLER A LA CIBLE -------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Anti_Bug_Figer <= diff)
 				{
-					if (Dist >= ResteADistance)
+					if (Dist >= ResteADistance && !me->HasAura(122) && !me->HasAura(3600) && !me->HasAura(6474))
 					{
 						float x = 0.0f, y = 0.0f, z = 0.0f;
 						uint32 mapid = 0;
@@ -741,14 +740,14 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 						{
 							DoCastVictim(Spell_Cible_trop_loin);							// Poigne de la mort - 1 chance sur 2 ou impie  
 							Cooldown_Cible_trop_loin = urand(15000, 20000);
-							Cooldown_ResteADistance = 4000;									// Sinon bugue BOND Aleatoire ou Avance !?
+							Cooldown_ResteADistance = 4000;									
 						}
 				}
 				else Cooldown_Cible_trop_loin -= diff;
 
 
 				// Si la cible < 8m : avance ou tourne au tour de sa victime
-				if (Dist < 8)
+				if (Dist < 8 && !me->HasAura(122) && !me->HasAura(3600) && !me->HasAura(6474))
 				{
 					if (Cooldown_ResteADistance <= diff)
 					{
@@ -829,10 +828,26 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 			}
 			bool AuraLenteur()
 			{
-				// recherche si aura de lenteur presente
-				// Eclair_de_givre 116/71318, Lenteur 31589, Armure_de_givre 6136, Horion_de_givre 8056/12548, Brise_genou 9080/1715, Fievre_de_givre 69917/67719
-				// Toucher_de_glace 45477/300197, Javelot_de_givre 300051/300237, Gel_de_zone 60192, Handicap 116095, Sceau de justice 20170
-				if (me->HasAura(116) || me->HasAura(31589) || me->HasAura(6136) || me->HasAura(8056) || me->HasAura(9080) || me->HasAura(69917) || me->HasAura(45477) || me->HasAura(300051) || me->HasAura(60192) || me->HasAura(116095) || me->HasAura(71318) || me->HasAura(12548) || me->HasAura(1715) || me->HasAura(67719) || me->HasAura(300197) || me->HasAura(300237) || me->HasAura(20170))
+				if (me->HasAura(116)		// Eclair_de_givre 116 
+					|| me->HasAura(71318)	// Eclair_de_givre 71318
+					|| me->HasAura(122)		// Nova de givre
+					|| me->HasAura(31589)	// Lenteur 31589
+					|| me->HasAura(6136) 	// Armure_de_givre 6136
+					|| me->HasAura(8056) 	// Horion_de_givre 8056
+					|| me->HasAura(12548) 	// Horion_de_givre 12548
+					|| me->HasAura(9080) 	// Brise_genou 9080
+					|| me->HasAura(1715) 	// Brise_genou 1715
+					|| me->HasAura(69917) 	// Fievre_de_givre 69917
+					|| me->HasAura(67719) 	// Fievre_de_givre 67719
+					|| me->HasAura(45477) 	// Toucher_de_glace 45477
+					|| me->HasAura(300051) 	// Javelot_de_givre 300051
+					|| me->HasAura(300237) 	// Javelot_de_givre 300237
+					|| me->HasAura(60192) 	// Gel_de_zone 60192
+					|| me->HasAura(116095) 	// Handicap 116095
+					|| me->HasAura(300197) 	// Toucher_de_glace 300197
+					|| me->HasAura(20170)	// Sceau de justice 20170
+					|| me->HasAura(3600)	// Totem de lien terrestre
+					|| me->HasAura(6474))	// Totem de lien terrestre passif
 					return true;
 				else return false;
 			}
@@ -929,6 +944,9 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 			}
 			void ContreAttaque(uint32 diff)
 			{
+				if (!UpdateVictim())
+					return;
+
 				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
 				if (Cooldown_Spell_ContreAttaque <= diff && Spell_ContreAttaque != 0)
 				{

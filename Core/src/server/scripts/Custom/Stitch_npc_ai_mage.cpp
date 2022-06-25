@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : MAGE Ver 2022-05-02
+// AI generique npc par classe : MAGE Ver 2022-05-23
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_mage',`AIName` = '' WHERE (entry = 15100005);
@@ -34,7 +34,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 			uint32 NbrDeSpe = 3;													// Nombre de Spécialisations 
 			uint32 ForceBranche;
 			uint32 Random;
-			uint32 DistanceDeCast = 30;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
+			uint32 DistanceDeCast = 40;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
 			uint32 ResteADistance = 15;												// Distance max a laquelle un npc s'approchera
 			uint32 Dist;															// Distance entre le npc et sa cible
 			uint32 Mana;
@@ -97,7 +97,8 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 			uint32 branche3_1[4] = { 71318, 71318, 71318,34425 };						// Eclair de givre 71318,Trait d'eau 34425	
 			uint32 branche3_2[2] = { 49906, 49906 };									// Javelot de glace 49906
 			uint32 branche3_3[2] = { 120, 122 };										// Cône de froid 120 (Recharge 12s,12m) , Nova de givre 122
-			
+			uint32 cone_de_froid = 120;
+
 			// Emotes
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
 
@@ -151,6 +152,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 					me->CastSpell(me, Buf_branche1, true);															// Buf1 sur lui meme
 
 					me->LoadEquipment(1, true);																		// creature_equip_template 1
+					Bonus_Armure(125);																				// Bonus d'armure +25%
 
 					// Tirages aléatoires des spells Arcane 
 					Spell_branche1_agro = branche1_agro[urand(0, 2)];
@@ -164,6 +166,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 					me->CastSpell(me, Buf_branche2, true);															// Buf2 sur lui meme
 
 					me->LoadEquipment(2, true);																		// creature_equip_template 2
+					Bonus_Armure(125);																				// Bonus d'armure +25%
 
 					// Tirages aléatoires des spells Feu 
 					Spell_branche2_agro = branche2_agro[urand(0, 3)];
@@ -177,6 +180,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 					me->CastSpell(me, Buf_branche3, true);															// Buf3 sur lui meme
 
 					me->LoadEquipment(3, true);																		// creature_equip_template 3
+					Bonus_Armure(125);																				// Bonus d'armure +25%
 
 					// Tirages aléatoires des spells Givre 
 					Spell_branche3_agro = branche3_agro[urand(0, 3)];
@@ -211,9 +215,9 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 				Start_Agro = 0;
 				RetireBugDeCombat();
 				me->AddUnitState(UNIT_STATE_EVADE);
-				//me->SetSpeedRate(MOVE_RUN, 1.5f);										// Vitesse de déplacement
 				me->GetMotionMaster()->MoveTargetedHome();								// Retour home
 				me->RemoveAllControlled();												// renvois pet
+				Bonus_Armure(100);														// Retire bonus d'armure
 			}
 			void JustReachedHome() override
 			{
@@ -223,7 +227,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 				me->RemoveAura(Buf_all);
 
 				me->SetReactState(REACT_AGGRESSIVE);
-				//me->SetSpeedRate(MOVE_RUN, 1.01f);										// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
+				Bonus_Armure(100);														// Retire bonus d'armure
 			}
 			void UpdateAI(uint32 diff) override
 			{
@@ -244,7 +248,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 				// ################################################################################################################################################
 				// En Combat ######################################################################################################################################
 				// ################################################################################################################################################
-				if (UpdateVictim() /*&& !me->HasUnitState(UNIT_STATE_MOVE) || me->HasUnitState(UNIT_STATE_CASTING)*/)
+				if (UpdateVictim() )
 				{
 					Mana = me->GetPower(POWER_MANA);
 					Unit* victim = me->GetVictim();
@@ -304,6 +308,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						me->ClearUnitState(UNIT_STATE_MOVING);
 					}
 
+
 					switch (BrancheSpe)
 					{
 					case 1: // Spécialisation Arcane ##############################################################################################################
@@ -320,7 +325,6 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						// Spell3 sur la cible 
 						if (Cooldown_Spell3 <= diff)
 						{
-							//me->CastSpell(victim, Spell_branche1_3, true);
 							DoCastVictim(Spell_branche1_3);
 							Cooldown_Spell3 = 10000;
 						}
@@ -335,13 +339,10 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						else Cooldown_Spell2 -= diff;
 
 						// Spell1 sur la cible 
-						if (Cooldown_Spell1 <= diff)
+						if (Cooldown_Spell1 <= diff && !me->HasUnitState(UNIT_STATE_MOVE))
 						{
-							if (!me->HasUnitState(UNIT_STATE_MOVE))
-							{
 								DoCastVictim(Spell_branche1_1);
-								Cooldown_Spell1 = 4000;
-							}
+								Cooldown_Spell1 = 3000;
 						}
 						else Cooldown_Spell1 -= diff;
 						break;
@@ -361,7 +362,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						if (Cooldown_Spell1 <= diff && !me->HasUnitState(UNIT_STATE_MOVE))
 						{
 							DoCastVictim(Spell_branche2_1);
-							Cooldown_Spell1 = 4000;
+							Cooldown_Spell1 = 3500;
 						}
 						else Cooldown_Spell1 -= diff;
 
@@ -369,7 +370,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						if (Cooldown_Spell2 <= diff)
 						{
 							DoCastVictim(Spell_branche2_2);
-							Cooldown_Spell2 = urand(3000, 4000);
+							Cooldown_Spell2 = urand(2500, 3500);
 						}
 						else Cooldown_Spell2 -= diff;
 
@@ -401,34 +402,42 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						else Cooldown_RegenMana -= diff;
 
 						// Combat --------------------------------------------------------------------------------------------------------------------------------------
+
 						// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot)
-						if (Cooldown_Spell1 <= diff && !me->HasUnitState(UNIT_STATE_MOVE))
+
+
+						if (Cooldown_Spell3 <= diff && Dist <= 10  )
 						{
-							DoCastVictim(Spell_branche3_1/*, true*/);
-							Cooldown_Spell1 = 4000;
+							if ( Spell_branche3_3 == cone_de_froid && me->isInFront(victim, Dist) || Spell_branche3_3 != cone_de_froid )
+							{
+								DoCastVictim(Spell_branche3_3, true);
+								Cooldown_Spell3 = urand(15000, 20000);
+							}
 						}
-						else Cooldown_Spell1 -= diff;
+						else Cooldown_Spell3 -= diff;
 
 						// Spell2 sur la cible chaque (Sort secondaire plus lent)
 						if (Cooldown_Spell2 <= diff)
 						{
 							DoCastVictim(Spell_branche3_2, true);
-							Cooldown_Spell2 = 3000;
+							Cooldown_Spell2 = urand(2500, 3500);
 						}
 						else Cooldown_Spell2 -= diff;
 
-						// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot)
-						if (Cooldown_Spell3 <= diff && Dist <= 10)
+						// Spell1 sur la cible chaque (Sort Régulié)
+						if (Cooldown_Spell1 <= diff && !me->HasUnitState(UNIT_STATE_MOVE) )
 						{
-							DoCastVictim(Spell_branche3_3, true);
-							Cooldown_Spell3 = urand(10000, 12000);
+							DoCastVictim(Spell_branche3_1/*, true*/);
+							Cooldown_Spell1 = 3500;
 						}
-						else Cooldown_Spell3 -= diff;
+						else Cooldown_Spell1 -= diff;
+
 						break;
 
 					}
 
 					// ################################################################################################################################################
+
 					Heal_En_Combat_Caster(diff);
 					ContreAttaque(diff);
 					Mouvement_Caster(diff);
@@ -498,16 +507,12 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						z = me->GetPositionZ();
 						mapid = victim->GetMapId();
 						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
-						Cooldown_ResteADistance = 3000;
+						Cooldown_ResteADistance = 2000;
 					}
 				}
 				else Cooldown_ResteADistance -= diff;
 
 				// Speed normal si distance > 10m ------------------------------------------------------------------------------------------------------------------
-				if (Dist> 10 && me->GetSpeedRate(MOVE_RUN) == 1.1f)
-				{
-					//me->SetSpeedRate(MOVE_RUN, 1.01f);
-				}
 
 				// Mouvement OFF si Mana > 5% & distance >= 6m & <= 10m ---------------------------------------------------------------------------------------------
 				if ((Mana > MaxMana / 20) && (Dist >= ResteADistance - 4) && (Dist <= ResteADistance))
@@ -544,25 +549,19 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 				if (Cooldown_Spell_Heal <= diff)
 				{
 					// heal sur lui meme-------------------------------------------------------------------------------------------------------------------------------
-					if ((me->GetHealth() < (me->GetMaxHealth()*0.50)))								// Si PV < 50%
+					if ((me->GetHealth() < (me->GetMaxHealth()*0.40)))								// Si PV < 40%
 					{
 						DoCastVictim(Spell_Heal_Caster);
-						Cooldown_Spell_Heal = 60000;
+						Cooldown_Spell_Heal = 45000;
 					}
 				}
 				else Cooldown_Spell_Heal -= diff;
 			}
-			bool AuraLenteur()
-			{
-				// recherche si aura de lenteur presente
-				// Eclair_de_givre 116/71318, Lenteur 31589, Armure_de_givre 6136, Horion_de_givre 8056/12548, Brise_genou 9080/1715, Fievre_de_givre 69917/67719
-				// Toucher_de_glace 45477/300197, Javelot_de_givre 300051/300237, Gel_de_zone 60192, Handicap 116095, Sceau de justice 20170
-				if (me->HasAura(116) || me->HasAura(31589) || me->HasAura(6136) || me->HasAura(8056) || me->HasAura(9080) || me->HasAura(69917) || me->HasAura(45477) || me->HasAura(300051) || me->HasAura(60192) || me->HasAura(116095) || me->HasAura(71318) || me->HasAura(12548) || me->HasAura(1715) || me->HasAura(67719) || me->HasAura(300197) || me->HasAura(300237) || me->HasAura(20170))
-					return true;
-				else return false;
-			}
 			void ContreAttaque(uint32 diff)
 			{
+				if (!UpdateVictim())
+					return;
+
 				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
 				if (Cooldown_Spell_ContreAttaque <= diff && Spell_ContreAttaque != 0)
 				{
@@ -578,7 +577,38 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 				}
 				else Cooldown_Spell_ContreAttaque -= diff;
 			}
-
+			void Bonus_Armure(int val) // 
+			{
+				// +- Bonus d'armure 100% = pas de bonus/malus   ex : Bonus_Armure(115); // Bonus d'armure +15%
+				me->SetModifierValue(UNIT_MOD_ARMOR, BASE_VALUE, me->GetArmor() * (val / 100));
+				me->SetCanModifyStats(true);
+				me->UpdateAllStats();
+			}
+			bool AuraLenteur()
+			{
+				if (me->HasAura(116)		// Eclair_de_givre 116 
+					|| me->HasAura(71318)	// Eclair_de_givre 71318
+					|| me->HasAura(122)		// Nova de givre
+					|| me->HasAura(31589)	// Lenteur 31589
+					|| me->HasAura(6136) 	// Armure_de_givre 6136
+					|| me->HasAura(8056) 	// Horion_de_givre 8056
+					|| me->HasAura(12548) 	// Horion_de_givre 12548
+					|| me->HasAura(9080) 	// Brise_genou 9080
+					|| me->HasAura(1715) 	// Brise_genou 1715
+					|| me->HasAura(69917) 	// Fievre_de_givre 69917
+					|| me->HasAura(67719) 	// Fievre_de_givre 67719
+					|| me->HasAura(45477) 	// Toucher_de_glace 45477
+					|| me->HasAura(300051) 	// Javelot_de_givre 300051
+					|| me->HasAura(300237) 	// Javelot_de_givre 300237
+					|| me->HasAura(60192) 	// Gel_de_zone 60192
+					|| me->HasAura(116095) 	// Handicap 116095
+					|| me->HasAura(300197) 	// Toucher_de_glace 300197
+					|| me->HasAura(20170)	// Sceau de justice 20170
+					|| me->HasAura(3600)	// Totem de lien terrestre
+					|| me->HasAura(6474))	// Totem de lien terrestre passif
+					return true;
+				else return false;
+			}
 
 		};
 		

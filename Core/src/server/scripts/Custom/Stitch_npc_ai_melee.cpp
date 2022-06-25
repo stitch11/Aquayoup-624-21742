@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour https:\\Aquayoup.123.fr
-// AI generique npc par classe : Mélée Ver 2022-05-02 (warrior simple, combat au corp a corp)
+// AI generique npc par classe : Mélée Ver 2022-05-15 (warrior simple, combat au corp a corp)
 // 
 // ScriptName = Stitch_npc_ai_melee : npc d'exemple : 15100012
 // spell1 : Attaque principale
@@ -32,9 +32,9 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 			Stitch_npc_ai_meleeAI(Creature* creature) : ScriptedAI(creature) { }
 
 			uint32 Random = 0;
-			uint32 DistanceDeCast = 30;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
+			uint32 DistanceDeCast = 40;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
 			uint32 ResteADistance = 5;												// Distance max a laquelle un npc s'approchera
-			uint32 Dist = 0;															// Distance entre le npc et sa cible
+			uint32 Dist = 0;														// Distance entre le npc et sa cible
 			Unit* victim = me->GetVictim();										 
 			uint32 MessageAlagro = 0;
 			uint32 Spell_ContreAttaque = 0;
@@ -61,7 +61,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 			uint32 liste_spell_1[8] = { 29426, 126799, 118326, 172851, 38742, 99409, 100431, 115530 };		// Frappe héroïque 29426, Frappe tranchante 126799, Attaque vicieuse 118326, Enchaînement 172851, Enchaînement gangrené 38742, Enchaînement noir 99409, Enchaînement enflammé 100431, Fendoir spirituel 115530
 			uint32 Spell_2 = 0;
 			uint32 liste_spell_2[9] = { 127171, 131662, 8147, 118532, 125436, 772, 772, 8147, 8147 };		// Fendoir vicieux 15/lvl + 2/lvl/1s cumulable 5 fois 127171, Coups de couteau 131662, Entaille infectée 118532, Découpe d'os 125436, Pourfendre 772, Coup de tonnerre 8147
-			uint32 Spell_evade = 108843;																	// Vitesse flamboyante 6s 150% 108843
+			uint32 Spell_evade = 137573;																	// vitesse (+70%/4s) 
 			uint32 Spell_trop_Loin = 100;																	// Charge 100
 
 
@@ -288,7 +288,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 				// Si la cible >= 6m (pour éviter bug de rester figé) ---------------------------------------------------------------------------------------------
 				if (Cooldown_Anti_Bug_Figer <= diff)
 				{
-					if (Dist >= 6)
+					if (Dist >= 6 && !me->HasAura(122) && !me->HasAura(3600) && !me->HasAura(6474))
 					{
 						float x = 0.0f, y = 0.0f, z = 0.0f;
 						uint32 mapid = 0;
@@ -311,7 +311,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 					if (Dist < 8)
 					{
 					Random = urand(1, 4);
-					if (Random == 1 || Random == 2)
+					if ((Random == 1 || Random == 2) && !me->HasAura(122) && !me->HasAura(3600) && !me->HasAura(6474))
 					{
 						Tourne_Au_Tour_En_Combat();											// 2 chances sur 4 tourne au tour de sa victime
 					}
@@ -330,7 +330,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 					if (Dist >= 10 && Dist <= 25)
 					{
 					Random = urand(1, 4);
-						if (Random = 1 && Spell_trop_Loin !=0)
+						if (Random == 1 && Spell_trop_Loin !=0)
 						{
 							DoCastVictim(Spell_trop_Loin);
 						}
@@ -408,6 +408,9 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 			}
 			void ContreAttaque(uint32 diff)
 			{
+				if (!UpdateVictim())
+					return;
+
 				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
 				if (Cooldown_Spell_ContreAttaque <= diff && Spell_ContreAttaque != 0)
 				{
@@ -423,6 +426,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 				}
 				else Cooldown_Spell_ContreAttaque -= diff;
 			}
+
 
 		};
 

@@ -1,6 +1,6 @@
 //###########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : DRUIDE Ver 2022-05-02
+// AI generique npc par classe : DRUIDE Ver 2022-05-18
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_druide',`AIName` = '' WHERE (entry = 15100001);
@@ -33,7 +33,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			uint32 BrancheSpe = 1;													// Choix de la Spécialisation : Equilibre=1, Ours=2, Felin=3, Tréant=4
 			uint32 NbrDeSpe = 4;													// Nombre de Spécialisations
 			uint32 ForceBranche;
-			uint32 DistanceDeCast = 30;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
+			uint32 DistanceDeCast = 40;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
 			uint32 ResteADistance = 5;												// Distance max a laquelle un npc s'approchera
 			uint32 Dist;															// Distance entre le npc et sa cible
 			uint32 Random;
@@ -191,7 +191,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					me->CastSpell(me, Buf_branche2, true);										// Buf2 sur lui meme
 					me->LoadEquipment(2, true);													// creature_equip_template 2
 
-					Bonus_Armure(200);															// Bonus d'armure +100%
+					Bonus_Armure(250);															// Bonus d'armure +150%
 
 					// Pour visuel seulement
 					me->SetDisplayId(Modelid_Branche2);											// Modelid Ours
@@ -227,7 +227,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					me->CastSpell(me, Buf_branche4, true);										// Buf4 sur lui meme
 					me->LoadEquipment(0, true);													// creature_equip_template 0
 
-					Bonus_Armure(100);															// Bonus d'armure +0%
+					Bonus_Armure(200);															// Bonus d'armure +100%
 
 					// Pour visuel seulement
 					me->SetDisplayId(Modelid_Branche4);											// Modelid Tréant - Petite-Branche 57040
@@ -302,7 +302,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			}
 			void UpdateAI(uint32 diff) override
 			{
-				if (me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED) || me->HasUnitState(UNIT_STATE_CANNOT_TURN) || me->HasUnitState(UNIT_STATE_CONTROLLED) || me->HasUnitState(UNIT_STATE_POSSESSED) || me->HasUnitState(UNIT_STATE_CONFUSED_MOVE))
+				if (me->HasUnitState(UNIT_STATE_CONTROLLED) /*||me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED) || me->HasUnitState(UNIT_STATE_CANNOT_TURN) || me->HasUnitState(UNIT_STATE_POSSESSED) || me->HasUnitState(UNIT_STATE_CONFUSED_MOVE)*/)
 					return;
 				// ################################################################################################################################################
 				// Emotes hors combat & mouvement #################################################################################################################
@@ -429,8 +429,6 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 						}
 						else Cooldown_Spell1 -= diff;
 
-
-
 						Heal_En_Combat_Caster(diff);
 						Mouvement_Caster(diff);
 						break;
@@ -474,8 +472,6 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 							else Cooldown_Spell3 -= diff;
 						}
 
-
-
 						Mouvement_Ours(diff);
 						break;
 
@@ -488,6 +484,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 							Cooldown_RegenMana = 1000;
 						}
 						else Cooldown_RegenMana -= diff;
+
 
 						// Combat ---------------------------------------------------------------------------------------------------------------------------------
 						if (Dist < 6)
@@ -516,8 +513,6 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 							}
 							else Cooldown_Spell3 -= diff;
 						}
-
-
 
 						Mouvement_Felin(diff);
 						break;
@@ -640,7 +635,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 						z = me->GetPositionZ();
 						mapid = victim->GetMapId();
 						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
-						Cooldown_ResteADistance = 3000;
+						Cooldown_ResteADistance = 2000;
 					}
 				}
 				else Cooldown_ResteADistance -= diff;
@@ -693,14 +688,15 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				DoMeleeAttackIfReady();														// Combat en mélée
 
 				// Si la cible >= 8m (pour éviter bug de rester figé) ---------------------------------------------------------------------------------------------
-				if (Dist >= 8 && Cooldown_Anti_Bug_Figer <= diff)
+				if (Dist >= 8 && Cooldown_Anti_Bug_Figer <= diff && !me->HasAura(122) && !me->HasAura(3600) && !me->HasAura(6474))
 				{
-					float x, y, z;
+					float x = 0.0f, y = 0.0f, z = 0.0f;
+					uint32 mapid = 0;
 					x = victim->GetPositionX();
 					y = victim->GetPositionY();
 					z = victim->GetPositionZ();
 					me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
-					me->GetMotionMaster()->MovePoint(0xFFFFFE, x, y, z);
+					me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 					me->GetMotionMaster()->MoveChase(victim, 1, frand(0, 6.2836f));			// Pour suivre la cible avec un angle
 					Cooldown_Anti_Bug_Figer = 2000;
 				}
@@ -733,53 +729,67 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				DoMeleeAttackIfReady();
 
 				// Si la cible >= 6m (pour éviter bug de rester figé) ---------------------------------------------------------------------------------------------
-				if (Dist >= 8 && Cooldown_Anti_Bug_Figer <= diff)
-				{
-					float x = 0.0f, y = 0.0f, z = 0.0f;
-					uint32 mapid = 0;
 
-					x = (victim->GetPositionX() /*+ urand(0, 4) - 2*/);
-					y = (victim->GetPositionY() /*+ urand(0, 4) - 2*/);
-					z = victim->GetPositionZ();
-					mapid = victim->GetMapId();
-					me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
-					me->GetMotionMaster()->MovePoint(mapid, x, y, z);
-					me->GetMotionMaster()->MoveChase(victim, 1, frand(0, 6.2836f));			// Pour suivre la cible avec un angle
-					Cooldown_Anti_Bug_Figer = 2000;
+				if (Cooldown_Anti_Bug_Figer <= diff)
+				{
+					if (Dist >= 6 && !me->HasAura(122) && !me->HasAura(3600) && !me->HasAura(6474))
+					{
+						float x = 0.0f, y = 0.0f, z = 0.0f;
+						uint32 mapid = 0;
+						x = victim->GetPositionX();
+						y = victim->GetPositionY();
+						z = victim->GetPositionZ();
+						me->GetClosePoint(x, y, z, me->GetObjectSize() / 2, 2);
+						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
+						me->GetMotionMaster()->MoveChase(victim, 1, frand(0, 6.2836f));			// Pour suivre la cible avec un angle
+						Cooldown_Anti_Bug_Figer = 1000;
+
+						if (AuraLenteur() == false)
+						{
+							me->SetSpeedRate(MOVE_RUN, 1.3f);									// Uniquement si non ralenti par un spell joueur
+						}
+					}
 				}
 				else Cooldown_Anti_Bug_Figer -= diff;
 
-				// Si la cible est entre 8 & 30m : Griffure bondissante --------------------------------------------------------------------------------------------------------
+				// Si la cible est entre 8 & 20m : Griffure bondissante --------------------------------------------------------------------------------------------------------
 				if (Cooldown_Charge <= diff)
 				{
-					Random = urand(1, 4);
-				if ((Dist >= 8) && (Dist <= DistanceDeCast))
-				{
-					if (Random == 1)
+					if ((Dist >= 8) && (Dist <= 20))
 					{
-						DoCastVictim(Griffure_Bondissante);									// Griffure bondissante - 1 chance sur 4    
+						Random = urand(1, 4);
+						if (Random == 1)
+						{
+							DoCastVictim(Griffure_Bondissante);									// Griffure bondissante - 1 chance sur 4 
+						}
+						Cooldown_Charge = urand(15000, 20000);
+						Cooldown_ResteADistance = urand(2000, 3000);							// Sinon bugue BOND Aleatoire ou Avance !?
 					}
-					Cooldown_Charge = urand(15000, 20000);
-					Cooldown_ResteADistance = urand(2000, 4000);							// Sinon bugue BOND Aleatoire ou Avance !?
-				}
-			}
-				else Cooldown_Charge -= diff;
+				} else Cooldown_Charge -= diff;
 
 
-				// Si la cible <= 8m : BOND Aleatoire ou tourne au tour de sa victime
-				if (Dist <= 8 && (Cooldown_ResteADistance <= diff))
+				// Si la cible < 6m : BOND Aleatoire ou tourne au tour de sa victime ------------------------------------------------------------------------------------------
+				if (Cooldown_ResteADistance <= diff)
 				{
-					Random = urand(1, 5);
-					if (Random == 1)
+					if (Dist < 6 && !me->HasAura(122) && !me->HasAura(3600) && !me->HasAura(6474))
 					{
-						DoCast(me, BOND_Aleatoire);											// 1 chance sur 5 BOND Aleatoire 70485 Au contact
+						if (AuraLenteur() == false)
+						{
+							me->SetSpeedRate(MOVE_RUN, 1.2f);									// Uniquement si non ralenti par un spell joueur
+						}
+
+						Random = urand(1, 5);
+						if (Random == 1)
+						{
+							DoCast(me, BOND_Aleatoire);											// 1 chance sur 5 BOND Aleatoire 70485 Au contact
+						}
+						else
+						{
+							// Au contact tourne au tour de sa victime --------------------------------------------------------------------------------------------------
+							Tourne_Au_Tour_En_Combat();											// 4 chance sur 5 avance Au contact
+						}
+						Cooldown_ResteADistance = urand(3500, 5000);
 					}
-					else
-					{
-						// Au contact tourne au tour de sa victime --------------------------------------------------------------------------------------------------
-						Tourne_Au_Tour_En_Combat();											// 4 chance sur 5 avance Au contact
-					}
-					Cooldown_ResteADistance = urand(2500, 4500);
 				}
 				else Cooldown_ResteADistance -= diff;
 
@@ -796,7 +806,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				DoMeleeAttackIfReady();															// Combat en mélée
 
 				// Si la cible >= 8m (pour éviter bug de rester figé) ---------------------------------------------------------------------------------------------
-				if (Dist >= 8 && Cooldown_Anti_Bug_Figer <= diff)
+				if (Dist >= 8 && Cooldown_Anti_Bug_Figer <= diff && !me->HasAura(122) && !me->HasAura(3600) && !me->HasAura(6474))
 				{
 					float x, y, z;
 					x = victim->GetPositionX();
@@ -828,15 +838,6 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				else Cooldown_Charge -= diff;
 
 			}
-			bool AuraLenteur()
-			{
-				// recherche si aura de lenteur presente
-				// Eclair_de_givre 116/71318, Lenteur 31589, Armure_de_givre 6136, Horion_de_givre 8056/12548, Brise_genou 9080/1715, Fievre_de_givre 69917/67719
-				// Toucher_de_glace 45477/300197, Javelot_de_givre 300051/300237, Gel_de_zone 60192, Handicap 116095, Sceau de justice 20170
-				if (me->HasAura(116) || me->HasAura(31589) || me->HasAura(6136) || me->HasAura(8056) || me->HasAura(9080) || me->HasAura(69917) || me->HasAura(45477) || me->HasAura(300051) || me->HasAura(60192) || me->HasAura(116095) || me->HasAura(71318) || me->HasAura(12548) || me->HasAura(1715) || me->HasAura(67719) || me->HasAura(300197) || me->HasAura(300237) || me->HasAura(20170))
-					return true;
-				else return false;
-			}
 			void Tourne_Au_Tour_En_Combat()
 			{
 				if (!UpdateVictim())
@@ -852,8 +853,9 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				y = (victim->GetPositionY() + urand(0, 4) - 2);
 				z = victim->GetPositionZ();
 				mapid = victim->GetMapId();
-				//me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
+				me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
 				me->GetMotionMaster()->MovePoint(mapid, x, y, z);
+				DoMeleeAttackIfReady();
 			}
 			void Avance_3m_En_Combat()
 			{
@@ -941,6 +943,9 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			}
 			void ContreAttaque(uint32 diff)
 			{
+				if (!UpdateVictim())
+					return;
+
 				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
 				if (Cooldown_Spell_ContreAttaque <= diff && Spell_ContreAttaque != 0)
 				{
@@ -955,6 +960,31 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					Cooldown_Spell_ContreAttaque = Cooldown_Spell_ContreAttaque_defaut;
 				}
 				else Cooldown_Spell_ContreAttaque -= diff;
+			}
+			bool AuraLenteur()
+			{
+				if (me->HasAura(116)		// Eclair_de_givre 116 
+					|| me->HasAura(71318)	// Eclair_de_givre 71318
+					|| me->HasAura(122)		// Nova de givre
+					|| me->HasAura(31589)	// Lenteur 31589
+					|| me->HasAura(6136) 	// Armure_de_givre 6136
+					|| me->HasAura(8056) 	// Horion_de_givre 8056
+					|| me->HasAura(12548) 	// Horion_de_givre 12548
+					|| me->HasAura(9080) 	// Brise_genou 9080
+					|| me->HasAura(1715) 	// Brise_genou 1715
+					|| me->HasAura(69917) 	// Fievre_de_givre 69917
+					|| me->HasAura(67719) 	// Fievre_de_givre 67719
+					|| me->HasAura(45477) 	// Toucher_de_glace 45477
+					|| me->HasAura(300051) 	// Javelot_de_givre 300051
+					|| me->HasAura(300237) 	// Javelot_de_givre 300237
+					|| me->HasAura(60192) 	// Gel_de_zone 60192
+					|| me->HasAura(116095) 	// Handicap 116095
+					|| me->HasAura(300197) 	// Toucher_de_glace 300197
+					|| me->HasAura(20170)	// Sceau de justice 20170
+					|| me->HasAura(3600)	// Totem de lien terrestre
+					|| me->HasAura(6474))	// Totem de lien terrestre passif
+					return true;
+				else return false;
 			}
 
 			//void JustDied(Unit * /*victim*/) override {}

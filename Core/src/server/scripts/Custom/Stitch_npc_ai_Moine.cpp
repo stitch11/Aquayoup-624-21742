@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour Aquayoup
-// AI generique npc par classe : MOINE Ver 2022-05-02
+// AI generique npc par classe : MOINE Ver 2022-05-16
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_voleur',`AIName` = '' WHERE (entry = 15100010);
@@ -34,7 +34,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 			uint32 NbrDeSpe = 3;													// Nombre de Spécialisations
 			uint32 ForceBranche;
 			uint32 Random;
-			uint32 DistanceDeCast = 30;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
+			uint32 DistanceDeCast = 40;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
 			uint32 ResteADistance = 5;												// Distance max a laquelle un npc s'approchera
 			uint32 Dist;															// Distance entre le npc et sa cible
 			uint32 Mana = 0;
@@ -146,9 +146,9 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 					me->CastSpell(me, Buf_branche1, true);
 					Buf_branche1a = Liste_Buf_branche1a[urand(0, 1)];							
 					me->CastSpell(me, Buf_branche1a, true);
-
 					Spell_branche1_4 = Liste_branche1_4[urand(0, 2)];
 
+					Bonus_Armure(150);															// Bonus d'armure +50%
 					VisuelPowerEnergy();
 					break;
 
@@ -159,6 +159,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 					Buf_branche2a = Liste_Buf_branche2a[urand(0, 1)];							
 					me->CastSpell(me, Buf_branche2a, true);
 
+					Bonus_Armure(150);															// Bonus d'armure +50%
 					VisuelPowerMana();
 					VisuelPowerEnergy();
 					break;
@@ -168,8 +169,9 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 					me->CastSpell(me, Buf_branche3, true);										
 					Buf_branche3a = Liste_Buf_branche3a[urand(0, 2)];							
 					me->CastSpell(me, Buf_branche3a, true);
-
 					Spell_branche3_3 = Liste_branche3_3[urand(0, 1)];
+
+					Bonus_Armure(150);															// Bonus d'armure +50%
 					VisuelPowerEnergy();
 					break;
 
@@ -223,7 +225,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 				me->RemoveAura(Buf_branche3);
 				me->RemoveAura(Buf_branche3a);
 
-				Bonus_Armure(100);
+				Bonus_Armure(100);														// Retire bonus d'armure
 				VisuelPowerMana();
 
 				me->SetReactState(REACT_AGGRESSIVE);
@@ -541,7 +543,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 				// ------ ALLER A LA CIBLE -------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Anti_Bug_Figer <= diff)
 				{
-					if (Dist >= ResteADistance+3)
+					if (Dist >= ResteADistance+3 && !me->HasAura(122) && !me->HasAura(3600) && !me->HasAura(6474))
 					{
 
 						float x = 0.0f, y = 0.0f, z = 0.0f;
@@ -573,7 +575,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 				else Cooldown_Trop_Loin -= diff;
 
 				// Si la cible < 8m -------------------------------------------------------------------------------------------------------------------------------------------
-				if ((Dist < 8) & (Cooldown_ResteADistance <= diff) )
+				if ((Dist < 8) & (Cooldown_ResteADistance <= diff) && !me->HasAura(122) && !me->HasAura(3600) && !me->HasAura(6474))
 				{
 					Random = urand(1, 4);
 					if (Random == 1 || Random == 2)
@@ -717,6 +719,9 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 			}
 			void ContreAttaque(uint32 diff)
 			{
+				if (!UpdateVictim())
+					return;
+
 				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
 				if (Cooldown_Spell_ContreAttaque <= diff && Spell_ContreAttaque != 0)
 				{

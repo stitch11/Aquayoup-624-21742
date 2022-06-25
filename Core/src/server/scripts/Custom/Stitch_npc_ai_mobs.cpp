@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour https:\\Aquayoup.123.fr
-// AI generique npc par famille : Mobs Ver 2022-05-02 (family)
+// AI generique npc par famille : Mobs Ver 2022-05-23 (family)
 //
 // Si spell[1] = 0 : alors affectation aléatoire de tous les spells(prédéfini dans le core), sinon utilisera les spells définis dans creature_template spell[1 a 5]
 // BETE
@@ -87,7 +87,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 
 			uint32 Random;
-			uint32 DistanceDeCast = 30;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
+			uint32 DistanceDeCast = 40;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
 			uint32 ResteADistance = 5;												// Distance max a laquelle un npc s'approchera
 			uint32 Dist;															// Distance entre le npc et sa cible
 			Unit* victim = me->GetVictim();					
@@ -2972,7 +2972,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			}
 			void Tourne_Au_Tour_Aleatoire(uint32 Distance)
 			{
-				if (!UpdateVictim())
+				if (!UpdateVictim() || me->HasAura(122) || me->HasAura(3600) || me->HasAura(6474))
 					return;
 
 				if (me->HasUnitState(UNIT_STATE_ROOT) || me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED) )
@@ -2990,7 +2990,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			}
 			void Tourne_Au_Tour_Aleatoire_Volant(uint32 Distance)
 			{
-				if (!UpdateVictim())
+				if (!UpdateVictim() || me->HasAura(122) || me->HasAura(3600) || me->HasAura(6474))
 					return;
 
 				if (me->HasUnitState(UNIT_STATE_ROOT) || me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED))
@@ -3016,7 +3016,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			}
 			void Recule_ou_Avance(int32 val)
 			{
-				if (!UpdateVictim())
+				if (!UpdateVictim() || me->HasAura(122) || me->HasAura(3600) || me->HasAura(6474))
 					return;
 
 				if (me->HasUnitState(UNIT_STATE_ROOT) || me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED))
@@ -3095,6 +3095,9 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			}
 			void ContreAttaque(uint32 diff)
 			{
+				if (!UpdateVictim())
+					return;
+
 				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
 				if (Cooldown_Spell_ContreAttaque <= diff && Spell_ContreAttaque != 0)
 				{

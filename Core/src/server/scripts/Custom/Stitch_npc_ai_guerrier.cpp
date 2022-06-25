@@ -34,7 +34,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 			uint32 NbrDeSpe = 3;													// Nombre de Spécialisations
 			uint32 ForceBranche;
 			uint32 Random;
-			uint32 DistanceDeCast = 30;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
+			uint32 DistanceDeCast = 40;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
 			uint32 ResteADistance = 5;												// Distance max a laquelle un npc s'approchera
 			uint32 Dist;															// Distance entre le npc et sa cible
 			uint32 Rage;
@@ -312,7 +312,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 
 					switch (BrancheSpe)
 					{
-					case 1: // Spécialisation Armes ###############################################################################################################
+					case 1: // Spécialisation Armes (1 épées) #####################################################################################################
 							// Regen rage en combat ---------------------------------------------------------------------------------------------------------------
 						if (Cooldown_RegenRage <= diff)
 						{
@@ -323,7 +323,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						else Cooldown_RegenRage -= diff;
 
 						// Combat ---------------------------------------------------------------------------------------------------------------------------------
-						Bonus_Degat_Arme_Done(-50);
+						Bonus_Degat_Arme_Done(-75);
 
 						// Spell1 sur la cible
 						
@@ -357,11 +357,11 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						}
 						else Cooldown_Spell3 -= diff;
 						
-						Bonus_Degat_Arme_Done(50);
+						Bonus_Degat_Arme_Done(75);
 
 						break;
 
-					case 2: // Spécialisation Fureur ##############################################################################################################
+					case 2: // Spécialisation Fureur (2 épées) ####################################################################################################
 							// Regen rage en combat ---------------------------------------------------------------------------------------------------------------
 						if (Cooldown_RegenRage <= diff)
 						{
@@ -406,7 +406,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						Bonus_Degat_Arme_Done(75);
 						break;
 
-					case 3: // Spécialisation Protection ##########################################################################################################
+					case 3: // Spécialisation Protection (1 épée + bouclier) ######################################################################################
 							// Regen rage en combat ---------------------------------------------------------------------------------------------------------------
 						if (Cooldown_RegenRage <= diff)
 						{
@@ -507,7 +507,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 				// ------ ALLER A LA CIBLE -------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Anti_Bug_Figer <= diff)
 				{
-					if (Dist >= ResteADistance)
+					if (Dist >= ResteADistance && !me->HasAura(122) && !me->HasAura(3600) && !me->HasAura(6474))
 					{
 						float x = 0.0f, y = 0.0f, z = 0.0f;
 						uint32 mapid = 0;
@@ -529,7 +529,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 					if ((Dist >= 10) && (Dist <= 25))
 					{
 					Random = urand(1, 2);
-						if (Random = 1)
+						if (Random == 1)
 						{
 							DoCastVictim(Spell_Charge);										// Charge - 1 chance sur 2    
 						}
@@ -542,7 +542,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 				if ((Dist < 8) && (Cooldown_ResteADistance <= diff) && (BrancheSpe != 3))
 				{
 					Random = urand(1, 5);
-					if (Random == 1 || Random == 2)
+					if ((Random == 1 || Random == 2) && !me->HasAura(122) && !me->HasAura(3600) && !me->HasAura(6474))
 					{
 						Tourne_Au_Tour_En_Combat();											// 2 chances sur 5 tourne au tour de sa victime
 					}
@@ -625,6 +625,9 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 			}
 			void ContreAttaque(uint32 diff)
 			{
+				if (!UpdateVictim())
+					return;
+
 				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
 				if (Cooldown_Spell_ContreAttaque <= diff && Spell_ContreAttaque != 0)
 				{

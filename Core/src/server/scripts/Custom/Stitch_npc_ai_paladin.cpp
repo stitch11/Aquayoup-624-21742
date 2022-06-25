@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : PALADIN Ver 2022-05-02
+// AI generique npc par classe : PALADIN Ver 2022-05-16
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_paladin',`AIName` = '' WHERE (entry = 15100006);
@@ -34,7 +34,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			uint32 NbrDeSpe = 3;													// Nombre de Spécialisations
 			uint32 ForceBranche;
 			uint32 Random;
-			uint32 DistanceDeCast = 30;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
+			uint32 DistanceDeCast = 40;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
 			uint32 ResteADistance = 5;												// Distance max a laquelle un npc s'approchera
 			uint32 Dist;															// Distance entre le npc et sa cible
 			uint32 Mana;
@@ -137,7 +137,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 					me->CastSpell(me, Buf_branche1, true);
 					me->CastSpell(me, Buf_branche1a, true);
 					me->LoadEquipment(1, true);													// creature_equip_template 1
-					Bonus_Armure(125);															// Bonus d'armure +25%
+					Bonus_Armure(150);															// Bonus d'armure +50%
 
 					Spell_branche1_agro = branche1_agro[urand(0, 3)];
 					Spell_branche1_1 = branche1_1[urand(0, 1)];
@@ -150,7 +150,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 					me->CastSpell(me, Buf_branche2, true);										// Buf2 sur lui meme
 					me->CastSpell(me, Buf_branche2a, true);
 					me->LoadEquipment(2, true);													// creature_equip_template 2
-					Bonus_Armure(125);															// Bonus d'armure +25%
+					Bonus_Armure(150);															// Bonus d'armure +50%
 
 					Spell_branche2_agro = branche2_agro[urand(0, 3)];
 					Spell_branche2_1 = branche2_1[urand(0, 1)];
@@ -163,7 +163,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 					me->CastSpell(me, Buf_branche3, true);										// Buf3 sur lui meme
 					me->CastSpell(me, Buf_branche3a, true);
 					me->LoadEquipment(3, true);													// creature_equip_template 3
-					Bonus_Armure(125);															// Bonus d'armure +25%
+					Bonus_Armure(175);															// Bonus d'armure +75%
 
 					Spell_branche3_agro = branche3_agro[urand(0, 2)];
 					Spell_branche3_1 = branche3_1[urand(0, 1)];
@@ -265,6 +265,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 						// ########################################################################################################################################
 						// Spell a lancer a l'agro 
 						// ########################################################################################################################################
+						Bonus_Degat_Arme_Done(-50);
 						switch (BrancheSpe)
 						{
 						case 1: // Si Vindice ---------------------------------------------------------------------------------------------------------------------
@@ -296,6 +297,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 
 							// ####################################################################################################################################
 						}
+						Bonus_Degat_Arme_Done(50);
 					}
 
 
@@ -317,7 +319,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 							else Cooldown_RegenMana -= diff;
 
 							// Combat ---------------------------------------------------------------------------------------------------------------------------------
-							Bonus_Degat_Arme_Done(-10);										// Bonus de dégat 
+							//Bonus_Degat_Arme_Done(-10);										// Bonus de dégat 
 
 																							// Spell1 sur la cible
 							if (Cooldown_Spell1 <= diff)
@@ -343,7 +345,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 							}
 							else Cooldown_Spell3 -= diff;
 
-							Bonus_Degat_Arme_Done(10);										// Retrait Bonus de dégat 
+							//Bonus_Degat_Arme_Done(10);										// Retrait Bonus de dégat 
 
 							Heal_En_Combat_Melee(diff);
 							break;
@@ -360,7 +362,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 							}
 							else Cooldown_RegenMana -= diff;
 
-							Bonus_Degat_Arme_Done(-10);
+							//Bonus_Degat_Arme_Done(-10);
 
 							// Combat ---------------------------------------------------------------------------------------------------------------------------------
 							// Spell1 sur la cible
@@ -389,7 +391,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 
 
 							Heal_En_Combat_Heal(diff);
-							Bonus_Degat_Arme_Done(10);										// Reduction des degats parce que trop trop puissant
+							//Bonus_Degat_Arme_Done(10);										// Reduction des degats parce que trop trop puissant
 
 							break;
 
@@ -403,7 +405,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 							}
 							else Cooldown_RegenMana -= diff;
 
-							Bonus_Degat_Arme_Done(-20);
+							//Bonus_Degat_Arme_Done(-20);
 
 							// Combat ---------------------------------------------------------------------------------------------------------------------------------
 							// Spell1 sur la cible chaque (Sort Régulié)
@@ -426,11 +428,11 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 							if (Cooldown_Spell3 <= diff)
 							{
 								me->CastSpell(victim, Spell_branche3_3, true);
-								Cooldown_Spell3 = urand(8000, 10000);
+								Cooldown_Spell3 = urand(10000, 12000);
 							}
 							else Cooldown_Spell3 -= diff;
 
-							Bonus_Degat_Arme_Done(20);
+							//Bonus_Degat_Arme_Done(20);
 
 							Heal_En_Combat_Melee(diff);
 							break;
@@ -487,18 +489,17 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
-				//DoMeleeAttackIfReady();													// Combat en mélée
+				DoMeleeAttackIfReady();													// Combat en mélée
 
 				// Si la cible >= 6m (pour éviter bug de rester figé) --------------------------------------------------------------------------------------------
-				if ((Dist >= 6) && (Cooldown_Anti_Bug_Figer <= diff))
+				if ((Dist >= 6) && (Cooldown_Anti_Bug_Figer <= diff) && !me->HasAura(122) && !me->HasAura(3600) && !me->HasAura(6474))
 				{
 					float x = 0.0f, y = 0.0f, z = 0.0f;
 					uint32 mapid = 0;
-
-					x = (victim->GetPositionX() + urand(0, 2) - 1);
-					y = (victim->GetPositionY() + urand(0, 2) - 1);
+					x = victim->GetPositionX();
+					y = victim->GetPositionY();
 					z = victim->GetPositionZ();
-					mapid = victim->GetMapId();
+					me->GetClosePoint(x, y, z, me->GetObjectSize() / 2, 2);
 					me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 					me->GetMotionMaster()->MoveChase(victim, 1, frand(0, 6.2836f));			// Pour suivre la cible avec un angle
 					Cooldown_Anti_Bug_Figer = 1000;
@@ -506,7 +507,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 				else Cooldown_Anti_Bug_Figer -= diff;
 
 				// Si la cible < 8m -------------------------------------------------------------------------------------------------------------------------------------------
-				if ((Dist < 10) && (Cooldown_ResteADistance <= diff) && (BrancheSpe != 3))
+				if ((Dist < 10) && (Cooldown_ResteADistance <= diff) && (BrancheSpe != 3) && !me->HasAura(122) && !me->HasAura(3600) && !me->HasAura(6474))
 				{
 					Random = urand(1, 5);
 					if (Random == 1)
@@ -633,6 +634,9 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			}
 			void ContreAttaque(uint32 diff)
 			{
+				if (!UpdateVictim())
+					return;
+
 				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
 				if (Cooldown_Spell_ContreAttaque <= diff && Spell_ContreAttaque != 0)
 				{

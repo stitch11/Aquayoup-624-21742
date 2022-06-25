@@ -46,7 +46,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			Stitch_npc_ai_casterAI(Creature* creature) : ScriptedAI(creature) { }
 
 			uint32 Random;
-			uint32 DistanceDeCast = 30;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
+			uint32 DistanceDeCast = 40;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
 			uint32 ResteADistance = 15;												// Distance max a laquelle un npc s'approchera
 			uint32 Dist;															// Distance entre le npc et sa cible
 			Unit* victim = me->GetVictim();										 
@@ -474,15 +474,6 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					DoMeleeAttackIfReady();																// Combat en mélée
 				}
 			}
-			bool AuraLenteur()
-			{
-				// recherche si aura de lenteur presente
-				// Eclair_de_givre 116/71318, Lenteur 31589, Armure_de_givre 6136, Horion_de_givre 8056/12548, Brise_genou 9080/1715, Fievre_de_givre 69917/67719
-				// Toucher_de_glace 45477/300197, Javelot_de_givre 300051/300237, Gel_de_zone 60192, Handicap 116095, Sceau de justice 20170
-				if (me->HasAura(116) || me->HasAura(31589) || me->HasAura(6136) || me->HasAura(8056) || me->HasAura(9080) || me->HasAura(69917) || me->HasAura(45477) || me->HasAura(300051) || me->HasAura(60192) || me->HasAura(116095) || me->HasAura(71318) || me->HasAura(12548) || me->HasAura(1715) || me->HasAura(67719) || me->HasAura(300197) || me->HasAura(300237) || me->HasAura(20170))
-					return true;
-				else return false;
-			}
 
 			void Tourne_Au_Tour_En_Combat()
 			{
@@ -535,7 +526,6 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				me->SetCanModifyStats(true);
 				me->UpdateAllStats();
 			}
-
 			void Heal_En_Combat_Caster(uint32 diff)
 			{
 				//if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_MOVE))
@@ -557,6 +547,9 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			}
 			void ContreAttaque(uint32 diff)
 			{
+				if (!UpdateVictim())
+					return;
+
 				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
 				if (Cooldown_Spell_ContreAttaque <= diff && Spell_ContreAttaque != 0)
 				{
@@ -572,7 +565,34 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				}
 				else Cooldown_Spell_ContreAttaque -= diff;
 			}
+			bool AuraLenteur()
+			{
+				if (me->HasAura(116)		// Eclair_de_givre 116 
+					|| me->HasAura(71318)	// Eclair_de_givre 71318
+					|| me->HasAura(122)		// Nova de givre
+					|| me->HasAura(31589)	// Lenteur 31589
+					|| me->HasAura(6136) 	// Armure_de_givre 6136
+					|| me->HasAura(8056) 	// Horion_de_givre 8056
+					|| me->HasAura(12548) 	// Horion_de_givre 12548
+					|| me->HasAura(9080) 	// Brise_genou 9080
+					|| me->HasAura(1715) 	// Brise_genou 1715
+					|| me->HasAura(69917) 	// Fievre_de_givre 69917
+					|| me->HasAura(67719) 	// Fievre_de_givre 67719
+					|| me->HasAura(45477) 	// Toucher_de_glace 45477
+					|| me->HasAura(300051) 	// Javelot_de_givre 300051
+					|| me->HasAura(300237) 	// Javelot_de_givre 300237
+					|| me->HasAura(60192) 	// Gel_de_zone 60192
+					|| me->HasAura(116095) 	// Handicap 116095
+					|| me->HasAura(300197) 	// Toucher_de_glace 300197
+					|| me->HasAura(20170)	// Sceau de justice 20170
+					|| me->HasAura(3600)	// Totem de lien terrestre
+					|| me->HasAura(6474))	// Totem de lien terrestre passif
+					return true;
+				else return false;
+			}
+
 		};
+
 
 
 
