@@ -104,7 +104,6 @@
 #include "DBCStructure.h"
 #define ZONE_UPDATE_INTERVAL (1*IN_MILLISECONDS)
 
- //Stitch FunRate FunPowerRegen mana
 #include "Config.h"
 
 
@@ -1044,6 +1043,7 @@ void Player::Update(uint32 p_time)
 			}
 
 //Stitch Demo metamorphe : Verrouillage a 0 du mana
+			/*
 			if (HasAura(103958))
 			{
 				SetMaxPower(POWER_MANA, 0);
@@ -1052,7 +1052,7 @@ void Player::Update(uint32 p_time)
 			{
 				SetMaxPower(POWER_MANA, GetMaxPower(POWER_MANA));
 			}
-
+			*/
 
 
 
@@ -1941,14 +1941,15 @@ bool Player::IsImmunedToSpellEffect(SpellInfo const* spellInfo, uint32 index) co
 void Player::RegenerateAll()
 {
 	if (m_regenTimer <= 500)	//
-	    return;					//
+	    return;
 
 
 
 	m_regenTimerCount += m_regenTimer;
 
 	if (getClass() == CLASS_PALADIN)
-		m_holyPowerRegenTimerCount += m_regenTimer;
+		//m_holyPowerRegenTimerCount += m_regenTimer;
+		m_holyPowerRegenTimerCount += m_regenTimer / 2;	//Stitch regen Puissance sacré Paladin
 
 	if (getClass() == CLASS_HUNTER)
 		m_focusRegenTimerCount += m_regenTimer;
@@ -2032,27 +2033,28 @@ void Player::Regenerate(Powers power)
 	float meleeHaste = GetFloatValue(UNIT_FIELD_MOD_HASTE);
 	float spellHaste = GetFloatValue(UNIT_MOD_CAST_SPEED);
 
-
-
-
-	//Stitch Regen -------------------------------------------------------------------------------------------
+	//Stitch regen
 	switch (power)
 	{
-
-	case POWER_DEMONIC_FURY:              // Fureur démoniaque (Vampire) 
 	case POWER_MANA:
 	{
 		float ManaIncreaseRate = sWorld->getRate(RATE_POWER_MANA);
+		uint32 Level = getLevel();
 
 		if (IsInCombat()) // Trinity Updates Mana in intervals of 2s, which is correct
-			addvalue += (GetFloatValue(UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER) *  ManaIncreaseRate * ((0.001f * m_regenTimer)) + CalculatePct(0.001f, spellHaste));
+			//addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER) *  ManaIncreaseRate /* * ((0.001f * m_regenTimer) + CalculatePct(0.001f, spellHaste))*/;
+		{
+			addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER) *  ManaIncreaseRate;
+			addvalue = (addvalue - Level) *1.2f ; 
+		}
 		else
-			//addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER) * /* ManaIncreaseRate * */((0.001f * m_regenTimer) + CalculatePct(0.001f, spellHaste));
-			addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER) * ((0.001f * m_regenTimer) + CalculatePct(0.001f, spellHaste));	//RATE_POWER_MANA uniquement en combat
+			//addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER) *  ManaIncreaseRate * ((0.001f * m_regenTimer) + CalculatePct(0.001f, spellHaste));
+			addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER)*  ManaIncreaseRate /* * ((0.001f * m_regenTimer) + CalculatePct(0.001f, spellHaste))*/ ;
+
+
 	}
 	break;
 
-	//Stitch FunRate FunPowerRegen : Type de Power "case POWER_xxx:"
 	case POWER_RAGE:	// Regenerate rage
 	{
 		if (!IsInCombat() && !HasAuraType(SPELL_AURA_INTERRUPT_REGEN))
@@ -2061,16 +2063,27 @@ void Player::Regenerate(Powers power)
 			addvalue += -25 * RageDecreaseRate / meleeHaste;                // 2.5 rage by tick (= 2 seconds => 1.25 rage/sec)
 		}
 	}
-	break;
-
 	case POWER_FOCUS:
 		addvalue += (6.0f + CalculatePct(6.0f, rangedHaste)) * sWorld->getRate(RATE_POWER_FOCUS);
 		break;
-
+	case POWER_DEMONIC_FURY:              // Fureur démoniaque (Vampire) 
 	case POWER_ENERGY:                                              // Regenerate energy (rogue)
 		addvalue += ((0.01f * m_regenTimer) + CalculatePct(0.01f, meleeHaste)) * sWorld->getRate(RATE_POWER_ENERGY);
 		break;
-
+	case POWER_HOLY_POWER:                                          // Regenerate holy power
+	{
+		if (!IsInCombat())
+		{
+			addvalue += -1.0f;      // remove 1 every 10 sec, first one removed 20s after leaving combat
+			UpdateAllStats();		// Stitch : pour le bug de rafraichissement de la puissance sacrée
+		}
+	}
+	break;
+	case POWER_BURNING_EMBERS:                                          //Stitch Braise ardente
+	{
+		addvalue += -10.0f;      // remove 1 every 10 sec, first one removed 20s after leaving combat
+	}
+	break;
 	case POWER_RUNIC_POWER:
 	{
 		if (!IsInCombat() && !HasAuraType(SPELL_AURA_INTERRUPT_REGEN))
@@ -2080,22 +2093,6 @@ void Player::Regenerate(Powers power)
 		}
 	}
 	break;
-
-	case POWER_HOLY_POWER:                                          // Regenerate holy power
-	{
-		if (!IsInCombat())
-			addvalue += -1.0f;      // remove 1 every 10 sec, first one removed 20s after leaving combat
-	}
-	break;
-
-
-	case POWER_BURNING_EMBERS:                                          //Stitch Braise ardente
-	{
-			addvalue += -10.0f;      // remove 1 every 10 sec, first one removed 20s after leaving combat
-	}
-	break;
-
-
 	case POWER_RUNES:
 		break;
 	case POWER_HEALTH:
@@ -2115,7 +2112,7 @@ void Player::Regenerate(Powers power)
 		// Butchery requires combat for this effect
 		if (power != POWER_RUNIC_POWER || IsInCombat())
 			addvalue += GetTotalAuraModifierByMiscValue(SPELL_AURA_MOD_POWER_REGEN, power) * ((power != POWER_ENERGY) ? m_regenTimerCount : m_regenTimer) / (5 * IN_MILLISECONDS);
-	}
+}	////
 
 	if (addvalue < 0.0f)
 	{
@@ -2172,7 +2169,6 @@ void Player::Regenerate(Powers power)
 		SetMaxPower(POWER_CHI, maxValue);
 		ModifyPower(POWER_CHI, 0);
 	}
-
 
 
 	if (m_regenTimerCount >= 2000)
@@ -2252,8 +2248,12 @@ void Player::ResetAllPowers()
             break;
 		case POWER_DEMONIC_FURY:
 			SetPower(POWER_DEMONIC_FURY, GetMaxPower(POWER_DEMONIC_FURY));
-			SetMaxPower(POWER_DEMONIC_FURY, GetMaxPower(POWER_DEMONIC_FURY));
 			break;
+
+		case POWER_FOCUS:
+			SetPower(POWER_FOCUS, GetMaxPower(POWER_FOCUS));
+			break;
+
         default:
             break;
     }
@@ -16680,7 +16680,7 @@ bool Player::LoadFromDB(ObjectGuid guid, SQLQueryHolder *holder)
     SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_CLASS, fields[4].GetUInt8());	//	Classe
     SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_GENDER, gender);
 
-//Stitch INFO    // check if race/class combination is valid - 
+//Stitch info	// check if race/class combination is valid - 
     PlayerInfo const* info = sObjectMgr->GetPlayerInfo(getRace(), getClass());
     if (!info)
     {
@@ -24523,10 +24523,6 @@ uint32 Player::GetRuneTypeBaseCooldown(RuneType runeType) const
 
     cooldown *=  1.0f - (hastePct / 100.0f);
 
-
-//Stitch Regen Rune ?!
-
-
     return cooldown;
 }
 
@@ -24546,7 +24542,11 @@ void Player::SetRuneCooldown(uint8 index, uint32 cooldown, bool casted /*= false
         SetRuneTimer(index, 0);
     }
 
-    m_runes->runes[index].Cooldown = cooldown;
+	//Stitch Regen Rune
+	//m_runes->runes[index].Cooldown = cooldown;
+	m_runes->runes[index].Cooldown = cooldown / 2;
+
+
     m_runes->SetRuneState(index, (cooldown == 0) ? true : false);
 }
 
@@ -25224,6 +25224,8 @@ void Player::ResetTalentSpecialization()
 		RemoveSpell(300145);
 	}
 
+	UpdateSkillsForLevel();	//
+	LearnDefaultSkills();	//
 
 
     RemoveSpecializationSpells();
