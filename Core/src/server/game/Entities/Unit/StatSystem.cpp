@@ -816,28 +816,149 @@ void Player::ApplyHealthRegenBonus(int32 amount, bool apply)
 
 void Player::UpdateManaRegen()
 {
-
-	// Mana regen from spirit
+	/*
+	    // Mana regen from spirit
     float spirit_regen = OCTRegenMPPerSpirit();
     // Apply PCT bonus from SPELL_AURA_MOD_POWER_REGEN_PERCENT aura on spirit base regen
     spirit_regen *= GetTotalAuraMultiplierByMiscValue(SPELL_AURA_MOD_POWER_REGEN_PERCENT, POWER_MANA);
 
-//Stitch regen mana (pour affichage)
-	// CombatRegen = 5% of Base Mana
-	//	float base_regen = GetCreateMana() * 0.009f + GetTotalAuraModifierByMiscValue(SPELL_AURA_MOD_POWER_REGEN, POWER_MANA); //REGEN MANA / 5.0f
-	float base_regen = GetCreateMana() * 0.02f + GetTotalAuraModifierByMiscValue(SPELL_AURA_MOD_POWER_REGEN, POWER_MANA) /1.0f;
-
+    // CombatRegen = 5% of Base Mana
+    float base_regen = GetCreateMana() * 0.02f + GetTotalAuraModifierByMiscValue(SPELL_AURA_MOD_POWER_REGEN, POWER_MANA) / 5.0f;
 
     // Set regen rate in cast state apply only on spirit based regen
     int32 modManaRegenInterrupt = GetTotalAuraModifier(SPELL_AURA_MOD_MANA_REGEN_INTERRUPT);
 
-//Stitch regen mana (pour affichage)
-	SetStatFloatValue(UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER, (base_regen + CalculatePct(spirit_regen, modManaRegenInterrupt))/10);
-	SetStatFloatValue(UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER, (0.001f + spirit_regen + base_regen) / 10); 
+    SetStatFloatValue(UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER, base_regen + CalculatePct(spirit_regen, modManaRegenInterrupt));
+    SetStatFloatValue(UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER, 0.001f + spirit_regen + base_regen);
+	*/
+
+
+
+
+	//Stitch Regen (_INTERRUPTED_FLAT_MODIFIER & _FLAT_MODIFIER) -------------------------------------------------------------------------------------------&
+	//Coefficient suivant la spécialité
+	float base_regen_coef_en_combat = 0.125f;
+	float base_regen_coef_hors_combat = 0.01f;
+
+	switch (GetSpecId(GetActiveTalentGroup()))
+	{
+	case TALENT_SPEC_PALADIN_HOLY:			// Sacré 65
+	case TALENT_SPEC_PALADIN_PROTECTION:	// Protection 66
+	case TALENT_SPEC_PALADIN_RETRIBUTION:   // Vindicte 70
+		base_regen_coef_en_combat = 0.125f;
+		break;
+
+	case TALENT_SPEC_SHAMAN_ENHANCEMENT:	// Amélioration 263
+		base_regen_coef_en_combat = 0.09f;
+		break;
+	case TALENT_SPEC_SHAMAN_ELEMENTAL:      // Élémentaire 262
+		base_regen_coef_en_combat = 0.125f;
+		break;
+	case TALENT_SPEC_SHAMAN_RESTORATION:    // Restauration 264
+		base_regen_coef_en_combat = 0.04f;
+		break;
+
+	case TALENT_SPEC_MAGE_ARCANE:			// Arcane 62
+	case TALENT_SPEC_MAGE_FIRE:				// Feu 63
+	case TALENT_SPEC_MAGE_FROST:			// Givre 64
+		base_regen_coef_en_combat = 0.018f;
+		break;
+
+	case TALENT_SPEC_WARLOCK_AFFLICTION:	// Affliction 265
+		base_regen_coef_en_combat = 0.017f;
+		break;
+	case TALENT_SPEC_WARLOCK_DEMONOLOGY:	// Démonologie 266
+		base_regen_coef_en_combat = 0.035f;
+		break;
+	case TALENT_SPEC_WARLOCK_DESTRUCTION:	// Destruction 267
+		base_regen_coef_en_combat = 0.019f;
+		break;
+
+	case TALENT_SPEC_PRIEST_DISCIPLINE:		// Discipline 256
+	case TALENT_SPEC_PRIEST_HOLY:			// Sacré 257
+		base_regen_coef_en_combat = 0.06f;
+		break;
+	case TALENT_SPEC_PRIEST_SHADOW:			// Ombre 258
+		base_regen_coef_en_combat = 0.028f;
+		break;
+
+	case TALENT_SPEC_DRUID_BALANCE:			// Equilibre 102
+		base_regen_coef_en_combat = 0.076f; 
+		base_regen_coef_hors_combat = 0.025f;
+		break;
+	case TALENT_SPEC_DRUID_RESTORATION:		// Restauration 105
+		base_regen_coef_en_combat = 0.027f; 
+		base_regen_coef_hors_combat = 0.035f;
+		break;
+	case TALENT_SPEC_DRUID_CAT:				// Farouche 103
+	case TALENT_SPEC_DRUID_BEAR:			// Gardien104
+		base_regen_coef_en_combat = 0.025f;
+		base_regen_coef_hors_combat = 0.01f;
+		break;
+
+	case TALENT_SPEC_MONK_BREWMASTER:		// Maître brasseur 268
+	case TALENT_SPEC_MONK_BATTLEDANCER:     // Marche-vent 269
+	case TALENT_SPEC_MONK_MISTWEAVER:		// Tisse-brume 270
+		base_regen_coef_en_combat = 0.01f;	//
+		base_regen_coef_hors_combat = 0.015f;//
+		break;
+
+	case TALENT_SPEC_ROGUE_ASSASSINATION:   // Assassinat 259
+	case TALENT_SPEC_ROGUE_COMBAT:			// Combat 260
+	case TALENT_SPEC_ROGUE_SUBTLETY:		// Finesse 261
+	case TALENT_SPEC_ROGUE_VAMPIRE:			// Vampire 538
+		break;
+
+	case TALENT_SPEC_WARRIOR_ARMS:			// Armes 71
+	case TALENT_SPEC_WARRIOR_FURY:			// Fureur 72
+	case TALENT_SPEC_WARRIOR_PROTECTION:	// Protection 73
+		break;
+
+	case TALENT_SPEC_HUNTER_BEASTMASTER:	// Maîtrise des bêtes 253
+	case TALENT_SPEC_HUNTER_MARKSMAN:		// Précision 254
+	case TALENT_SPEC_HUNTER_SURVIVAL:		// Survie 255
+		break;
+
+
+
+
+
+
+
+	case TALENT_SPEC_DEATHKNIGHT_BLOOD:		// Sang 250 
+	case TALENT_SPEC_DEATHKNIGHT_FROST:		// Givre 251
+	case TALENT_SPEC_DEATHKNIGHT_UNHOLY:	// Impie 252
+	case TALENT_SPEC_DEATHKNIGHT_CHAOS:		// Présence du Chaos 539
+		break;
+
+
+
+	}
+
+
+
+	// Mana regen from spirit
+	float spirit_regen = OCTRegenMPPerSpirit();
+	// Apply PCT bonus from SPELL_AURA_MOD_POWER_REGEN_PERCENT aura on spirit base regen
+	spirit_regen *= GetTotalAuraMultiplierByMiscValue(SPELL_AURA_MOD_POWER_REGEN_PERCENT, POWER_MANA);
+
+	// CombatRegen = 5% of Base Mana
+	float base_regen = GetCreateMana() + GetTotalAuraModifierByMiscValue(SPELL_AURA_MOD_POWER_REGEN, POWER_MANA) / 5.0f;
+
+	// Set regen rate in cast state apply only on spirit based regen
+	int32 modManaRegenInterrupt = GetTotalAuraModifier(SPELL_AURA_MOD_MANA_REGEN_INTERRUPT);
+
+	SetStatFloatValue(UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER, (base_regen * base_regen_coef_en_combat) + CalculatePct(spirit_regen, modManaRegenInterrupt)/**/);	// En combat
+	//SetStatFloatValue(UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER, 0.001f + spirit_regen + base_regen );						
+	SetStatFloatValue(UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER, /*0.001f + spirit_regen +*/ base_regen * base_regen_coef_hors_combat);											// Hors combat
 
 
 
 }
+
+
+
+
 
 void Player::UpdateRuneRegen(RuneType rune)
 {
