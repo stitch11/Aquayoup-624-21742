@@ -1,6 +1,6 @@
 //#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour https:\\Aquayoup.123.fr
-// AI generique npc par classe : Caster Ver 2022-05-02 (caster simple, combat a distance)
+// AI generique npc par classe : Caster Ver 2022-06-06 (caster simple, combat a distance)
 //
 // ScriptName = Stitch_npc_ai_caster : npc d'exemple : 15100013
 // spell1 : Attaque principale
@@ -22,7 +22,7 @@
 // pickpocketloot = 4 : Druide
 // pickpocketloot = 5 : Pretre
 // pickpocketloot = 6 : DK Chaos
-
+// pickpocketloot = 7 : Le mob ne cherchera plus a garder une certaine distance de sa cible et restera a sa place
 
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
@@ -424,7 +424,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				{
 					// Mouvement aléatoire si cible < 4m & mana > 10%  ---------------------------------------------------------------------------------------------
 
-					if (Dist <5 && (Mana > MaxMana / 10) && npcfixe != 1)
+					if (Dist <5 && (Mana > MaxMana / 10) && npcfixe != 7)
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 
