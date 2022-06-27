@@ -870,13 +870,13 @@ void Creature::Update(uint32 diff)
 
 		case CREATURE_FAMILY_HYDRA:					// Hydre
 		case CREATURE_FAMILY_NAGA:					// Naga
-				SetSpeedRate(MOVE_SWIM, 2.0f);
+			SetSpeedRate(MOVE_RUN, 1.1f);			// en combat
+			SetSpeedRate(MOVE_SWIM, 2.0f);
 			break;
 
 		default:
 			SetSpeedRate(MOVE_SWIM, 0.7f);
 			break;
-
 
 		}
 
@@ -896,6 +896,9 @@ void Creature::Update(uint32 diff)
 	case CREATURE_FAMILY_BEETLE:
 	case CREATURE_FAMILY_ZOMBIE:
 	case CREATURE_FAMILY_GHOUL:
+	case CREATURE_FAMILY_MTWATERELEMENTAL:
+	case CREATURE_FAMILY_GORILLA:
+	case CREATURE_FAMILY_WATER_ELEMENTAL:
 		if (this->IsInWater())
 		{
 			AddAura(59562, this);
