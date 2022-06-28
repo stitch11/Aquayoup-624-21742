@@ -117,7 +117,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 Cooldown_Trop_Loin_Defaut = 10000;
 			uint32 Base_Cooldown_Cast_A = 3500;										// Cooldown de base pour l'attaque principal, il est utilisé avec des valeurs ajouté en +-, sert a definir Cooldown_SpellA_defaut
 			uint32 Base_Cooldown_Cast_B = 8000;									// Idem pour le sort secondaire, généralement un DOT
-			uint32 AI_Random = 1;
+			uint32 AI_Random ;
 			uint32 Start_Agro = 0;
 			uint32 Start_Agro2 = 0;
 			uint32 Cooldown_Spell_ContreAttaque = 4000;
@@ -495,7 +495,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				Spell_B_Non_Cumulable = 0;
 
 				// ################################################################################################################################################
-				// Tirages aléatoires des spells
+				// Tirages aléatoires des spells & cooldown
 				// ################################################################################################################################################
 				// Si m_spells[0] != 0 alors affectation aléatoire de tous les spells (prédéfinis dans le core) , sinon utilisera les spell défini dans vreature_template spells[1 a 5]
 				// m_spells[0] : Attaque principale						- Correspond a spell1 de creature_template
@@ -2173,18 +2173,17 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							else Cooldown_SpellB -= diff;
 						}
 
+						ContreAttaque(diff);
 
 					// ############################################################################################################################################
 					// DEFINITION DU TYPE DE MOUVEMENT EN COMBAT (AI)
-						//if ( me->HasUnitState(UNIT_STATE_ROOT) )
-						//	return;
 
-						ContreAttaque(diff);
 						switch (Crfamily)
 						{
 						case 1: // Loup
 							if (AI_Random == 1) { Mouvement_Contact_Basique(diff); }
-							else Mouvement_Contact_Prudent(diff);
+							else
+								Mouvement_Contact_Prudent(diff);
 							break;
 						case 2: // Felin
 							Mouvement_Contact_Tournant_Aleatoire(diff);
