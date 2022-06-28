@@ -538,6 +538,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Spell_Trop_Loin = 0;
 						Cooldown_Trop_Loin = 6000;																			// Temp de test ci la cible est trop loin (pour charge etc)
 						Cooldown_Trop_Loin_Defaut = 6000;
+						AI_Random = urand(1, 3);
 						break;
 					case 2:		// Felin
 						me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
@@ -2174,7 +2175,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 
 					// ############################################################################################################################################
-					// MOUVEMENT
+					// DEFINITION DU TYPE DE MOUVEMENT EN COMBAT (AI)
 						//if ( me->HasUnitState(UNIT_STATE_ROOT) )
 						//	return;
 
@@ -2182,7 +2183,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						switch (Crfamily)
 						{
 						case 1: // Loup
-							Mouvement_Contact_Prudent(diff);
+							if (AI_Random == 1) { Mouvement_Contact_Basique(diff); }
+							else Mouvement_Contact_Prudent(diff);
 							break;
 						case 2: // Felin
 							Mouvement_Contact_Tournant_Aleatoire(diff);
