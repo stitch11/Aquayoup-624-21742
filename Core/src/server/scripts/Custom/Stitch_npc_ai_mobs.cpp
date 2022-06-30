@@ -86,7 +86,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			Stitch_npc_ai_mobsAI(Creature* creature) : ScriptedAI(creature) { }
 
 
-			uint32 Random;
+			uint32 Random = 0;
 			uint32 DistanceDeCast = 40;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
 			uint32 ResteADistance = 5;												// Distance max a laquelle un npc s'approchera
 			uint32 Dist;															// Distance entre le npc et sa cible
@@ -116,7 +116,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 Cooldown_Trop_Loin = 4000;
 			uint32 Cooldown_Trop_Loin_Defaut = 10000;
 			uint32 Base_Cooldown_Cast_A = 3500;										// Cooldown de base pour l'attaque principal, il est utilisé avec des valeurs ajouté en +-, sert a definir Cooldown_SpellA_defaut
-			uint32 Base_Cooldown_Cast_B = 8000;									// Idem pour le sort secondaire, généralement un DOT
+			uint32 Base_Cooldown_Cast_B = 8000;										// Idem pour le sort secondaire, généralement un DOT
 			uint32 AI_Random ;
 			uint32 Start_Agro = 0;
 			uint32 Start_Agro2 = 0;
@@ -1102,9 +1102,9 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Cooldown_Principal_B_Defaut = urand(5000, 9000);
 						ResteADistance = 5;
 
-						AI_Random = urand(1, 2);
-						if (AI_Random == 1) { Spell_Trop_Loin = Spell_Poursuite; }										//
-						if (AI_Random == 2) { Spell_Trop_Loin = Spell_Griffure_bondissante; }							//
+						Random = urand(1, 2);
+						if (Random == 1) { Spell_Trop_Loin = Spell_Poursuite; }										//
+						if (Random == 2) { Spell_Trop_Loin = Spell_Griffure_bondissante; }							//
 
 						Cooldown_Trop_Loin = urand(8000, 15000);
 						Cooldown_Trop_Loin_Defaut = urand(8000, 15000);
@@ -2574,7 +2574,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				{
 					if (Dist >= 6)
 					{
-					me->GetMotionMaster()->MoveChase(victim, 1, urand(0, 6));								// Pour suivre la cible avec un angle
+					me->GetMotionMaster()->MoveChase(victim, 1, urand(0, 4));								// Pour suivre la cible avec un angle
 					Cooldown_Principal_A = Cooldown_Principal_A_Defaut;
 					}
 				}
@@ -2585,10 +2585,10 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				{
 					if (Dist < 6)
 					{
-					Random = urand(1, 4);
+					Random = urand(1, 4);																// 1 chances sur 4 : Tourne_Au_Tour_Aleatoire
 					if (Random == 1)
 					{
-						Tourne_Au_Tour_Aleatoire(2);														// 1 chances sur 4 : Tourne_Au_Tour_Aleatoire
+						Tourne_Au_Tour_Aleatoire(2);														
 					}
 					Cooldown_Principal_B = Cooldown_Principal_B_Defaut;
 					}
@@ -2707,15 +2707,16 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					if (Dist < 6) 
 					{
 						Random = urand(1, 5);
-						if ( (Random == 1) && Player_Caster() == false )
+						if ((Random != 1) && Player_Caster() == false)
 						{
-							Recule_ou_Avance(3);																// 3 chances sur 5 pour passe dans le dos de la cible
-						}
-						else 
-						{
-							Tourne_Au_Tour_Aleatoire(urand(8, 12));												// 2 chances sur 5 pour s'eloigner si le joueur n'est pas un caster
+							Tourne_Au_Tour_Aleatoire(urand(10, 12));											// 4 chances sur 5 pour s'eloigner si le joueur n'est pas un caster
 							Cooldown_Principal_A = 3000;
 						}
+						else
+						{
+							Recule_ou_Avance(3);																// 1 chances sur 5 pour passe dans le dos de la cible
+						}
+						
 						Cooldown_Principal_B = Cooldown_Principal_B_Defaut + ((urand(0, 2) * 1000));
 					}
 				}
