@@ -198,6 +198,8 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				else
 					Cooldown_Npc_Emotes -= diff;
 
+				if (Tir_1 != Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_RANGED); }				// S'équipe d'arc ou fusil
+
 				// ################################################################################################################################################
 				// En Combat ######################################################################################################################################
 				// ################################################################################################################################################
@@ -341,6 +343,8 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
+
+
 				if (Cooldown_ResteADistance <= diff)
 				{
 				// Mouvement ON si distance < 8m ------------------------------------------------------------------------------------------------------------------
@@ -359,16 +363,16 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 					void DoRangedAttackIfReady();														// Combat a distance
 				}
 
-				// Mouvement OFF si distance >= 8m & <= 15m -------------------------------------------------------------------------------------------------------
+				// Mouvement OFF si distance >= 8m & <= 20m -------------------------------------------------------------------------------------------------------
 				if ((Dist >= 8) && (Dist <= ResteADistance + 5))
 				{
-					if (me->isMoving())																	// Sinon bug d'animation
-					{
+					//if (me->isMoving())																	// Sinon bug d'animation
+					//{
 						AttackStart(victim);
 						AttackStartCaster(victim, ResteADistance);										// Distance de combat
 						void DoRangedAttackIfReady();													// Combat a distance
 						me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
-					}
+					//}
 				}
 				Cooldown_ResteADistance = 2000;
 				}
