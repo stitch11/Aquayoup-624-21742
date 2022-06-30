@@ -227,8 +227,6 @@ void TempSummon::InitSummon()
         if (IsAIEnabled)
             AI()->IsSummonedBy(owner);
 
-		//Stitch Pet (TempSummon) agressif au spawn
-		SetReactState(REACT_AGGRESSIVE);
     }
 }
 
