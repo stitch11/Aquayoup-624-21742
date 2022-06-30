@@ -83,6 +83,13 @@ void Pet::AddToWorld()
         GetCharmInfo()->SetIsFollowing(false);
         GetCharmInfo()->SetIsReturning(false);
     }
+
+
+	//Stitch Pet (TempSummon) agressif au spawn
+	SetReactState(REACT_AGGRESSIVE);
+	GetCharmInfo()->SetIsCommandAttack(true);
+
+
 }
 
 void Pet::RemoveFromWorld()
@@ -904,6 +911,7 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
     }
 
     SetBonusDamage(0);
+
     switch (petType)
     {
         case SUMMON_PET:
@@ -931,8 +939,6 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 				SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float((petlevel * 8)));
 				SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float((petlevel * 10)));
 			}
-
-
 
             break;
         }
@@ -1356,16 +1362,43 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 					m_charmInfo->InitPetActionBar();
 					break;
 				}
-
+				case 58965: // Garde-Courroux
+				{
+					setPowerType(POWER_ENERGY);
+					SetMaxPower(POWER_ENERGY, GetMaxPower(POWER_ENERGY));
+					SetModifierValue(UNIT_MOD_ARMOR, BASE_VALUE, float(GetOwner()->GetArmor()) * 0.25f);  // Bonus Armor (25% of player armor)
+					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float((petlevel * 11)));
+					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float((petlevel * 12)));
+					m_charmInfo->InitPetActionBar();
+					break;
+				}
+				case 58963: // Shivarra
+				{
+					setPowerType(POWER_ENERGY);
+					SetMaxPower(POWER_ENERGY, GetMaxPower(POWER_ENERGY));
+					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float((petlevel * 8)));
+					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float((petlevel * 9)));
+					m_charmInfo->InitPetActionBar();
+					break;
+				}
+				case 58959: // Diablotin gangrené
+				{
+					setPowerType(POWER_ENERGY);
+					SetMaxPower(POWER_ENERGY, GetMaxPower(POWER_ENERGY));
+					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float((petlevel * 5)));
+					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float((petlevel * 6)));
+					m_charmInfo->InitPetActionBar();
+					break;
+				}
 
 				
 				default:
 				//Stitch Degat par defaut des Guardians
+					setPowerType(POWER_ENERGY);
 					SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK)));
 					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 5));
 					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 7));
-
-
+					break;
 			}	
 
 
@@ -1380,6 +1413,11 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
     SetFullHealth();
     SetPower(POWER_MANA, GetMaxPower(POWER_MANA));
 
+	if (GetOwner()->getClass() == CLASS_WARLOCK)
+	{
+		SetMaxPower(POWER_ENERGY, GetMaxPower(POWER_ENERGY));
+		setPowerType(POWER_ENERGY);
+	}
     return true;
 }
 
