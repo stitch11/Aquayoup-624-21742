@@ -113,6 +113,9 @@ public:
 
 		}
 
+
+		player->LearnSpell(300048, true);      // Reparation de 10% de la durabilité
+
 		player->UpdateAllStats();
 
     }
