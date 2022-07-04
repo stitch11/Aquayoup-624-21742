@@ -120,8 +120,10 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 					if (me->m_spells[1] != 0) { Spell_2 = me->m_spells[1]; }
 					if (me->m_spells[2] != 0) { Spell_agro = me->m_spells[2]; }
 					if (me->m_spells[3] != 0) { Spell_respawn_evade = me->m_spells[3]; }
+					else Spell_respawn_evade = 0;
 					if (me->m_spells[4] != 0) { Buf_1 = me->m_spells[4]; }
 					if (me->m_spells[5] != 0) { Spell_Heal = me->m_spells[5]; }
+
 				}
 
 				// Forcer le choix par creature_template->pickpocketloot . Lancier = 0 , Archer = 1 , Fusilier = 2

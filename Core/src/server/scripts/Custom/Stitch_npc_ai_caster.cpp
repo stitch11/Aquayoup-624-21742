@@ -61,7 +61,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			uint32 Cooldown_Spell1 = 1000;
 			uint32 Cooldown_Spell2 = 4000;
 			uint32 Cooldown_Spell2_defaut = urand(7000,10000);
-			uint32 Cooldown_ResteADistance = 2000;									// Test si en contact
+			uint32 Cooldown_ResteADistance = 3000;									// Test si en contact
 			uint32 Cooldown_ResteADistance_Defaut = 3000;
 			uint32 Cooldown_Anti_Bug_Figer = 2000;
 			uint32 Cooldown_Npc_Emotes = urand(5000, 8000);
@@ -349,11 +349,11 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					else Cooldown_RegenMana -= diff;
 
 						// Spell1 sur la cible  -------------------------------------------------------------------------------------------------------------------
-						if (Cooldown_Spell1 <= diff && Spell_1 !=0)
+						if (Cooldown_Spell1 <= diff && Spell_1 !=0 && !me->HasUnitState(UNIT_STATE_MOVE))
 						{
 							if (!me->HasUnitState(UNIT_STATE_MOVE))
 							{
-								me->StopMoving();
+								//me->StopMoving();
 								DoCast(victim, Spell_1);
 								DoMeleeAttackIfReady();																// Combat en mélée
 								Cooldown_Spell1 = urand(3500,4000);
@@ -424,9 +424,9 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				{
 					// Mouvement aléatoire si cible < 4m & mana > 10%  ---------------------------------------------------------------------------------------------
 
-					if (Dist <5 && (Mana > MaxMana / 10) && npcfixe != 7)
+					if (Dist <6 && (Mana > MaxMana / 10) && npcfixe != 7)
 					{
-						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
+						//me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 
 						if(AuraLenteur() == false)
 						{
