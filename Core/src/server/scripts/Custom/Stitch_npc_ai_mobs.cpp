@@ -476,7 +476,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			void InitializeAI()
 			{
 				// --- Spécificitée par family ---
-					if (Crfamily == 20 || Crfamily == 42) 
+					if (Crfamily == 20 || Crfamily == 42 || Crfamily == 155)
 					{ 
 						Random = urand(1, 3);
 						if (Random == 1)
@@ -1964,7 +1964,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				if (Random == 1 && Spell_respawn_evade != 0) { me->CastSpell(me, Spell_respawn_evade, true); }		// 1/3 Chance de lancer le sort sur lui au respawn ou evade
 
 				// --- Spécificitée par family ---
-					if (Crfamily == 20 || Crfamily == 42) 
+					if (Crfamily == 20 || Crfamily == 42 || Crfamily == 155)
 					{ 
 						Random = urand(1, 3);
 						if (Random == 1)
@@ -2020,7 +2020,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 				// --- Spécificitée par family ---
 				//Scorpion, ver
-				if (Crfamily == 20 || Crfamily == 42)
+				if (Crfamily == 20 || Crfamily == 42 || Crfamily == 155)
 				{
 					Random = urand(1, 3);
 					if (Random == 1)
@@ -2106,7 +2106,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 
 						// ------ Scorpion, Ver ------
-						if (Crfamily == 20 || Crfamily == 42)
+						if (Crfamily == 20 || Crfamily == 42 || Crfamily == 155)
 						{
 							Se_Deterre();
 						}
