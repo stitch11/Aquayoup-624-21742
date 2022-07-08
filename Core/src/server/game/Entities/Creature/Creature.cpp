@@ -461,7 +461,6 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 		case CREATURE_TYPE_NON_COMBAT_PET:	// Mascotte pacifique
 		case CREATURE_TYPE_WILD_PET:		// Mascotte sauvage
 		case CREATURE_TYPE_GAS_CLOUD:		// Nuage de gaz
-
 			SetSpeedRate(MOVE_WALK, 0.3f);							// hors combat
 			SetSpeedRate(MOVE_RUN, 1.0f);							// en combat
 			SetSpeedRate(MOVE_SWIM, 0.5f);							// en nageant
@@ -529,6 +528,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 
 		case CREATURE_FAMILY_HYENA:				// Hyene
 		case CREATURE_FAMILY_FOX:				// Renard
+		case CREATURE_FAMILY_DOG:				// Chien
 			SetSpeedRate(MOVE_WALK, 0.5f);							// hors combat
 			SetSpeedRate(MOVE_RUN, 1.0f);							// en combat
 			SetSpeedRate(MOVE_SWIM, 0.5f);							// en nageant
