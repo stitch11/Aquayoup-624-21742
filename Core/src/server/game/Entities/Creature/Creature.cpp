@@ -439,10 +439,15 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			break;
 
 		case CREATURE_TYPE_UNDEAD:
-		case CREATURE_TYPE_ELEMENTAL:
 			SetSpeedRate(MOVE_WALK, 0.5f);							// hors combat
 			SetSpeedRate(MOVE_RUN, 0.9f);							// en combat
 			SetSpeedRate(MOVE_SWIM, 0.4f);							// en nageant
+			break;
+
+		case CREATURE_TYPE_ELEMENTAL:
+			SetSpeedRate(MOVE_WALK, 0.5f);							// hors combat
+			SetSpeedRate(MOVE_RUN, 0.9f);							// en combat
+			SetSpeedRate(MOVE_SWIM, 0.9f);							// en nageant
 			break;
 
 		case CREATURE_TYPE_GIANT:			// Geant 
@@ -772,8 +777,11 @@ void Creature::Update(uint32 diff)
 		switch (Crtype)
 		{
 		case CREATURE_TYPE_UNDEAD:
-		case CREATURE_TYPE_ELEMENTAL:
 			SetSpeedRate(MOVE_SWIM, 0.4f);							// en nageant
+			break;
+
+		case CREATURE_TYPE_ELEMENTAL:
+			SetSpeedRate(MOVE_SWIM, 0.9f);							// en nageant
 			break;
 
 		case CREATURE_TYPE_GIANT:			// Geant 
