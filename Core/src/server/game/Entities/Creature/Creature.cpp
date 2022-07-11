@@ -614,7 +614,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			SetSpeedRate(MOVE_SWIM, 0.6f);							// en nageant
 			break;
 
-		case 155:									//Custom 155
+		case CREATURE_FAMILY_SENTERRE:				//Custom 155
 			SetSpeedRate(MOVE_WALK, 0.25f);							// hors combat
 			SetSpeedRate(MOVE_RUN, 1.0f);							// en combat
 			SetSpeedRate(MOVE_SWIM, 0.4f);							// en nageant
@@ -639,7 +639,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 	{
 		SetSpeedRate(MOVE_WALK, frand(0.5f, 1.2f));							// hors combat
 	}
-
+	
 	
 
 
@@ -781,11 +781,11 @@ void Creature::Update(uint32 diff)
 			break;
 
 		case CREATURE_TYPE_ELEMENTAL:
-			SetSpeedRate(MOVE_SWIM, 0.9f);							// en nageant
+			SetSpeedRate(MOVE_SWIM, 1.3f);							// en nageant
 			break;
 
 		case CREATURE_TYPE_GIANT:			// Geant 
-			SetSpeedRate(MOVE_SWIM, 0.8f);							// en nageant
+			SetSpeedRate(MOVE_SWIM, 1.0f);							// en nageant
 			break;
 
 		case CREATURE_TYPE_MECHANICAL:		// Machine
@@ -867,7 +867,7 @@ void Creature::Update(uint32 diff)
 		case CREATURE_FAMILY_BASILISK:				// Basilic
 		case CREATURE_FAMILY_WATER_ELEMENTAL:		// Elementaire d'eau
 		case CREATURE_FAMILY_MTWATERELEMENTAL:		// Elementaire d'eau
-		case 155:									// Custom 155
+		case CREATURE_FAMILY_SENTERRE:				// Custom 155
 			SetSpeedRate(MOVE_SWIM, 1.5f);							// en nageant
 			break;
 
@@ -883,7 +883,6 @@ void Creature::Update(uint32 diff)
 			break;
 
 		default:
-			SetSpeedRate(MOVE_SWIM, 0.7f);
 			break;
 
 		}
