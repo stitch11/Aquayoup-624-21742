@@ -262,9 +262,14 @@ void LootStore::CheckLootRefs(LootIdSet* ref_set) const
 
 void LootStore::ReportUnusedIds(LootIdSet const& lootIdSet) const
 {
+	/*
+	Desactivé a cause de npc_ai "pickpocketing_loot_template" )
+
     // all still listed ids isn't referenced
     for (LootIdSet::const_iterator itr = lootIdSet.begin(); itr != lootIdSet.end(); ++itr)
         TC_LOG_ERROR("sql.sql", "Table '%s' Entry %d isn't %s and not referenced from loot, and thus useless.", GetName(), *itr, GetEntryName());
+		*/
+
 }
 
 void LootStore::ReportNonExistingId(uint32 lootId) const
@@ -1227,7 +1232,7 @@ void LootTemplate::LootGroup::Verify(LootStore const& lootstore, uint32 id, uint
 {
     float chance = RawTotalChance();
     if (chance > 101.0f)                                    /// @todo replace with 100% when DBs will be ready
-        TC_LOG_ERROR("sql.sql", "Table '%s' entry %u group %d has total chance > 100%% (%f)", lootstore.GetName(), id, group_id, chance);
+       // TC_LOG_ERROR("sql.sql", "Table '%s' entry %u group %d has total chance > 100%% (%f)", lootstore.GetName(), id, group_id, chance);
 
     if (chance >= 100.0f && !EqualChanced.empty())
         TC_LOG_ERROR("sql.sql", "Table '%s' entry %u group %d has items with chance=0%% but group total chance >= 100%% (%f)", lootstore.GetName(), id, group_id, chance);
