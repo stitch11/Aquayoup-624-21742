@@ -246,6 +246,11 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					ResteADistance = 10;
 				}
 
+				// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+				if (npcfixe == 8)
+				{
+					ResteADistance = 5;
+				}
 				// ################################################################################################################################################
 			}
 			void JustRespawned() override
@@ -424,7 +429,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				{
 					// Mouvement aléatoire si cible < 4m & mana > 10%  ---------------------------------------------------------------------------------------------
 
-					if (Dist <6 && (Mana > MaxMana / 10) && npcfixe != 7)
+					if (Dist <6 && (Mana > MaxMana / 10) && (npcfixe != 7 || npcfixe == 8))
 					{
 						//me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 
