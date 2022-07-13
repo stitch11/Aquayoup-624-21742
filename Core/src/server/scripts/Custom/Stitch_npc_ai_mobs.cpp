@@ -538,7 +538,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Spell_Trop_Loin = 0;
 						Cooldown_Trop_Loin = 6000;																			// Temp de test ci la cible est trop loin (pour charge etc)
 						Cooldown_Trop_Loin_Defaut = 6000;
-						AI_Random = urand(1, 3);
 						break;
 					case 2:		// Felin
 						me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
@@ -562,7 +561,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Cooldown_Principal_B_Defaut = 6000 + ((urand(0, 4) * 500));
 						ResteADistance = 5;
 
-						AI_Random = urand(1, 2);
 						if (AI_Random == 1) {
 							Spell_Trop_Loin = Spell_Vitesse_4s;
 							Cooldown_Trop_Loin = 4000;
@@ -674,7 +672,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Spell_Trop_Loin = 0;
 						Cooldown_Trop_Loin = urand(0, 4000);
 						Cooldown_Trop_Loin_Defaut = urand(7000, 9000);
-						AI_Random = urand(1, 3);
 						break;
 					case 7:		// Oiseau charogniar - CREATURE_FAMILY_CARRION_BIRD
 						me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
@@ -1102,7 +1099,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Cooldown_Principal_B_Defaut = urand(5000, 9000);
 						ResteADistance = 5;
 
-						Random = urand(1, 2);
 						if (Random == 1) { Spell_Trop_Loin = Spell_Poursuite; }										//
 						if (Random == 2) { Spell_Trop_Loin = Spell_Griffure_bondissante; }							//
 
@@ -1111,7 +1107,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						AI_Random = urand(1, 4);
 						break;
 					case 34:	// Raie du Neant - CREATURE_FAMILY_NETHER_RAY
-						me->SetMeleeDamageSchool(SpellSchools(6));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+						me->SetMeleeDamageSchool(SpellSchools(6));													// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 						Spell_A = liste_spell_A_34[urand(0, 1)];
 						Spell_B = liste_spell_B_34[urand(0, 1)];
 						Spell_B_Non_Cumulable = 0;
@@ -1134,13 +1130,14 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Spell_Trop_Loin = 0;
 						Cooldown_Trop_Loin = urand(3000, 8000);
 						Cooldown_Trop_Loin_Defaut = urand(5000, 10000);
-						AI_Random = urand(1, 2);
 
 						if (AI_Random == 2)
 						{
-							Cooldown_Principal_B_Defaut = 4500;
-							ResteADistance = 20;
+							Cooldown_Principal_B_Defaut = 3500;
+							ResteADistance = 15;
 						}
+						me->SetSheath(SHEATH_STATE_RANGED); 											// S'équipe d'arc ou fusil
+
 						break;
 					case 35:	// Serpent - CREATURE_FAMILY_SERPENT
 						me->SetMeleeDamageSchool(SpellSchools(3));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
@@ -1316,7 +1313,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Spell_Trop_Loin = Spell_Charge_Repousse;									//
 						Cooldown_Trop_Loin = urand(6000, 8000);
 						Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
-						AI_Random = urand(1, 3);
 						break;
 					case 44:	// Guepe - CREATURE_FAMILY_WASP
 						me->SetMeleeDamageSchool(SpellSchools(3));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
@@ -1367,7 +1363,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Spell_Trop_Loin = 0;														// 
 						Cooldown_Trop_Loin = urand(7000, 8000);
 						Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
-						AI_Random = urand(1, 3);
 						break;
 					case 49:	// Elementaire d'eau - CREATURE_FAMILY_WATER_ELEMENTAL
 						me->SetMeleeDamageSchool(SpellSchools(4));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
@@ -1393,7 +1388,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Spell_Trop_Loin = 0;
 						Cooldown_Trop_Loin = 8000;
 						Cooldown_Trop_Loin_Defaut = 15000;
-						AI_Random = urand(1, 4);
 						if (AI_Random == 1)
 						{
 							ResteADistance = 12;
@@ -1439,7 +1433,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Cooldown_Trop_Loin = urand(7000, 12000);
 						Cooldown_Trop_Loin_Defaut = urand(8000, 12000);
 
-						AI_Random = urand(1, 3);
 						if (AI_Random != 1) { Cooldown_Principal_B_Defaut = urand(4000, 6000); }						//
 						break;
 					case 51:	// Singe - CREATURE_FAMILY_MONKEY
@@ -1491,7 +1484,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Spell_Trop_Loin = 0;																			// 
 						Cooldown_Trop_Loin = urand(7000, 12000);
 						Cooldown_Trop_Loin_Defaut = urand(8000, 12000);
-						AI_Random = urand(1, 3);
 						break;
 					case 55:	// Araignee de schiste - CREATURE_FAMILY_SHALE_SPIDER
 						me->SetMeleeDamageSchool(SpellSchools(6));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
@@ -1519,7 +1511,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Cooldown_Trop_Loin = 8000;
 						Cooldown_Trop_Loin_Defaut = urand(8000, 15000);
 
-						AI_Random = urand(1, 2);
 						if (AI_Random == 1)
 						{
 							Cooldown_Principal_B_Defaut = urand(5000, 7000);
@@ -1576,7 +1567,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Cooldown_Trop_Loin = urand(5000, 7000);
 						Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
 
-						AI_Random = urand(1, 2);
 						if (AI_Random == 2)
 						{
 							Cooldown_Principal_B_Defaut = urand(6000, 8000);
@@ -1608,7 +1598,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Cooldown_Trop_Loin = urand(5000, 7000);
 						Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
 
-						AI_Random = urand(1, 2);
 						if (AI_Random == 2)
 						{
 							Cooldown_Principal_B_Defaut = 1000;
@@ -1640,7 +1629,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Cooldown_Trop_Loin = urand(7000, 12000);
 						Cooldown_Trop_Loin_Defaut = urand(8000, 12000);
 
-						AI_Random = urand(1, 2);
 						if (AI_Random == 1)
 						{
 							Cooldown_Principal_B_Defaut = urand(5000, 6000);;
@@ -1699,7 +1687,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Cooldown_Trop_Loin = 8000;
 						Cooldown_Trop_Loin_Defaut = 30000;
 
-						AI_Random = urand(1, 4);
 						if (AI_Random == 1)
 						{
 							ResteADistance = urand(8, 10);
@@ -1760,7 +1747,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Spell_Trop_Loin = 0;														
 						Cooldown_Trop_Loin = urand(3000, 5000);
 						Cooldown_Trop_Loin_Defaut = urand(3000, 5000);
-						AI_Random = urand(1, 2);
 						break;
 
 					case 152:		// Murloc
@@ -1787,7 +1773,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Spell_Trop_Loin = 0;
 						Cooldown_Trop_Loin = 6000;																			// Temp de test ci la cible est trop loin (pour charge etc)
 						Cooldown_Trop_Loin_Defaut = 6000;
-						AI_Random = urand(1, 4);
 						break;
 
 					case 153:		// Naga
@@ -1814,7 +1799,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Spell_Trop_Loin = 0;
 						Cooldown_Trop_Loin = 6000;																			// Temp de test ci la cible est trop loin (pour charge etc)
 						Cooldown_Trop_Loin_Defaut = 6000;
-						AI_Random = urand(1, 5);
 						break;
 
 					case 155:	// CUSTOM - CREATURE_FAMILY_SENTERRE
@@ -2091,9 +2075,77 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					// Ce heal s'il a un sort de heal -------------------------------------------------------------------------------------------------------------
 					Heal_En_Combat(diff);
 
-						// Spell Diver a lancer a l'agro ----------------------------------------------------------------------------------------------------------------
+						// Spell Diver a lancer a l'agro ----------------------------------------------------------------------------------------------------------
 					if (Start_Agro == 0)
 					{
+
+
+						// Tirage aléatoire de l'AI : ne marchait pas dans void Init_AI() -------------------------------------------------------------------------
+						if (ForceFamily > 0 && ForceFamily < 301) { Crfamily = ForceFamily; }
+
+						switch (Crfamily)
+						{
+						case 1:		// Loup
+							AI_Random = urand(1, 3);
+							break;
+						case 2:		// Felin
+							AI_Random = urand(1, 2);
+							break;
+						case 6:		// Crocodile - CREATURE_FAMILY_CROCOLISK
+							AI_Random = urand(1, 3);
+							break;
+						case 31:	// Ravageur - CREATURE_FAMILY_RAVAGER
+							Random = urand(1, 2);
+							break;
+						case 34:	// Raie du Neant - CREATURE_FAMILY_NETHER_RAY
+							AI_Random = urand(1, 2);
+							break;
+						case 43:	// Rhinoceros - CREATURE_FAMILY_RHINO
+							AI_Random = urand(1, 3);
+							break;
+						case 45:	// Chien de base - CREATURE_FAMILY_CORE_HOUND
+							AI_Random = urand(1, 3);
+							break;
+						case 49:	// Elementaire d'eau - CREATURE_FAMILY_WATER_ELEMENTAL
+							AI_Random = urand(1, 4);
+							break;
+						case 50:	// Renard - CREATURE_FAMILY_FOX
+							AI_Random = urand(1, 3);
+							break;
+						case 52:	// Chien - CREATURE_FAMILY_DOG
+							AI_Random = urand(1, 3);
+							break;
+						case 55:	// Araignee de schiste - CREATURE_FAMILY_SHALE_SPIDER
+							AI_Random = urand(1, 2);
+							break;
+						case 68:	// Hydre - CREATURE_FAMILY_HYDRA
+							AI_Random = urand(1, 2);
+							break;
+						case 100:	// Diablotin gangrene - CREATURE_FAMILY_FELIMP
+							AI_Random = urand(1, 2);
+							break;
+						case 104:	// Garde - courroux - CREATURE_FAMILY_WRATHGUARD
+							AI_Random = urand(1, 2);
+							break;
+						case 116:	// elementaire de feu - CREATURE_FAMILY_FIREELEMENTAL
+							AI_Random = urand(1, 4);
+							break;
+						case 130:	// Basilic - CREATURE_FAMILY_BASILISK
+							AI_Random = urand(1, 2);
+							break;
+						case 152:		// Murloc
+							AI_Random = urand(1, 4);
+							break;
+						case 153:		// Naga
+							AI_Random = urand(1, 5);
+							break;
+
+						default:
+							break;
+						}
+
+						// ----------------------------------------------------------------------------------------------------------------------------------------
+
 						Start_Agro = 1;
 
 						// Message a l'agro , ci le mob a plusieurs lignes (creature_text groupid>0) il y a de forte chance que ce soit pour un dialogue
@@ -2474,13 +2526,14 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// Mouvement OFF si distance >= 8m & <= 15m -------------------------------------------------------------------------------------------------------
 				if ((Dist >= 6) && (Dist <= ResteADistance))
 				{
-					if (me->isMoving())																	// Sinon bug d'animation
-					{
+					//if (me->isMoving())																	// Sinon bug d'animation
+					//{
+					    me->StopMoving();
 						AttackStart(victim);
 						AttackStartCaster(victim, ResteADistance);										// Distance de combat
 						void DoRangedAttackIfReady();													// Combat a distance
 						me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
-					}
+					//}
 				}
 
 				// Mouvement ON si distance > 20m -----------------------------------------------------------------------------------------------------------------

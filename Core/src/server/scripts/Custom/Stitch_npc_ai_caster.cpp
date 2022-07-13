@@ -246,7 +246,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					ResteADistance = 10;
 				}
 
-				// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+				// Reste a distance faible forcé (5m) l'Intérieur
 				if (npcfixe == 8)
 				{
 					ResteADistance = 5;
