@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour https:\\Aquayoup.123.fr
-// AI generique npc par famille : Mobs Ver 2022-05-23 (family)
+// AI generique npc par famille : Mobs Ver 2022-07-14 (family)
 //
 // Si spell[1] = 0 : alors affectation aléatoire de tous les spells(prédéfini dans le core), sinon utilisera les spells définis dans creature_template spell[1 a 5]
 // BETE
@@ -2094,6 +2094,12 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 6:		// Crocodile - CREATURE_FAMILY_CROCOLISK
 							AI_Random = urand(1, 3);
 							break;
+						case 11:	// Raptor
+							AI_Random = urand(1, 3);
+							break;
+						case 17:	// Succube
+							AI_Random = urand(1, 2);
+							break;
 						case 31:	// Ravageur - CREATURE_FAMILY_RAVAGER
 							Random = urand(1, 2);
 							break;
@@ -2268,13 +2274,27 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Mouvement_Contact_Bondissant(diff);
 							break;
 						case 11:	// Raptor - CREATURE_FAMILY_RAPTOR
-							Mouvement_Contact_Basique(diff);
+							if (AI_Random == 1)
+							{
+								Mouvement_Contact_Avance_Recule(diff);
+							}
+							else if (AI_Random == 2)
+							{
+								Mouvement_Contact_Tournant_Aleatoire(diff);
+							}
+							else
+								Mouvement_Contact_Basique(diff);
 							break;
 						case 16:	// Voidwalker - CREATURE_FAMILY_VOIDWALKER
 							Mouvement_Contact_Basique(diff);
 							break;
 						case  17:	// Succube - CREATURE_FAMILY_SUCCUBUS
-							Mouvement_Contact_Tournant_Aleatoire(diff);
+							if (AI_Random == 1)
+							{
+								Mouvement_Contact_Basique(diff);
+							}
+							else
+								Mouvement_Contact_Tournant_Aleatoire(diff);
 							break;
 						case 19:	// Doomguard - CREATURE_FAMILY_DOOMGUARD
 							Mouvement_Contact_Charges_Multiples(diff);
