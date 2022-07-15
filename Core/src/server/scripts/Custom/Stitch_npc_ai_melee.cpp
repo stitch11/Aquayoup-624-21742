@@ -295,7 +295,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 
 					x = (victim->GetPositionX() + urand(0, 2) - 1);
 					y = (victim->GetPositionY() + urand(0, 2) - 1);
-					z = victim->GetPositionZ();
+					z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
 					mapid = victim->GetMapId();
 					//me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
 					me->GetMotionMaster()->MovePoint(mapid, x, y, z);
@@ -352,7 +352,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 
 				x = (victim->GetPositionX() + urand(0, 4) - 2);
 				y = (victim->GetPositionY() + urand(0, 4) - 2);
-				z = victim->GetPositionZ();
+				z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
 				mapid = victim->GetMapId();
 				//me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
 				me->GetMotionMaster()->MovePoint(mapid, x, y, z);
@@ -370,7 +370,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 
 				x = (victim->GetPositionX());
 				y = (victim->GetPositionY());
-				z = victim->GetPositionZ();
+				z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
 				mapid = victim->GetMapId();
 				me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
 				me->GetMotionMaster()->MovePoint(mapid, x, y, z);

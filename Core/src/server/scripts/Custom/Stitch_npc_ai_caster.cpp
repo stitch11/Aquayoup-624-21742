@@ -431,14 +431,13 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				Dist = me->GetDistance(victim);
 
 
-				// Teleportation aléatoire si cible < 4m & mana > 10%  ---------------------------------------------------------------------------------------------
+				// Teleportation aléatoire si cible < 6m & mana > 10%  ---------------------------------------------------------------------------------------------
 				if (Cooldown_ResteADistance_Teleportation <= diff)
 				{
 					if (Dist <6 && (Mana > MaxMana / 10) && (npcfixe == 9))
 					{
 						Teleport_Au_Tour_Aleatoire();
 						Cooldown_ResteADistance_Teleportation = Cooldown_ResteADistance_Defaut_Teleportation;
-						//Cooldown_ResteADistance = Cooldown_ResteADistance_Defaut_Teleportation;
 					}
 				}
 				else Cooldown_ResteADistance_Teleportation -= diff;
@@ -447,7 +446,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				// ------------------------------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_ResteADistance <= diff)
 				{
-					// Mouvement aléatoire si cible < 4m & mana > 10%  
+					// Mouvement aléatoire si cible < 6m & mana > 10%  
 					if (Dist <6 && (Mana > MaxMana / 10) && npcfixe != 7 )
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT

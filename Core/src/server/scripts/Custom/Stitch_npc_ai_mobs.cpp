@@ -2614,7 +2614,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						{
 							x = (victim->GetPositionX());
 							y = (victim->GetPositionY());
-							z = victim->GetPositionZ();
+							z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
 							mapid = victim->GetMapId();
 							me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, -0.85f);				// Indispensable pour stoper le mouvement
 							me->GetMotionMaster()->MovePoint(mapid, x, y, z);
@@ -3077,7 +3077,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 				x = (victim->GetPositionX() + urand(0, Distance*2) - Distance);	// 4 pour contact
 				y = (victim->GetPositionY() + urand(0, Distance*2) - Distance);	// 4 pour contact
-				z = victim->GetPositionZ();
+				z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
 				mapid = victim->GetMapId();
 				me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 				DoMeleeAttackIfReady();																	// Combat en mélée
@@ -3121,7 +3121,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 				x = (victim->GetPositionX());
 				y = (victim->GetPositionY());
-				z = victim->GetPositionZ();
+				z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
 				mapid = victim->GetMapId();
 				me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, val);
 				me->GetMotionMaster()->MovePoint(mapid, x, y, z);

@@ -583,7 +583,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 
 						x = (victim->GetPositionX() + urand(0, 4) - 2);
 						y = (victim->GetPositionY() + urand(0, 4) - 2);
-						z = victim->GetPositionZ();
+						z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
 						mapid = victim->GetMapId();
 						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 					}
@@ -645,7 +645,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 				float x, y, z;
 				x = (victim->GetPositionX() + urand(0, 6) - 3);
 				y = (victim->GetPositionY() + urand(0, 6) - 3);
-				z = victim->GetPositionZ();
+				z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
 				me->GetMotionMaster()->MovePoint(0, x, y, z);
 			}
 			void Avance_3m_En_Combat()
