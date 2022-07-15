@@ -32,6 +32,8 @@
 //###########################################################################################################################################################################################################################################
 
 #include "CreatureTextMgr.h"
+//#include "ScriptedCreature.h"
+
 
 //################################################################################################
 //StitchAI AI Caster
@@ -56,6 +58,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			uint8 npcfixe = me->GetCreatureTemplate()->pickpocketLootId;
 			uint32 MessageAlagro = 0;
 			uint32 Spell_ContreAttaque = 0;
+			uint32 Visuel_Teleportation = 87459;
 
 			// Definitions des variables Cooldown et le 1er lancement
 			uint32 Cooldown_Spell1 = 1000;
@@ -63,6 +66,8 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			uint32 Cooldown_Spell2_defaut = urand(7000,10000);
 			uint32 Cooldown_ResteADistance = 3000;									// Test si en contact
 			uint32 Cooldown_ResteADistance_Defaut = 3000;
+			uint32 Cooldown_ResteADistance_Teleportation = 3000;
+			uint32 Cooldown_ResteADistance_Defaut_Teleportation = urand(5000, 7000);
 			uint32 Cooldown_Anti_Bug_Figer = 2000;
 			uint32 Cooldown_Npc_Emotes = urand(5000, 8000);
 			uint32 Cooldown_Spell_Heal = 5000;
@@ -425,13 +430,27 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
+
+				// Teleportation aléatoire si cible < 4m & mana > 10%  ---------------------------------------------------------------------------------------------
+				if (Cooldown_ResteADistance_Teleportation <= diff)
+				{
+					if (Dist <6 && (Mana > MaxMana / 10) && (npcfixe == 9))
+					{
+						Teleport_Au_Tour_Aleatoire();
+						Cooldown_ResteADistance_Teleportation = Cooldown_ResteADistance_Defaut_Teleportation;
+						//Cooldown_ResteADistance = Cooldown_ResteADistance_Defaut_Teleportation;
+					}
+				}
+				else Cooldown_ResteADistance_Teleportation -= diff;
+
+
+				// ------------------------------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_ResteADistance <= diff)
 				{
-					// Mouvement aléatoire si cible < 4m & mana > 10%  ---------------------------------------------------------------------------------------------
-
-					if (Dist <6 && (Mana > MaxMana / 10) && (npcfixe != 7 || npcfixe == 8))
+					// Mouvement aléatoire si cible < 4m & mana > 10%  
+					if (Dist <6 && (Mana > MaxMana / 10) && npcfixe != 7 )
 					{
-						//me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
+						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 
 						if(AuraLenteur() == false)
 						{
@@ -451,7 +470,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				}
 				else Cooldown_ResteADistance -= diff;
 
-				// Mouvement OFF si distance >= 8m & <= 15m -------------------------------------------------------------------------------------------------------
+				// Mouvement OFF si distance >= 8m & <= 15m 
 				if ((Dist >= 6) && (Dist <= ResteADistance))
 				{
 					if (me->isMoving())																	// Sinon bug d'animation
@@ -463,7 +482,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					}
 				}
 
-				// Mouvement ON si distance > 20m -----------------------------------------------------------------------------------------------------------------
+				// Mouvement ON si distance > 20m 
 				if (Dist > ResteADistance)
 				{
 					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// UNROOT
@@ -471,7 +490,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					void DoRangedAttackIfReady();														// Combat a distance
 				}
 
-				// Mouvement ON si Mana < 10%  ---------------------------------------------------------------------------------------------------------------------
+				// Mouvement ON si Mana < 10%  
 				if (Mana < MaxMana / 10)
 				{
 					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// UNROOT
@@ -493,7 +512,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 
 				x = (victim->GetPositionX() + urand(0, 4) - 2);
 				y = (victim->GetPositionY() + urand(0, 4) - 2);
-				z = victim->GetPositionZ();
+				z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
 				mapid = victim->GetMapId();
 				//me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
 				me->GetMotionMaster()->MovePoint(mapid, x, y, z);
@@ -511,10 +530,30 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 
 				x = (victim->GetPositionX());
 				y = (victim->GetPositionY());
-				z = victim->GetPositionZ();
+				z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
 				mapid = victim->GetMapId();
 				me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, 3);
 				me->GetMotionMaster()->MovePoint(mapid, x, y, z);
+			}
+			void Teleport_Au_Tour_Aleatoire()
+			{
+				if (!UpdateVictim())
+					return;
+
+				if (me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED))
+					return;
+
+				Unit* victim = me->GetVictim();
+				Dist = me->GetDistance(victim);
+
+				uint32 mapid = victim->GetMapId();
+				float x = (victim->GetPositionX() + urand(0, ResteADistance * 2.0f) - ResteADistance);
+				float y = (victim->GetPositionY() + urand(0, ResteADistance * 2.0f) - ResteADistance);
+				float z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
+
+				me->CastSpell(me, Visuel_Teleportation, true);
+				me->NearTeleportTo(x, y, z, mapid);
+				me->CastSpell(me, Visuel_Teleportation, true);
 			}
 
 			void Bonus_Degat_Arme_Done(int val) // 
