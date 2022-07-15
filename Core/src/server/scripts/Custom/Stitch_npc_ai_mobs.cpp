@@ -772,6 +772,20 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Spell_Trop_Loin = Cri_Incapacitant;																// Cri incapacitant 18328 (vit -60%)	
 						Cooldown_Trop_Loin = 4000;
 						Cooldown_Trop_Loin_Defaut = urand(4000, 6000);
+
+						if (AI_Random == 1)
+						{
+							Cooldown_Principal_B = 4000;
+							Cooldown_Principal_B_Defaut = 6000 + ((urand(0, 4) * 500));
+							Spell_Trop_Loin = Spell_Vitesse_4s;
+							Cooldown_Trop_Loin = 4000;
+							Cooldown_Trop_Loin_Defaut = 4000;
+						}
+						else if (AI_Random == 2)
+						{
+							Cooldown_Principal_B = 4000;																		// Temp de test pour mouvement (s'eloigner, passer dans le dos,...)
+							Cooldown_Principal_B_Defaut = 4000 + ((urand(0, 8) * 500));
+						}
 						break;
 					case 16:	// Marcheur du Vide (Voidwalker) - CREATURE_FAMILY_VOIDWALKER
 						me->SetMeleeDamageSchool(SpellSchools(5));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
@@ -822,6 +836,12 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Spell_Trop_Loin = 0;																			// 	
 						Cooldown_Trop_Loin = 4000;
 						Cooldown_Trop_Loin_Defaut = urand(5000, 8000);
+
+						if (AI_Random == 1) 
+						{
+							Cooldown_Principal_B = 4000;
+							Cooldown_Principal_B_Defaut = 4000 + ((urand(0, 4) * 500));
+						}
 						break;
 					case 19:	// Garde funeste (Doomguard) - CREATURE_FAMILY_DOOMGUARD
 						me->SetMeleeDamageSchool(SpellSchools(5));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
@@ -1050,7 +1070,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 						//me->SetVirtualItem(0, 12784);																	// Equipé d'une hache
 						me->LoadEquipment(1, true);																		// creature_equip_template 1
-
 						break;
 					case 30:	// Faucon dragon - CREATURE_FAMILY_DRAGONHAWK
 						me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
@@ -2658,10 +2677,10 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				{
 					if (Dist < 6)
 					{
-					Random = urand(1, 4);																// 1 chances sur 4 : Tourne_Au_Tour_Aleatoire
+					Random = urand(1, 4);																// 1 chances sur 4 : Recule_ou_Avance
 					if (Random == 1)
 					{
-						Tourne_Au_Tour_Aleatoire(2);														
+						Recule_ou_Avance(6);
 					}
 					Cooldown_Principal_B = Cooldown_Principal_B_Defaut;
 					}
@@ -2718,11 +2737,11 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					Random = urand(1, 5);
 					if (Random == 1 || Random == 2 || Random == 3)
 					{
-						Tourne_Au_Tour_Aleatoire(1);														// 3 chances sur 5 : tourne au tour de sa victime
+						Tourne_Au_Tour_Aleatoire(5);														// 3 chances sur 5 : tourne au tour de sa victime
 					}
 					else if (Random == 4)
 					{
-						Recule_ou_Avance(3);																// 1 chances sur 5 : avance
+						Recule_ou_Avance(4);																// 1 chances sur 5 : avance
 					}
 					else if (Random == 5)
 					{
