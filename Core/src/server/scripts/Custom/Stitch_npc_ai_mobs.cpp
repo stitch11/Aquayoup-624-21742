@@ -111,8 +111,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 Cooldown_Principal_A_Defaut = 2000;								// Cooldown_Anti_Bug_Figer_Defaut
 			uint32 Cooldown_Spell_Heal = 4000;												// Heal ou sort de sauvegarde si perte de pv
 			uint32 Cooldown_Spell_Heal_defaut = 8000;
-			uint32 Cooldown_Principal_B = 6000;										// Test si en contact , Cooldown_ResteADistance
-			uint32 Cooldown_Principal_B_Defaut = 5000 + ((urand(0, 4) * 500));		// Cooldown_ResteADistance_Defaut, tourne au tour , etc
+			uint32 Cooldown_Principal_B = 3500;										// Test si en contact , Cooldown_ResteADistance
+			uint32 Cooldown_Principal_B_Defaut = 3500 + ((urand(0, 4) * 500));		// Cooldown_ResteADistance_Defaut, tourne au tour , etc
 			uint32 Cooldown_Trop_Loin = 4000;
 			uint32 Cooldown_Trop_Loin_Defaut = 10000;
 			uint32 Base_Cooldown_Cast_A = 3500;										// Cooldown de base pour l'attaque principal, il est utilisé avec des valeurs ajouté en +-, sert a definir Cooldown_SpellA_defaut
@@ -1497,8 +1497,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Cooldown_Spell_Heal_defaut = 120000;
 						Cooldown_Principal_A = 1000;
 						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 5000;
-						Cooldown_Principal_B_Defaut = urand(5000, 7000);
+						Cooldown_Principal_B = 4000;
+						Cooldown_Principal_B_Defaut = urand(3500, 5000);
 						ResteADistance = 5;
 						Spell_Trop_Loin = 0;																			// 
 						Cooldown_Trop_Loin = urand(7000, 12000);
@@ -2098,8 +2098,10 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					if (Start_Agro == 0)
 					{
 
+						// ################################################################################################################################################
+						// Tirage aléatoire de l'AI pour le mouvement en combat : ne marchait pas dans void Init_AI() 
+						// ################################################################################################################################################
 
-						// Tirage aléatoire de l'AI : ne marchait pas dans void Init_AI() -------------------------------------------------------------------------
 						if (ForceFamily > 0 && ForceFamily < 301) { Crfamily = ForceFamily; }
 
 						switch (Crfamily)
@@ -2138,7 +2140,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 3);
 							break;
 						case 52:	// Chien - CREATURE_FAMILY_DOG
-							AI_Random = urand(1, 3);
+							AI_Random = urand(1, 5);
 							break;
 						case 55:	// Araignee de schiste - CREATURE_FAMILY_SHALE_SPIDER
 							AI_Random = urand(1, 2);
@@ -2215,7 +2217,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 					// ############################################################################################################################################
 					// COMBAT 
-
+					// ############################################################################################################################################
 
 						// SpellA sur la cible  -------------------------------------------------------------------------------------------------------------------
 					if (Spell_A != 0)
@@ -2253,7 +2255,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						ContreAttaque(diff);
 
 					// ############################################################################################################################################
-					// DEFINITION DU TYPE DE MOUVEMENT EN COMBAT (AI)
+					// MOUVEMENT EN COMBAT (AI)
+					// ################################################################################################################################################
 
 						switch (Crfamily)
 						{
@@ -2423,10 +2426,10 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 52:	// Chien - CREATURE_FAMILY_DOG
 							if (AI_Random == 1)
 							{
-								Mouvement_Contact_Prudent(diff);
+								Mouvement_Contact_Basique(diff);
 							}
 							else
-								Mouvement_Contact_Basique(diff);
+								Mouvement_Contact_Prudent(diff); 
 							break;
 						case 55:	// Araignee de schiste - CREATURE_FAMILY_SHALE_SPIDER
 							if (AI_Random == 1)
