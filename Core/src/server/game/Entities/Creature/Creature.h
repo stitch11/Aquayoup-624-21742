@@ -227,7 +227,8 @@ struct TC_GAME_API CreatureBaseStats
 
     uint32 GenerateHealth(CreatureTemplate const* info) const
     {
-        return uint32(ceil(BaseHealth[info->expansion] * info->ModHealth * info->ModHealthExtra));
+        //return uint32(ceil(BaseHealth[info->expansion] * info->ModHealth * info->ModHealthExtra));
+		return uint32(ceil(BaseHealth[info->expansion] * info->ModHealth * info->ModHealthExtra *1.25f));
     }
 
     uint32 GenerateMana(CreatureTemplate const* info) const
