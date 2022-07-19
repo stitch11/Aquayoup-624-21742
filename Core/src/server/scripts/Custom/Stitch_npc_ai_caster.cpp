@@ -61,10 +61,10 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			uint32 Visuel_Teleportation = 87459;
 
 			// Definitions des variables Cooldown et le 1er lancement
-			uint32 Cooldown_Spell1 = 1000;
+			uint32 Cooldown_Spell1 = 1500;
 			uint32 Cooldown_Spell2 = 4000;
 			uint32 Cooldown_Spell2_defaut = urand(7000,10000);
-			uint32 Cooldown_ResteADistance = 3000;									// Test si en contact
+			uint32 Cooldown_ResteADistance = 2000;									// Test si en contact
 			uint32 Cooldown_ResteADistance_Defaut = 3000;
 			uint32 Cooldown_ResteADistance_Teleportation = 3000;
 			uint32 Cooldown_ResteADistance_Defaut_Teleportation = urand(5000, 7000);
@@ -325,6 +325,8 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					if (Start_Agro == 0)
 					{
 						Start_Agro = 1;
+						
+							me->StopMoving();
 
 						// Message a l'agro , ci le mob a plusieurs lignes (creature_text groupid>0) il y a de forte chance que ce soit pour un dialogue
 						// et non un simple message a l'agro. Donc on l'ignore.
@@ -359,15 +361,14 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					else Cooldown_RegenMana -= diff;
 
 						// Spell1 sur la cible  -------------------------------------------------------------------------------------------------------------------
-						if (Cooldown_Spell1 <= diff && Spell_1 !=0 && !me->HasUnitState(UNIT_STATE_MOVE))
+						if (Cooldown_Spell1 <= diff && Spell_1 !=0)
 						{
-							if (!me->HasUnitState(UNIT_STATE_MOVE))
-							{
-								//me->StopMoving();
+							//if (!me->isMoving())
+							//{
 								DoCast(victim, Spell_1);
-								DoMeleeAttackIfReady();																// Combat en mélée
+								//DoMeleeAttackIfReady();																// Combat en mélée
 								Cooldown_Spell1 = urand(3500,4000);
-							}
+							//}
 						}
 						else Cooldown_Spell1 -= diff;
 
@@ -424,7 +425,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			}
 			void Mouvement_Caster(uint32 diff)
 			{
-				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
+				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING) )
 					return;
 
 				Unit* victim = me->GetVictim();
@@ -442,16 +443,13 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				}
 				else Cooldown_ResteADistance_Teleportation -= diff;
 
-
 				// ------------------------------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_ResteADistance <= diff)
 				{
 					// Mouvement aléatoire si cible < 6m & mana > 10%  
 					if (Dist <6 && (Mana > MaxMana / 10) && npcfixe != 7 )
 					{
-						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
-
-						if(AuraLenteur() == false)
+						if(!AuraFigé() && !AuraLenteur())
 						{
 							me->SetSpeedRate(MOVE_RUN, 1.2f); // Uniquement si non ralenti par un spell 
 						}
@@ -459,20 +457,27 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 						float x = 0.0f, y = 0.0f, z = 0.0f;
 						uint32 mapid = 0;
 
+						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
+
 						x = (me->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
 						y = (me->GetPositionY() + urand(0, ResteADistance * 2) - ResteADistance);
-						z = me->GetPositionZ();
-						mapid = victim->GetMapId();
+						z = me->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
+						mapid = me->GetMapId();
 						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 						Cooldown_ResteADistance = Cooldown_ResteADistance_Defaut;
 					}
 				}
-				else Cooldown_ResteADistance -= diff;
+				else 
+					Cooldown_ResteADistance -= diff;
+					
+
+
 
 				// Mouvement OFF si distance >= 8m & <= 15m 
-				if ((Dist >= 6) && (Dist <= ResteADistance))
+				if ((Dist >= 8) && (Dist <= ResteADistance))
 				{
-					if (me->isMoving())																	// Sinon bug d'animation
+					//if (!me->isMoving())																// Sinon bug d'animation
+					if (!me->HasUnitState(UNIT_STATE_MOVE))
 					{
 						AttackStart(victim);
 						AttackStartCaster(victim, ResteADistance);										// Distance de combat
@@ -480,6 +485,8 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 						me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
 					}
 				}
+
+
 
 				// Mouvement ON si distance > 20m 
 				if (Dist > ResteADistance)
@@ -612,7 +619,6 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			{
 				if (me->HasAura(116)		// Eclair_de_givre 116 
 					|| me->HasAura(71318)	// Eclair_de_givre 71318
-					|| me->HasAura(122)		// Nova de givre
 					|| me->HasAura(31589)	// Lenteur 31589
 					|| me->HasAura(6136) 	// Armure_de_givre 6136
 					|| me->HasAura(8056) 	// Horion_de_givre 8056
@@ -628,12 +634,17 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					|| me->HasAura(116095) 	// Handicap 116095
 					|| me->HasAura(300197) 	// Toucher_de_glace 300197
 					|| me->HasAura(20170)	// Sceau de justice 20170
-					|| me->HasAura(3600)	// Totem de lien terrestre
-					|| me->HasAura(6474))	// Totem de lien terrestre passif
-					return true;
+					) return true;
 				else return false;
 			}
-
+			bool AuraFigé()
+			{
+				if (me->HasAura(122)		// Nova de givre
+					|| me->HasAura(3600)	// Totem de lien terrestre
+					|| me->HasAura(6474)	// Totem de lien terrestre passif
+					) return true;
+				else return false;
+			}
 		};
 
 
