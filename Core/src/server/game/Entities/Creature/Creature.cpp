@@ -480,7 +480,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 
 		case CREATURE_TYPE_DEMON:
 		case CREATURE_TYPE_DRAGONKIN:
-			SetSpeedRate(MOVE_WALK, 1.0f);							// hors combat
+			SetSpeedRate(MOVE_WALK, 0.8f);							// hors combat
 			SetSpeedRate(MOVE_RUN, 1.1f);							// en combat
 			SetSpeedRate(MOVE_SWIM, 0.7f);							// en nageant
 			break;
