@@ -59,6 +59,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			uint32 MessageAlagro = 0;
 			uint32 Spell_ContreAttaque = 0;
 			uint32 Visuel_Teleportation = 87459;
+			uint32 Bond_aleatoire_25m = 300267;
 
 			// Definitions des variables Cooldown et le 1er lancement
 			uint32 Cooldown_Spell1 = 1500;
@@ -74,6 +75,9 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			uint32 Cooldown_Spell_Heal_defaut = 6000;
 			uint32 Cooldown_RegenMana = 5000;
 			uint32 Cooldown_RegenMana_defaut = 3500;
+			uint32 Cooldown_bond_aleatoire_25m = 3000;
+			uint32 Cooldown_bond_aleatoire_25m_Defaut = urand(6000, 8000);
+
 			// Spells
 			uint32 Buf_1 = 0;													
 			uint32 Spell_agro = 0;
@@ -430,6 +434,18 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
+
+
+					// Bond aléatoire si cible < 6m & mana > 10%  ---------------------------------------------------------------------------------------------
+					if (Cooldown_bond_aleatoire_25m <= diff)
+					{
+						if (Dist <6 && (Mana > MaxMana / 10) && (npcfixe == 10))
+						{
+							DoCast(me, Bond_aleatoire_25m);
+							Cooldown_bond_aleatoire_25m = Cooldown_bond_aleatoire_25m_Defaut;
+						}
+					}
+					else Cooldown_bond_aleatoire_25m -= diff;
 
 
 				// Teleportation aléatoire si cible < 6m & mana > 10%  ---------------------------------------------------------------------------------------------
