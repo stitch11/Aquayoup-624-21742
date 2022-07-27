@@ -2569,14 +2569,14 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// Mouvement OFF si distance >= 8m & <= 15m -------------------------------------------------------------------------------------------------------
 				if ((Dist >= 6) && (Dist <= ResteADistance))
 				{
-					//if (me->isMoving())																	// Sinon bug d'animation
-					//{
+					if (me->isMoving())																	// Sinon bug d'animation
+					{
 					    me->StopMoving();
 						AttackStart(victim);
 						AttackStartCaster(victim, ResteADistance);										// Distance de combat
 						void DoRangedAttackIfReady();													// Combat a distance
 						me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
-					//}
+					}
 				}
 
 				// Mouvement ON si distance > 20m -----------------------------------------------------------------------------------------------------------------
