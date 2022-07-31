@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour Aquayoup
-// AI generique npc par classe : MOINE Ver 2022-05-16
+// AI generique npc par classe : MOINE Ver 2022-07-31
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
 // Minimun  : UPDATE `creature_template` SET `ScriptName` = 'Stitch_npc_ai_voleur',`AIName` = '' WHERE (entry = 15100010);
@@ -196,6 +196,12 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 			{
 				ResteADistance = urand(3, 5);
 				Init_AI();
+
+				if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() == WAYPOINT_MOTION_TYPE)
+				{
+					me->StopMoving();
+					me->GetMotionMaster()->MoveIdle();
+				}
 
 			}
 			void EnterEvadeMode(EvadeReason /*why*/) override

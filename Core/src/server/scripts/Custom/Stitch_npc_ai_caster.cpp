@@ -1,6 +1,6 @@
 //#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour https:\\Aquayoup.123.fr
-// AI generique npc par classe : Caster Ver 2022-06-06 (caster simple, combat a distance)
+// AI generique npc par classe : Caster Ver 2022-07-31 (caster simple, combat a distance)
 //
 // ScriptName = Stitch_npc_ai_caster : npc d'exemple : 15100013
 // spell1 : Attaque principale
@@ -277,6 +277,13 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			{
 				Init_AI();
 				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);								// ROOT
+
+				if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() == WAYPOINT_MOTION_TYPE)
+				{
+					me->StopMoving();
+					me->GetMotionMaster()->MoveIdle();
+				}
+
 			}
 			void EnterEvadeMode(EvadeReason /*why*/) override
 			{

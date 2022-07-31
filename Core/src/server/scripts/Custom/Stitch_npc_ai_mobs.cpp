@@ -1997,6 +1997,12 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					Se_Deterre();
 				}
 
+				if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() == WAYPOINT_MOTION_TYPE)
+				{
+					me->StopMoving();
+					me->GetMotionMaster()->MoveIdle();
+				}
+
 			}
 			void EnterEvadeMode(EvadeReason /*why*/) override
 			{
@@ -2012,6 +2018,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 				Random = urand(1, 3);
 				if (Random == 1 && Spell_respawn_evade != 0) { me->CastSpell(me, Spell_respawn_evade, true); }		// 1/3 Chance de lancer le sort sur lui au respawn ou evade
+
 			}
 			void JustReachedHome() override
 			{

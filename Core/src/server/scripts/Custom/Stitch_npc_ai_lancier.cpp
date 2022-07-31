@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour https:\\Aquayoup.123.fr
-// AI generique npc par classe : Lancier Ver 2022-05-23 (caster simple, combat a distance si 8-30m, sinon combat au corp a corp 0-8m)
+// AI generique npc par classe : Lancier Ver 2022-07-31 (caster simple, combat a distance si 8-30m, sinon combat au corp a corp 0-8m)
 //
 // ScriptName = Stitch_npc_ai_lancier : npc d'exemple : 15100014
 // le "lancer une arme" , "Tir a l'arc" ou "Tir au fusil" est automatique de 8 a 40m et est tributaire de pickpocketloot
@@ -166,6 +166,13 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			{
 				Init_AI();
 				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);								// ROOT
+
+				if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() == WAYPOINT_MOTION_TYPE)
+				{
+					me->StopMoving();
+					me->GetMotionMaster()->MoveIdle();
+				}
+
 			}
 			void EnterEvadeMode(EvadeReason /*why*/) override
 			{

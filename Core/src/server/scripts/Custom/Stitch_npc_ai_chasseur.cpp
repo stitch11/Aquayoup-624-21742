@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juin 2020 Stitch pour Aquayoup
-// AI generique npc par classe : Chasseur Ver 2022-05-15
+// AI generique npc par classe : Chasseur Ver 2022-07-31
 // Equiper l'arc ou le fusil en ItemID2 & ItemID3
 // Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
 // Necessite dans Creature_Template :
@@ -194,6 +194,11 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				Def_Power();
 
 
+				if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() == WAYPOINT_MOTION_TYPE)
+				{
+					me->StopMoving();
+					me->GetMotionMaster()->MoveIdle();
+				}
 
 			}
 			void EnterEvadeMode(EvadeReason /*why*/) override

@@ -131,6 +131,13 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 			{
 				ResteADistance = urand(4, 6);
 				Init_AI();
+
+				if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() == WAYPOINT_MOTION_TYPE)
+				{
+					me->StopMoving();
+					me->GetMotionMaster()->MoveIdle();
+				}
+
 			}
 			void EnterEvadeMode(EvadeReason /*why*/) override
 			{
@@ -145,6 +152,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 
 				Random = urand(1, 3);
 				if (Random == 1 && Spell_evade != 0) { me->CastSpell(me, Spell_evade, true); }		// 1/3 Chance de lancer le sort au respawn ou evade
+
 			}
 			void JustReachedHome() override
 			{
