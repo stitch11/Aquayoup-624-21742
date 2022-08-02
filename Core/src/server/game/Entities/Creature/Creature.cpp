@@ -577,8 +577,8 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 
 		case CREATURE_FAMILY_FIREELEMENTAL:			// elementaire de feu
 		case CREATURE_FAMILY_STORMELEMENTAL:		// elementaire de tempete
-			SetSpeedRate(MOVE_WALK, 1.8f);							// hors combat
-			SetSpeedRate(MOVE_RUN, 1.8f);							// en combat
+			SetSpeedRate(MOVE_WALK, 0.75f);							// hors combat
+			SetSpeedRate(MOVE_RUN, 1.5f);							// en combat
 			break;
 
 		case CREATURE_FAMILY_IMP:					// Imp

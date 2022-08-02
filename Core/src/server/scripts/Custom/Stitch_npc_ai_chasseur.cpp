@@ -453,9 +453,16 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 						float x = 0.0f, y = 0.0f, z = 0.0f;
 						uint32 mapid = 0;
 
-						x = (me->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
-						y = (me->GetPositionY() + urand(0, ResteADistance * 2) - ResteADistance);
-						z = me->GetPositionZ();
+						x = (victim->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
+						y = (victim->GetPositionY() + urand(0, ResteADistance * 2) - ResteADistance);
+						if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+						{
+							z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
+						}
+						else
+						{
+							z = victim->GetPositionZ();	// Sinon bug en interieur
+						}
 						mapid = victim->GetMapId();
 						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 						Cooldown_ResteADistance = 3000;

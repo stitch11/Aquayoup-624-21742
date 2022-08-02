@@ -482,9 +482,16 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 
-						x = (me->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
-						y = (me->GetPositionY() + urand(0, ResteADistance * 2) - ResteADistance);
-						z = me->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
+						x = (victim->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
+						y = (victim->GetPositionY() + urand(0, ResteADistance * 2) - ResteADistance);
+						if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+						{
+							z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
+						}
+						else 
+						{
+							z = victim->GetPositionZ();	// Sinon bug en interieur
+						}
 						mapid = me->GetMapId();
 						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 						Cooldown_ResteADistance = Cooldown_ResteADistance_Defaut;

@@ -593,7 +593,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Cooldown_Principal_A_Defaut = 2000;
 						Cooldown_Principal_B = 1000;
 						Cooldown_Principal_B_Defaut = 1000;
-						ResteADistance = 10;
+						ResteADistance = 15;
 						Spell_Trop_Loin = Spell_Toile_Araignee;
 						Cooldown_Trop_Loin = 8000;
 						Cooldown_Trop_Loin_Defaut = urand(8000,10000);
@@ -2565,7 +2565,14 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 						x = (me->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
 						y = (me->GetPositionY() + urand(0, ResteADistance * 2) - ResteADistance);
-						z = me->GetPositionZ();
+						if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+						{
+							z = me->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
+						}
+						else
+						{
+							z = me->GetPositionZ();	// Sinon bug en interieur
+						}
 						mapid = victim->GetMapId();
 						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 						Cooldown_Principal_B = Cooldown_Principal_B_Defaut;
@@ -3088,7 +3095,14 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 				x = (victim->GetPositionX() + urand(0, Distance*2) - Distance);	// 4 pour contact
 				y = (victim->GetPositionY() + urand(0, Distance*2) - Distance);	// 4 pour contact
-				z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
+				if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+				{
+					z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
+				}
+				else
+				{
+					z = victim->GetPositionZ();	// Sinon bug en interieur
+				}
 				mapid = victim->GetMapId();
 				me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 				DoMeleeAttackIfReady();																	// Combat en mélée
@@ -3132,7 +3146,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 				x = (victim->GetPositionX());
 				y = (victim->GetPositionY());
-				z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
+				if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+				{
+					z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
+				}
+				else
+				{
+					z = victim->GetPositionZ();	// Sinon bug en interieur
+				}
+
 				mapid = victim->GetMapId();
 				me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, val);
 				me->GetMotionMaster()->MovePoint(mapid, x, y, z);

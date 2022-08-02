@@ -145,10 +145,14 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				// ################################################################################################################################################
 				// Divers
 				// ################################################################################################################################################
-				//me->SetSheath(SHEATH_STATE_MELEE);													// S'equipe de l'arme au contact
 				if (Tir_1 != Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_RANGED); }				// S'équipe d'arc ou fusil
+				else
+				{
+					me->SetSheath(SHEATH_STATE_MELEE);												// S'equipe de l'arme au contact
+				}
+
 				me->SetReactState(REACT_AGGRESSIVE);
-				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);								// ROOT
+				//me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);								// ROOT
 				// ################################################################################################################################################
 			}
 			void JustRespawned() override
