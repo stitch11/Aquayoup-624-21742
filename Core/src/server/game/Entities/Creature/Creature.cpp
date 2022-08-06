@@ -620,6 +620,12 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			SetSpeedRate(MOVE_SWIM, 0.4f);							// en nageant
 			break;
 
+		case CREATURE_FAMILY_SE_DETERRE_AU_CONTACT: //CUSTOM 156
+			SetSpeedRate(MOVE_WALK, 0.25f);							// hors combat
+			SetSpeedRate(MOVE_RUN, 0.8f);							// en combat
+			SetSpeedRate(MOVE_SWIM, 0.4f);							// en nageant
+			break;
+
 		case CREATURE_FAMILY_MURLOC:
 		case CREATURE_FAMILY_NAGA:
 			SetSpeedRate(MOVE_WALK, 0.5f);							// hors combat
@@ -868,6 +874,7 @@ void Creature::Update(uint32 diff)
 		case CREATURE_FAMILY_WATER_ELEMENTAL:		// Elementaire d'eau
 		case CREATURE_FAMILY_MTWATERELEMENTAL:		// Elementaire d'eau
 		case CREATURE_FAMILY_SENTERRE:				// Custom 155
+		case CREATURE_FAMILY_SE_DETERRE_AU_CONTACT: //CUSTOM 156
 			SetSpeedRate(MOVE_SWIM, 1.5f);							// en nageant
 			break;
 
