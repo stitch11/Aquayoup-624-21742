@@ -1106,20 +1106,21 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Buf_A = liste_Buf_30[urand(0, 1)];
 						Spell_Heal = 0;
 						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A, Base_Cooldown_Cast_A+500);
-						Cooldown_SpellB = urand(5000, 7000);
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B+2000, Base_Cooldown_Cast_B+6000);
-						Cooldown_SpellB_rapide = 0;
+						Cooldown_SpellA_defaut = urand(4000, 4500);
+						Cooldown_SpellB = 2000;
+						Cooldown_SpellB_defaut = urand(4000, 5000);
+						Cooldown_SpellB_rapide = 4000;
 						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
 						Cooldown_Spell_Heal_defaut = 60000;
 						Cooldown_Principal_A = 1000;
 						Cooldown_Principal_A_Defaut = 1000;
 						Cooldown_Principal_B = 3000;
 						Cooldown_Principal_B_Defaut = 3000;
-						ResteADistance = urand(10, 15);
+						ResteADistance = 15;
 						Spell_Trop_Loin = 0;
-						Cooldown_Trop_Loin = urand(3000, 8000);
+						Cooldown_Trop_Loin = urand(6000, 8000);
 						Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
+						Spell_B_Non_Cumulable = 1;
 						break;
 					case 31:	// Ravageur - CREATURE_FAMILY_RAVAGER
 						me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
@@ -2234,6 +2235,9 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 17:	// Succube
 							AI_Random = urand(1, 2);
 							break;
+						case 30:
+							ResteADistance = 15;
+							break;
 						case 31:	// Ravageur - CREATURE_FAMILY_RAVAGER
 							Random = urand(1, 2);
 							break;
@@ -2305,13 +2309,9 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Se_Deterre();
 						}
 
-						if (Crfamily == 156 /*&& me->GetMotionMaster()->GetCurrentMovementGeneratorType() == IDLE_MOTION_TYPE*/)
+						if (Crfamily == 156 && me->GetDefaultMovementType() == IDLE_MOTION_TYPE/*&& me->GetMotionMaster()->GetCurrentMovementGeneratorType() == IDLE_MOTION_TYPE*/)
 						{
-							//me->CastSpell(me, Spell_No_ModelID, true);										// Masque le ModelID
-							//me->CastSpell(me, Spell_Senterre, true);										// Fumée et terre remuée Persistant
 							DoCastAOE(Spell_Senterre, true);
-							//me->CastSpell(me, Spell_Sedeterre_sans_fumee, true);							// Pour visuel sedeterrer
-							//me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Non selectionnable
 						}
 						// ---------------------------
 
@@ -2692,15 +2692,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 						//me->SetSpeedRate(MOVE_RUN, 1.01f);
 
-						x = (me->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
-						y = (me->GetPositionY() + urand(0, ResteADistance * 2) - ResteADistance);
+						x = (victim->GetPositionX() + irand(0, ResteADistance * 2) - ResteADistance);
+						y = (victim->GetPositionY() + irand(0, ResteADistance * 2) - ResteADistance);
 						if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
 						{
-							z = me->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
+							z = victim->GetMap()->GetHeight(victim->GetPhaseMask(), x, y, MAX_HEIGHT, true);
 						}
 						else
 						{
-							z = me->GetPositionZ();	// Sinon bug en interieur
+							z = victim->GetPositionZ()+2;	// Sinon bug en interieur
 						}
 						mapid = victim->GetMapId();
 						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
@@ -2730,7 +2730,9 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					void DoRangedAttackIfReady();														// Combat a distance
 				}
 
-			}
+				}
+				//else Cooldown_Principal_B -= diff;
+			//}
 
 			// ###### Reste a distance mais va au contact si la cible ce raproche , spellB plus rapide de loin #####################################################
 			void Mouvement_Caster_Puis_Contact(uint32 diff)
@@ -3108,7 +3110,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						}
 						else 
 						{
-							Recule_ou_Avance( 1 - urand(7,11) );												// 2 chances sur 3 : Recule
+							Recule_ou_Avance( 1 - urand(9,11) );												// 2 chances sur 3 : Recule
 						}
 						Cooldown_Principal_B = Cooldown_Principal_B_Defaut;
 						Cooldown_Principal_A = 2000 + urand(0,1500);

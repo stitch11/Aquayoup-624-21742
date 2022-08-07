@@ -483,6 +483,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			SetSpeedRate(MOVE_WALK, 0.8f);							// hors combat
 			SetSpeedRate(MOVE_RUN, 1.1f);							// en combat
 			SetSpeedRate(MOVE_SWIM, 0.7f);							// en nageant
+			SetSpeedRate(MOVE_FLIGHT, 1.5f);						// en volant
 			break;
 
 		case CREATURE_TYPE_ABERRATION:
@@ -621,9 +622,9 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			break;
 
 		case CREATURE_FAMILY_SE_DETERRE_AU_CONTACT: //CUSTOM 156
-			SetSpeedRate(MOVE_WALK, 0.25f);							// hors combat
-			SetSpeedRate(MOVE_RUN, 0.8f);							// en combat
-			SetSpeedRate(MOVE_SWIM, 0.4f);							// en nageant
+				SetSpeedRate(MOVE_WALK, 0.5f);							// hors combat
+				SetSpeedRate(MOVE_RUN, 0.9f);							// en combat
+				SetSpeedRate(MOVE_SWIM, 0.5f);							// en nageant
 			break;
 
 		case CREATURE_FAMILY_MURLOC:
