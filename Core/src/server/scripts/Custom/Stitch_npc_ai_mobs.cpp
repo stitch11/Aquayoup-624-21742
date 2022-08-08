@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour https:\\Aquayoup.123.fr
-// AI generique npc par famille : Mobs Ver 2022-07-14 (family)
+// AI generique npc par famille : Mobs Ver 2022-08-07 (family)
 //
 // Si spell[1] = 0 : alors affectation aléatoire de tous les spells(prédéfini dans le core), sinon utilisera les spells définis dans creature_template spell[1 a 5]
 // BETE
@@ -476,44 +476,18 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 liste_spell_B_156[4] = { 84867, 79872, 84867, 79872 };		// Balayage fracassant (cum 5 fois) 84867, Onde de choc 79872
 			uint32 liste_agro_156[2] = { 113967, 35328 };						// Barbelés d'épines 113967, Sang diapré 35328 (Impossible d'utiliser Camouflage)
 			uint32 liste_Buf_156[2] = { 22863, 22863 };							// Vitesse 22863 (10s/30%)
-
+			
+			// 157   Rocher (elementaire de terre si fixe)  -  CREATURE_FAMILY_MORPH_ROCHER 
+			uint32 liste_spell_A_157[2] = { 119004, 119004 };					// Violent coup direct 119004
+			uint32 liste_spell_B_157[3] = { 80182, 80807, 79872 };				// Uppercut 80182, Splendeur 80807 (cone), Onde de choc 79872    
+			uint32 liste_agro_157[2] = { 138976, 138976 };						// Bourrasque imminente 138976
+			uint32 liste_Buf_157[2] = { 974, 974 };								// bouclier de terre 974
 
 			void InitializeAI()
 			{
-				// --- Spécificitée par family ---
-				//Scorpion, ver
-				if (Crfamily == 20 || Crfamily == 42)
-				{
-					Random = urand(1, 3);
-					if (Random == 1)
-					{
+				
+				Family_Special_Init();		// Spécificitée par family
 
-						Senterre();
-					}
-				}
-
-				//Custom
-				if (Crfamily == 155 && !me->HasUnitState(UNIT_STATE_MOVE))
-				{
-					Random = urand(1, 3);
-					if (Random == 1)
-					{
-
-						Senterre();
-					}
-					else
-						Senterre_sans_fumee();
-				}
-
-				if (Crfamily == 156 && !me->HasUnitState(UNIT_STATE_MOVE))
-				{
-					{
-
-						Senterre_sans_fumee();
-					}
-
-				}
-				// -------------------------------
 			}
 			void Init_AI()
 			{
@@ -1918,7 +1892,31 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						}
 						
 						break;
-
+					case 157:	// Rocher (elementaire de terre si fixe)  -  CREATURE_FAMILY_MORPH_ROCHER    
+						me->SetMeleeDamageSchool(SpellSchools(3));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+						Spell_A = liste_spell_A_157[urand(0, 1)];
+						Spell_B = liste_spell_B_157[urand(0, 2)];
+						Spell_B_Non_Cumulable = 0;
+						Spell_agro = liste_agro_157[urand(0, 1)];
+						Spell_respawn_evade = Spell_Ecorce;
+						Buf_A = liste_Buf_157[urand(0, 1)];
+						Spell_Heal = 0;
+						Cooldown_SpellA = 1000;
+						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+						Cooldown_SpellB = 2000;
+						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B-2000, Base_Cooldown_Cast_B);
+						Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3500;											// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
+						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;											// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
+						Cooldown_Spell_Heal_defaut = 60000;
+						Cooldown_Principal_A = 1000;
+						Cooldown_Principal_A_Defaut = 1000;
+						Cooldown_Principal_B = urand(4000, 4500);
+						Cooldown_Principal_B_Defaut = urand(5000, 6000);
+						ResteADistance = 5;
+						Spell_Trop_Loin = Lancer_Une_Pierre;															// lancer une pierre 130775
+						Cooldown_Trop_Loin = urand(2000, 4000);
+						Cooldown_Trop_Loin_Defaut = urand(3000, 5000);
+						break;
 
 
 
@@ -2029,6 +2027,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// Divers  ----------------------------------------------------------------------------------------------------------------------------------------
 				me->SetReactState(REACT_AGGRESSIVE);
 
+				Family_Special_Init();		// Spécificitée par family
+
 				// ################################################################################################################################################
 			}
 			void JustRespawned() override
@@ -2040,57 +2040,21 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				Random = urand(1, 3);
 				if (Random == 1 && Spell_respawn_evade != 0) { me->CastSpell(me, Spell_respawn_evade, true); }		// 1/3 Chance de lancer le sort sur lui au respawn ou evade
 
-				if (Crfamily == 20 || Crfamily == 42)
-				{
-					Random = urand(1, 3);
-					if (Random == 1)
-					{
-
-						Senterre();
-					}
-				}
-
-				//Custom
-				if (Crfamily == 155 && !me->HasUnitState(UNIT_STATE_MOVE))
-				{
-					Random = urand(1, 3);
-					if (Random == 1)
-					{
-
-						Senterre();
-					}
-					else
-						Senterre_sans_fumee();
-				}
-
-				if (Crfamily == 156 && !me->HasUnitState(UNIT_STATE_MOVE))
-				{
-					{
-
-						Senterre_sans_fumee();
-					}
-
-				}
-
-
-				// -------------------------------
+				Family_Special_Init();		// Spécificitée par family
 				// -------------------------------
 			}
 			void EnterCombat(Unit* /*who*/) override
 			{
 				Init_AI();
-
-				if (Crfamily == 20 || Crfamily == 42 || Crfamily == 155)
-				{
-					Se_Deterre();
-				}
-
-				if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() == WAYPOINT_MOTION_TYPE)
+				
+				// Sinon bug en combat et retourne periodiquement faire le wp
+				if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() == WAYPOINT_MOTION_TYPE) 
 				{
 					me->StopMoving();
 					me->GetMotionMaster()->MoveIdle();
 				}
 
+				Family_Special_Retire_a_l_Agro();
 			}
 			void EnterEvadeMode(EvadeReason /*why*/) override
 			{
@@ -2117,40 +2081,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				me->UpdateSpeed(MOVE_SWIM);
 				me->UpdateSpeed(MOVE_FLIGHT);
 
-				// --- Spécificitée par family ---
-				//Scorpion, ver
-				if (Crfamily == 20 || Crfamily == 42)
-				{
-					Random = urand(1, 3);
-					if (Random == 1)
-					{
-
-						Senterre();
-					}
-				}
-
-				//Custom
-				if (Crfamily == 155 && !me->HasUnitState(UNIT_STATE_MOVE))
-				{
-					Random = urand(1, 3);
-					if (Random == 1)
-					{
-
-						Senterre();
-					}
-					else
-						Senterre_sans_fumee();
-				}
-
-				if (Crfamily == 156 && !me->HasUnitState(UNIT_STATE_MOVE))
-				{
-					{
-
-						Senterre_sans_fumee();
-					}
-
-				}
-
+				Family_Special_Init();		// Spécificitée par family
 
 				// -------------------------------
 
@@ -2303,16 +2234,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						}
 
 
-						// ------ Scorpion, Ver ------
-						if (Crfamily == 20 || Crfamily == 42 || Crfamily == 155)
-						{
-							Se_Deterre();
-						}
+						Family_Special_Retire_a_l_Agro();
 
-						if (Crfamily == 156 && me->GetDefaultMovementType() == IDLE_MOTION_TYPE/*&& me->GetMotionMaster()->GetCurrentMovementGeneratorType() == IDLE_MOTION_TYPE*/)
-						{
-							DoCastAOE(Spell_Senterre, true);
-						}
 						// ---------------------------
 
 						if (Spell_respawn_evade != 0) { me->CastSpell(me, Spell_respawn_evade, true); }
@@ -2338,10 +2261,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 								me->CastSpell(me, Buf_A, true);
 							}
 
-						if (Crfamily == 156 && me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE)
-						{
-							Se_Deterre();
-						}
+						Family_Special_Retire_au_contact();
 
 					}
 
@@ -2657,6 +2577,9 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							else if (AI_Random == 2) { Mouvement_Contact_Tournant_Aleatoire(diff); }
 							else
 								Mouvement_Contact_Basique(diff);
+							break;
+						case 157:	// Rocher (elementaire de terre si fixe)  -  CREATURE_FAMILY_MORPH_ROCHER 
+							Mouvement_Contact_Basique(diff);
 							break;
 
 						default:
@@ -3290,6 +3213,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, val);
 				me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 			}
+
 			void Senterre()
 			{
 				me->CastSpell(me, Spell_No_ModelID, true);										// Masque le ModelID
@@ -3318,7 +3242,85 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Selectionnable
 
 			}
+			void Morph_Rocher()
+			{
+				if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE)
+					return;
 
+				// Morph en rocher
+				uint32 ModelRocher = urand(1, 3);
+				if (ModelRocher == 1) { me->SetDisplayId(60710); }
+				else if (ModelRocher == 2) { me->SetDisplayId(52961); }
+				else { me->SetDisplayId(36387); }
+
+				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Non selectionnable
+
+			}
+			void DeMorph_Rocher()
+			{
+				if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE)
+					return;
+				
+				me->CastSpell(me, Spell_Senterre_sans_fumee, true); 							// Visuel explosion de fumée
+				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Selectionnable
+				me->DeMorph();																	// Retire Morph
+			}
+
+			void Family_Special_Init()
+			{
+				// --- Spécificitée par family ---
+				//Scorpion, ver
+				if (Crfamily == 20 || Crfamily == 42)
+				{
+					Random = urand(1, 3);
+					if (Random == 1)
+					{
+						Senterre();
+					}
+				}
+
+				//Custom
+				if (Crfamily == 155 && !me->HasUnitState(UNIT_STATE_MOVE))
+				{
+					Random = urand(1, 3);
+					if (Random == 1)
+					{
+						Senterre();
+					}
+					else
+						Senterre_sans_fumee();
+				}
+				if (Crfamily == 156 && !me->HasUnitState(UNIT_STATE_MOVE))
+				{
+					Senterre_sans_fumee();
+				}
+				if (Crfamily == 157 && !me->HasUnitState(UNIT_STATE_MOVE))
+				{
+					Morph_Rocher();
+				}
+			}
+			void Family_Special_Retire_a_l_Agro()
+			{
+				if (Crfamily == 20 || Crfamily == 42 || Crfamily == 155)
+				{
+					Se_Deterre();
+				}
+				if (Crfamily == 156 /*&& me->GetDefaultMovementType() == IDLE_MOTION_TYPE*/)
+				{
+					DoCastAOE(Spell_Senterre, true);  // Pour visuel de fumée pendant la 1ere avance
+				}
+				if (Crfamily == 157 /*&& me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE*/)
+				{
+					DeMorph_Rocher();
+				}
+			}
+			void Family_Special_Retire_au_contact()
+			{
+				if (Crfamily == 156 && me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE)
+				{
+					Se_Deterre();
+				}
+			}
 
 			void Bonus_Degat_Arme_Done(int val) // 
 			{

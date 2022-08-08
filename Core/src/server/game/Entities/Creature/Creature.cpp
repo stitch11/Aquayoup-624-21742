@@ -615,6 +615,13 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			SetSpeedRate(MOVE_SWIM, 0.6f);							// en nageant
 			break;
 
+		case CREATURE_FAMILY_MURLOC:
+		case CREATURE_FAMILY_NAGA:
+			SetSpeedRate(MOVE_WALK, 0.5f);							// hors combat
+			SetSpeedRate(MOVE_RUN, 1.0f);							// en combat
+			SetSpeedRate(MOVE_SWIM, 0.8f);							// en nageant
+			break;
+
 		case CREATURE_FAMILY_SENTERRE:				//Custom 155
 			SetSpeedRate(MOVE_WALK, 0.25f);							// hors combat
 			SetSpeedRate(MOVE_RUN, 1.0f);							// en combat
@@ -627,11 +634,10 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 				SetSpeedRate(MOVE_SWIM, 0.5f);							// en nageant
 			break;
 
-		case CREATURE_FAMILY_MURLOC:
-		case CREATURE_FAMILY_NAGA:
-			SetSpeedRate(MOVE_WALK, 0.5f);							// hors combat
+		case CREATURE_FAMILY_MORPH_ROCHER:			//CUSTOM 157 - Rocher (Elementaire de terre si fixe)
+			SetSpeedRate(MOVE_WALK, 0.7f);							// hors combat
 			SetSpeedRate(MOVE_RUN, 1.0f);							// en combat
-			SetSpeedRate(MOVE_SWIM, 0.8f);							// en nageant
+			SetSpeedRate(MOVE_SWIM, 0.6f);							// en nageant
 			break;
 
 		default:
@@ -860,6 +866,7 @@ void Creature::Update(uint32 diff)
 			SetSpeedRate(MOVE_SWIM, 0.7f);							// en nageant
 			break;
 
+		case CREATURE_FAMILY_MORPH_ROCHER:			// CUSTOM 157 - Rocher (Elementaire de terre si fixe)
 		case CREATURE_FAMILY_EARTHELEMENTAL:		// Elementaire de terre
 		case CREATURE_FAMILY_FIREELEMENTAL:			// elementaire de feu
 		case CREATURE_FAMILY_STORMELEMENTAL:		// elementaire de tempete
