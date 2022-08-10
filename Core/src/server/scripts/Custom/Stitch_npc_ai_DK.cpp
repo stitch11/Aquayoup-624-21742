@@ -724,7 +724,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 				// ------ ALLER A LA CIBLE -------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Anti_Bug_Figer <= diff)
 				{
-					if (Dist >= ResteADistance && !me->HasAura(122) && !me->HasAura(3600) && !me->HasAura(6474))
+					if (Dist >= ResteADistance && !AuraFigé())
 					{
 						float x = 0.0f, y = 0.0f, z = 0.0f;
 						uint32 mapid = 0;
@@ -761,7 +761,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 
 
 				// Si la cible < 8m : avance ou tourne au tour de sa victime
-				if (Dist < 8 && !me->HasAura(122) && !me->HasAura(3600) && !me->HasAura(6474))
+				if (Dist < 8 && !AuraFigé())
 				{
 					if (Cooldown_ResteADistance <= diff)
 					{
@@ -791,11 +791,11 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 				{
 					// Mouvement aléatoire si cible < 6m ----------------------------------------------------------------------------------------------------------
 
-					if ((Dist <6))
+					if ((Dist <6) && !AuraFigé())
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 						
-						if (AuraLenteur() == false)
+						if (!AuraLenteur())
 						{
 							me->SetSpeedRate(MOVE_RUN, 1.2f); // Uniquement si non ralenti par un spell 
 						}
@@ -851,7 +851,6 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 			{
 				if (me->HasAura(116)		// Eclair_de_givre 116 
 					|| me->HasAura(71318)	// Eclair_de_givre 71318
-					|| me->HasAura(122)		// Nova de givre
 					|| me->HasAura(31589)	// Lenteur 31589
 					|| me->HasAura(6136) 	// Armure_de_givre 6136
 					|| me->HasAura(8056) 	// Horion_de_givre 8056
@@ -867,9 +866,15 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 					|| me->HasAura(116095) 	// Handicap 116095
 					|| me->HasAura(300197) 	// Toucher_de_glace 300197
 					|| me->HasAura(20170)	// Sceau de justice 20170
+					) return true;
+				else return false;
+			}
+			bool AuraFigé()
+			{
+				if (me->HasAura(122)		// Nova de givre
 					|| me->HasAura(3600)	// Totem de lien terrestre
-					|| me->HasAura(6474))	// Totem de lien terrestre passif
-					return true;
+					|| me->HasAura(6474)	// Totem de lien terrestre passif
+					) return true;
 				else return false;
 			}
 

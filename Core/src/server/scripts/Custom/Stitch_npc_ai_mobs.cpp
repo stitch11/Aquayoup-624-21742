@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour https:\\Aquayoup.123.fr
-// AI generique npc par famille : Mobs Ver 2022-08-07 (family)
+// AI generique npc par famille : Mobs Ver 2022-08-08 (family)
 //
 // Si spell[1] = 0 : alors affectation aléatoire de tous les spells(prédéfini dans le core), sinon utilisera les spells définis dans creature_template spell[1 a 5]
 // BETE
@@ -3247,11 +3247,11 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE)
 					return;
 
-				// Morph en rocher
-				uint32 ModelRocher = urand(1, 3);
-				if (ModelRocher == 1) { me->SetDisplayId(60710); }
-				else if (ModelRocher == 2) { me->SetDisplayId(52961); }
-				else { me->SetDisplayId(36387); }
+				// Morph en rocher - npc passif pour leurre 3 modelid : .npc add 15100018
+					uint32 ModelRocher = urand(1, 3);
+					if (ModelRocher == 1) { me->SetDisplayId(60710); }
+					else if (ModelRocher == 2) { me->SetDisplayId(52961); }
+					else { me->SetDisplayId(36387); }
 
 				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Non selectionnable
 

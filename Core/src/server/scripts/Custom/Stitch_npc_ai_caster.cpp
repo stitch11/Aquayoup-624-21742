@@ -65,8 +65,8 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			uint32 Cooldown_Spell1 = 1500;
 			uint32 Cooldown_Spell2 = 4000;
 			uint32 Cooldown_Spell2_defaut = urand(7000,10000);
-			uint32 Cooldown_ResteADistance = 2000;									// Test si en contact
-			uint32 Cooldown_ResteADistance_Defaut = 3000;
+			uint32 Cooldown_ResteADistance = 1000;									// Test si en contact
+			uint32 Cooldown_ResteADistance_Defaut = 2000;
 			uint32 Cooldown_ResteADistance_Teleportation = 3000;
 			uint32 Cooldown_ResteADistance_Defaut_Teleportation = urand(5000, 7000);
 			uint32 Cooldown_Anti_Bug_Figer = 2000;
@@ -255,10 +255,10 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					ResteADistance = 10;
 				}
 
-				// Reste a distance faible forcé (5m) l'Intérieur
+				// Reste a distance faible forcé (7m) l'Intérieur
 				if (npcfixe == 8)
 				{
-					ResteADistance = 5;
+					ResteADistance = 7;
 				}
 				// ################################################################################################################################################
 			}
@@ -374,12 +374,11 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 						// Spell1 sur la cible  -------------------------------------------------------------------------------------------------------------------
 						if (Cooldown_Spell1 <= diff && Spell_1 !=0)
 						{
-							//if (!me->isMoving())
-							//{
+
 								DoCast(victim, Spell_1);
 								//DoMeleeAttackIfReady();																// Combat en mélée
 								Cooldown_Spell1 = urand(3500,4000);
-							//}
+
 						}
 						else Cooldown_Spell1 -= diff;
 
@@ -676,7 +675,6 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				else return false;
 			}
 		};
-
 
 
 
