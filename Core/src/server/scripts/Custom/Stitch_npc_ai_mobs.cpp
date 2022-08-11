@@ -2613,7 +2613,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					if (Dist <4)
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
-						//me->SetSpeedRate(MOVE_RUN, 1.01f);
+
 
 						x = (victim->GetPositionX() + irand(0, ResteADistance * 2) - ResteADistance);
 						y = (victim->GetPositionY() + irand(0, ResteADistance * 2) - ResteADistance);
@@ -2643,6 +2643,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						void DoRangedAttackIfReady();													// Combat a distance
 						me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
 					}
+
 				}
 
 				// Mouvement ON si distance > 20m -----------------------------------------------------------------------------------------------------------------
@@ -2654,8 +2655,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				}
 
 				}
-				//else Cooldown_Principal_B -= diff;
-			//}
+
 
 			// ###### Reste a distance mais va au contact si la cible ce raproche , spellB plus rapide de loin #####################################################
 			void Mouvement_Caster_Puis_Contact(uint32 diff)
@@ -2736,7 +2736,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// ------ ALLER A LA CIBLE -------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Principal_A <= diff)
 				{
-					if (Dist >= 6)
+					if (Dist >= 6 && !AuraFigé())
 					{
 					me->GetMotionMaster()->MoveChase(victim, 1, urand(0, 4));								// Pour suivre la cible avec un angle
 					Cooldown_Principal_A = Cooldown_Principal_A_Defaut;
@@ -2793,7 +2793,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// ------ ALLER A LA CIBLE -------------------------------------------------------------------------------------------------------------------------
 					if (Cooldown_Principal_A <= diff)
 					{
-						if (Dist >= 6)
+						if (Dist >= 6 && !AuraFigé())
 						{
 					me->GetMotionMaster()->MoveChase(victim, 2, urand(0, 6));								// Pour suivre la cible avec un angle
 					Cooldown_Principal_A = Cooldown_Principal_A_Defaut;
@@ -2854,13 +2854,13 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// ------ ALLER A LA CIBLE -------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Principal_A <= diff)
 				{
-					if (Dist > 3)
+					if (Dist > 3 && !AuraFigé())
 					{
 						//me->SetSpeedRate(MOVE_RUN, 1.01f);													// Vitesse de déplacement
 						Tourne_Au_Tour_Aleatoire(2);
 						DoMeleeAttackIfReady();																	// Combat en mélée
 						Cooldown_Principal_B = Cooldown_Principal_B_Defaut;
-						Cooldown_Principal_A = Cooldown_Principal_A_Defaut + ((urand(0, 2) * 1000));
+						Cooldown_Principal_A = Cooldown_Principal_A_Defaut /*+ ((urand(0, 2) * 1000))*/;
 					}
 				}
 				else Cooldown_Principal_A -= diff;
@@ -2868,13 +2868,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					// S'ELOIGNE OU PASSE DANS LE DOS --------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Principal_B <= diff)
 				{
-					if (Dist < 6) 
+					if (Dist < 6 && !AuraFigé())
 					{
 						Random = urand(1, 5);
 						if ((Random != 1) && Player_Caster() == false)
 						{
 							Tourne_Au_Tour_Aleatoire(urand(10, 12));											// 4 chances sur 5 pour s'eloigner si le joueur n'est pas un caster
 							Cooldown_Principal_A = 3000;
+
+							//me->SetSpeedRate(MOVE_RUN, 1.02f);													// Vitesse de déplacement
 						}
 						else
 						{
@@ -2904,12 +2906,12 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// ------ ALLER A LA CIBLE -------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Principal_A <= diff)
 				{
-					if (Dist > 3)
+					if (Dist > 3 && !AuraFigé())
 					{
 						Tourne_Au_Tour_Aleatoire(3);
 						DoMeleeAttackIfReady();																		// Combat en mélée
 						Cooldown_Principal_B = Cooldown_Principal_B_Defaut;
-						Cooldown_Principal_A = Cooldown_Principal_A_Defaut + ((urand(0, 2) * 1000));
+						Cooldown_Principal_A = Cooldown_Principal_A_Defaut /*+ ((urand(0, 2) * 1000))*/;
 					}
 				}
 				else Cooldown_Principal_A -= diff;
@@ -2917,7 +2919,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// S'ELOIGNE --------------------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Principal_B <= diff)
 				{
-					if (Dist < 6)
+					if (Dist < 6 && !AuraFigé())
 					{
 						me->CastSpell(me, Spell_Vitesse_4s, true);
 						Tourne_Au_Tour_Aleatoire_Volant( urand(8, 12) );
@@ -2968,7 +2970,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// ------ ALLER A LA CIBLE -------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Principal_A <= diff)
 				{
-					if (Dist > 3)
+					if (Dist > 3 && !AuraFigé())
 					{
 					Tourne_Au_Tour_Aleatoire(1);
 					DoMeleeAttackIfReady();																	// Combat en mélée
@@ -2983,7 +2985,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// ------ S'ELOIGNE DE LA CIBLE ---------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Principal_B <= diff)
 				{
-					if (Dist <= 3)
+					if (Dist <= 3 && !AuraFigé())
 					{
 					me->CastSpell(me, Spell_Vitesse_4s, true);
 					Tourne_Au_Tour_Aleatoire(15);
@@ -3002,7 +3004,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			// ###### Va sur la cible et reste au contact , recule et revient périodiquement #######################################################################
 			void Mouvement_Contact_Avance_Recule(uint32 diff)
 			{
-				if (!UpdateVictim())
+				if (!UpdateVictim() || AuraFigé())
 					return;
 
 				Unit* victim = me->GetVictim();
@@ -3013,7 +3015,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// ------ ALLER A LA CIBLE ------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Principal_A <= diff)
 				{
-					if (Dist >= ResteADistance)
+					if (Dist >= ResteADistance && !AuraFigé())
 					{
 						Tourne_Au_Tour_Aleatoire(1);
 						Cooldown_Principal_A = Cooldown_Principal_A_Defaut;
@@ -3024,7 +3026,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// TOURNE AU TOUR , RECULE ------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Principal_B <= diff)
 				{
-					if (Dist < ResteADistance)
+					if (Dist < ResteADistance && !AuraFigé())
 					{
 						Random = urand(1, 3);
 						if (Random == 1)
@@ -3072,7 +3074,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// ------ ALLER A LA CIBLE -------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Principal_A <= diff)
 				{
-					if (Dist >= 6)
+					if (Dist >= 6 && !AuraFigé())
 					{
 						me->GetMotionMaster()->MoveChase(victim, 1, urand(0, 6));								// Pour suivre la cible avec un angle
 						Cooldown_Principal_A = Cooldown_Principal_A_Defaut;
@@ -3138,7 +3140,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			}
 			void Tourne_Au_Tour_Aleatoire(uint32 Distance)
 			{
-				if (!UpdateVictim() || me->HasAura(122) || me->HasAura(3600) || me->HasAura(6474))
+				if (!UpdateVictim() || AuraFigé())
 					return;
 
 				if (me->HasUnitState(UNIT_STATE_ROOT) || me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED) )
@@ -3163,7 +3165,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			}
 			void Tourne_Au_Tour_Aleatoire_Volant(uint32 Distance)
 			{
-				if (!UpdateVictim() || me->HasAura(122) || me->HasAura(3600) || me->HasAura(6474))
+				if (!UpdateVictim() || AuraFigé())
 					return;
 
 				if (me->HasUnitState(UNIT_STATE_ROOT) || me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED))
@@ -3189,7 +3191,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			}
 			void Recule_ou_Avance(int32 val)
 			{
-				if (!UpdateVictim() || me->HasAura(122) || me->HasAura(3600) || me->HasAura(6474))
+				if (!UpdateVictim() || AuraFigé())
 					return;
 
 				if (me->HasUnitState(UNIT_STATE_ROOT) || me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED))
@@ -3372,6 +3374,37 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					Cooldown_Spell_ContreAttaque = Cooldown_Spell_ContreAttaque_defaut;
 				}
 				else Cooldown_Spell_ContreAttaque -= diff;
+			}
+
+			bool AuraLenteur()
+			{
+				if (me->HasAura(116)		// Eclair_de_givre 116 
+					|| me->HasAura(71318)	// Eclair_de_givre 71318
+					|| me->HasAura(31589)	// Lenteur 31589
+					|| me->HasAura(6136) 	// Armure_de_givre 6136
+					|| me->HasAura(8056) 	// Horion_de_givre 8056
+					|| me->HasAura(12548) 	// Horion_de_givre 12548
+					|| me->HasAura(9080) 	// Brise_genou 9080
+					|| me->HasAura(1715) 	// Brise_genou 1715
+					|| me->HasAura(69917) 	// Fievre_de_givre 69917
+					|| me->HasAura(67719) 	// Fievre_de_givre 67719
+					|| me->HasAura(45477) 	// Toucher_de_glace 45477
+					|| me->HasAura(300051) 	// Javelot_de_givre 300051
+					|| me->HasAura(300237) 	// Javelot_de_givre 300237
+					|| me->HasAura(60192) 	// Gel_de_zone 60192
+					|| me->HasAura(116095) 	// Handicap 116095
+					|| me->HasAura(300197) 	// Toucher_de_glace 300197
+					|| me->HasAura(20170)	// Sceau de justice 20170
+					) return true;
+				else return false;
+			}
+			bool AuraFigé()
+			{
+				if (me->HasAura(122)		// Nova de givre
+					|| me->HasAura(3600)	// Totem de lien terrestre
+					|| me->HasAura(6474)	// Totem de lien terrestre passif
+					) return true;
+				else return false;
 			}
 
 
