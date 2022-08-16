@@ -2245,7 +2245,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						// ########################################################################################################################################
 						// Spell a lancer a l'agro 
 						// ########################################################################################################################################
-					if (Start_Agro2 == 0 && Dist < 6)
+					if (Start_Agro2 == 0 && Dist < 3)
 					{
 						Start_Agro2 = 1;
 
@@ -2656,7 +2656,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 				}
 
-
 			// ###### Reste a distance mais va au contact si la cible ce raproche , spellB plus rapide de loin #####################################################
 			void Mouvement_Caster_Puis_Contact(uint32 diff)
 			{
@@ -3035,7 +3034,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						}
 						else 
 						{
-							Recule_ou_Avance( 1 - urand(9,11) );												// 2 chances sur 3 : Recule
+							Recule_ou_Avance( 1 - urand(11,15) );												// 2 chances sur 3 : Recule
 						}
 						Cooldown_Principal_B = Cooldown_Principal_B_Defaut;
 						Cooldown_Principal_A = 2000 + urand(0,1500);
@@ -3218,6 +3217,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 			void Senterre()
 			{
+				if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE)
+					return;
 				me->CastSpell(me, Spell_No_ModelID, true);										// Masque le ModelID
 				me->CastSpell(me, Spell_Senterre, true);										// Fumée et terre remuée Persistant
 				me->CastSpell(me, Spell_Sedeterre_sans_fumee, true);							// Pour visuel sedeterrer
@@ -3225,8 +3226,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			}
 			void Senterre_sans_fumee()
 			{
-				//Custom
-				if (/*Crfamily == 155 &&*/ (me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE))
+				if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE)
 					return;
 
 				me->CastSpell(me, Spell_Senterre_sans_fumee, true);								// Fumée et terre remuée Temporaire
