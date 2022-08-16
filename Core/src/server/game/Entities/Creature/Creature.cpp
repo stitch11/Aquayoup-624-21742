@@ -586,6 +586,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 		case CREATURE_FAMILY_BEETLE:				// Goul
 		case CREATURE_FAMILY_HORSE_CUSTOM:			// Cheval
 		case CREATURE_FAMILY_WATERSTRIDER:			// Trotteur aquatique
+		case CREATURE_FAMILY_TALLSTRIDER:			// Grand trotteur
 			SetSpeedRate(MOVE_WALK, 0.5f);							// hors combat
 			SetSpeedRate(MOVE_RUN, 1.0f);							// en combat
 			SetSpeedRate(MOVE_SWIM, 0.5f);							// en nageant
@@ -863,6 +864,7 @@ void Creature::Update(uint32 diff)
 		case CREATURE_FAMILY_RAVAGER:				// Ravageur
 		case CREATURE_FAMILY_CRANE:					// Grue
 		case CREATURE_FAMILY_WATERSTRIDER:			// Trotteur aquatique
+		case CREATURE_FAMILY_TALLSTRIDER:			// Grand trotteur
 			SetSpeedRate(MOVE_SWIM, 0.7f);							// en nageant
 			break;
 
