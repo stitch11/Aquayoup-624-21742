@@ -48,6 +48,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			Stitch_npc_ai_casterAI(Creature* creature) : ScriptedAI(creature) { }
 
 			uint32 Random;
+			uint32 ForceClasse;
 			uint32 DistanceDeCast = 40;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
 			uint32 ResteADistance = 15;												// Distance max a laquelle un npc s'approchera
 			uint32 Dist;															// Distance entre le npc et sa cible
@@ -55,7 +56,6 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			uint32 Mana;
 			uint32 MaxMana = me->GetMaxPower(POWER_MANA);
 			uint32 ForceBranche;
-			uint8 npcfixe = me->GetCreatureTemplate()->pickpocketLootId;
 			uint32 MessageAlagro = 0;
 			uint32 Spell_ContreAttaque = 0;
 			uint32 Visuel_Teleportation = 87459;
@@ -133,16 +133,16 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				{ 
 					// Forcer le choix de la classe par creature_template->pickpocketloot
 					ForceBranche = me->GetCreatureTemplate()->pickpocketLootId;
-					if (ForceBranche == 1) { Random = 1; }															// Mage feu forcé
-					else if (ForceBranche == 2) { Random = 2; }														// Mage Givre forcé 
-					else if (ForceBranche == 3) { Random = 3; }														// Demo forcé
-					else if (ForceBranche == 4) { Random = 4; }														// Druide forcé
-					else if (ForceBranche == 5) { Random = 5; }														// Pretre forcé
-					else if (ForceBranche == 6) { Random = 6; }														// DK Chaos forcé
-					else { Random = urand(1, 6); }
+					if (ForceBranche == 1 || ForceBranche == 12) { ForceClasse = 1; }										// Mage feu forcé
+					else if (ForceBranche == 2 || ForceBranche == 13) { ForceClasse = 2; }									// Mage Givre forcé 
+					else if (ForceBranche == 3 || ForceBranche == 14) { ForceClasse = 3; }									// Demo forcé
+					else if (ForceBranche == 4 || ForceBranche == 15) { ForceClasse = 4; }									// Druide forcé
+					else if (ForceBranche == 5 || ForceBranche == 16) { ForceClasse = 5; }									// Pretre forcé
+					else if (ForceBranche == 6 || ForceBranche == 17) { ForceClasse = 6; }									// DK Chaos forcé
+					else { ForceClasse = urand(1, 6); }
 
 					// Tirage aléatoire d'une pseudo classe
-					switch (Random)
+					switch (ForceClasse)
 					{
 					case 1: // Mage feu
 						Buf_1 = 165743;													// Armure de givre	
@@ -256,7 +256,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				}
 
 				// Reste a distance faible forcé (7m) l'Intérieur
-				if (npcfixe == 8)
+				if (ForceBranche == 8)
 				{
 					ResteADistance = 7;
 				}
@@ -445,7 +445,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					// Bond aléatoire si cible < 6m & mana > 10%  ---------------------------------------------------------------------------------------------
 					if (Cooldown_bond_aleatoire_25m <= diff)
 					{
-						if (Dist <6 && (Mana > MaxMana / 10) && (npcfixe == 10))
+						if (Dist <6 && (Mana > MaxMana / 10) && (ForceBranche == 10))
 						{
 							DoCast(me, Bond_aleatoire_25m);
 							Cooldown_bond_aleatoire_25m = Cooldown_bond_aleatoire_25m_Defaut;
@@ -457,7 +457,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				// Teleportation aléatoire si cible < 6m & mana > 10%  ---------------------------------------------------------------------------------------------
 				if (Cooldown_ResteADistance_Teleportation <= diff)
 				{
-					if (Dist <6 && (Mana > MaxMana / 10) && (npcfixe == 9))
+					if (Dist <6 && (Mana > MaxMana / 10) && (ForceBranche == 9))
 					{
 						Teleport_Au_Tour_Aleatoire();
 						Cooldown_ResteADistance_Teleportation = Cooldown_ResteADistance_Defaut_Teleportation;
@@ -469,8 +469,9 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				if (Cooldown_ResteADistance <= diff)
 				{
 					// Mouvement aléatoire si cible < 6m & mana > 10%  
-					if (Dist <6 && (Mana > MaxMana / 10) && npcfixe != 7 )
+					if (Dist <6 && (Mana > MaxMana / 10) && (ForceBranche != 7 && ForceBranche <11) )
 					{
+
 						if(!AuraFigé() && !AuraLenteur())
 						{
 							me->SetSpeedRate(MOVE_RUN, 1.2f); // Uniquement si non ralenti par un spell 
