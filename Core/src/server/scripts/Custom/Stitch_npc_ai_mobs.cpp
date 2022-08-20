@@ -86,10 +86,10 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			Stitch_npc_ai_mobsAI(Creature* creature) : ScriptedAI(creature) { }
 
 
-			uint32 Random = 0;
+			uint32 Random;
 			uint32 DistanceDeCast = 40;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
-			uint32 ResteADistance = 5;												// Distance max a laquelle un npc s'approchera
-			uint32 Dist;															// Distance entre le npc et sa cible
+			uint32 ResteADistance = 5;	///////////											// Distance max a laquelle un npc s'approchera
+			uint32 Dist = 0;															// Distance entre le npc et sa cible
 			Unit* victim = me->GetVictim();					
 			uint32 Crfamily = me->GetCreatureTemplate()->family;
 			uint32 ForceFamily = me->GetCreatureTemplate()->pickpocketLootId;
@@ -98,7 +98,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 mapid = 0;
 			uint32 MessageAlagro = 0;
 			uint32 Spell_ContreAttaque = 0;
-			uint8 Spell_B_Non_Cumulable;											// == 1 : Spell_B ne sera pas appliqué s'il est deja actif sur la cible . Par exemple pour Brise-genou
+			uint8 Spell_B_Non_Cumulable = 0;											// == 1 : Spell_B ne sera pas appliqué s'il est deja actif sur la cible . Par exemple pour Brise-genou
 
 			// Definitions des variables Cooldown et le 1er lancement
 			uint32 Cooldown_SpellA = 1000;											// Sort principal
@@ -113,11 +113,13 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 Cooldown_Spell_Heal_defaut = 8000;
 			uint32 Cooldown_Principal_B = 3500;										// Test si en contact , Cooldown_ResteADistance
 			uint32 Cooldown_Principal_B_Defaut = 3500 + ((urand(0, 4) * 500));		// Cooldown_ResteADistance_Defaut, tourne au tour , etc
+			uint32 Cooldown_Principal_C = 250;										// Test si en contact , Cooldown_ResteADistance
+			uint32 Cooldown_Principal_C_Defaut = 2000;
 			uint32 Cooldown_Trop_Loin = 4000;
 			uint32 Cooldown_Trop_Loin_Defaut = 10000;
 			uint32 Base_Cooldown_Cast_A = 3500;										// Cooldown de base pour l'attaque principal, il est utilisé avec des valeurs ajouté en +-, sert a definir Cooldown_SpellA_defaut
 			uint32 Base_Cooldown_Cast_B = 8000;										// Idem pour le sort secondaire, généralement un DOT
-			uint32 AI_Random ;
+			uint32 AI_Random = 0;
 			uint32 Start_Agro = 0;
 			uint32 Start_Agro2 = 0;
 			uint32 Cooldown_Spell_ContreAttaque = 4000;
@@ -506,1470 +508,361 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 					// Forcer la famille de mob par creature_template->pickpocketloot
 					if (ForceFamily > 0 && ForceFamily < 301) { Crfamily = ForceFamily; }
-
-					// Tirage aléatoire des spells ----------------------------------------------------------------------------------------------------------------
-					if (me->m_spells[0] == 0)
+					
+					// Lecture des spells dans creature_template->spells1-6 --------------------------------------------------------------------------------
+					if (me->m_spells[0] != 0)
 					{
+						Spell_A = me->m_spells[0];
 
-					switch (Crfamily)
+						if (me->m_spells[1] != 0)
+						{
+							Spell_B = me->m_spells[1];
+						}
+						else  Spell_B = 0;
+
+						if (me->m_spells[2] != 0)
+						{
+							Spell_agro = me->m_spells[2];
+						}
+						else  Spell_agro = 0;
+
+						if (me->m_spells[3] != 0)
+						{
+							Spell_respawn_evade = me->m_spells[3];
+						}
+						else  Spell_respawn_evade = 0;
+
+						if (me->m_spells[4] != 0)
+						{
+							Buf_A = me->m_spells[4];
+						}
+						else  Buf_A = 0;
+
+						if (me->m_spells[5] != 0)
+						{
+							Spell_Heal = me->m_spells[5];
+						}
+						else  Spell_Heal = 0;
+					}
+					else   // Sinon tirage aléatoire
 					{
-					case 1:		// Loup
-						me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_1[urand(0, 2)];
-						Spell_B = liste_spell_B_1[urand(0, 3)];
-						Spell_B_Non_Cumulable = 1;
-						Spell_agro = liste_agro_1[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_1[urand(0, 5)];
-						Spell_Heal = 0;	
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = 2500;
-						Cooldown_SpellB_defaut = Base_Cooldown_Cast_B+4000;
-						Cooldown_SpellB_rapide = 0;													
-						Cooldown_SpellB_rapide_defaut = 0;											
-						Cooldown_Spell_Heal_defaut = 30000;
-						Cooldown_Principal_A = 1000;																		// Temp de test pour aller sur la cible
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 6000;																		// Temp de test pour mouvement (s'eloigner, passer dans le dos,...)
-						Cooldown_Principal_B_Defaut = 8000 + ((urand(0, 4) * 500));
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;
-						Cooldown_Trop_Loin = 6000;																			// Temp de test ci la cible est trop loin (pour charge etc)
-						Cooldown_Trop_Loin_Defaut = 6000;
-						break;
-					case 2:		// Felin
-						me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_2[urand(0, 1)];
-						Spell_B = liste_spell_B_2[urand(0, 3)];
-						Spell_B_Non_Cumulable = 1;
-						Spell_agro = liste_agro_2[urand(0, 1)];
-						Spell_respawn_evade = Spell_Invisible;
-						Buf_A = liste_Buf_2[urand(0, 2)];
-						Spell_Heal = Spell_Instincts_de_survie;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = 2500;
-						Cooldown_SpellB_defaut = Base_Cooldown_Cast_B;
-						Cooldown_SpellB_rapide = 0;													
-						Cooldown_SpellB_rapide_defaut = 0;											
-						Cooldown_Spell_Heal_defaut = 60000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 6000;
-						Cooldown_Principal_B_Defaut = 6000 + ((urand(0, 4) * 500));
-						ResteADistance = 5;
-
-						if (AI_Random == 1) {
-							Spell_Trop_Loin = Spell_Vitesse_4s;
-							Cooldown_Trop_Loin = 4000;
-							Cooldown_Trop_Loin_Defaut = 4000;
-						}
-						if (AI_Random == 2) {
-							Spell_Trop_Loin = Spell_Griffure_bondissante; 
-							Cooldown_Trop_Loin = 6000;
-							Cooldown_Trop_Loin_Defaut = 6000;
-						}
-
-						break;
-					case 3:		// Araignee - CREATURE_FAMILY_SPIDER
-						me->SetMeleeDamageSchool(SpellSchools(3));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_3[urand(0, 1)];
-						Spell_B = liste_spell_B_3[urand(0, 1)];
-						Spell_B_Non_Cumulable = 1;
-						Spell_agro = liste_agro_3[urand(0, 3)];
-						Spell_respawn_evade = 0;
-						Buf_A = 0;
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = 3000;
-						Cooldown_SpellB_defaut = Base_Cooldown_Cast_B-2000;
-						Cooldown_SpellB_rapide = Base_Cooldown_Cast_B-4000;													// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
-						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;												// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
-						Cooldown_Spell_Heal_defaut = 60000;
-						Cooldown_Principal_A = 2000;
-						Cooldown_Principal_A_Defaut = 2000;
-						Cooldown_Principal_B = 1000;
-						Cooldown_Principal_B_Defaut = 1000;
-						ResteADistance = 15;
-						Spell_Trop_Loin = Spell_Toile_Araignee;
-						Cooldown_Trop_Loin = 8000;
-						Cooldown_Trop_Loin_Defaut = urand(8000,10000);
-						break;
-					case 4:		// Ours - CREATURE_FAMILY_BEAR 
-						me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_4[urand(0, 2)];
-						Spell_B = liste_spell_B_4[urand(0, 2)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_4[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_4[urand(0, 1)];
-						Spell_Heal = Spell_Instincts_de_survie; ;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = 3000;
-						Cooldown_SpellB_defaut = Base_Cooldown_Cast_B+2000;
-						Cooldown_SpellB_rapide = 0;														
-						Cooldown_SpellB_rapide_defaut = 0;												
-						Cooldown_Spell_Heal_defaut = 60000;
-						Cooldown_Principal_A = 1500;
-						Cooldown_Principal_A_Defaut = 1500;
-						Cooldown_Principal_B = 8000;
-						Cooldown_Principal_B_Defaut = 8000 + ((urand(0, 4) * 500));
-						ResteADistance = 5;
-						Spell_Trop_Loin = Spell_Charge_Stun;																// Charge farouche 87187 (8-25 m ours)
-						Cooldown_Trop_Loin = 6000;
-						Cooldown_Trop_Loin_Defaut = urand(6000,8000);
-						break;
-					case 5:		// Sanglier - CREATURE_FAMILY_BOAR 
-						me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_5[urand(0, 2)];
-						Spell_B = liste_spell_B_5[urand(0, 4)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_5[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_5[urand(0, 2)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = 2500;
-						Cooldown_SpellB_defaut = Base_Cooldown_Cast_B+2000;
-						Cooldown_SpellB_rapide = 0;													
-						Cooldown_SpellB_rapide_defaut = 0;											
-						Cooldown_Spell_Heal_defaut = 30000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 6000;
-						Cooldown_Principal_B_Defaut = 8000 + ((urand(0, 4) * 500));
-						ResteADistance = 5;
-						Spell_Trop_Loin = Spell_Charge;																		//
-						Cooldown_Trop_Loin = 5000;
-						Cooldown_Trop_Loin_Defaut = urand(5000,6000);
-						break;
-					case 6:		// Crocodile - CREATURE_FAMILY_CROCOLISK
-						me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_6[urand(0, 1)];
-						Spell_B = liste_spell_B_6[urand(0, 3)];
-						Spell_B_Non_Cumulable = 1;
-						Spell_agro = liste_agro_6[urand(0, 1)];
-						Spell_respawn_evade = Spell_Ecorce;
-						Buf_A = liste_spell_A_6[urand(0, 1)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = 3000;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B+3000);
-						Cooldown_SpellB_rapide = Base_Cooldown_Cast_B-3000;													// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
-						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;												// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
-						Cooldown_Spell_Heal_defaut = 60000;
-						Cooldown_Principal_A = 2000;
-						Cooldown_Principal_A_Defaut = 2000;
-						Cooldown_Principal_B = urand(5000, 7000);
-						Cooldown_Principal_B_Defaut = urand(7000, 9000);
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;
-						Cooldown_Trop_Loin = urand(0, 4000);
-						Cooldown_Trop_Loin_Defaut = urand(7000, 9000);
-						break;
-					case 7:		// Oiseau charogniar - CREATURE_FAMILY_CARRION_BIRD
-						me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_7[urand(0, 2)];
-						Spell_B = liste_spell_B_7[urand(0, 3)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_7[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_7[urand(0, 4)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = 2500;
-						Cooldown_SpellB_defaut = Base_Cooldown_Cast_B+2000;
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = 0;
-						Cooldown_Spell_Heal_defaut = 30000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 8000;
-						Cooldown_Principal_B_Defaut = 7000 + ((urand(0, 4) * 500));
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;									//
-						Cooldown_Trop_Loin = 500;
-						Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
-						break;
-					case 8:		// Crabe - CREATURE_FAMILY_CRAB
-						me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_8[urand(0, 1)];
-						Spell_B = liste_spell_B_8[urand(0, 2)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_8[urand(0, 1)];
-						Spell_respawn_evade = Spell_Ecorce;
-						Buf_A = liste_Buf_8[urand(0, 1)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = 2500;
-						Cooldown_SpellB_defaut = Base_Cooldown_Cast_B+2000;
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = 0;
-						Cooldown_Spell_Heal_defaut = 30000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 8000;
-						Cooldown_Principal_B_Defaut = 5000 + ((urand(0, 8) * 500));
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;									//
-						Cooldown_Trop_Loin = 1000;
-						Cooldown_Trop_Loin_Defaut = urand(5000, 7000);
-						break;
-					case 9:		// Gorille - CREATURE_FAMILY_GORILLA
-						me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_9[urand(0, 3)];
-						Spell_B = liste_spell_B_9[urand(0, 4)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_9[urand(0, 2)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_9[urand(0, 2)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = 2500;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B+2000);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = 0;
-						Cooldown_Spell_Heal_defaut = 30000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1500;
-						Cooldown_Principal_B = 6000;
-						Cooldown_Principal_B_Defaut = 5000 + ((urand(0, 6) * 500));
-						ResteADistance = 5;
-						Spell_Trop_Loin = Spell_Bondir_Guerrier;									//
-						Cooldown_Trop_Loin = 5000;
-						Cooldown_Trop_Loin_Defaut = urand(4000, 7000);
-						break;
-					case 11:	// Raptor - CREATURE_FAMILY_RAPTOR
-						me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_11[urand(0, 1)];
-						Spell_B = liste_spell_B_11[urand(0, 3)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_11[urand(0, 2)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_11[urand(0, 2)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = 2500;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B+2000);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = 0;
-						Cooldown_Spell_Heal_defaut = 30000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1500;
-						Cooldown_Principal_B = 6000;
-						Cooldown_Principal_B_Defaut = 5000 + ((urand(0, 6) * 500));
-						ResteADistance = 5;
-						Spell_Trop_Loin = Cri_Incapacitant;																// Cri incapacitant 18328 (vit -60%)	
-						Cooldown_Trop_Loin = 4000;
-						Cooldown_Trop_Loin_Defaut = urand(4000, 6000);
-
-						if (AI_Random == 1)
+						switch (Crfamily)
 						{
-							Cooldown_Principal_B = 4000;
-							Cooldown_Principal_B_Defaut = 6000 + ((urand(0, 4) * 500));
-							Spell_Trop_Loin = Spell_Vitesse_4s;
-							Cooldown_Trop_Loin = 4000;
-							Cooldown_Trop_Loin_Defaut = 4000;
+						case 1:		// Loup
+							Spell_A = liste_spell_A_1[urand(0, 2)];
+							Spell_B = liste_spell_B_1[urand(0, 3)];
+							Spell_agro = liste_agro_1[urand(0, 1)];
+							Buf_A = liste_Buf_1[urand(0, 5)];
+							break;
+						case 2:		// Felin
+							Spell_A = liste_spell_A_2[urand(0, 1)];
+							Spell_B = liste_spell_B_2[urand(0, 3)];
+							Spell_agro = liste_agro_2[urand(0, 1)];
+							Buf_A = liste_Buf_2[urand(0, 2)];
+							break;
+						case 3:		// Araignee - CREATURE_FAMILY_SPIDER
+							Spell_A = liste_spell_A_3[urand(0, 1)];
+							Spell_B = liste_spell_B_3[urand(0, 1)];
+							Spell_agro = liste_agro_3[urand(0, 3)];
+							break;
+						case 4:		// Ours - CREATURE_FAMILY_BEAR 
+							Spell_A = liste_spell_A_4[urand(0, 2)];
+							Spell_B = liste_spell_B_4[urand(0, 2)];
+							Spell_agro = liste_agro_4[urand(0, 1)];
+							Buf_A = liste_Buf_4[urand(0, 1)];
+							break;
+						case 5:		// Sanglier - CREATURE_FAMILY_BOAR 
+							Spell_A = liste_spell_A_5[urand(0, 2)];
+							Spell_B = liste_spell_B_5[urand(0, 4)];
+							Spell_agro = liste_agro_5[urand(0, 1)];
+							Buf_A = liste_Buf_5[urand(0, 2)];
+							break;
+						case 6:		// Crocodile - CREATURE_FAMILY_CROCOLISK
+							Spell_A = liste_spell_A_6[urand(0, 1)];
+							Spell_B = liste_spell_B_6[urand(0, 3)];
+							Spell_agro = liste_agro_6[urand(0, 1)];
+							Buf_A = liste_spell_A_6[urand(0, 1)];
+							break;
+						case 7:		// Oiseau charogniar - CREATURE_FAMILY_CARRION_BIRD
+							Spell_A = liste_spell_A_7[urand(0, 2)];
+							Spell_B = liste_spell_B_7[urand(0, 3)];
+							Spell_agro = liste_agro_7[urand(0, 1)];
+							Buf_A = liste_Buf_7[urand(0, 4)];
+							break;
+						case 8:		// Crabe - CREATURE_FAMILY_CRAB
+							Spell_A = liste_spell_A_8[urand(0, 1)];
+							Spell_B = liste_spell_B_8[urand(0, 2)];
+							Spell_agro = liste_agro_8[urand(0, 1)];
+							Buf_A = liste_Buf_8[urand(0, 1)];
+							break;
+						case 9:		// Gorille - CREATURE_FAMILY_GORILLA
+							Spell_A = liste_spell_A_9[urand(0, 3)];
+							Spell_B = liste_spell_B_9[urand(0, 4)];
+							Spell_agro = liste_agro_9[urand(0, 2)];
+							Buf_A = liste_Buf_9[urand(0, 2)];
+							break;
+						case 11:	// Raptor
+							Spell_A = liste_spell_A_11[urand(0, 1)];
+							Spell_B = liste_spell_B_11[urand(0, 3)];
+							Spell_agro = liste_agro_11[urand(0, 2)];
+							Buf_A = liste_Buf_11[urand(0, 2)];
+							break;
+						case 16:	// Marcheur du Vide (Voidwalker) - CREATURE_FAMILY_VOIDWALKER
+							Spell_A = liste_spell_A_16[urand(0, 1)];
+							Spell_B = liste_spell_B_16[urand(0, 1)];
+							Spell_agro = liste_agro_16[urand(0, 1)];
+							Buf_A = liste_Buf_16[urand(0, 1)];
+							break;
+						case 17:	// Succube
+							Spell_A = liste_spell_A_17[urand(0, 1)];
+							Spell_B = liste_spell_B_17[urand(0, 1)];
+							Spell_agro = liste_agro_17[urand(0, 1)];
+							Buf_A = liste_Buf_17[urand(0, 1)];
+							break;
+						case 19:	// Garde funeste (Doomguard) - CREATURE_FAMILY_DOOMGUARD
+							Spell_A = liste_spell_A_19[urand(0, 1)];
+							Spell_B = liste_spell_B_19[urand(0, 1)];
+							Spell_agro = liste_agro_19[urand(0, 2)];
+							Buf_A = liste_Buf_19[urand(0, 1)];
+							break;
+						case 20:	// Scorpion - CREATURE_FAMILY_SCORPID
+							Spell_A = liste_spell_A_20[urand(0, 1)];
+							Spell_B = liste_spell_B_20[urand(0, 1)];
+							Spell_agro = liste_agro_20[urand(0, 2)];
+							Buf_A = liste_Buf_20[urand(0, 2)];
+							break;
+						case 21:	// Tortue - CREATURE_FAMILY_TURTLE
+							Spell_A = liste_spell_A_21[urand(0, 1)];
+							Spell_B = liste_spell_B_21[urand(0, 2)];
+							Spell_agro = liste_agro_21[urand(0, 1)];
+							Buf_A = liste_Buf_21[urand(0, 2)];
+							break;
+						case 23:	// Diablotin (Imp) - CREATURE_FAMILY_IMP	
+							Spell_A = liste_spell_A_23[urand(0, 1)];
+							Spell_B = liste_spell_B_23[urand(0, 1)];
+							Spell_agro = liste_agro_23[urand(0, 1)];
+							Buf_A = liste_Buf_23[urand(0, 1)];
+							break;
+						case 24:	// Chauve-souris - CREATURE_FAMILY_BAT
+							Spell_A = liste_spell_A_24[urand(0, 1)];
+							Spell_B = liste_spell_B_24[urand(0, 3)];
+							Spell_agro = liste_agro_24[urand(0, 1)];
+							Buf_A = liste_Buf_24[urand(0, 1)];
+							break;
+						case 25:	// Hyene - CREATURE_FAMILY_HYENA
+							Spell_A = liste_spell_A_25[urand(0, 1)];
+							Spell_B = liste_spell_B_25[urand(0, 1)];
+							Spell_agro = liste_agro_25[urand(0, 1)];
+							Buf_A = liste_Buf_25[urand(0, 1)];
+							break;
+						case 26:	// Oiseau de proie - CREATURE_FAMILY_BIRD_OF_PREY
+							Spell_A = liste_spell_A_26[urand(0, 1)];
+							Spell_B = liste_spell_B_26[urand(0, 1)];
+							Spell_agro = liste_agro_26[urand(0, 1)];
+							Buf_A = liste_Buf_26[urand(0, 1)];
+							break;
+						case 27:	// Serpent des vents - CREATURE_FAMILY_WIND_SERPENT
+							Spell_A = liste_spell_A_27[urand(0, 1)];
+							Spell_B = liste_spell_B_27[urand(0, 2)];
+							Spell_agro = liste_agro_27[urand(0, 1)];
+							Buf_A = liste_Buf_27[urand(0, 2)];
+							break;
+						case 29:	// Gangregarde (Felguard) - CREATURE_FAMILY_FELGUARD
+							Spell_A = liste_spell_A_29[urand(0, 1)];
+							Spell_B = liste_spell_B_29[urand(0, 1)];
+							Spell_agro = liste_agro_29[urand(0, 1)];
+							Buf_A = liste_Buf_29[urand(0, 1)];
+							break;
+						case 30:
+							Spell_A = liste_spell_A_30[urand(0, 1)];
+							Spell_B = liste_spell_B_30[urand(0, 1)];
+							Spell_agro = liste_agro_30[urand(0, 1)];
+							Buf_A = liste_Buf_30[urand(0, 1)];
+							break;
+						case 31:	// Ravageur - CREATURE_FAMILY_RAVAGER
+							Spell_A = liste_spell_A_31[urand(0, 1)];
+							Spell_B = liste_spell_B_31[urand(0, 3)];
+							Spell_agro = liste_agro_31[urand(0, 1)];
+							Buf_A = liste_Buf_31[urand(0, 3)];
+							break;
+						case 34:	// Raie du Neant - CREATURE_FAMILY_NETHER_RAY
+							Spell_A = liste_spell_A_34[urand(0, 1)];
+							Spell_B = liste_spell_B_34[urand(0, 1)];
+							Spell_agro = liste_agro_34[urand(0, 1)];
+							Buf_A = liste_Buf_34[urand(0, 1)];
+							break;
+						case 35:	// Serpent - CREATURE_FAMILY_SERPENT
+							Spell_A = liste_spell_A_35[urand(0, 1)];
+							Spell_B = liste_spell_B_35[urand(0, 1)];
+							Spell_agro = liste_agro_35[urand(0, 1)];
+							Buf_A = liste_Buf_35[urand(0, 2)];
+							break;
+						case 37:	// Papillon de nuit - CREATURE_FAMILY_MOTH
+							Spell_A = liste_spell_A_37[urand(0, 1)];
+							Spell_B = liste_spell_B_37[urand(0, 1)];
+							Spell_agro = liste_agro_37[urand(0, 1)];
+							Buf_A = liste_Buf_37[urand(0, 1)];
+							break;
+						case 38:	// Chimere - CREATURE_FAMILY_CHIMAERA
+							Spell_A = liste_spell_A_38[urand(0, 1)];
+							Spell_B = liste_spell_B_38[urand(0, 1)];
+							Spell_agro = liste_agro_38[urand(0, 1)];
+							Buf_A = liste_Buf_38[urand(0, 1)];
+							break;
+						case 39:	// Diablosaure - CREATURE_FAMILY_DEVILSAUR
+							Spell_A = liste_spell_A_39[urand(0, 1)];
+							Spell_B = liste_spell_B_39[urand(0, 4)];
+							Spell_agro = liste_agro_39[urand(0, 1)];
+							Buf_A = liste_Buf_39[urand(0, 1)];
+							break;
+						case 40:	// Goule - CREATURE_FAMILY_GHOUL
+							Spell_A = liste_spell_A_40[urand(0, 1)];
+							Spell_B = liste_spell_B_40[urand(0, 1)];
+							Spell_agro = liste_agro_40[urand(0, 1)];
+							Buf_A = liste_Buf_40[urand(0, 1)];
+							break;
+						case 42:	// Ver - CREATURE_FAMILY_WORM
+							Spell_A = liste_spell_A_42[urand(0, 1)];
+							Spell_B = liste_spell_B_42[urand(0, 1)];
+							Spell_agro = liste_agro_42[urand(0, 1)];
+							Buf_A = liste_Buf_42[urand(0, 1)];
+							break;
+						case 43:	// Rhinoceros - CREATURE_FAMILY_RHINO
+							Spell_A = liste_spell_A_43[urand(0, 1)];
+							Spell_B = liste_spell_B_43[urand(0, 1)];
+							Spell_agro = liste_agro_43[urand(0, 1)];
+							Buf_A = liste_Buf_43[urand(0, 1)];
+							break;
+						case 44:	// Guepe - CREATURE_FAMILY_WASP
+							Spell_A = liste_spell_A_44[urand(0, 1)];
+							Spell_B = liste_spell_B_44[urand(0, 1)];
+							Spell_agro = liste_agro_44[urand(0, 1)];
+							Buf_A = liste_Buf_44[urand(0, 1)];
+							break;
+						case 45:	// Chien de base - CREATURE_FAMILY_CORE_HOUND
+							Spell_A = liste_spell_A_45[urand(0, 1)];
+							Spell_B = liste_spell_B_45[urand(0, 1)];
+							Spell_agro = liste_agro_45[urand(0, 1)];
+							Buf_A = liste_Buf_45[urand(0, 1)];
+							break;
+						case 49:	// Elementaire d'eau - CREATURE_FAMILY_WATER_ELEMENTAL
+							Spell_A = liste_spell_A_49[urand(0, 1)];
+							Spell_B = liste_spell_B_49[urand(0, 1)];
+							Spell_agro = liste_agro_49[urand(0, 2)];
+							Buf_A = liste_Buf_49[urand(0, 1)];
+							break;
+						case 50:	// Renard - CREATURE_FAMILY_FOX
+							Spell_A = liste_spell_A_50[urand(0, 1)];
+							Spell_B = liste_spell_B_50[urand(0, 1)];
+							Spell_agro = liste_agro_50[urand(0, 1)];
+							Buf_A = liste_Buf_50[urand(0, 2)];
+							break;
+						case 51:	// Singe - CREATURE_FAMILY_MONKEY
+							Spell_A = liste_spell_A_51[urand(0, 1)];
+							Spell_B = liste_spell_B_51[urand(0, 1)];
+							Spell_agro = liste_agro_51[urand(0, 2)];
+							Buf_A = liste_Buf_51[urand(0, 1)];
+							break;
+						case 52:	// Chien - CREATURE_FAMILY_DOG
+							Spell_A = liste_spell_A_52[urand(0, 1)];
+							Spell_B = liste_spell_B_52[urand(0, 1)];
+							Spell_agro = liste_agro_52[urand(0, 1)];
+							Buf_A = liste_Buf_52[urand(0, 1)];
+							break;
+						case 55:	// Araignee de schiste - CREATURE_FAMILY_SHALE_SPIDER
+							Spell_A = liste_spell_A_55[urand(0, 1)];
+							Spell_B = liste_spell_B_55[urand(0, 1)];
+							Spell_agro = liste_agro_55[urand(0, 1)];
+							Buf_A = liste_Buf_55[urand(0, 1)];
+							break;
+						case 56:	// Zombie - CREATURE_FAMILY_ZOMBIE
+							Spell_A = liste_spell_A_56[urand(0, 1)];
+							Spell_B = liste_spell_B_56[urand(0, 1)];
+							Spell_agro = liste_agro_56[urand(0, 4)];
+							Buf_A = liste_Buf_56[urand(0, 1)];
+							break;
+						case 68:	// Hydre - CREATURE_FAMILY_HYDRA
+							Spell_A = liste_spell_A_68[urand(0, 1)];
+							Spell_B = liste_spell_B_68[urand(0, 2)];
+							Spell_agro = liste_agro_68[urand(0, 1)];
+							Buf_A = liste_Buf_68[urand(0, 1)];
+							break;
+						case 100:	// Diablotin gangrene - CREATURE_FAMILY_FELIMP
+							Spell_A = liste_spell_A_100[urand(0, 1)];
+							Spell_B = liste_spell_B_100[urand(0, 1)];
+							Spell_agro = liste_agro_100[urand(0, 1)];
+							Buf_A = liste_Buf_100[urand(0, 1)];
+							break;
+						case 104:	// Garde - courroux - CREATURE_FAMILY_WRATHGUARD
+							Spell_A = liste_spell_A_104[urand(0, 1)];
+							Spell_B = liste_spell_B_104[urand(0, 1)];
+							Spell_agro = liste_agro_104[urand(0, 1)];
+							Buf_A = liste_Buf_104[urand(0, 1)];
+							break;
+						case 108:	// Infernal - CREATURE_FAMILY_INFERNAL
+							Spell_A = liste_spell_A_108[urand(0, 1)];
+							Spell_B = liste_spell_B_108[urand(0, 1)];
+							Spell_agro = liste_agro_108[urand(0, 2)];
+							Buf_A = liste_Buf_108[urand(0, 3)];
+							break;
+						case 116:	// elementaire de feu - CREATURE_FAMILY_FIREELEMENTAL
+							Spell_A = liste_spell_A_116[urand(0, 1)];
+							Spell_B = liste_spell_B_116[urand(0, 1)];
+							Spell_agro = liste_agro_116[urand(0, 1)];
+							Buf_A = liste_Buf_116[urand(0, 1)];
+							break;
+						case 117:	// elementaire de terre - CREATURE_FAMILY_EARTHELEMENTAL   
+							Spell_A = liste_spell_A_117[urand(0, 1)];
+							Spell_B = liste_spell_B_117[urand(0, 2)];
+							Spell_agro = liste_agro_117[urand(0, 1)];
+							Buf_A = liste_Buf_117[urand(0, 1)];
+							break;
+						case 130:	// Basilic - CREATURE_FAMILY_BASILISK
+							Spell_A = liste_spell_A_130[urand(0, 1)];
+							Spell_B = liste_spell_B_130[urand(0, 3)];
+							Spell_agro = liste_agro_130[urand(0, 1)];
+							Buf_A = liste_spell_A_130[urand(0, 1)];
+							break;
+						case 152:		// Murloc
+							Spell_A = liste_spell_A_152[urand(0, 1)];
+							Spell_B = liste_spell_B_152[urand(0, 2)];
+							Spell_agro = liste_agro_152[urand(0, 1)];
+							Buf_A = liste_Buf_152[urand(0, 1)];
+							break;
+						case 153:		// Naga
+							Spell_A = liste_spell_A_153[urand(0, 1)];
+							Spell_B = liste_spell_B_153[urand(0, 2)];
+							Spell_agro = liste_agro_153[urand(0, 1)];
+							Buf_A = liste_Buf_153[urand(0, 1)];
+							break;
+						case 155:	// CUSTOM - CREATURE_FAMILY_SENTERRE
+							Spell_A = liste_spell_A_155[urand(0, 1)];
+							Spell_B = liste_spell_B_155[urand(0, 3)];
+							Spell_agro = liste_agro_155[urand(0, 1)];
+							Buf_A = liste_Buf_155[urand(0, 1)];
+							break;
+						case 156:		// CREATURE_FAMILY_SE_DETERRE_AU_CONTACT
+							Spell_A = liste_spell_A_156[urand(0, 1)];
+							Spell_B = liste_spell_B_156[urand(0, 3)];
+							Spell_agro = liste_agro_156[urand(0, 1)];
+							Buf_A = liste_Buf_156[urand(0, 1)];
+							break;
+						case 157:	// Rocher (elementaire de terre si fixe)  -  CREATURE_FAMILY_MORPH_ROCHER    
+							Spell_A = liste_spell_A_157[urand(0, 1)];
+							Spell_B = liste_spell_B_157[urand(0, 2)];
+							Spell_agro = liste_agro_157[urand(0, 1)];
+							Buf_A = liste_Buf_157[urand(0, 1)];
+							break;
+
+						default:
+							Spell_A = liste_spell_A_0[urand(0, 1)];
+							Spell_B = liste_spell_B_0[urand(0, 2)];
+							Spell_agro = 0;
+							Buf_A = liste_Buf_0[urand(0, 2)];
+							break;
 						}
-						else if (AI_Random == 2)
-						{
-							Cooldown_Principal_B = 4000;																		// Temp de test pour mouvement (s'eloigner, passer dans le dos,...)
-							Cooldown_Principal_B_Defaut = 4000 + ((urand(0, 8) * 500));
-						}
-						break;
-					case 16:	// Marcheur du Vide (Voidwalker) - CREATURE_FAMILY_VOIDWALKER
-						me->SetMeleeDamageSchool(SpellSchools(5));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_16[urand(0, 1)];
-						Spell_B = liste_spell_B_16[urand(0, 1)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_16[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_16[urand(0, 1)];
-						Spell_Heal = 17767;																				// Rempart de l’ombre 17767 (PV +65%/20s), Bouclier de l’ombre 115232 (dmg -60%/30s)
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A+250;
-						Cooldown_SpellB = 2500;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B-2000, Base_Cooldown_Cast_B-1000);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = 0;
-						Cooldown_Spell_Heal_defaut = 120000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 6000;
-						Cooldown_Principal_B_Defaut = 5000 + ((urand(0, 6) * 500));
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;																			// 	
-						Cooldown_Trop_Loin = 6000;
-						Cooldown_Trop_Loin_Defaut = urand(8000, 10000);
-						break;
-					case  17:	// Succube - CREATURE_FAMILY_SUCCUBUS
-						me->SetMeleeDamageSchool(SpellSchools(5));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_17[urand(0, 1)];
-						Spell_B = liste_spell_B_17[urand(0, 1)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_17[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_17[urand(0, 1)];
-						Spell_Heal = 0;																					// 
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A-1500;
-						Cooldown_SpellB = urand(2500, 5000);
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B+3000, Base_Cooldown_Cast_B+9000);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = 0;
-						Cooldown_Spell_Heal_defaut = 120000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 6000;
-						Cooldown_Principal_B_Defaut = 5000 + ((urand(0, 4) * 500));
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;																			// 	
-						Cooldown_Trop_Loin = 4000;
-						Cooldown_Trop_Loin_Defaut = urand(5000, 8000);
-
-						if (AI_Random == 1) 
-						{
-							Cooldown_Principal_B = 4000;
-							Cooldown_Principal_B_Defaut = 4000 + ((urand(0, 4) * 500));
-						}
-						break;
-					case 19:	// Garde funeste (Doomguard) - CREATURE_FAMILY_DOOMGUARD
-						me->SetMeleeDamageSchool(SpellSchools(5));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_19[urand(0, 1)];
-						Spell_B = liste_spell_B_19[urand(0, 1)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_19[urand(0, 2)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_19[urand(0, 1)];
-						Spell_Heal = 0;																					// 
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = urand(2500, 3500);
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B-1000, Base_Cooldown_Cast_B+1000);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = 0;
-						Cooldown_Spell_Heal_defaut = 120000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 6000;
-						Cooldown_Principal_B_Defaut = 8000 + ((urand(0, 8) * 500));
-						ResteADistance = 5;
-						Spell_Trop_Loin = Spell_Bondir_Guerrier;														// 
-						Cooldown_Trop_Loin = urand(1000,4000);
-						Cooldown_Trop_Loin_Defaut = 5000;
-						break;
-					case 20:	// Scorpion - CREATURE_FAMILY_SCORPID
-						me->SetMeleeDamageSchool(SpellSchools(3));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_20[urand(0, 1)];
-						Spell_B = liste_spell_B_20[urand(0, 1)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_20[urand(0, 2)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_20[urand(0, 2)];
-						Spell_Heal = 0;																					// 
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = urand(2500, 3500);
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B-1000, Base_Cooldown_Cast_B+1000);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = 0;
-						Cooldown_Spell_Heal_defaut = 120000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = urand(2000, 5000);
-						Cooldown_Principal_B_Defaut = 8000 + ((urand(0, 4) * 500));
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;																			// 
-						Cooldown_Trop_Loin = urand(1000, 4000);
-						Cooldown_Trop_Loin_Defaut = 5000;
-						break;
-					case 21:	// Tortue - CREATURE_FAMILY_TURTLE
-						me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_21[urand(0, 1)];
-						Spell_B = liste_spell_B_21[urand(0, 2)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_21[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_21[urand(0, 2)];
-						Spell_Heal = 0;																					// 
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = urand(2500, 3500);
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B+2000);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = 0;
-						Cooldown_Spell_Heal_defaut = 120000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 2000;
-						Cooldown_Principal_B = urand(2000, 5000);
-						Cooldown_Principal_B_Defaut = 8000 + ((urand(0, 4) * 500));
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;																			// 
-						Cooldown_Trop_Loin = urand(4000, 6000);
-						Cooldown_Trop_Loin_Defaut = 5000;
-						break;
-					case 23:	// Diablotin (Imp) - CREATURE_FAMILY_IMP	
-						me->SetMeleeDamageSchool(SpellSchools(2));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_23[urand(0, 1)];
-						Spell_B = liste_spell_B_23[urand(0, 1)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_23[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_23[urand(0, 1)];
-						Spell_Heal = 0;																// 
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A-500, Base_Cooldown_Cast_A-250);
-						Cooldown_SpellB = 2500;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B-3000, Base_Cooldown_Cast_B-2500);
-						Cooldown_SpellB_rapide = Base_Cooldown_Cast_B-4000;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
-						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;											// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
-						Cooldown_Spell_Heal_defaut = 120000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 2000;
-						Cooldown_Principal_B = 1000;
-						Cooldown_Principal_B_Defaut = 1000;
-						ResteADistance = 10;
-						Spell_Trop_Loin = 0;																			// 
-						Cooldown_Trop_Loin = urand(3000, 4000);
-						Cooldown_Trop_Loin_Defaut = 5000;
-						break;
-					case 24:	// Chauve-souris - CREATURE_FAMILY_BAT
-						me->SetMeleeDamageSchool(SpellSchools(3));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_24[urand(0, 1)];
-						Spell_B = liste_spell_B_24[urand(0, 3)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_24[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_24[urand(0, 1)];
-						Spell_Heal = 0;																					// 
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = 2500;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B+2000);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = 0;
-						Cooldown_Spell_Heal_defaut = 120000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 6000;
-						Cooldown_Principal_B_Defaut = urand(6000, 8000);
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;																			// 
-						Cooldown_Trop_Loin = urand(7000, 10000);
-						Cooldown_Trop_Loin_Defaut = urand(7000, 10000);
-						break;
-					case 25:	// Hyene - CREATURE_FAMILY_HYENA
-						me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_25[urand(0, 1)];
-						Spell_B = liste_spell_B_25[urand(0, 1)];
-						Spell_B_Non_Cumulable = 1;
-						Spell_agro = liste_agro_25[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_25[urand(0, 1)];
-						Spell_Heal = 0;																					// 
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = urand(2500,8000);
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B+6000, Base_Cooldown_Cast_B+12000);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = 0;
-						Cooldown_Spell_Heal_defaut = 120000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1500;
-						Cooldown_Principal_B = 5000;
-						Cooldown_Principal_B_Defaut = urand(4000, 6000);
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;																			// 
-						Cooldown_Trop_Loin = urand(5000, 8000);
-						Cooldown_Trop_Loin_Defaut = urand(5000, 8000);
-						break;
-					case 26:	// Oiseau de proie - CREATURE_FAMILY_BIRD_OF_PREY
-						me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_26[urand(0, 1)];
-						Spell_B = liste_spell_B_26[urand(0, 1)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_26[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_26[urand(0, 1)];
-						Spell_Heal = 0;																					// 
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = urand(2500, 8000);
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B+2000);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = 0;
-						Cooldown_Spell_Heal_defaut = 120000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1500;
-						Cooldown_Principal_B = 5000;
-						Cooldown_Principal_B_Defaut = urand(4000, 8000);
-						ResteADistance = 5;
-						Spell_Trop_Loin = Spell_Griffure_bondissante;													// Griffure bondissante (bond) 89712
-						Cooldown_Trop_Loin = urand(3000, 8000);
-						Cooldown_Trop_Loin_Defaut = urand(5000, 7000);
-						break;
-					case 27:	// Serpent des vents - CREATURE_FAMILY_WIND_SERPENT
-						me->SetMeleeDamageSchool(SpellSchools(6));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_27[urand(0, 1)];
-						Spell_B = liste_spell_B_27[urand(0, 2)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_27[urand(0, 1)];
-						Spell_respawn_evade = Spell_Bouclier_De_Foudre;
-						Buf_A = liste_Buf_27[urand(0, 2)];
-						Spell_Heal = 974;																				// bouclier de terre 974
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A-250;
-						Cooldown_SpellB = Base_Cooldown_Cast_B-4000;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B-1000, Base_Cooldown_Cast_B);
-						Cooldown_SpellB_rapide = urand(Base_Cooldown_Cast_B-3000, Base_Cooldown_Cast_B-2000);
-						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
-						Cooldown_Spell_Heal_defaut = 60000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 1000;
-						Cooldown_Principal_B_Defaut =1000;
-						ResteADistance = urand(15,20);
-						Spell_Trop_Loin = 0;													
-						Cooldown_Trop_Loin = urand(3000, 8000);
-						Cooldown_Trop_Loin_Defaut = urand(8000, 10000);
-						break;
-					case 29:	// Gangregarde (Felguard) - CREATURE_FAMILY_FELGUARD
-						me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_29[urand(0, 1)];
-						Spell_B = liste_spell_B_29[urand(0, 1)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_29[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_29[urand(0, 1)];
-						Spell_Heal = 0;																					// 
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = 2500;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B-2000, Base_Cooldown_Cast_B);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = 0;
-						Cooldown_Spell_Heal_defaut = 120000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 6000;
-						Cooldown_Principal_B_Defaut = 8000 + ((urand(0, 8) * 500));
-						ResteADistance = 5;
-						Spell_Trop_Loin = Spell_Poursuite;																// 
-						Cooldown_Trop_Loin = urand(5000, 7000);
-						Cooldown_Trop_Loin_Defaut = urand(5000,8000);
-
-						//me->SetVirtualItem(0, 12784);																	// Equipé d'une hache
-						me->LoadEquipment(1, true);																		// creature_equip_template 1
-						break;
-					case 30:	// Faucon dragon - CREATURE_FAMILY_DRAGONHAWK
-						me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_30[urand(0, 1)];
-						Spell_B = liste_spell_B_30[urand(0, 1)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_30[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_30[urand(0, 1)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = urand(4000, 4500);
-						Cooldown_SpellB = 2000;
-						Cooldown_SpellB_defaut = urand(4000, 5000);
-						Cooldown_SpellB_rapide = 4000;
-						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
-						Cooldown_Spell_Heal_defaut = 60000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 3000;
-						Cooldown_Principal_B_Defaut = 3000;
-						ResteADistance = 15;
-						Spell_Trop_Loin = 0;
-						Cooldown_Trop_Loin = urand(6000, 8000);
-						Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
-						Spell_B_Non_Cumulable = 1;
-						break;
-					case 31:	// Ravageur - CREATURE_FAMILY_RAVAGER
-						me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_31[urand(0, 1)];
-						Spell_B = liste_spell_B_31[urand(0, 3)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_31[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_31[urand(0, 3)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = urand(Base_Cooldown_Cast_B, 6000);
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B+2000, Base_Cooldown_Cast_B+6000);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
-						Cooldown_Spell_Heal_defaut = 60000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = urand(3000,5000);
-						Cooldown_Principal_B_Defaut = urand(5000, 9000);
-						ResteADistance = 5;
-
-						if (Random == 1) { Spell_Trop_Loin = Spell_Poursuite; }										//
-						if (Random == 2) { Spell_Trop_Loin = Spell_Griffure_bondissante; }							//
-
-						Cooldown_Trop_Loin = urand(8000, 15000);
-						Cooldown_Trop_Loin_Defaut = urand(8000, 15000);
-						AI_Random = urand(1, 4);
-						break;
-					case 34:	// Raie du Neant - CREATURE_FAMILY_NETHER_RAY
-						me->SetMeleeDamageSchool(SpellSchools(6));													// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_34[urand(0, 1)];
-						Spell_B = liste_spell_B_34[urand(0, 1)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_34[urand(0, 1)];
-						Spell_respawn_evade = Spell_Bouclier_De_Foudre;
-						Buf_A = liste_Buf_34[urand(0, 1)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A, Base_Cooldown_Cast_A+500);
-						Cooldown_SpellB = 2000;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B-1500, Base_Cooldown_Cast_B-500);
-						Cooldown_SpellB_rapide = urand(Base_Cooldown_Cast_B-3000, Base_Cooldown_Cast_B-3500);
-						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
-						Cooldown_Spell_Heal_defaut = 60000;
-						Cooldown_Principal_A = 1500;
-						Cooldown_Principal_A_Defaut = 1500;
-						Cooldown_Principal_B = 2000;
-						Cooldown_Principal_B_Defaut = 3000;
-						ResteADistance = 15;
-						Spell_Trop_Loin = 0;
-						Cooldown_Trop_Loin = urand(3000, 8000);
-						Cooldown_Trop_Loin_Defaut = urand(5000, 10000);
-
-						if (AI_Random == 2)
-						{
-							Cooldown_Principal_B = 2000;
-							Cooldown_Principal_B_Defaut = 3500;
-							ResteADistance = 15;
-						}
-						me->SetSheath(SHEATH_STATE_RANGED); 											// S'équipe d'arc ou fusil
-
-						break;
-					case 35:	// Serpent - CREATURE_FAMILY_SERPENT
-						me->SetMeleeDamageSchool(SpellSchools(3));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_35[urand(0, 1)];
-						Spell_B = liste_spell_B_35[urand(0, 1)];
-						Spell_B_Non_Cumulable = 1;
-						Spell_agro = liste_agro_35[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_35[urand(0, 2)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A, Base_Cooldown_Cast_A+500);
-						Cooldown_SpellB = 2000;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B-1500, Base_Cooldown_Cast_B-500);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
-						Cooldown_Spell_Heal_defaut = 60000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 5000;
-						Cooldown_Principal_B_Defaut = 8000;
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;
-						Cooldown_Trop_Loin = urand(3000, 6000);
-						Cooldown_Trop_Loin_Defaut = urand(4000, 7000);
-						break;
-					case 37:	// Papillon de nuit - CREATURE_FAMILY_MOTH
-						me->SetMeleeDamageSchool(SpellSchools(3));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_37[urand(0, 1)];
-						Spell_B = liste_spell_B_37[urand(0, 1)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_37[urand(0, 1)];
-						Spell_respawn_evade = Spell_Bouclier_De_Terre;
-						Buf_A = liste_Buf_37[urand(0, 1)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 500;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = 1000;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B-2000, Base_Cooldown_Cast_B-1000);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
-						Cooldown_Spell_Heal_defaut = 60000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 2000;
-						Cooldown_Principal_B_Defaut = 6000;
-						ResteADistance = urand(12, 15);
-						Spell_Trop_Loin = 0;
-						Cooldown_Trop_Loin = urand(3000, 8000);
-						Cooldown_Trop_Loin_Defaut = urand(8000, 15000);
-						break;
-					case 38:	// Chimere - CREATURE_FAMILY_CHIMAERA
-						me->SetMeleeDamageSchool(SpellSchools(0));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_38[urand(0, 1)];
-						Spell_B = liste_spell_B_38[urand(0, 1)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_38[urand(0, 1)];
-						Spell_respawn_evade = Spell_Epines;
-						Buf_A = liste_Buf_38[urand(0, 1)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 500;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A+500;
-						Cooldown_SpellB = 1000;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B-1000, Base_Cooldown_Cast_B);
-						Cooldown_SpellB_rapide = urand(Base_Cooldown_Cast_B-2250, Base_Cooldown_Cast_B-1250);
-						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
-						Cooldown_Spell_Heal_defaut = 60000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 1000;
-						Cooldown_Principal_B_Defaut = 1000;
-						ResteADistance = urand(15,20);
-						Spell_Trop_Loin = 0;
-						Cooldown_Trop_Loin = urand(3000, 8000);
-						Cooldown_Trop_Loin_Defaut = urand(6000, 12000);
-						break;
-					case 39:	// Diablosaure - CREATURE_FAMILY_DEVILSAUR
-						me->SetMeleeDamageSchool(SpellSchools(0));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_39[urand(0, 1)];
-						Spell_B = liste_spell_B_39[urand(0, 4)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_39[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_39[urand(0, 1)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 500;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A+1000;
-						Cooldown_SpellB = 1000;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B+2000);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
-						Cooldown_Spell_Heal_defaut = 60000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 8000;
-						Cooldown_Principal_B_Defaut = 20000;
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;
-						Cooldown_Trop_Loin = 5000;
-						Cooldown_Trop_Loin_Defaut = 5000;
-						break;
-					case 40:	// Goule - CREATURE_FAMILY_GHOUL
-						me->SetMeleeDamageSchool(SpellSchools(5));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_40[urand(0, 1)];
-						Spell_B = liste_spell_B_40[urand(0, 1)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_40[urand(0, 1)];
-						Spell_respawn_evade = Spell_Bouclier_Dos;
-						Buf_A = liste_Buf_40[urand(0, 1)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = urand(3000,5000);
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B+2000);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
-						Cooldown_Spell_Heal_defaut = 60000;
-						Cooldown_Principal_A = 3000;
-						Cooldown_Principal_A_Defaut = 3000;
-						Cooldown_Principal_B = 8000;
-						Cooldown_Principal_B_Defaut = 20000;
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;
-						Cooldown_Trop_Loin = 7000;
-						Cooldown_Trop_Loin_Defaut = 7000;
-						break;
-					case 42:	// Ver - CREATURE_FAMILY_WORM
-						me->SetMeleeDamageSchool(SpellSchools(0));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_42[urand(0, 1)];
-						Spell_B = liste_spell_B_42[urand(0, 1)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_42[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_42[urand(0, 1)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 500;
-						Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A+500, Base_Cooldown_Cast_A+1500);
-						Cooldown_SpellB = 1000;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B-1000, Base_Cooldown_Cast_B);
-						Cooldown_SpellB_rapide = urand(Base_Cooldown_Cast_B-2500, Base_Cooldown_Cast_B-1500);
-						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
-						Cooldown_Spell_Heal_defaut = 60000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 1000;
-						Cooldown_Principal_B_Defaut = 1000;
-						ResteADistance = urand(15, 20);
-						Spell_Trop_Loin = 0;
-						Cooldown_Trop_Loin = urand(5000, 8000);
-						Cooldown_Trop_Loin_Defaut = urand(8000, 12000);
-						break;
-					case 43:	// Rhinoceros - CREATURE_FAMILY_RHINO
-						me->SetMeleeDamageSchool(SpellSchools(0));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_43[urand(0, 1)];
-						Spell_B = liste_spell_B_43[urand(0, 1)];
-						Spell_agro = liste_agro_43[urand(0, 1)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_43[urand(0, 1)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = 2500;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B+2000);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = 0;
-						Cooldown_Spell_Heal_defaut = 30000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 6000;
-						Cooldown_Principal_B_Defaut = urand(8000,10000);
-						ResteADistance = 5;
-						Spell_Trop_Loin = Spell_Charge_Repousse;									//
-						Cooldown_Trop_Loin = urand(6000, 8000);
-						Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
-						break;
-					case 44:	// Guepe - CREATURE_FAMILY_WASP
-						me->SetMeleeDamageSchool(SpellSchools(3));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_44[urand(0, 1)];
-						Spell_B = liste_spell_B_44[urand(0, 1)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_44[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_44[urand(0, 1)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = 2500;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B+2000);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = 0;
-						Cooldown_Spell_Heal_defaut = 30000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 5000;
-						Cooldown_Principal_B_Defaut = urand(4000,6000);
-						ResteADistance = 15;
-						Spell_Trop_Loin = 0;														//
-						Cooldown_Trop_Loin = 500;
-						Cooldown_Trop_Loin_Defaut = urand(5000, 6000);
-						break;
-					case 45:	// Chien de base - CREATURE_FAMILY_CORE_HOUND
-						me->SetMeleeDamageSchool(SpellSchools(0));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_45[urand(0, 1)];
-						Spell_B = liste_spell_B_45[urand(0, 1)];
-						Spell_B_Non_Cumulable = 1;	
-						Spell_agro = liste_agro_45[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_45[urand(0, 1)];
-						Spell_Heal = 0;																// 
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = urand(2500, 8000);
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B+6000, Base_Cooldown_Cast_B+12000);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = 0;
-						Cooldown_Spell_Heal_defaut = 120000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1500;
-						Cooldown_Principal_B = 5000;
-						Cooldown_Principal_B_Defaut = urand(4000, 6000);
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;														// 
-						Cooldown_Trop_Loin = urand(7000, 8000);
-						Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
-						break;
-					case 49:	// Elementaire d'eau - CREATURE_FAMILY_WATER_ELEMENTAL
-						me->SetMeleeDamageSchool(SpellSchools(4));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_49[urand(0, 1)];
-						Spell_B = liste_spell_B_49[urand(0, 1)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_49[urand(0, 2)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_49[urand(0, 1)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = 3000;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B-2500, Base_Cooldown_Cast_B-500);
-						Cooldown_SpellB_rapide = Base_Cooldown_Cast_B-3000;													// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
-						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;												// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
-						Cooldown_Spell_Heal_defaut = 60000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 2000;
-						Cooldown_Principal_B_Defaut = 4000;
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;
-						Cooldown_Trop_Loin = 8000;
-						Cooldown_Trop_Loin_Defaut = 15000;
-						if (AI_Random == 1)
-						{
-							ResteADistance = 12;
-							Cooldown_Principal_A_Defaut = 2000;
-							Cooldown_Principal_B_Defaut = 1000;
-						}
-						else if (AI_Random == 2)
-						{
-							ResteADistance = 15;
-							Cooldown_Principal_A_Defaut = 2000;
-							Cooldown_Principal_B_Defaut = 5000;
-						}
-						else
-						{
-							ResteADistance = 5;
-							Cooldown_Principal_A_Defaut = 1000;
-							Cooldown_Principal_B_Defaut = 6000;
-						}
-						break;
-
-					case 50:	// Renard - CREATURE_FAMILY_FOX
-						me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_50[urand(0, 1)];
-						Spell_B = liste_spell_B_50[urand(0, 1)];
-						Spell_B_Non_Cumulable = 1;											
-						Spell_agro = liste_agro_50[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_50[urand(0, 2)];
-						Spell_Heal = 0;																					// 
-						Cooldown_SpellA = 2000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = urand(4000, 6000);
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B+4000, Base_Cooldown_Cast_B+9000);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = 0;
-						Cooldown_Spell_Heal_defaut = 120000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 5000;
-						Cooldown_Principal_B_Defaut = urand(6000, 8000);
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;																			// 
-						Cooldown_Trop_Loin = urand(7000, 12000);
-						Cooldown_Trop_Loin_Defaut = urand(8000, 12000);
-
-						if (AI_Random != 1) { Cooldown_Principal_B_Defaut = urand(4000, 6000); }						//
-						break;
-					case 51:	// Singe - CREATURE_FAMILY_MONKEY
-						me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_51[urand(0, 1)];
-						Spell_B = liste_spell_B_51[urand(0, 1)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_51[urand(0, 2)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_51[urand(0, 1)];
-						Spell_Heal = 0;																					// 
-						Cooldown_SpellA = 2000;
-						Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A-500, Base_Cooldown_Cast_A);
-						Cooldown_SpellB = 1000;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B-3500, Base_Cooldown_Cast_B-3000);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
-						Cooldown_Spell_Heal_defaut = 120000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 1500;
-						Cooldown_Principal_B_Defaut = urand(3500, 4500);
-						ResteADistance = urand(12,15);
-						Spell_Trop_Loin = 0;																			// 
-						Cooldown_Trop_Loin = urand(5000, 10000);
-						Cooldown_Trop_Loin_Defaut = urand(6000, 10000);
-						break;
-					case 52:	// Chien - CREATURE_FAMILY_DOG
-						me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_52[urand(0, 1)];
-						Spell_B = liste_spell_B_52[urand(0, 1)];
-						Spell_B_Non_Cumulable = 1;
-						Spell_agro = liste_agro_52[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_52[urand(0, 1)];
-						Spell_Heal = 0;																					// 
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A-250;
-						Cooldown_SpellB = urand(4000, 6000);
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B+2000, Base_Cooldown_Cast_B+6000);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = 0;
-						Cooldown_Spell_Heal_defaut = 120000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 4000;
-						Cooldown_Principal_B_Defaut = urand(3500, 5000);
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;																			// 
-						Cooldown_Trop_Loin = urand(7000, 12000);
-						Cooldown_Trop_Loin_Defaut = urand(8000, 12000);
-						break;
-					case 55:	// Araignee de schiste - CREATURE_FAMILY_SHALE_SPIDER
-						me->SetMeleeDamageSchool(SpellSchools(6));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_55[urand(0, 1)];
-						Spell_B = liste_spell_B_55[urand(0, 1)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_55[urand(0, 1)];
-						Spell_respawn_evade = Spell_Armure_De_La_Fournaise;
-						Buf_A = liste_Buf_55[urand(0, 1)];
-						Buf_A = 0;
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1500;
-						Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A-500, Base_Cooldown_Cast_A-250);
-						Cooldown_SpellB = 3000;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B+2000, Base_Cooldown_Cast_B+4000);
-						Cooldown_SpellB_rapide = Base_Cooldown_Cast_B-1000;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
-						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;											// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
-						Cooldown_Spell_Heal_defaut = 60000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 2000;
-						Cooldown_Principal_B = 3000;
-						Cooldown_Principal_B_Defaut = urand(4000,5000);
-						ResteADistance = 5;
-						Spell_Trop_Loin = Spell_Bondir_Guerrier;														//
-						Cooldown_Trop_Loin = 8000;
-						Cooldown_Trop_Loin_Defaut = urand(8000, 15000);
-
-						if (AI_Random == 1)
-						{
-							Cooldown_Principal_B_Defaut = urand(5000, 7000);
-						}
-
-						break;
-					case 56:	// Zombie - CREATURE_FAMILY_ZOMBIE
-						me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_56[urand(0, 1)];
-						Spell_B = liste_spell_B_56[urand(0, 1)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_56[urand(0, 4)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_56[urand(0, 1)];
-						Spell_Heal = 0;																					// 
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A, Base_Cooldown_Cast_A+500);
-						Cooldown_SpellB = urand(4000, 6000);
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B+2000, Base_Cooldown_Cast_B+6000);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = 0;
-						Cooldown_Spell_Heal_defaut = 120000;
-						Cooldown_Principal_A = 2000;
-						Cooldown_Principal_A_Defaut = 2500;
-						Cooldown_Principal_B = 5000;
-						Cooldown_Principal_B_Defaut = urand(7000, 11000);
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;																			// 
-						Cooldown_Trop_Loin = urand(7000, 12000);
-						Cooldown_Trop_Loin_Defaut = urand(8000, 12000);
-						break;
-					case 68:	// Hydre - CREATURE_FAMILY_HYDRA
-						me->SetMeleeDamageSchool(SpellSchools(3));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_68[urand(0, 1)];
-						Spell_B = liste_spell_B_68[urand(0, 2)];
-						Spell_B_Non_Cumulable = 1;
-						Spell_agro = liste_agro_68[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_68[urand(0, 1)];
-						Spell_Heal = 0;																					// 
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A-250, Base_Cooldown_Cast_A+250);
-						Cooldown_SpellB = urand(3000, 4000);
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B+1000, Base_Cooldown_Cast_B+2000);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = 0;
-						Cooldown_Spell_Heal_defaut = 120000;
-						Cooldown_Principal_A = 2000;
-						Cooldown_Principal_A_Defaut = 2500;
-						Cooldown_Principal_B = 7000;
-						Cooldown_Principal_B_Defaut = urand(7000, 11000);
-						ResteADistance = 5;
-						Spell_Trop_Loin = Poison_Tir_Catapulte;															// 
-						Cooldown_Trop_Loin = urand(5000, 7000);
-						Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
-
-						if (AI_Random == 2)
-						{
-							Cooldown_Principal_B_Defaut = urand(6000, 8000);
-						}
-
-						break;
-					case 100:	// Diablotin gangrene - CREATURE_FAMILY_FELIMP
-						me->SetMeleeDamageSchool(SpellSchools(5));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_100[urand(0, 1)];
-						Spell_B = liste_spell_B_100[urand(0, 1)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_100[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_100[urand(0, 1)];
-						Spell_Heal = 0;																					// 
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A-250, Base_Cooldown_Cast_A);
-						Cooldown_SpellB = 2000;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B-3000, Base_Cooldown_Cast_B-2500);
-						Cooldown_SpellB_rapide = Base_Cooldown_Cast_B-3000;
-						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
-						Cooldown_Spell_Heal_defaut = 120000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 1000;
-						Cooldown_Principal_B_Defaut = urand(5000, 7000);
-						ResteADistance = urand(12,15);
-						Spell_Trop_Loin = 0;																			// 
-						Cooldown_Trop_Loin = urand(5000, 7000);
-						Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
-
-						if (AI_Random == 2)
-						{
-							Cooldown_Principal_B_Defaut = 1000;
-						}
-
-						break;
-					case 104:	// Garde - courroux - CREATURE_FAMILY_WRATHGUARD
-						me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_104[urand(0, 1)];
-						Spell_B = liste_spell_B_104[urand(0, 1)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_104[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_104[urand(0, 1)];
-						Spell_Heal = 0;																					// 
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = 2000;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B-2000, Base_Cooldown_Cast_B);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = 0;
-						Cooldown_Spell_Heal_defaut = 120000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 6000;
-						Cooldown_Principal_B_Defaut = urand(7000, 9000);
-						ResteADistance = 5;
-						Spell_Trop_Loin = Spell_Poursuite;																// 
-						Cooldown_Trop_Loin = urand(7000, 12000);
-						Cooldown_Trop_Loin_Defaut = urand(8000, 12000);
-
-						if (AI_Random == 1)
-						{
-							Cooldown_Principal_B_Defaut = urand(5000, 6000);;
-						}
-
-						//me->SetVirtualItem(0, 12784);																	// Equipé d'une hache
-						me->LoadEquipment(1, true);																		// creature_equip_template 1
-						break;
-					case 108:	// Infernal - CREATURE_FAMILY_INFERNAL
-						me->SetMeleeDamageSchool(SpellSchools(2));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_108[urand(0, 1)];
-						Spell_B = liste_spell_B_108[urand(0, 1)];
-						Spell_B_Non_Cumulable = 1;
-						Spell_agro = liste_agro_108[urand(0, 2)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_108[urand(0, 3)];
-						Spell_Heal = 0;																					// 
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A+3500, Base_Cooldown_Cast_A+4500);
-						Cooldown_SpellB = 2000;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B+1000, Base_Cooldown_Cast_B+3000);
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = 0;
-						Cooldown_Spell_Heal_defaut = 120000;
-						Cooldown_Principal_A = 2000;
-						Cooldown_Principal_A_Defaut = 2000;
-						Cooldown_Principal_B = 6000;
-						Cooldown_Principal_B_Defaut = urand(7000, 9000);
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;																			// 
-						Cooldown_Trop_Loin = urand(7000, 12000);
-						Cooldown_Trop_Loin_Defaut = urand(8000, 12000);
-						break;
-					case 116:	// elementaire de feu - CREATURE_FAMILY_FIREELEMENTAL
-						me->SetMeleeDamageSchool(SpellSchools(2));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_116[urand(0, 1)];
-						Spell_B = liste_spell_B_116[urand(0, 1)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_116[urand(0, 1)];
-						Spell_respawn_evade = Spell_Armure_De_La_Fournaise;
-						Buf_A = liste_Buf_116[urand(0, 1)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = 1500;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B-2500, Base_Cooldown_Cast_B-1500);
-						Cooldown_SpellB_rapide = Base_Cooldown_Cast_B-3500;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
-						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;											// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
-						Cooldown_Spell_Heal_defaut = 60000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 2000;
-						Cooldown_Principal_B_Defaut = 4000;
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;
-						Cooldown_Trop_Loin = 8000;
-						Cooldown_Trop_Loin_Defaut = 30000;
-
-						if (AI_Random == 1)
-						{
-							ResteADistance = urand(8, 10);
-							Cooldown_Principal_B_Defaut = 1000;
-						}
-						else if (AI_Random == 2)
-						{
-							ResteADistance = urand(8,10);
-							Cooldown_Principal_B_Defaut = 4000;
-						}
-						break;
-					case 117:	// elementaire de terre - CREATURE_FAMILY_EARTHELEMENTAL   
-						me->SetMeleeDamageSchool(SpellSchools(3));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_117[urand(0, 1)];
-						Spell_B = liste_spell_B_117[urand(0, 2)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_117[urand(0, 1)];
-						Spell_respawn_evade = Spell_Ecorce;
-						Buf_A = liste_Buf_117[urand(0, 1)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = 2000;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B+3000);
-						Cooldown_SpellB_rapide = Base_Cooldown_Cast_B-3500;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
-						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;											// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
-						Cooldown_Spell_Heal_defaut = 60000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = urand(4000,4500);
-						Cooldown_Principal_B_Defaut = urand(5000, 6000);
-						ResteADistance = 5;
-						Spell_Trop_Loin = Lancer_Une_Pierre;															// lancer une pierre 130775
-						Cooldown_Trop_Loin = urand(2000,4000);
-						Cooldown_Trop_Loin_Defaut = urand(3000, 5000);
-						break;
-					case 130:	// Basilic - CREATURE_FAMILY_BASILISK
-						me->SetMeleeDamageSchool(SpellSchools(3));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_130[urand(0, 1)];
-						Spell_B = liste_spell_B_130[urand(0, 3)];
-						Spell_B_Non_Cumulable = 1;
-						Spell_agro = liste_agro_130[urand(0, 1)];
-						Spell_respawn_evade = Spell_Ecorce;
-						Buf_A = liste_spell_A_130[urand(0, 1)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = 3000;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B+3000);
-						Cooldown_SpellB_rapide = Base_Cooldown_Cast_B-3500;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
-						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;											// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
-						Cooldown_Spell_Heal_defaut = 60000;
-						Cooldown_Principal_A = 2000;
-						Cooldown_Principal_A_Defaut = 2000;
-						Cooldown_Principal_B = urand(5000, 7000);
-						Cooldown_Principal_B_Defaut = urand(7000, 9000);
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;														
-						Cooldown_Trop_Loin = urand(3000, 5000);
-						Cooldown_Trop_Loin_Defaut = urand(3000, 5000);
-						break;
-
-					case 152:		// Murloc
-						me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_152[urand(0, 1)];
-						Spell_B = liste_spell_B_152[urand(0, 2)];
-						Spell_B_Non_Cumulable = 1;
-						Spell_agro = liste_agro_152[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_152[urand(0, 1)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = 2500;
-						Cooldown_SpellB_defaut = Base_Cooldown_Cast_B + 4000;
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = 0;
-						Cooldown_Spell_Heal_defaut = 30000;
-						Cooldown_Principal_A = 1000;																		// Temp de test pour aller sur la cible
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 6000;																		// Temp de test pour mouvement (s'eloigner, passer dans le dos,...)
-						Cooldown_Principal_B_Defaut = 8000 + ((urand(0, 4) * 500));
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;
-						Cooldown_Trop_Loin = 6000;																			// Temp de test ci la cible est trop loin (pour charge etc)
-						Cooldown_Trop_Loin_Defaut = 6000;
-						break;
-
-					case 153:		// Naga
-						me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_153[urand(0, 1)];
-						Spell_B = liste_spell_B_153[urand(0, 2)];
-						Spell_B_Non_Cumulable = 1;
-						Spell_agro = liste_agro_153[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_153[urand(0, 1)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = 2500;
-						Cooldown_SpellB_defaut = Base_Cooldown_Cast_B + 4000;
-						Cooldown_SpellB_rapide = 0;
-						Cooldown_SpellB_rapide_defaut = 0;
-						Cooldown_Spell_Heal_defaut = 30000;
-						Cooldown_Principal_A = 1000;																		// Temp de test pour aller sur la cible
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 6000;																		// Temp de test pour mouvement (s'eloigner, passer dans le dos,...)
-						Cooldown_Principal_B_Defaut = 8000 + ((urand(0, 4) * 500));
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;
-						Cooldown_Trop_Loin = 6000;																			// Temp de test ci la cible est trop loin (pour charge etc)
-						Cooldown_Trop_Loin_Defaut = 6000;
-						break;
-
-					case 155:	// CUSTOM - CREATURE_FAMILY_SENTERRE
-						me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_155[urand(0, 1)];
-						Spell_B = liste_spell_B_155[urand(0, 3)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_155[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_155[urand(0, 1)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A + 250;
-						Cooldown_SpellB = 3000;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B + 3000);
-						Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 2000;
-						Cooldown_SpellB_rapide_defaut = Base_Cooldown_Cast_B;
-						Cooldown_Spell_Heal_defaut = 0;
-						Cooldown_Principal_A = 2000;
-						Cooldown_Principal_A_Defaut = 2000;
-						Cooldown_Principal_B = urand(5000, 7000);
-						Cooldown_Principal_B_Defaut = urand(7000, 9000);
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;																			// 	
-						Cooldown_Trop_Loin = 6000;
-						Cooldown_Trop_Loin_Defaut = urand(8000, 10000);
-						break;
-
-					case 156:	// CUSTOM - CREATURE_FAMILY_SENTERRE
-						me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_156[urand(0, 1)];
-						Spell_B = liste_spell_B_156[urand(0, 3)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_156[urand(0, 1)];
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_156[urand(0, 1)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A + 250;
-						Cooldown_SpellB = 3000;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B + 3000);
-						Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 2000;
-						Cooldown_SpellB_rapide_defaut = Base_Cooldown_Cast_B;
-						Cooldown_Spell_Heal_defaut = 0;
-						Cooldown_Principal_A = 2000;
-						Cooldown_Principal_A_Defaut = 2000;
-						Cooldown_Principal_B = urand(4000, 6000);
-						Cooldown_Principal_B_Defaut = urand(6000, 8000);
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;																			// 	
-						Cooldown_Trop_Loin = 6000;
-						Cooldown_Trop_Loin_Defaut = urand(7000, 9000);
-
-						if (AI_Random == 1)
-						{
-							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-							Cooldown_SpellB = 2500;
-							Cooldown_SpellB_defaut = Base_Cooldown_Cast_B + 2000;
-							Cooldown_Principal_A = 1000;
-							Cooldown_Principal_A_Defaut = 1000;
-							Cooldown_Principal_B = urand(3000, 5000);
-							Cooldown_Principal_B_Defaut = urand(4000, 6000);
-							ResteADistance = 5;
-							Cooldown_Trop_Loin = 1000;
-							Cooldown_Trop_Loin_Defaut = urand(5000, 7000);
-						}
-
-						if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE)
-						{
-							Se_Deterre();
-						}
-						
-						break;
-					case 157:	// Rocher (elementaire de terre si fixe)  -  CREATURE_FAMILY_MORPH_ROCHER    
-						me->SetMeleeDamageSchool(SpellSchools(3));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_A = liste_spell_A_157[urand(0, 1)];
-						Spell_B = liste_spell_B_157[urand(0, 2)];
-						Spell_B_Non_Cumulable = 0;
-						Spell_agro = liste_agro_157[urand(0, 1)];
-						Spell_respawn_evade = Spell_Ecorce;
-						Buf_A = liste_Buf_157[urand(0, 1)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = 2000;
-						Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B-2000, Base_Cooldown_Cast_B);
-						Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3500;											// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
-						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;											// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
-						Cooldown_Spell_Heal_defaut = 60000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = urand(4000, 4500);
-						Cooldown_Principal_B_Defaut = urand(5000, 6000);
-						ResteADistance = 5;
-						Spell_Trop_Loin = Lancer_Une_Pierre;															// lancer une pierre 130775
-						Cooldown_Trop_Loin = urand(2000, 4000);
-						Cooldown_Trop_Loin_Defaut = urand(3000, 5000);
-						break;
-
-
-
-					default:
-						Spell_A = liste_spell_A_0[urand(0, 1)];
-						Spell_B = liste_spell_B_0[urand(0, 2)];
-						Spell_agro = 0;
-						Spell_respawn_evade = 0;
-						Buf_A = liste_Buf_0[urand(0, 2)];
-						Spell_Heal = 0;
-						Cooldown_SpellA = 1000;
-						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-						Cooldown_SpellB = 3000;
-						Cooldown_SpellB_defaut = Base_Cooldown_Cast_B-1000;
-						Cooldown_SpellB_rapide = Base_Cooldown_Cast_B-3000;
-						Cooldown_SpellB_rapide_defaut = 5000;								
-						Cooldown_Spell_Heal_defaut = 60000;
-						Cooldown_Principal_A = 1000;
-						Cooldown_Principal_A_Defaut = 1000;
-						Cooldown_Principal_B = 4000;
-						Cooldown_Principal_B_Defaut = 6000 + ((urand(0, 4) * 500));
-						ResteADistance = 5;
-						Spell_Trop_Loin = 0;
-						Cooldown_Trop_Loin = 60000;
-						Cooldown_Trop_Loin_Defaut = 60000;
-						break;
-
-
 					}
 
-				} else	// Ou lecture des spells dans creature_template->spells1-6 --------------------------------------------------------------------------------
-				{ 
-					Spell_A = me->m_spells[0]; 
-
-					if (me->m_spells[1] != 0) 
-					{ Spell_B = me->m_spells[1]; } 
-					else  Spell_B = 0;
-
-					if (me->m_spells[2] != 0) 
-					{ Spell_agro = me->m_spells[2]; }
-					else  Spell_agro = 0;
-
-					if (me->m_spells[3] != 0) 
-					{ Spell_respawn_evade = me->m_spells[3]; }
-					else  Spell_respawn_evade = 0;
-
-					if (me->m_spells[4] != 0) 
-					{ Buf_A = me->m_spells[4]; }
-					else  Buf_A = 0;
-
-					if (me->m_spells[5] != 0) 
-					{ Spell_Heal = me->m_spells[5]; }
-					else  Spell_Heal = 0;
 
 					// Mouvement_Caster_Puis_Contact
 					switch (Crfamily)
@@ -1981,7 +874,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					case 38:
 					case 42:
 					case 100:
-						me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+						me->SetMeleeDamageSchool(SpellSchools(0));									// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 						Spell_B_Non_Cumulable = 0;
 						Spell_respawn_evade = 0;
 						Buf_A = 0;
@@ -1991,7 +884,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Cooldown_SpellB = 1500;
 						Cooldown_SpellB_defaut = urand(4500,6000);
 						Cooldown_SpellB_rapide = 3500;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
-						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;												// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
+						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;						// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
 						Cooldown_Spell_Heal_defaut = 60000;
 						Cooldown_Principal_A = 2000;
 						Cooldown_Principal_A_Defaut = 2000;
@@ -2016,7 +909,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						break;
 
 					}
-				}
+
 
 				// Message a l'agro forcé par spell(8)
 				if (me->m_spells[7] == 1) { MessageAlagro = 1; }
@@ -2143,87 +1036,1338 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					if (Start_Agro == 0)
 					{
 
+						Start_Agro = 1;
+
 						// ################################################################################################################################################
 						// Tirage aléatoire de l'AI pour le mouvement en combat : ne marchait pas dans void Init_AI() 
 						// ################################################################################################################################################
 
 						if (ForceFamily > 0 && ForceFamily < 301) { Crfamily = ForceFamily; }
 
-						switch (Crfamily)
+						// Tirage aléatoire des spells ----------------------------------------------------------------------------------------------------------------
+
+							switch (Crfamily)
 						{
-						case 1:		// Loup
+						case 1:		// Loup  -  CREATURE_FAMILY_WOLF - AI : 1/3_Mouvement_Contact_Basique , 2/3_Mouvement_Contact_Prudent
 							AI_Random = urand(1, 3);
+							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 1;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 2500;
+							Cooldown_SpellB_defaut = Base_Cooldown_Cast_B + 4000;
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 30000;
+							Cooldown_Principal_A = 1000;																		// Temp de test pour aller sur la cible
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 6000;																		// Temp de test pour mouvement (s'eloigner, passer dans le dos,...)
+							Cooldown_Principal_B_Defaut = 8000 + ((urand(0, 4) * 500));
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;
+							Cooldown_Trop_Loin = 6000;																			// Temp de test ci la cible est trop loin (pour charge etc)
+							Cooldown_Trop_Loin_Defaut = 6000;
 							break;
-						case 2:		// Felin
+						case 2:		// Felin  -  CREATURE_FAMILY_CAT - AI : Mouvement_Contact_Tournant_Aleatoire (%invisible)
 							AI_Random = urand(1, 2);
+							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 1;
+							Spell_respawn_evade = Spell_Invisible;
+							Spell_Heal = Spell_Instincts_de_survie;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 2500;
+							Cooldown_SpellB_defaut = Base_Cooldown_Cast_B;
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 6000;
+							Cooldown_Principal_B_Defaut = 6000 + ((urand(0, 4) * 500));
+							ResteADistance = 5;
+
+							if (AI_Random == 1) {
+								Spell_Trop_Loin = Spell_Vitesse_4s;
+								Cooldown_Trop_Loin = 4000;
+								Cooldown_Trop_Loin_Defaut = 4000;
+							}
+							if (AI_Random == 2) {
+								Spell_Trop_Loin = Spell_Griffure_bondissante;
+								Cooldown_Trop_Loin = 6000;
+								Cooldown_Trop_Loin_Defaut = 6000;
+							}
 							break;
-						case 6:		// Crocodile - CREATURE_FAMILY_CROCOLISK
-							AI_Random = urand(1, 3);
-							break;
-						case 11:	// Raptor
-							AI_Random = urand(1, 3);
-							break;
-						case 17:	// Succube
-							AI_Random = urand(1, 2);
-							break;
-						case 30:
+						case 3:		// Araignee  -  CREATURE_FAMILY_SPIDER - AI : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance , Doit avoir du mana , % Toile_Araignee)
+							me->SetMeleeDamageSchool(SpellSchools(3));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 1;
+							Spell_respawn_evade = 0;
+							Buf_A = 0;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 1500;
+							Cooldown_SpellB_defaut = Base_Cooldown_Cast_B - 3000;
+							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 4000;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;												// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
+							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Principal_A = 2000;
+							Cooldown_Principal_A_Defaut = 2000;
+							Cooldown_Principal_B = 1000;
+							Cooldown_Principal_B_Defaut = 1000;
 							ResteADistance = 15;
+							Spell_Trop_Loin = Spell_Toile_Araignee;
+							Cooldown_Trop_Loin = 8000;
+							Cooldown_Trop_Loin_Defaut = urand(8000, 10000);
 							break;
-						case 31:	// Ravageur - CREATURE_FAMILY_RAVAGER
+						case 4:		// Ours  -  CREATURE_FAMILY_BEAR - AI : Mouvement_Contact_Basique, % Instincts_de_survie
+							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = Spell_Instincts_de_survie; ;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 3000;
+							Cooldown_SpellB_defaut = Base_Cooldown_Cast_B + 2000;
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Principal_A = 1500;
+							Cooldown_Principal_A_Defaut = 1500;
+							Cooldown_Principal_B = 8000;
+							Cooldown_Principal_B_Defaut = 8000 + ((urand(0, 4) * 500));
+							ResteADistance = 5;
+							Spell_Trop_Loin = Spell_Charge_Stun;																// Charge farouche 87187 (8-25 m ours)
+							Cooldown_Trop_Loin = 6000;
+							Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
+							break;
+						case 5:		// Sanglier  -  CREATURE_FAMILY_BOAR - AI : Mouvement_Contact_Charges_Multiples
+							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 2500;
+							Cooldown_SpellB_defaut = Base_Cooldown_Cast_B + 2000;
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 30000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 6000;
+							Cooldown_Principal_B_Defaut = 8000 + ((urand(0, 4) * 500));
+							ResteADistance = 5;
+							Spell_Trop_Loin = Spell_Charge;																		//
+							Cooldown_Trop_Loin = 5000;
+							Cooldown_Trop_Loin_Defaut = urand(5000, 6000);
+							break;
+						case 6:		// Crocodile  -  CREATURE_FAMILY_CROCOLISK - AI : 1/3_Mouvement_Contact_Avance_Recule , 2/3_Mouvement_Contact_Basique, %Ecorce
+							AI_Random = urand(1, 3);
+							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 1;
+							Spell_respawn_evade = Spell_Ecorce;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 3000;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B + 3000);
+							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3000;													// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;												// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
+							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Principal_A = 2000;
+							Cooldown_Principal_A_Defaut = 2000;
+							Cooldown_Principal_B = urand(5000, 7000);
+							Cooldown_Principal_B_Defaut = urand(7000, 9000);
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;
+							Cooldown_Trop_Loin = urand(0, 4000);
+							Cooldown_Trop_Loin_Defaut = urand(7000, 9000);
+							break;
+						case 7:		// Oiseau charogniar  -  CREATURE_FAMILY_CARRION_BIRD - AI : Mouvement_Contact_Prudent_Volant
+							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 2500;
+							Cooldown_SpellB_defaut = Base_Cooldown_Cast_B + 2000;
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 30000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 8000;
+							Cooldown_Principal_B_Defaut = 7000 + ((urand(0, 4) * 500));
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;									//
+							Cooldown_Trop_Loin = 500;
+							Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
+							break;
+						case 8:		// Crabe  -  CREATURE_FAMILY_CRAB - AI : Mouvement_Contact_Avance_Recule, %Ecorce
+							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = Spell_Ecorce;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 2500;
+							Cooldown_SpellB_defaut = Base_Cooldown_Cast_B + 2000;
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 30000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 8000;
+							Cooldown_Principal_B_Defaut = 5000 + ((urand(0, 8) * 500));
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;									//
+							Cooldown_Trop_Loin = 1000;
+							Cooldown_Trop_Loin_Defaut = urand(5000, 7000);
+							break;
+						case 9:		// Gorille  -  CREATURE_FAMILY_GORILLA - AI : Mouvement_Contact_Bondissant, %Bondir_Guerrier
+							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 2500;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B + 2000);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 30000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1500;
+							Cooldown_Principal_B = 6000;
+							Cooldown_Principal_B_Defaut = 5000 + ((urand(0, 6) * 500));
+							ResteADistance = 5;
+							Spell_Trop_Loin = Spell_Bondir_Guerrier;									//
+							Cooldown_Trop_Loin = 5000;
+							Cooldown_Trop_Loin_Defaut = urand(4000, 7000);
+							break;
+						case 11:	// Raptor  -  CREATURE_FAMILY_RAPTOR - AI : 1/4_Mouvement_Contact_Avance_Recule  , 1/4_Mouvement_Contact_Tournant_Aleatoire, 2/4_Mouvement_Contact_Basique, %Cri_Incapacitant";
+							AI_Random = urand(1, 3);
+							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 2500;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B + 2000);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 30000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1500;
+							Cooldown_Principal_B = 6000;
+							Cooldown_Principal_B_Defaut = 5000 + ((urand(0, 6) * 500));
+							ResteADistance = 5;
+							Spell_Trop_Loin = Cri_Incapacitant;																// Cri incapacitant 18328 (vit -60%)	
+							Cooldown_Trop_Loin = 4000;
+							Cooldown_Trop_Loin_Defaut = urand(4000, 6000);
+
+							if (AI_Random == 1)
+							{
+								Cooldown_Principal_B = 4000;
+								Cooldown_Principal_B_Defaut = 6000 + ((urand(0, 4) * 500));
+								Spell_Trop_Loin = Spell_Vitesse_4s;
+								Cooldown_Trop_Loin = 4000;
+								Cooldown_Trop_Loin_Defaut = 4000;
+							}
+							else if (AI_Random == 2)
+							{
+								Cooldown_Principal_B = 4000;																		// Temp de test pour mouvement (s'eloigner, passer dans le dos,...)
+								Cooldown_Principal_B_Defaut = 4000 + ((urand(0, 8) * 500));
+							}
+							break;
+						case 12:	//Grand trotteur - CREATURE_FAMILY_TALLSTRIDER - AI : 1/2 Mouvement_Contact_Avance_Recule, 1/2 Mouvement_Contact_Basique
+							AI_Random = urand(1, 2);
+							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 1;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 3000;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B -2000, Base_Cooldown_Cast_B);
+							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3000;													// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;												// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
+							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Principal_A = 2000;
+							Cooldown_Principal_A_Defaut = 2000;
+							Cooldown_Principal_B = urand(3000, 4000);
+							Cooldown_Principal_B_Defaut = urand(6000, 7000);
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;
+							Cooldown_Trop_Loin = urand(0, 4000);
+							Cooldown_Trop_Loin_Defaut = urand(7000, 9000);
+							break;
+						case 15:	//Chasseur corrompu (Felhunter)  -  CREATURE_FAMILY_FELHUNTER - AI : 1/2 Mouvement_Contact_Basique , 1/2 Mouvement_Contact_Tournant_Aleatoire
+							AI_Random = urand(1, 2);
+							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 1;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 2500;
+							Cooldown_SpellB_defaut = Base_Cooldown_Cast_B -2000;
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 6000;
+							Cooldown_Principal_B_Defaut = 6000 + ((urand(0, 4) * 500));
+							ResteADistance = 5;
+							break;
+
+						case 16:	//Marcheur du vide (Voidwalker)  -  CREATURE_FAMILY_VOIDWALKER - AI : Mouvement_Contact_Basique
+							me->SetMeleeDamageSchool(SpellSchools(5));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 17767;																				// Rempart de l’ombre 17767 (PV +65%/20s), Bouclier de l’ombre 115232 (dmg -60%/30s)
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A + 250;
+							Cooldown_SpellB = 2500;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 2000, Base_Cooldown_Cast_B - 1000);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 120000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 6000;
+							Cooldown_Principal_B_Defaut = 5000 + ((urand(0, 6) * 500));
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;																			// 	
+							Cooldown_Trop_Loin = 6000;
+							Cooldown_Trop_Loin_Defaut = urand(8000, 10000);
+							break;
+						case 17:	//Succube  -  CREATURE_FAMILY_SUCCUBUS - AI : 1/2_Mouvement_Contact_Tournant_Aleatoire.... 1/2_Mouvement_Contact_Basique
+							AI_Random = urand(1, 2);
+							me->SetMeleeDamageSchool(SpellSchools(5));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;																					// 
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A - 1500;
+							Cooldown_SpellB = urand(2500, 5000);
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B +2000);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 120000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 6000;
+							Cooldown_Principal_B_Defaut = 5000 + ((urand(0, 4) * 500));
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;																			// 	
+							Cooldown_Trop_Loin = 4000;
+							Cooldown_Trop_Loin_Defaut = urand(5000, 8000);
+
+							if (AI_Random == 1)
+							{
+								Cooldown_Principal_B = 4000;
+								Cooldown_Principal_B_Defaut = 4000 + ((urand(0, 4) * 500));
+							}
+							break;
+						case 19:	//Garde funeste (Doomguard)  -  CREATURE_FAMILY_DOOMGUARD - AI : Mouvement_Contact_Charges_Multiples, %Bondir_Guerrier
+							me->SetMeleeDamageSchool(SpellSchools(5));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;																					// 
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = urand(2500, 3500);
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 1000, Base_Cooldown_Cast_B + 1000);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 120000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 6000;
+							Cooldown_Principal_B_Defaut = 8000 + ((urand(0, 8) * 500));
+							ResteADistance = 5;
+							Spell_Trop_Loin = Spell_Bondir_Guerrier;														// 
+							Cooldown_Trop_Loin = urand(1000, 4000);
+							Cooldown_Trop_Loin_Defaut = 5000;
+							break;
+						case 20:	//Scorpion  -  CREATURE_FAMILY_SCORPID - AI : Mouvement_Contact_Avance_Recule
+							me->SetMeleeDamageSchool(SpellSchools(3));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;																					// 
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = urand(2500, 3500);
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 1000, Base_Cooldown_Cast_B + 1000);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 120000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = urand(2000, 5000);
+							Cooldown_Principal_B_Defaut = 8000 + ((urand(0, 4) * 500));
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;																			// 
+							Cooldown_Trop_Loin = urand(1000, 4000);
+							Cooldown_Trop_Loin_Defaut = 5000;
+							break;
+						case 21:	//Tortue  -  CREATURE_FAMILY_TURTLE - AI : Mouvement_Contact_Basique
+							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;																					// 
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = urand(2500, 3500);
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B + 2000);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 120000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 2000;
+							Cooldown_Principal_B = urand(2000, 5000);
+							Cooldown_Principal_B_Defaut = 8000 + ((urand(0, 4) * 500));
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;																			// 
+							Cooldown_Trop_Loin = urand(4000, 6000);
+							Cooldown_Trop_Loin_Defaut = 5000;
+							break;
+						case 23:	//Imp  -  CREATURE_FAMILY_IMP - AI : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance )
+							me->SetMeleeDamageSchool(SpellSchools(2));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;																// 
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A - 500, Base_Cooldown_Cast_A - 250);
+							Cooldown_SpellB = 2500;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 4000, Base_Cooldown_Cast_B - 3000);
+							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 4000;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;											// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
+							Cooldown_Spell_Heal_defaut = 120000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 2000;
+							Cooldown_Principal_B = 1000;
+							Cooldown_Principal_B_Defaut = 1000;
+							ResteADistance = 10;
+							Spell_Trop_Loin = 0;																			// 
+							Cooldown_Trop_Loin = urand(3000, 4000);
+							Cooldown_Trop_Loin_Defaut = 5000;
+							break;
+						case 24:	//Chauve souris  -  CREATURE_FAMILY_BAT - AI : Mouvement_Contact_Prudent_Volant
+							me->SetMeleeDamageSchool(SpellSchools(3));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;																					// 
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 2500;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B + 2000);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 120000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 6000;
+							Cooldown_Principal_B_Defaut = urand(6000, 8000);
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;																			// 
+							Cooldown_Trop_Loin = urand(7000, 10000);
+							Cooldown_Trop_Loin_Defaut = urand(7000, 10000);
+							break;
+						case 25:	//Hyene  -  CREATURE_FAMILY_HYENA - AI : Mouvement_Contact_Prudent
+							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 1;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;																					// 
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = urand(2500, 8000);
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B + 6000, Base_Cooldown_Cast_B + 12000);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 120000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1500;
+							Cooldown_Principal_B = 5000;
+							Cooldown_Principal_B_Defaut = urand(4000, 6000);
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;																			// 
+							Cooldown_Trop_Loin = urand(5000, 8000);
+							Cooldown_Trop_Loin_Defaut = urand(5000, 8000);
+							break;
+						case 26:	//Oiseau de proie  -  CREATURE_FAMILY_BIRD_OF_PREY - AI : Mouvement_Contact_Basique, %Griffure_bondissante
+							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;																					// 
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = urand(2500, 8000);
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B + 2000);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 120000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1500;
+							Cooldown_Principal_B = 5000;
+							Cooldown_Principal_B_Defaut = urand(4000, 8000);
+							ResteADistance = 5;
+							Spell_Trop_Loin = Spell_Griffure_bondissante;													// Griffure bondissante (bond) 89712
+							Cooldown_Trop_Loin = urand(3000, 8000);
+							Cooldown_Trop_Loin_Defaut = urand(5000, 7000);
+							break;
+						case 27:	//Serpent des vents  -  CREATURE_FAMILY_WIND_SERPENT - AI : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance, %Bouclier_De_Foudre )
+							me->SetMeleeDamageSchool(SpellSchools(6));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = Spell_Bouclier_De_Foudre;
+							Spell_Heal = 974;																				// bouclier de terre 974
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A - 250;
+							Cooldown_SpellB = Base_Cooldown_Cast_B - 4000;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 4000, Base_Cooldown_Cast_B -2000);
+							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 4000;
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 1000;
+							Cooldown_Principal_B_Defaut = 1000;
+							ResteADistance = urand(15, 20);
+							Spell_Trop_Loin = 0;
+							Cooldown_Trop_Loin = urand(3000, 8000);
+							Cooldown_Trop_Loin_Defaut = urand(8000, 10000);
+							break;
+						case 29:	//Felguard  -  CREATURE_FAMILY_FELGUARD - AI : Mouvement_Contact_Basique, %Poursuite
+							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;																					// 
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 2500;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 2000, Base_Cooldown_Cast_B);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 120000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 6000;
+							Cooldown_Principal_B_Defaut = 8000 + ((urand(0, 8) * 500));
+							ResteADistance = 5;
+							Spell_Trop_Loin = Spell_Poursuite;																// 
+							Cooldown_Trop_Loin = urand(5000, 7000);
+							Cooldown_Trop_Loin_Defaut = urand(5000, 8000);
+
+							//me->SetVirtualItem(0, 12784);																	// Equipé d'une hache
+							me->LoadEquipment(1, true);																		// creature_equip_template 1
+							break;
+						case 30:	//Faucon dragon  -  CREATURE_FAMILY_DRAGONHAWK - AI : Mouvement_Caster
+							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = urand(3000, 4000);
+							Cooldown_SpellB = 2000;
+							Cooldown_SpellB_defaut = urand(5000, 6000);
+							Cooldown_SpellB_rapide = 4000;
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 2000;
+							Cooldown_Principal_B_Defaut = 3000;
+							ResteADistance = 15;
+							Spell_Trop_Loin = 0;
+							Cooldown_Trop_Loin = urand(6000, 8000);
+							Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
+							Spell_B_Non_Cumulable = 1;
+							break;
+						case 31:	//Ravageur  -  CREATURE_FAMILY_RAVAGER - AI : 1/4_Mouvement_Contact_Prudent , 1/4_Mouvement_Contact_Avance_Recule , 1/4_Mouvement_Contact_Tournant_Aleatoire , 1/4_Mouvement_Contact_Charges_Multiples, %Poursuite %Griffure_bondissante
 							Random = urand(1, 2);
-							break;
-						case 34:	// Raie du Neant - CREATURE_FAMILY_NETHER_RAY
-							AI_Random = urand(1, 2);
-							break;
-						case 43:	// Rhinoceros - CREATURE_FAMILY_RHINO
-							AI_Random = urand(1, 3);
-							break;
-						case 45:	// Chien de base - CREATURE_FAMILY_CORE_HOUND
-							AI_Random = urand(1, 3);
-							break;
-						case 49:	// Elementaire d'eau - CREATURE_FAMILY_WATER_ELEMENTAL
+							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = urand(Base_Cooldown_Cast_B, 6000);
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 3000, Base_Cooldown_Cast_B - 2000);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = urand(3000, 5000);
+							Cooldown_Principal_B_Defaut = urand(5000, 9000);
+							ResteADistance = 5;
+
+							if (Random == 1) { Spell_Trop_Loin = Spell_Poursuite; }										//
+							if (Random == 2) { Spell_Trop_Loin = Spell_Griffure_bondissante; }							//
+
+							Cooldown_Trop_Loin = urand(8000, 15000);
+							Cooldown_Trop_Loin_Defaut = urand(8000, 15000);
 							AI_Random = urand(1, 4);
 							break;
-						case 50:	// Renard - CREATURE_FAMILY_FOX
-							AI_Random = urand(1, 3);
+						case 34:	//Raie du Neant  -  CREATURE_FAMILY_NETHER_RAY - AI : 1/2_Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance ) , 1/2_Mouvement_Caster, %Bouclier_De_Foudre
+							AI_Random = urand(1,2);
+							me->SetMeleeDamageSchool(SpellSchools(6));													// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = Spell_Bouclier_De_Foudre;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A, Base_Cooldown_Cast_A + 500);
+							Cooldown_SpellB = 1000;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B -3000 , Base_Cooldown_Cast_B -1000);
+							Cooldown_SpellB_rapide = 4000;
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Principal_A = 1500;
+							Cooldown_Principal_A_Defaut = 1500;
+							Cooldown_Principal_B = 1000;
+							Cooldown_Principal_B_Defaut = 2000;
+							ResteADistance = urand(12, 18);
+							Spell_Trop_Loin = 0;
+							Cooldown_Trop_Loin = urand(3000, 8000);
+							Cooldown_Trop_Loin_Defaut = urand(5000, 10000);
+
+
+							// AI_Random == 1 :		  Mouvement_Caster_Puis_Contact
+							if (AI_Random == 2)		//Mouvement_Caster
+							{
+								Cooldown_Principal_B = 1000;
+								Cooldown_Principal_B_Defaut = 2000;
+								ResteADistance = urand(12, 18);
+								Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+								Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 4000, Base_Cooldown_Cast_B - 3000);
+								Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 4000;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
+								Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							}
+							me->SetSheath(SHEATH_STATE_RANGED); 											// S'équipe d'arc ou fusil
 							break;
-						case 52:	// Chien - CREATURE_FAMILY_DOG
+						case 35:	//Serpent  -  CREATURE_FAMILY_SERPENT - AI : Mouvement_Contact_Basique
+							me->SetMeleeDamageSchool(SpellSchools(3));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 1;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A, Base_Cooldown_Cast_A + 500);
+							Cooldown_SpellB = 2000;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 1500, Base_Cooldown_Cast_B - 500);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 5000;
+							Cooldown_Principal_B_Defaut = 8000;
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;
+							Cooldown_Trop_Loin = urand(3000, 6000);
+							Cooldown_Trop_Loin_Defaut = urand(4000, 7000);
+							break;
+						case 37:	//Papillon de nuit  -  CREATURE_FAMILY_MOTH - AI :  Mouvement_Caster, Bouclier_De_Terre
+							me->SetMeleeDamageSchool(SpellSchools(3));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = Spell_Bouclier_De_Terre;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 500;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 1000;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 2000, Base_Cooldown_Cast_B - 1000);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 2000;
+							Cooldown_Principal_B_Defaut = 6000;
+							ResteADistance = urand(12, 15);
+							Spell_Trop_Loin = 0;
+							Cooldown_Trop_Loin = urand(3000, 8000);
+							Cooldown_Trop_Loin_Defaut = urand(8000, 15000);
+							break;
+						case 38:	//Chimere  -  CREATURE_FAMILY_CHIMAERA - AI : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance, %Epines )
+							me->SetMeleeDamageSchool(SpellSchools(0));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = Spell_Epines;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 500;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A + 500;
+							Cooldown_SpellB = 1000;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 1000, Base_Cooldown_Cast_B);
+							Cooldown_SpellB_rapide = urand(Base_Cooldown_Cast_B - 2250, Base_Cooldown_Cast_B - 1250);
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 1000;
+							Cooldown_Principal_B_Defaut = 2000;
+							ResteADistance = urand(15, 20);
+							Spell_Trop_Loin = 0;
+							Cooldown_Trop_Loin = urand(3000, 8000);
+							Cooldown_Trop_Loin_Defaut = urand(6000, 12000);
+							break;
+						case 39:	//Diablosaure  -  CREATURE_FAMILY_DEVILSAUR - AI : Mouvement_Contact_Basique
+							me->SetMeleeDamageSchool(SpellSchools(0));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 500;
+							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A,Base_Cooldown_Cast_A + 1000);
+							Cooldown_SpellB = 1000;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B -2000, Base_Cooldown_Cast_B);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 8000;
+							Cooldown_Principal_B_Defaut = 20000;
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;
+							Cooldown_Trop_Loin = 5000;
+							Cooldown_Trop_Loin_Defaut = 5000;
+							break;
+						case 40:	//Goule  -  CREATURE_FAMILY_GHOUL - AI : Mouvement_Contact_Basique, %Bouclier_Dos
+							me->SetMeleeDamageSchool(SpellSchools(5));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = Spell_Bouclier_Dos;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = urand(3000, 5000);
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B + 2000);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Principal_A = 3000;
+							Cooldown_Principal_A_Defaut = 3000;
+							Cooldown_Principal_B = 8000;
+							Cooldown_Principal_B_Defaut = 20000;
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;
+							Cooldown_Trop_Loin = 7000;
+							Cooldown_Trop_Loin_Defaut = 7000;
+							break;
+						case 42:	//Ver  -  CREATURE_FAMILY_WORM - AI : Mouvement_Caster_Puis_Contact ( spell [2]=spell a distance 
+							me->SetMeleeDamageSchool(SpellSchools(0));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 500;
+							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A + 500, Base_Cooldown_Cast_A + 1500);
+							Cooldown_SpellB = 1000;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 1000, Base_Cooldown_Cast_B);
+							Cooldown_SpellB_rapide = urand(Base_Cooldown_Cast_B - 2500, Base_Cooldown_Cast_B - 1500);
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 1000;
+							Cooldown_Principal_B_Defaut = 1000;
+							ResteADistance = urand(15, 20);
+							Spell_Trop_Loin = 0;
+							Cooldown_Trop_Loin = urand(5000, 8000);
+							Cooldown_Trop_Loin_Defaut = urand(8000, 12000);
+							break;
+						case 43:	//Rhinoceros  -  CREATURE_FAMILY_RHINO - AI : 1/3_Mouvement_Contact_Basique , 2/3_Mouvement_Contact_Charges_Multiples, %Charge_Repousse
+							AI_Random = urand(1, 3);
+							me->SetMeleeDamageSchool(SpellSchools(0));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 2500;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B + 2000);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 30000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 6000;
+							Cooldown_Principal_B_Defaut = urand(8000, 10000);
+							ResteADistance = 5;
+							Spell_Trop_Loin = Spell_Charge_Repousse;									//
+							Cooldown_Trop_Loin = urand(6000, 8000);
+							Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
+							break;
+						case 44:	//Guepe  -  CREATURE_FAMILY_WASP - AI : Mouvement_Contact_Prudent_Volant
+							me->SetMeleeDamageSchool(SpellSchools(3));									// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 2500;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B + 2000);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 30000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 5000;
+							Cooldown_Principal_B_Defaut = urand(4000, 6000);
+							ResteADistance = 15;
+							Spell_Trop_Loin = 0;														//
+							Cooldown_Trop_Loin = 500;
+							Cooldown_Trop_Loin_Defaut = urand(5000, 6000);
+							break;
+						case 45:	//Chien de base  -  CREATURE_FAMILY_CORE_HOUND - AI : 1/3_Mouvement_Contact_Prudent , 2/3_Mouvement_Contact_Charges_Multiples
+							AI_Random = urand(1, 3);
+							me->SetMeleeDamageSchool(SpellSchools(0));									// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 1;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;																// 
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = urand(2500, 8000);
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B + 6000, Base_Cooldown_Cast_B + 12000);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 120000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1500;
+							Cooldown_Principal_B = 5000;
+							Cooldown_Principal_B_Defaut = urand(4000, 6000);
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;														// 
+							Cooldown_Trop_Loin = urand(7000, 8000);
+							Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
+							break;
+						case 49:	//Elementaire d'eau  -  CREATURE_FAMILY_WATER_ELEMENTAL - AI : 1/3_Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance ) , 1/3_Mouvement_Caster , 1/3_Mouvement_Contact_Basique
+							AI_Random = urand(1,3);
+							me->SetMeleeDamageSchool(SpellSchools(4));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 1500;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 2500, Base_Cooldown_Cast_B - 500);
+							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3000;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;												// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
+							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 2000;
+							Cooldown_Principal_B_Defaut = 4000;
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;
+							Cooldown_Trop_Loin = 8000;
+							Cooldown_Trop_Loin_Defaut = 15000;
+							if (AI_Random == 1)				//Mouvement_Caster_Puis_Contact(diff)
+							{
+								ResteADistance = 12;
+								Cooldown_Principal_A_Defaut = 2000;
+								Cooldown_Principal_B_Defaut = 1000;
+								Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+								Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 4500, Base_Cooldown_Cast_B - 4000);
+								Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							}
+							else if (AI_Random == 2)		//Mouvement_Caster(diff)
+							{
+								ResteADistance = 15;
+								Cooldown_Principal_A_Defaut = 2000;
+								Cooldown_Principal_B_Defaut = 4000;
+								Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+								Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 4500, Base_Cooldown_Cast_B - 4000);
+								Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							}
+							else							//Mouvement_Contact_Basique(diff)
+							{
+								ResteADistance = 5;
+								Cooldown_Principal_A_Defaut = 1000;
+								Cooldown_Principal_B_Defaut = 6000;
+								Cooldown_SpellA_defaut = Base_Cooldown_Cast_A -500;
+							}
+							break;
+						case 50:	//Renard  -  CREATURE_FAMILY_FOX - AI : 1/3_Mouvement_Contact_Basique , 2/3_Mouvement_Contact_Prudent
+							AI_Random = urand(1, 3);
+							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 1;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;																					// 
+							Cooldown_SpellA = 2000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = urand(4000, 6000);
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B + 4000, Base_Cooldown_Cast_B + 9000);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 120000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 5000;
+							Cooldown_Principal_B_Defaut = urand(6000, 8000);
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;																			// 
+							Cooldown_Trop_Loin = urand(7000, 12000);
+							Cooldown_Trop_Loin_Defaut = urand(8000, 12000);
+
+							if (AI_Random != 1) { Cooldown_Principal_B_Defaut = urand(4000, 6000); }						//
+							break;
+						case 51:	//Singe  -  CREATURE_FAMILY_MONKEY - AI : Mouvement_Caster
+							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;																					// 
+							Cooldown_SpellA = 2000;
+							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A - 500, Base_Cooldown_Cast_A);
+							Cooldown_SpellB = 1000;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 3500, Base_Cooldown_Cast_B - 3000);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_Spell_Heal_defaut = 120000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 1500;
+							Cooldown_Principal_B_Defaut = urand(3500, 4500);
+							ResteADistance = urand(12, 15);
+							Spell_Trop_Loin = 0;																			// 
+							Cooldown_Trop_Loin = urand(5000, 10000);
+							Cooldown_Trop_Loin_Defaut = urand(6000, 10000);
+							break;
+						case 52:	//Chien  -  CREATURE_FAMILY_DOG - AI : 4/5_Mouvement_Contact_Prudent , 1/5_Mouvement_Contact_Basique
 							AI_Random = urand(1, 5);
+							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 1;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;																					// 
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A - 250;
+							Cooldown_SpellB = urand(4000, 6000);
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B + 2000, Base_Cooldown_Cast_B + 6000);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 120000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 4000;
+							Cooldown_Principal_B_Defaut = urand(3500, 5000);
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;																			// 
+							Cooldown_Trop_Loin = urand(7000, 12000);
+							Cooldown_Trop_Loin_Defaut = urand(8000, 12000);
 							break;
-						case 55:	// Araignee de schiste - CREATURE_FAMILY_SHALE_SPIDER
+						case 55:	//Araignee de schiste  -  CREATURE_FAMILY_SHALE_SPIDER - AI : 1/2_Mouvement_Contact_Avance_Recule , 1/2_Mouvement_Contact_Tournant_Aleatoire, %Armure_De_La_Fournaise %Bondir_Guerrier
 							AI_Random = urand(1, 2);
+							me->SetMeleeDamageSchool(SpellSchools(6));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = Spell_Armure_De_La_Fournaise;
+							Buf_A = 0;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1500;
+							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A - 500, Base_Cooldown_Cast_A - 250);
+							Cooldown_SpellB = 3000;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B + 2000, Base_Cooldown_Cast_B + 4000);
+							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 1000;											// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;											// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
+							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 2000;
+							Cooldown_Principal_B = 3000;
+							Cooldown_Principal_B_Defaut = urand(4000, 5000);
+							ResteADistance = 5;
+							Spell_Trop_Loin = Spell_Bondir_Guerrier;														//
+							Cooldown_Trop_Loin = 8000;
+							Cooldown_Trop_Loin_Defaut = urand(8000, 15000);
+
+							if (AI_Random == 1)
+							{
+								Cooldown_Principal_B_Defaut = urand(5000, 7000);
+							}
 							break;
-						case 68:	// Hydre - CREATURE_FAMILY_HYDRA
+						case 56:	//Zombie  -  CREATURE_FAMILY_ZOMBIE - AI : Mouvement_Contact_Basique
+							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;																					// 
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A, Base_Cooldown_Cast_A + 500);
+							Cooldown_SpellB = urand(4000, 6000);
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B + 2000, Base_Cooldown_Cast_B + 6000);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 120000;
+							Cooldown_Principal_A = 2000;
+							Cooldown_Principal_A_Defaut = 2500;
+							Cooldown_Principal_B = 5000;
+							Cooldown_Principal_B_Defaut = urand(7000, 11000);
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;																			// 
+							Cooldown_Trop_Loin = urand(7000, 12000);
+							Cooldown_Trop_Loin_Defaut = urand(8000, 12000);
+							break;
+						case 68:	//Hydre  -  CREATURE_FAMILY_HYDRA - AI :  1/2_Mouvement_Contact_Basique , 1/2_Mouvement_Contact_Avance_Recule, %Poison_Tir_Catapulte
 							AI_Random = urand(1, 2);
+							me->SetMeleeDamageSchool(SpellSchools(3));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 1;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;																					// 
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A - 250, Base_Cooldown_Cast_A + 250);
+							Cooldown_SpellB = urand(3000, 4000);
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B + 1000, Base_Cooldown_Cast_B + 2000);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 120000;
+							Cooldown_Principal_A = 2000;
+							Cooldown_Principal_A_Defaut = 2500;
+							Cooldown_Principal_B = 7000;
+							Cooldown_Principal_B_Defaut = urand(7000, 11000);
+							ResteADistance = 5;
+							Spell_Trop_Loin = Poison_Tir_Catapulte;															// 
+							Cooldown_Trop_Loin = urand(5000, 7000);
+							Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
+
+							if (AI_Random == 2)
+							{
+								Cooldown_Principal_B_Defaut = urand(6000, 8000);
+							}
 							break;
-						case 100:	// Diablotin gangrene - CREATURE_FAMILY_FELIMP
+						case 100:	//Diablotin gangrene  -  CREATURE_FAMILY_FELIMP - AI : 1/2_Mouvement_Contact_Avance_Recule , 1/2_Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance 
 							AI_Random = urand(1, 2);
+							me->SetMeleeDamageSchool(SpellSchools(5));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;																					// 
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A - 250, Base_Cooldown_Cast_A);
+							Cooldown_SpellB = 2000;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 3000, Base_Cooldown_Cast_B - 2500);
+							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3000;
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_Spell_Heal_defaut = 120000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 1000;
+							Cooldown_Principal_B_Defaut = urand(5000, 6000);
+							ResteADistance = urand(12, 15);
+							Spell_Trop_Loin = 0;																			// 
+							Cooldown_Trop_Loin = urand(5000, 7000);
+							Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
+
+							if (AI_Random == 2)
+							{
+								Cooldown_Principal_B_Defaut = 1000;
+							}
 							break;
-						case 104:	// Garde - courroux - CREATURE_FAMILY_WRATHGUARD
+						case 102:	//Shivarra  -  CREATURE_FAMILY_SHIVARA - AI : 1/2 Mouvement_Contact_Basique , 1/2 Mouvement_Contact_Tournant_Aleatoire
 							AI_Random = urand(1, 2);
+							me->SetMeleeDamageSchool(SpellSchools(5));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;																					// 
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A - 1500;
+							Cooldown_SpellB = urand(2500, 4000);
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B + 3000, Base_Cooldown_Cast_B + 9000);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 120000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 6000;
+							Cooldown_Principal_B_Defaut = 5000 + ((urand(0, 4) * 500));
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;																			// 	
+							Cooldown_Trop_Loin = 4000;
+							Cooldown_Trop_Loin_Defaut = urand(5000, 8000);
+
+							if (AI_Random == 1)
+							{
+								Cooldown_Principal_B = 4000;
+								Cooldown_Principal_B_Defaut = 4000 + ((urand(0, 4) * 500));
+							}
 							break;
-						case 116:	// elementaire de feu - CREATURE_FAMILY_FIREELEMENTAL
+						case 104:	//Garde-courroux  -  CREATURE_FAMILY_WRATHGUARD - AI : 1/2_Mouvement_Contact_Basique , 1/2_Mouvement_Contact_Charges_Multiples, %Poursuite
+							AI_Random = urand(1, 2);
+							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;																					// 
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 2000;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 2000, Base_Cooldown_Cast_B);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 120000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 6000;
+							Cooldown_Principal_B_Defaut = urand(7000, 9000);
+							ResteADistance = 5;
+							Spell_Trop_Loin = Spell_Poursuite;																// 
+							Cooldown_Trop_Loin = urand(7000, 12000);
+							Cooldown_Trop_Loin_Defaut = urand(8000, 12000);
+
+							if (AI_Random == 1)
+							{
+								Cooldown_Principal_B_Defaut = urand(5000, 6000);;
+							}
+
+							//me->SetVirtualItem(0, 12784);																	// Equipé d'une hache
+							me->LoadEquipment(1, true);																		// creature_equip_template 1
+							break;
+						case 108:	//Infernal  -  CREATURE_FAMILY_INFERNAL - AI : Mouvement_Contact_Basique
+							me->SetMeleeDamageSchool(SpellSchools(2));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 1;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;																					// 
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A + 3500, Base_Cooldown_Cast_A + 4500);
+							Cooldown_SpellB = 2000;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B + 1000, Base_Cooldown_Cast_B + 3000);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 120000;
+							Cooldown_Principal_A = 2000;
+							Cooldown_Principal_A_Defaut = 2000;
+							Cooldown_Principal_B = 6000;
+							Cooldown_Principal_B_Defaut = urand(7000, 9000);
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;																			// 
+							Cooldown_Trop_Loin = urand(7000, 12000);
+							Cooldown_Trop_Loin_Defaut = urand(8000, 12000);
+							break;
+						case 116:	//elementaire de feu  -  CREATURE_FAMILY_FIREELEMENTAL - AI : 1/4_Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance ) , 1/4_Mouvement_Caster , 2/4_Mouvement_Contact_Basique, %Armure_De_La_Fournaise
 							AI_Random = urand(1, 4);
+							me->SetMeleeDamageSchool(SpellSchools(2));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = Spell_Armure_De_La_Fournaise;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 1500;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 2500, Base_Cooldown_Cast_B - 1500);
+							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3500;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;											// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
+							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 2000;
+							Cooldown_Principal_B_Defaut = 4000;
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;
+							Cooldown_Trop_Loin = 8000;
+							Cooldown_Trop_Loin_Defaut = 30000;
+
+							if (AI_Random == 1)
+							{
+								ResteADistance = urand(8, 10);
+								Cooldown_Principal_B_Defaut = 1000;
+							}
+							else if (AI_Random == 2)
+							{
+								ResteADistance = urand(8, 10);
+								Cooldown_Principal_B_Defaut = 4000;
+							}
 							break;
-						case 130:	// Basilic - CREATURE_FAMILY_BASILISK
+						case 117:	//elementaire de terre  -  CREATURE_FAMILY_EARTHELEMENTAL - AI : Mouvement_Contact_Basique, %Ecorce %Lancer_Une_Pierre
+							me->SetMeleeDamageSchool(SpellSchools(3));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = Spell_Ecorce;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 2000;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B + 3000);
+							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3500;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;											// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
+							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = urand(4000, 4500);
+							Cooldown_Principal_B_Defaut = urand(5000, 6000);
+							ResteADistance = 5;
+							Spell_Trop_Loin = Lancer_Une_Pierre;															// lancer une pierre 130775
+							Cooldown_Trop_Loin = urand(2000, 4000);
+							Cooldown_Trop_Loin_Defaut = urand(3000, 5000);
+							break;
+						case 130:	//Basilic  -  CREATURE_FAMILY_BASILISK - AI : 1/2 Mouvement_Contact_Avance_Recule , Mouvement_Contact_Basique , %Ecorce"
 							AI_Random = urand(1, 2);
+							me->SetMeleeDamageSchool(SpellSchools(3));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 1;
+							Spell_respawn_evade = Spell_Ecorce;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 3000;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B + 3000);
+							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3500;											// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;											// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
+							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Principal_A = 2000;
+							Cooldown_Principal_A_Defaut = 2000;
+							Cooldown_Principal_B = urand(4000, 6000);
+							Cooldown_Principal_B_Defaut = urand(6000, 8000);
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;
+							Cooldown_Trop_Loin = urand(3000, 5000);
+							Cooldown_Trop_Loin_Defaut = urand(3000, 5000);
 							break;
-						case 152:		// Murloc
+						case 152:	//Murloc 1.2 - CREATURE_FAMILY_MURLOC - AI : 1/4_Mouvement_Contact_Prudent, 1/4_Mouvement_Contact_Avance_Recule, 2/4_Mouvement_Contact_Basique
 							AI_Random = urand(1, 4);
+							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 1;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 2500;
+							Cooldown_SpellB_defaut = Base_Cooldown_Cast_B + 4000;
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 30000;
+							Cooldown_Principal_A = 1000;																		// Temp de test pour aller sur la cible
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 6000;																		// Temp de test pour mouvement (s'eloigner, passer dans le dos,...)
+							Cooldown_Principal_B_Defaut = urand(4000, 6000) ;
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;
+							Cooldown_Trop_Loin = 6000;																			// Temp de test ci la cible est trop loin (pour charge etc)
+							Cooldown_Trop_Loin_Defaut = 6000;
 							break;
-						case 153:		// Naga
+						case 153:		//Naga 2.0 - CREATURE_FAMILY_NAGA - AI : 1/3_Mouvement_Contact_Basique, 1/3_Mouvement_Contact_Tournant_Aleatoire, 1/3_Mouvement_Contact_Prudent_Volant
 							AI_Random = urand(1, 5);
+							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 1;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 2500;
+							Cooldown_SpellB_defaut = Base_Cooldown_Cast_B + 4000;
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = 0;
+							Cooldown_Spell_Heal_defaut = 30000;
+							Cooldown_Principal_A = 1000;																		// Temp de test pour aller sur la cible
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 6000;																		// Temp de test pour mouvement (s'eloigner, passer dans le dos,...)
+							Cooldown_Principal_B_Defaut = 8000 + ((urand(0, 4) * 500));
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;
+							Cooldown_Trop_Loin = 6000;																			// Temp de test ci la cible est trop loin (pour charge etc)
+							Cooldown_Trop_Loin_Defaut = 6000;
 							break;
-						case 156:		// CREATURE_FAMILY_SE_DETERRE_AU_CONTACT
+						case 155:	//CREATURE_FAMILY_SENTERRE uniquement si fixe - AI : Mouvement_Contact_Basique 
+							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A + 250;
+							Cooldown_SpellB = 3000;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B + 3000);
+							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 2000;
+							Cooldown_SpellB_rapide_defaut = Base_Cooldown_Cast_B;
+							Cooldown_Spell_Heal_defaut = 0;
+							Cooldown_Principal_A = 2000;
+							Cooldown_Principal_A_Defaut = 2000;
+							Cooldown_Principal_B = urand(5000, 7000);
+							Cooldown_Principal_B_Defaut = urand(7000, 9000);
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;																			// 	
+							Cooldown_Trop_Loin = 6000;
+							Cooldown_Trop_Loin_Defaut = urand(8000, 10000);
+							break;
+						case 156:	//CREATURE_FAMILY_SE_DETERRE_AU_CONTACT - AI : 1/3_Mouvement_Contact_Basique, 1/3_Mouvement_Contact_Tournant_Aleatoire, 1/3_Mouvement_Contact_Avance_Recule
 							AI_Random = urand(1, 3);
+							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A + 250;
+							Cooldown_SpellB = 3000;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B + 3000);
+							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 2000;
+							Cooldown_SpellB_rapide_defaut = Base_Cooldown_Cast_B;
+							Cooldown_Spell_Heal_defaut = 0;
+							Cooldown_Principal_A = 2000;
+							Cooldown_Principal_A_Defaut = 2000;
+							Cooldown_Principal_B = urand(4000, 6000);
+							Cooldown_Principal_B_Defaut = urand(6000, 8000);
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;																			// 	
+							Cooldown_Trop_Loin = 6000;
+							Cooldown_Trop_Loin_Defaut = urand(7000, 9000);
+
+							if (AI_Random == 1)
+							{
+								Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+								Cooldown_SpellB = 2500;
+								Cooldown_SpellB_defaut = Base_Cooldown_Cast_B + 2000;
+								Cooldown_Principal_A = 1000;
+								Cooldown_Principal_A_Defaut = 1000;
+								Cooldown_Principal_B = urand(3000, 5000);
+								Cooldown_Principal_B_Defaut = urand(4000, 6000);
+								ResteADistance = 5;
+								Cooldown_Trop_Loin = 1000;
+								Cooldown_Trop_Loin_Defaut = urand(5000, 7000);
+							}
+
+							if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE)
+							{
+								Se_Deterre();
+							}
 							break;
+						case 157:	//Rocher (elementaire de terre si fixe)  -  CREATURE_FAMILY_MORPH_ROCHER - AI : Mouvement_Contact_Basique
+							me->SetMeleeDamageSchool(SpellSchools(3));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = Spell_Ecorce;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 2000;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 2000, Base_Cooldown_Cast_B);
+							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3500;											// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;											// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
+							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = urand(4000, 4500);
+							Cooldown_Principal_B_Defaut = urand(5000, 6000);
+							ResteADistance = 5;
+							Spell_Trop_Loin = Lancer_Une_Pierre;															// lancer une pierre 130775
+							Cooldown_Trop_Loin = urand(2000, 4000);
+							Cooldown_Trop_Loin_Defaut = urand(3000, 5000);
+							break;
+
 						default:
+							Spell_agro = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 3000;
+							Cooldown_SpellB_defaut = Base_Cooldown_Cast_B - 1000;
+							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3000;
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 4000;
+							Cooldown_Principal_B_Defaut = 6000 + ((urand(0, 4) * 500));
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;
+							Cooldown_Trop_Loin = 60000;
+							Cooldown_Trop_Loin_Defaut = 60000;
 							break;
 						}
 
+
 						// ----------------------------------------------------------------------------------------------------------------------------------------
 
-						Start_Agro = 1;
 
 						// Message a l'agro , ci le mob a plusieurs lignes (creature_text groupid>0) il y a de forte chance que ce soit pour un dialogue
 						// et non un simple message a l'agro. Donc on l'ignore.
@@ -2274,7 +2418,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					{
 						if (Cooldown_SpellA <= diff)
 						{
-							if (Dist <= 6)
+							if (Dist <= 6 || ResteADistance >5 )
 							{
 								DoMeleeAttackIfReady();																	// Combat en mélée
 								me->CastSpell(victim, Spell_A, true);
@@ -2357,9 +2501,31 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							else
 								Mouvement_Contact_Basique(diff);
 							break;
+						case 12:	// Grand trotteur  -  CREATURE_FAMILY_TALLSTRIDER
+							if (AI_Random == 1)
+							{
+								Mouvement_Contact_Avance_Recule(diff);
+							}
+							else if (AI_Random == 2)
+							{
+								Mouvement_Contact_Basique(diff);
+							}
+							break;
+						case 15:	// Chasseur corrompu (Felhunter)  -  CREATURE_FAMILY_FELHUNTER
+							if (AI_Random == 1)
+							{
+								Mouvement_Contact_Basique(diff);
+							}
+							else if (AI_Random == 2)
+							{
+								Mouvement_Contact_Tournant_Aleatoire(diff);
+							}
+							break;
+
 						case 16:	// Voidwalker - CREATURE_FAMILY_VOIDWALKER
 							Mouvement_Contact_Basique(diff);
 							break;
+
 						case  17:	// Succube - CREATURE_FAMILY_SUCCUBUS
 							if (AI_Random == 1)
 							{
@@ -2410,10 +2576,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							{ 
 								Mouvement_Caster_Puis_Contact(diff); 
 							}
-							if (AI_Random == 2)
-							{ 
+							else
 								Mouvement_Caster(diff); 
-							}
 							break;
 						case 35:	// Serpent - CREATURE_FAMILY_SERPENT
 							Mouvement_Contact_Basique(diff);
@@ -2509,6 +2673,14 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							else
 								Mouvement_Caster_Puis_Contact(diff);
 							break;
+						case  102:	// Shivarra  -  CREATURE_FAMILY_SHIVARA
+							if (AI_Random == 1)
+							{
+								Mouvement_Contact_Basique(diff);
+							}
+							else
+								Mouvement_Contact_Tournant_Aleatoire(diff);
+							break;
 						case 104:	// Garde - courroux - CREATURE_FAMILY_WRATHGUARD
 							if (AI_Random == 1)
 							{
@@ -2600,7 +2772,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			// ###### Caster , reste a distance ####################################################################################################################
 			void Mouvement_Caster(uint32 diff)
 			{
-				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
+				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING) || AuraFigé() == true)
 					return;
 
 				Unit* victim = me->GetVictim();
@@ -2608,9 +2780,9 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 				if (Cooldown_Principal_B <= diff)
 				{
-					// Mouvement aléatoire si cible < 4m  ---------------------------------------------------------------------------------------------------------
+					// Mouvement aléatoire si cible <= 5m  ---------------------------------------------------------------------------------------------------------
 
-					if (Dist <4)
+					if (Dist <= 5)
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 
@@ -2623,7 +2795,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						}
 						else
 						{
-							z = victim->GetPositionZ()+2;	// Sinon bug en interieur
+							z = victim->GetPositionZ() + 2;	// Sinon bug en interieur
 						}
 						mapid = victim->GetMapId();
 						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
@@ -2632,56 +2804,72 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				}
 				else Cooldown_Principal_B -= diff;
 
-				// Mouvement OFF si distance >= 8m & <= 15m -------------------------------------------------------------------------------------------------------
-				if ((Dist >= 6) && (Dist <= ResteADistance))
-				{
-					if (me->isMoving())																	// Sinon bug d'animation
+
+					if (Cooldown_Principal_C <= diff)
 					{
-					    me->StopMoving();
-						AttackStart(victim);
-						AttackStartCaster(victim, ResteADistance);										// Distance de combat
-						void DoRangedAttackIfReady();													// Combat a distance
-						me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
+					// Mouvement OFF si distance >5m & <= 15m -------------------------------------------------------------------------------------------------------
+					if ((Dist > 5) && (Dist <= ResteADistance))
+					{
+						//if (me->isMoving())																	// Sinon bug d'animation
+						//{
+							me->StopMoving();
+							AttackStart(victim);
+							AttackStartCaster(victim, ResteADistance);										// Distance de combat
+							void DoRangedAttackIfReady();													// Combat a distance
+							me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
+						//}
+
 					}
 
+					// Mouvement ON si distance > 20m -----------------------------------------------------------------------------------------------------------------
+					if (Dist > ResteADistance)
+					{
+						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// UNROOT
+						AttackStartCaster(victim, ResteADistance);											// Distance de cast
+						void DoRangedAttackIfReady();														// Combat a distance
+					}
+					Cooldown_Principal_C = Cooldown_Principal_C_Defaut;
 				}
-
-				// Mouvement ON si distance > 20m -----------------------------------------------------------------------------------------------------------------
-				if (Dist > ResteADistance)
-				{
-					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// UNROOT
-					AttackStartCaster(victim, ResteADistance);											// Distance de cast
-					void DoRangedAttackIfReady();														// Combat a distance
-				}
-
-				}
+				else Cooldown_Principal_C -= diff;
+			}
 
 			// ###### Reste a distance mais va au contact si la cible ce raproche , spellB plus rapide de loin #####################################################
 			void Mouvement_Caster_Puis_Contact(uint32 diff)
 			{
-				if (!UpdateVictim())
+				if (!UpdateVictim() || AuraFigé() == true/*|| me->HasUnitState(UNIT_STATE_CASTING)*/)
 					return;
 
 				Unit* victim = me->GetVictim();
+				Dist = me->GetDistance(victim);
 
-				if (Cooldown_Principal_B <= diff)
+
+
+				if (Cooldown_Principal_C <= diff)
 				{
-					// Combat au contact si la cible <= 4m  -------------------------------------------------------------------------------------------------------
-
-					if (Dist <= 4)
+					// Mouvement ON si distance < 6m ------------------------------------------------------------------------------------------------------------------
+					if (Dist <6)
 					{
-						Cooldown_SpellB_defaut = Cooldown_SpellB_rapide_defaut;							// Cadence de tir SpellB normale
-
-						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
-						me->GetMotionMaster()->MoveChase(victim, 1, frand(0, 6.2836f));					// Pour suivre la cible avec un angle
+						Cooldown_SpellB_defaut = Cooldown_SpellB_rapide_defaut;								// Cadence de tir SpellB normale
+						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// UNROOT
+						me->GetMotionMaster()->MoveChase(victim, 1, frand(0, 6.2836f));
+						DoMeleeAttackIfReady();																// Combat en mélée
 					}
 
-					// RESTE A DISTANCE ---------------------------------------------------------------------------------------------------------------------------
-					if (Dist > 4 && Dist <= ResteADistance)
+					// Mouvement ON si distance > 20m -----------------------------------------------------------------------------------------------------------------
+					if (Dist > ResteADistance + 5)
 					{
-						Cooldown_SpellB_defaut = Cooldown_SpellB_rapide;								// Cadence de tir SpellB rapide
+						Cooldown_SpellB_defaut = Cooldown_SpellB_rapide_defaut;								// Cadence de tir SpellB normale
+						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// UNROOT
+						me->GetMotionMaster()->MoveChase(victim, 1, frand(0, 6.2836f));
+						void DoRangedAttackIfReady();														// Combat a distance
+					}
 
-					if (me->isMoving())
+					// Mouvement OFF si distance >= 6m & <= 20m -------------------------------------------------------------------------------------------------------
+					if ((Dist >= 6) && (Dist <= ResteADistance + 5))
+					{
+						Cooldown_SpellB_defaut = Cooldown_SpellB_rapide;									// Cadence de tir SpellB rapide
+
+						if (me->isMoving())
 						{
 							x = (victim->GetPositionX());
 							y = (victim->GetPositionY());
@@ -2690,41 +2878,19 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							me->GetClosePoint(x, y, z, me->GetObjectSize() / 3, -0.85f);				// Indispensable pour stoper le mouvement
 							me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 						}
-						me->StopMoving(); 
-						me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
+						me->StopMoving();
+						me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
 					}
-					Cooldown_Principal_B = Cooldown_Principal_B_Defaut;
+					Cooldown_Principal_C = Cooldown_Principal_C_Defaut;
 				}
-				else Cooldown_Principal_B -= diff;
-
-
-				// Cadence de tir OFF si distance > 10m -----------------------------------------------------------------------------------------------------------
-				if (Dist > ResteADistance)
-				{
-					Cooldown_SpellB_defaut = Cooldown_SpellB_rapide_defaut;								// Cadence de tir SpellB normale
-
-					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// UNROOT
-					AttackStartCaster(victim, ResteADistance);											// Distance de cast
-				}
-
-				// SI LA CIBLE EST TROP LOIN ----------------------------------------------------------------------------------------------------------------------
-				if ((Dist >= ResteADistance + 5 && Dist <= ResteADistance + 15) && (Cooldown_Trop_Loin <= diff))
-				{
-					Random = urand(1, 4);
-					if (Random == 1 && Spell_Trop_Loin != 0)
-					{
-						DoCastAOE(Spell_Trop_Loin, true);
-					}
-					Cooldown_Trop_Loin = Cooldown_Trop_Loin_Defaut;
-				}
-				else Cooldown_Trop_Loin -= diff;
+				else Cooldown_Principal_C -= diff;
 
 			}
 
 			// ###### Va sur la cible et reste au contact , tourne au tour de la cible tres rarement ###############################################################
 			void Mouvement_Contact_Basique(uint32 diff)
 			{
-				if (!UpdateVictim())
+				if (!UpdateVictim() || AuraFigé())
 					return;
 
 				Unit* victim = me->GetVictim();
@@ -2735,7 +2901,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// ------ ALLER A LA CIBLE -------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Principal_A <= diff)
 				{
-					if (Dist >= 6 && !AuraFigé())
+					if (Dist >= 6)
 					{
 					me->GetMotionMaster()->MoveChase(victim, 1, urand(0, 4));								// Pour suivre la cible avec un angle
 					Cooldown_Principal_A = Cooldown_Principal_A_Defaut;
@@ -2781,7 +2947,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			// ###### Va sur la cible et reste au contact , tourne au tour de la cible ou passe dans son dos (exemple : felin) #####################################
 			void Mouvement_Contact_Tournant_Aleatoire(uint32 diff)
 			{
-				if (!UpdateVictim())
+				if (!UpdateVictim() || AuraFigé())
 					return;
 
 				Unit* victim = me->GetVictim();
@@ -2792,7 +2958,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// ------ ALLER A LA CIBLE -------------------------------------------------------------------------------------------------------------------------
 					if (Cooldown_Principal_A <= diff)
 					{
-						if (Dist >= 6 && !AuraFigé())
+						if (Dist >= 6)
 						{
 					me->GetMotionMaster()->MoveChase(victim, 2, urand(0, 6));								// Pour suivre la cible avec un angle
 					Cooldown_Principal_A = Cooldown_Principal_A_Defaut;
@@ -2843,7 +3009,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			// ###### Va sur la cible et reste au contact mais recule puis avance périodiquement sur cible en mélée, passe dans le dos pour les cibles caster ######
 			void Mouvement_Contact_Prudent(uint32 diff)
 			{
-				if (!UpdateVictim())
+				if (!UpdateVictim() || AuraFigé())
 					return;
 
 				Unit* victim = me->GetVictim();
@@ -2853,7 +3019,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// ------ ALLER A LA CIBLE -------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Principal_A <= diff)
 				{
-					if (Dist > 3 && !AuraFigé())
+					if (Dist > 3)
 					{
 						//me->SetSpeedRate(MOVE_RUN, 1.01f);													// Vitesse de déplacement
 						Tourne_Au_Tour_Aleatoire(2);
@@ -2867,7 +3033,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					// S'ELOIGNE OU PASSE DANS LE DOS --------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Principal_B <= diff)
 				{
-					if (Dist < 6 && !AuraFigé())
+					if (Dist < 6)
 					{
 						Random = urand(1, 5);
 						if ((Random != 1) && Player_Caster() == false)
@@ -2895,7 +3061,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			// ###### Va sur la cible et reste au contact mais s'envole puis revient en mélée sur la cible périodiquement  #########################################
 			void Mouvement_Contact_Prudent_Volant(uint32 diff)
 			{
-				if (!UpdateVictim())
+				if (!UpdateVictim() || AuraFigé())
 					return;
 
 				Unit* victim = me->GetVictim();
@@ -2905,7 +3071,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// ------ ALLER A LA CIBLE -------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Principal_A <= diff)
 				{
-					if (Dist > 3 && !AuraFigé())
+					if (Dist > 3)
 					{
 						Tourne_Au_Tour_Aleatoire(3);
 						DoMeleeAttackIfReady();																		// Combat en mélée
@@ -2918,7 +3084,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// S'ELOIGNE --------------------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Principal_B <= diff)
 				{
-					if (Dist < 6 && !AuraFigé())
+					if (Dist < 6)
 					{
 						me->CastSpell(me, Spell_Vitesse_4s, true);
 						Tourne_Au_Tour_Aleatoire_Volant( urand(8, 12) );
@@ -2936,7 +3102,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			// ###### Va sur la cible et reste au contact mais s'eloigne et "Charge périodiquement  ################################################################
 			void Mouvement_Contact_Charges_Multiples(uint32 diff)
 			{
-				if (!UpdateVictim())
+				if (!UpdateVictim() || AuraFigé())
 					return;
 
 				Unit* victim = me->GetVictim();
@@ -2969,7 +3135,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// ------ ALLER A LA CIBLE -------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Principal_A <= diff)
 				{
-					if (Dist > 3 && !AuraFigé())
+					if (Dist > 3)
 					{
 					Tourne_Au_Tour_Aleatoire(1);
 					DoMeleeAttackIfReady();																	// Combat en mélée
@@ -2984,7 +3150,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// ------ S'ELOIGNE DE LA CIBLE ---------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Principal_B <= diff)
 				{
-					if (Dist <= 3 && !AuraFigé())
+					if (Dist <= 3)
 					{
 					me->CastSpell(me, Spell_Vitesse_4s, true);
 					Tourne_Au_Tour_Aleatoire(15);
@@ -3014,7 +3180,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// ------ ALLER A LA CIBLE ------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Principal_A <= diff)
 				{
-					if (Dist >= ResteADistance && !AuraFigé())
+					if (Dist >= ResteADistance)
 					{
 						Tourne_Au_Tour_Aleatoire(1);
 						Cooldown_Principal_A = Cooldown_Principal_A_Defaut;
@@ -3025,7 +3191,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// TOURNE AU TOUR , RECULE ------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Principal_B <= diff)
 				{
-					if (Dist < ResteADistance && !AuraFigé())
+					if (Dist < ResteADistance)
 					{
 						Random = urand(1, 3);
 						if (Random == 1)
@@ -3062,7 +3228,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			// ###### Va sur la cible et reste au contact , effectue un bond aléatoire régulierement ###############################################################
 			void Mouvement_Contact_Bondissant(uint32 diff)
 			{
-				if (!UpdateVictim())
+				if (!UpdateVictim() || AuraFigé())
 					return;
 
 				Unit* victim = me->GetVictim();
@@ -3073,7 +3239,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// ------ ALLER A LA CIBLE -------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Principal_A <= diff)
 				{
-					if (Dist >= 6 && !AuraFigé())
+					if (Dist >= 6)
 					{
 						me->GetMotionMaster()->MoveChase(victim, 1, urand(0, 6));								// Pour suivre la cible avec un angle
 						Cooldown_Principal_A = Cooldown_Principal_A_Defaut;
