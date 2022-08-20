@@ -474,7 +474,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					if (Dist <6 && (Mana > MaxMana / 10) && (ForceBranche != 7 && ForceBranche <11) )
 					{
 
-						if(!AuraLenteur())
+						if(!AuraLenteur() && !Interieur())
 						{
 							me->SetSpeedRate(MOVE_RUN, 1.2f); // Uniquement si non ralenti par un spell 
 						}
@@ -684,6 +684,12 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					|| me->HasAura(6474)	// Totem de lien terrestre passif
 					) return true;
 				else return false;
+			}
+			bool Interieur()
+			{
+				if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+					return false;
+				else return true;
 			}
 		};
 

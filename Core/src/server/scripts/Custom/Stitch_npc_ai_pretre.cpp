@@ -422,7 +422,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 
 					if ((Dist <6) && (Mana > MaxMana / 20) )
 					{
-						if (AuraLenteur() == false)
+						if (AuraLenteur() == false && !Interieur())
 						{
 							me->SetSpeedRate(MOVE_RUN, 1.2f); // Uniquement si non ralenti par un spell 
 						}
@@ -573,6 +573,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 				}
 				else Cooldown_Spell_ContreAttaque -= diff;
 			}
+			
 			bool AuraLenteur()
 			{
 				if (me->HasAura(116)		// Eclair_de_givre 116 
@@ -603,7 +604,12 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 					) return true;
 				else return false;
 			}
-
+			bool Interieur()
+			{
+				if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+					return false;
+				else return true;
+			}
 		};
 		
 		CreatureAI* GetAI(Creature* creature) const override

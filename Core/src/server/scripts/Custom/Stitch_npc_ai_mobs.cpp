@@ -1221,8 +1221,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Spell_Heal_defaut = 30000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
-							Cooldown_Principal_B = 8000;
-							Cooldown_Principal_B_Defaut = 5000 + ((urand(0, 8) * 500));
+							Cooldown_Principal_B = 3000;
+							Cooldown_Principal_B_Defaut = urand(5000, 8000);
 							ResteADistance = 5;
 							Spell_Trop_Loin = 0;									//
 							Cooldown_Trop_Loin = 1000;

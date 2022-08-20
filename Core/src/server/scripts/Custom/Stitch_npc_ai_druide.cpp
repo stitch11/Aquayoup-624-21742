@@ -629,7 +629,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 						
-						if (!AuraLenteur())
+						if (!AuraLenteur() && !Interieur())
 						{
 							me->SetSpeedRate(MOVE_RUN, 1.2f); // Uniquement si non ralenti par un spell 
 						}
@@ -772,7 +772,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 						me->GetMotionMaster()->MoveChase(victim, 1, frand(0, 6.2836f));			// Pour suivre la cible avec un angle
 						Cooldown_Anti_Bug_Figer = 1000;
 
-						if (!AuraLenteur())
+						if (!AuraLenteur() && !Interieur())
 						{
 							me->SetSpeedRate(MOVE_RUN, 1.2f);									// Uniquement si non ralenti par un spell joueur
 						}
@@ -801,7 +801,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				{
 					if (Dist < 6 && !AuraFigé())
 					{
-						if (AuraLenteur() == false)
+						if (AuraLenteur() == false && !Interieur())
 						{
 							me->SetSpeedRate(MOVE_RUN, 1.2f);									// Uniquement si non ralenti par un spell joueur
 						}
@@ -1003,6 +1003,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				}
 				else Cooldown_Spell_ContreAttaque -= diff;
 			}
+
 			bool AuraLenteur()
 			{
 				if (me->HasAura(116)		// Eclair_de_givre 116 
@@ -1032,6 +1033,12 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					|| me->HasAura(6474)	// Totem de lien terrestre passif
 					) return true;
 				else return false;
+			}
+			bool Interieur()
+			{
+				if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+					return false;
+				else return true;
 			}
 
 			//void JustDied(Unit * /*victim*/) override {}

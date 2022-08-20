@@ -502,7 +502,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 						
-						if (AuraLenteur() == false)
+						if (AuraLenteur() == false && !Interieur())
 						{
 							me->SetSpeedRate(MOVE_RUN, 1.2f); // Uniquement si non ralenti par un spell 
 						}
@@ -598,6 +598,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 				}
 				else Cooldown_Spell_ContreAttaque -= diff;
 			}
+
 			bool AuraLenteur()
 			{
 				if (me->HasAura(116)		// Eclair_de_givre 116 
@@ -627,6 +628,12 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 					|| me->HasAura(6474)	// Totem de lien terrestre passif
 					) return true;
 				else return false;
+			}
+			bool Interieur()
+			{
+				if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+					return false;
+				else return true;
 			}
 
 		};

@@ -519,6 +519,7 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 				else Cooldown_ResteADistance -= diff;
 
 			}
+
 			void Tourne_Au_Tour_En_Combat()
 			{
 				if (!UpdateVictim())
