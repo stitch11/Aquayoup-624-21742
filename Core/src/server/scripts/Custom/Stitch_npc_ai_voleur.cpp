@@ -445,7 +445,7 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 			}
 			void Mouvement_Contact(uint32 diff)
 			{
-				if (!UpdateVictim())
+				if (!UpdateVictim() || AuraFigé())
 					return;
 
 
@@ -461,7 +461,7 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 				//DoMeleeAttackIfReady();													// Combat en mélée
 
 				// Si la cible >= 6m (pour éviter bug de rester figé) --------------------------------------------------------------------------------------------
-				if (Cooldown_Anti_Bug_Figer <= diff && !AuraFigé() )
+				if (Cooldown_Anti_Bug_Figer <= diff)
 				{
 					if (Dist >= 6)
 					{
@@ -503,7 +503,7 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 				else Cooldown_Lancer -= diff;
 
 				// Si la cible < 6m -------------------------------------------------------------------------------------------------------------------------------------------
-				if ((Dist < 6) & (Cooldown_ResteADistance <= diff) && !AuraFigé())
+				if (Dist < 6 && Cooldown_ResteADistance <= diff)
 				{
 					Random = urand(1, 4);
 					if (Random == 1 || Random == 2)

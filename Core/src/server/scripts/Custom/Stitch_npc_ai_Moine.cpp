@@ -531,7 +531,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 			}
 			void Mouvement_Contact(uint32 diff)
 			{
-				if (!UpdateVictim())
+				if (!UpdateVictim() || AuraFigé())
 					return;
 
 
@@ -549,7 +549,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 				// ------ ALLER A LA CIBLE -------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Anti_Bug_Figer <= diff)
 				{
-					if (Dist >= ResteADistance+3 && !AuraFigé())
+					if (Dist >= ResteADistance+3)
 					{
 
 						float x = 0.0f, y = 0.0f, z = 0.0f;
@@ -588,7 +588,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 				else Cooldown_Trop_Loin -= diff;
 
 				// Si la cible < 8m -------------------------------------------------------------------------------------------------------------------------------------------
-				if ((Dist < 8) & (Cooldown_ResteADistance <= diff) && !AuraFigé())
+				if ((Dist < 8) & (Cooldown_ResteADistance <= diff))
 				{
 					Random = urand(1, 4);
 					if (Random == 1 || Random == 2)

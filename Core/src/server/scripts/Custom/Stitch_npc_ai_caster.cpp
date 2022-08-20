@@ -435,7 +435,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			}
 			void Mouvement_Caster(uint32 diff)
 			{
-				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING) )
+				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
 					return;
 
 				Unit* victim = me->GetVictim();
@@ -443,7 +443,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 
 
 					// Bond aléatoire si cible < 6m & mana > 10%  ---------------------------------------------------------------------------------------------
-					if (Cooldown_bond_aleatoire_25m <= diff)
+					if (Cooldown_bond_aleatoire_25m <= diff && !AuraFigé())
 					{
 						if (Dist <6 && (Mana > MaxMana / 10) && (ForceBranche == 10))
 						{
@@ -466,13 +466,15 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				else Cooldown_ResteADistance_Teleportation -= diff;
 
 				// ------------------------------------------------------------------------------------------------------------------------------------------------
-				if (Cooldown_ResteADistance <= diff)
+				if (Cooldown_ResteADistance <= diff && !AuraFigé())
 				{
+					ForceBranche = me->GetCreatureTemplate()->pickpocketLootId;
+
 					// Mouvement aléatoire si cible < 6m & mana > 10%  
 					if (Dist <6 && (Mana > MaxMana / 10) && (ForceBranche != 7 && ForceBranche <11) )
 					{
 
-						if(!AuraFigé() && !AuraLenteur())
+						if(!AuraLenteur())
 						{
 							me->SetSpeedRate(MOVE_RUN, 1.2f); // Uniquement si non ralenti par un spell 
 						}
@@ -524,6 +526,10 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// UNROOT
 					AttackStartCaster(victim, ResteADistance);											// Distance de cast
 					void DoRangedAttackIfReady();														// Combat a distance
+					if (!AuraLenteur())
+					{
+						me->SetSpeedRate(MOVE_RUN, 1.0f); // Uniquement si non ralenti par un spell 
+					}
 				}
 
 				// Mouvement ON si Mana < 10%  
@@ -532,6 +538,10 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// UNROOT
 					AttackStartCaster(victim, 1);														// Distance de cast
 					DoMeleeAttackIfReady();																// Combat en mélée
+					if (!AuraLenteur())
+					{
+						me->SetSpeedRate(MOVE_RUN, 1.0f); // Uniquement si non ralenti par un spell 
+					}
 				}
 			}
 

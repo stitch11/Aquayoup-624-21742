@@ -614,7 +614,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			}
 			void Mouvement_Caster(uint32 diff)
 			{
-				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
+				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING) || AuraFigé())
 					return;
 
 				Mana = me->GetPower(POWER_MANA);
@@ -692,7 +692,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			}
 			void Mouvement_Ours(uint32 diff)
 			{
-				if (!UpdateVictim())
+				if (!UpdateVictim() || AuraFigé())
 					return;
 
 				Mana = me->GetPower(POWER_MANA);
@@ -774,14 +774,14 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 
 						if (!AuraLenteur())
 						{
-							me->SetSpeedRate(MOVE_RUN, 1.3f);									// Uniquement si non ralenti par un spell joueur
+							me->SetSpeedRate(MOVE_RUN, 1.2f);									// Uniquement si non ralenti par un spell joueur
 						}
 					}
 				}
 				else Cooldown_Anti_Bug_Figer -= diff;
 
 				// Si la cible est entre 8 & 20m : Griffure bondissante --------------------------------------------------------------------------------------------------------
-				if (Cooldown_Charge <= diff)
+				if (Cooldown_Charge <= diff && !AuraFigé())
 				{
 					if ((Dist >= 8) && (Dist <= 20))
 					{
@@ -824,7 +824,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			}
 			void Mouvement_Treant(uint32 diff)
 			{
-				if (!UpdateVictim())
+				if (!UpdateVictim() || AuraFigé())
 					return;
 
 				Mana = me->GetPower(POWER_MANA);
@@ -834,7 +834,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 				DoMeleeAttackIfReady();															// Combat en mélée
 
 				// Si la cible >= 8m (pour éviter bug de rester figé) ---------------------------------------------------------------------------------------------
-				if (Dist >= 8 && Cooldown_Anti_Bug_Figer <= diff && !AuraFigé())
+				if (Dist >= 8 && Cooldown_Anti_Bug_Figer <= diff)
 				{
 					float x, y, z;
 					x = victim->GetPositionX();

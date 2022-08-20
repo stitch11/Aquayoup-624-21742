@@ -338,7 +338,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 						// Spell1 sur la cible chaque (Sort Régulié)
 						if (Cooldown_Spell1 <= diff)
 						{
-							if (!me->HasUnitState(UNIT_STATE_MOVE))
+							if (!me->isMoving() /*!me->HasUnitState(UNIT_STATE_MOVE)*/)
 							{
 								me->StopMoving();
 								DoCastVictim(Spell_branche1_1);
@@ -503,7 +503,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 			}
 			void Mouvement_Caster(uint32 diff)
 			{
-				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
+				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING) || AuraFigé())
 					return;
 
 				Mana = me->GetPower(POWER_MANA);
@@ -514,7 +514,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 				{
 					// Mouvement aléatoire si cible < 6m & Mana > 5% --------------------------------------------------------------------------------------------------
 
-					if ((Dist <6) && (Mana > MaxMana / 20) && !AuraFigé())
+					if ((Dist <6) && (Mana > MaxMana / 20))
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 						
@@ -538,15 +538,15 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 						}
 						mapid = victim->GetMapId();
 						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
-						Cooldown_ResteADistance = 2500;
+						Cooldown_ResteADistance = 3000;
 					}
 				}
 				else Cooldown_ResteADistance -= diff;
 
 				// Speed normal si distance > 10m ------------------------------------------------------------------------------------------------------------------
-				if (Dist> 10 && me->GetSpeedRate(MOVE_RUN) == 1.1f)
+				if (AuraLenteur() == false && Dist> 10 && me->GetSpeedRate(MOVE_RUN) == 1.2f)
 				{
-					//me->SetSpeedRate(MOVE_RUN, 1.01f);
+					me->SetSpeedRate(MOVE_RUN, 1.0f); // Uniquement si non ralenti par un spell joueur
 				}
 
 				// Mouvement OFF si Mana > 5% & distance >= 6 & <= 10m ---------------------------------------------------------------------------------------------
@@ -567,6 +567,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 					AttackStartCaster(victim, ResteADistance);										// Distance de cast
 					void DoRangedAttackIfReady();													// Combat a distance
+
 				}
 
 				// Mouvement ON si Mana < 5%  ----------------------------------------------------------------------------------------------------------------------
@@ -578,7 +579,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 			}
 			void Mouvement_Contact(uint32 diff)
 			{
-				if (!UpdateVictim())
+				if (!UpdateVictim() || AuraFigé())
 					return;
 
 				Mana = me->GetPower(POWER_MANA);

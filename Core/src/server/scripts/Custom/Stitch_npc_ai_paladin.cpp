@@ -489,7 +489,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			}
 			void Mouvement_Contact(uint32 diff)
 			{
-				if (!UpdateVictim() /*|| me->HasUnitState(UNIT_STATE_CASTING)*/)
+				if (!UpdateVictim() || AuraFigé() /*|| me->HasUnitState(UNIT_STATE_CASTING)*/)
 					return;
 
 				Mana = me->GetPower(POWER_MANA);
@@ -499,7 +499,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 				DoMeleeAttackIfReady();													// Combat en mélée
 
 				// Si la cible >= 6m (pour éviter bug de rester figé) --------------------------------------------------------------------------------------------
-				if ((Dist >= 6) && (Cooldown_Anti_Bug_Figer <= diff) && !AuraFigé())
+				if ((Dist >= 6) && (Cooldown_Anti_Bug_Figer <= diff))
 				{
 					float x = 0.0f, y = 0.0f, z = 0.0f;
 					uint32 mapid = 0;
@@ -521,7 +521,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 				else Cooldown_Anti_Bug_Figer -= diff;
 
 				// Si la cible < 8m -------------------------------------------------------------------------------------------------------------------------------------------
-				if ((Dist < 10) && (Cooldown_ResteADistance <= diff) && (BrancheSpe != 3) && !AuraFigé() )
+				if ((Dist < 10) && (Cooldown_ResteADistance <= diff) && (BrancheSpe != 3))
 				{
 					Random = urand(1, 5);
 					if (Random == 1)

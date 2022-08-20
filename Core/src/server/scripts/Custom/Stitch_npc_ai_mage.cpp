@@ -486,7 +486,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 			}
 			void Mouvement_Caster(uint32 diff)
 			{
-				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
+				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING) || AuraFigé())
 					return;
 
 				Mana = me->GetPower(POWER_MANA);
@@ -546,12 +546,20 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 					AttackStartCaster(victim, ResteADistance);										// Distance de cast
 					void DoRangedAttackIfReady();													// Combat a distance
+					if (AuraLenteur() == false)
+					{
+						me->SetSpeedRate(MOVE_RUN, 1.0f); // Uniquement si non ralenti par un spell joueur
+					}
 				}
 
 				// Mouvement ON si Mana < 5%  ----------------------------------------------------------------------------------------------------------------------
 				if (Mana < MaxMana / 20)
 				{
 					me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// UNROOT
+					if (AuraLenteur() == false)
+					{
+						me->SetSpeedRate(MOVE_RUN, 1.0f); // Uniquement si non ralenti par un spell joueur
+					}
 				}
 
 			}
@@ -598,11 +606,11 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 				me->SetCanModifyStats(true);
 				me->UpdateAllStats();
 			}
+
 			bool AuraLenteur()
 			{
 				if (me->HasAura(116)		// Eclair_de_givre 116 
 					|| me->HasAura(71318)	// Eclair_de_givre 71318
-					|| me->HasAura(122)		// Nova de givre
 					|| me->HasAura(31589)	// Lenteur 31589
 					|| me->HasAura(6136) 	// Armure_de_givre 6136
 					|| me->HasAura(8056) 	// Horion_de_givre 8056
@@ -618,12 +626,17 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 					|| me->HasAura(116095) 	// Handicap 116095
 					|| me->HasAura(300197) 	// Toucher_de_glace 300197
 					|| me->HasAura(20170)	// Sceau de justice 20170
-					|| me->HasAura(3600)	// Totem de lien terrestre
-					|| me->HasAura(6474))	// Totem de lien terrestre passif
-					return true;
+					) return true;
 				else return false;
 			}
-
+			bool AuraFigé()
+			{
+				if (me->HasAura(122)		// Nova de givre
+					|| me->HasAura(3600)	// Totem de lien terrestre
+					|| me->HasAura(6474)	// Totem de lien terrestre passif
+					) return true;
+				else return false;
+			}
 		};
 		
 		CreatureAI* GetAI(Creature* creature) const override

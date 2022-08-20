@@ -297,7 +297,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 			}
 			void Mouvement_Contact(uint32 diff)
 			{
-				if (!UpdateVictim())
+				if (!UpdateVictim() || AuraFigé())
 					return;
 
 				Unit* victim = me->GetVictim();
@@ -308,7 +308,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 				// Si la cible >= 6m (pour éviter bug de rester figé) ---------------------------------------------------------------------------------------------
 				if (Cooldown_Anti_Bug_Figer <= diff)
 				{
-					if (Dist >= 6 && !AuraFigé())
+					if (Dist >= 6)
 					{
 						float x = 0.0f, y = 0.0f, z = 0.0f;
 						uint32 mapid = 0;
@@ -338,11 +338,11 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 					if (Dist < 8)
 					{
 					Random = urand(1, 4);
-					if ((Random == 1 || Random == 2) && !AuraFigé())
+					if (Random == 1 || Random == 2)
 					{
 						Tourne_Au_Tour_En_Combat();											// 2 chances sur 4 tourne au tour de sa victime
 					}
-					else if (Random == 3 && !AuraFigé())
+					else if (Random == 3)
 					{
 						Avance_3m_En_Combat();												// 1 chances sur 4 avance
 					}

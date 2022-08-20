@@ -715,7 +715,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 			}
 			void Mouvement_Contact(uint32 diff)
 			{
-				if (!UpdateVictim())
+				if (!UpdateVictim() || AuraFigé())
 					return;
 
 				Unit* victim = me->GetVictim();
@@ -724,7 +724,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 				// ------ ALLER A LA CIBLE -------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Anti_Bug_Figer <= diff)
 				{
-					if (Dist >= ResteADistance && !AuraFigé())
+					if (Dist >= ResteADistance)
 					{
 						float x = 0.0f, y = 0.0f, z = 0.0f;
 						uint32 mapid = 0;
@@ -761,7 +761,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 
 
 				// Si la cible < 8m : avance ou tourne au tour de sa victime
-				if (Dist < 8 && !AuraFigé())
+				if (Dist < 8)
 				{
 					if (Cooldown_ResteADistance <= diff)
 					{
@@ -781,7 +781,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 			}
 			void Mouvement_Caster(uint32 diff)
 			{
-				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
+				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING) || AuraFigé())
 					return;
 
 				Unit* victim = me->GetVictim();
@@ -791,7 +791,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 				{
 					// Mouvement aléatoire si cible < 6m ----------------------------------------------------------------------------------------------------------
 
-					if ((Dist <6) && !AuraFigé())
+					if (Dist <6)
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 						
@@ -821,9 +821,9 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 				else Cooldown_ResteADistance -= diff;
 
 				// Speed normal si distance > 10m ------------------------------------------------------------------------------------------------------------------
-				if (Dist> 10 && me->GetSpeedRate(MOVE_RUN) == 1.1f)
+				if (AuraLenteur() == false && Dist> 10 && me->GetSpeedRate(MOVE_RUN) == 1.2f)
 				{
-					//me->SetSpeedRate(MOVE_RUN, 1.01f);
+					me->SetSpeedRate(MOVE_RUN, 1.0f); // Uniquement si non ralenti par un spell joueur
 				}
 
 				// Mouvement OFF si distance >= 6m & <= 10/15m ---------------------------------------------------------------------------------------------
