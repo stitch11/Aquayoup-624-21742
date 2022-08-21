@@ -485,6 +485,12 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 liste_agro_157[2] = { 138976, 138976 };						// Bourrasque imminente 138976
 			uint32 liste_Buf_157[2] = { 974, 974 };								// bouclier de terre 974
 
+			// 158   CREATURE_FAMILY_CREATURE_AQUATIQUE
+			uint32 liste_spell_A_158[2] = { 113687, 300206 };					// Morsure 113687, Mutiler 300206
+			uint32 liste_spell_B_158[2] = { 69203, 3393 };						// Morsure vicieuse (requin) 69203, Dévoreur de chair 3393, 
+			uint32 liste_agro_158[3] = { 12097, 100, 0 };							// Perce-armure 12097 (armure -75%/15s 5m), charge 100
+			uint32 liste_Buf_158[3] = { 87228, 0, 0 };							// Peau épaisse 87228
+
 			void InitializeAI()
 			{
 				
@@ -852,6 +858,12 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Spell_B = liste_spell_B_157[urand(0, 2)];
 							Spell_agro = liste_agro_157[urand(0, 1)];
 							Buf_A = liste_Buf_157[urand(0, 1)];
+							break;
+						case 158:	// CREATURE_FAMILY_CREATURE_AQUATIQUE
+							Spell_A = liste_spell_A_158[urand(0, 1)];
+							Spell_B = liste_spell_B_158[urand(0, 1)];
+							Spell_agro = liste_agro_158[urand(0, 2)];
+							Buf_A = liste_Buf_158[urand(0, 2)];
 							break;
 
 						default:
@@ -2322,7 +2334,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							}
 							break;
 						case 157:	//Rocher (elementaire de terre si fixe)  -  CREATURE_FAMILY_MORPH_ROCHER - AI : Mouvement_Contact_Basique
-							me->SetMeleeDamageSchool(SpellSchools(3));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
 							Spell_respawn_evade = Spell_Ecorce;
 							Spell_Heal = 0;
@@ -2341,6 +2353,56 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Spell_Trop_Loin = Lancer_Une_Pierre;															// lancer une pierre 130775
 							Cooldown_Trop_Loin = urand(2000, 4000);
 							Cooldown_Trop_Loin_Defaut = urand(3000, 5000);
+							break;
+						case 158:	//CREATURE_FAMILY_CREATURE_AQUATIQUE - AI : 1/4 Mouvement_Contact_Prudent, 1/4_Mouvement_Contact_Prudent_Volant, 2/4 Mouvement_Contact_Basique
+							AI_Random = urand(1,4); 
+							me->SetMeleeDamageSchool(SpellSchools(0));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 1;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A, Base_Cooldown_Cast_A + 500);
+							Cooldown_SpellB = 2000;
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 1500, Base_Cooldown_Cast_B - 500);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 6000;
+							Cooldown_Principal_B_Defaut = urand(5000,8000);
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;
+							Cooldown_Trop_Loin = urand(3000, 6000);
+							Cooldown_Trop_Loin_Defaut = urand(4000, 7000);
+
+							if (AI_Random == 1)
+							{
+								Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+								Cooldown_SpellB = 2500;
+								Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 3000, Base_Cooldown_Cast_B);
+								Cooldown_Principal_A = 1000;
+								Cooldown_Principal_A_Defaut = 1000;
+								Cooldown_Principal_B = urand(5000, 6000);
+								Cooldown_Principal_B_Defaut = urand(5000, 7000);
+								ResteADistance = 5;
+								Cooldown_Trop_Loin = 6000;
+								Cooldown_Trop_Loin_Defaut = urand(5000, 7000);
+							}
+							else if (AI_Random == 2)
+							{
+								Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+								Cooldown_SpellB = 2500;
+								Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 2000, Base_Cooldown_Cast_B);
+								Cooldown_Principal_A = 1000;
+								Cooldown_Principal_A_Defaut = 1000;
+								Cooldown_Principal_B = urand(5000, 6000);
+								Cooldown_Principal_B_Defaut = urand(5000, 7000);
+								ResteADistance = 5;
+								Cooldown_Trop_Loin = 6000;
+								Cooldown_Trop_Loin_Defaut = urand(5000, 7000);
+							}
+
 							break;
 
 						default:
@@ -2753,6 +2815,16 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 157:	// Rocher (elementaire de terre si fixe)  -  CREATURE_FAMILY_MORPH_ROCHER 
 							Mouvement_Contact_Basique(diff);
 							break;
+						case 158:	// 
+							if (AI_Random == 1) { Mouvement_Contact_Prudent(diff); }
+							else if (AI_Random == 2) { Mouvement_Contact_Prudent_Volant(diff); }
+							else
+								Mouvement_Contact_Basique(diff);
+
+
+							break;
+
+
 
 						default:
 							Mouvement_Contact_Basique(diff);
@@ -2789,7 +2861,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 						x = (victim->GetPositionX() + irand(0, ResteADistance * 2) - ResteADistance);
 						y = (victim->GetPositionY() + irand(0, ResteADistance * 2) - ResteADistance);
-						if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+						if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()) && !me->IsUnderWater())
 						{
 							z = victim->GetMap()->GetHeight(victim->GetPhaseMask(), x, y, MAX_HEIGHT, true);
 						}
@@ -3041,7 +3113,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Tourne_Au_Tour_Aleatoire(urand(10, 12));											// 4 chances sur 5 pour s'eloigner si le joueur n'est pas un caster
 							Cooldown_Principal_A = 3000;
 
-							//me->SetSpeedRate(MOVE_RUN, 1.02f);													// Vitesse de déplacement
+							//me->SetSpeedRate(MOVE_RUN, 1.02f);												// Vitesse de déplacement
 						}
 						else
 						{
@@ -3316,7 +3388,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 				x = (victim->GetPositionX() + urand(0, Distance*2) - Distance);	// 4 pour contact
 				y = (victim->GetPositionY() + urand(0, Distance*2) - Distance);	// 4 pour contact
-				if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+				if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()) && !me->IsUnderWater())
 				{
 					z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
 				}
@@ -3367,7 +3439,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 				x = (victim->GetPositionX());
 				y = (victim->GetPositionY());
-				if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+				if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()) && !me->IsUnderWater())
 				{
 					z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
 				}

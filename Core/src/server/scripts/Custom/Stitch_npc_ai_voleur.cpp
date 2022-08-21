@@ -470,7 +470,7 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 
 					x = (victim->GetPositionX() + urand(0, 2) - 1);
 					y = (victim->GetPositionY() + urand(0, 2) - 1);
-					if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+					if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()) && !me->IsUnderWater())
 					{
 						z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
 					}
@@ -533,7 +533,7 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 
 				x = (victim->GetPositionX() + urand(0, 2) - 1);
 				y = (victim->GetPositionY() + urand(0, 2) - 1);
-				if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+				if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()) && !me->IsUnderWater())
 				{
 					z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
 				}

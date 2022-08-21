@@ -432,7 +432,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 
 						x = (victim->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
 						y = (victim->GetPositionY() + urand(0, ResteADistance * 2) - ResteADistance);
-						if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+						if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()) && !me->IsUnderWater())
 						{
 							z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
 						}

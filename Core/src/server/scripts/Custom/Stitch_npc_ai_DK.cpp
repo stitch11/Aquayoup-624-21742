@@ -731,7 +731,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 
 						x = (victim->GetPositionX() + urand(0, 4) - 2);
 						y = (victim->GetPositionY() + urand(0, 4) - 2);
-						if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+						if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()) && !me->IsUnderWater())
 						{
 							z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
 						}
@@ -805,7 +805,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 
 						x = (victim->GetPositionX() + urand(0, ResteADistance * 2) - ResteADistance);
 						y = (victim->GetPositionY() + urand(0, ResteADistance * 2) - ResteADistance);
-						if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+						if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()) && !me->IsUnderWater())
 						{
 							z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
 						}
@@ -861,7 +861,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 
 				x = (victim->GetPositionX() + urand(0, 4) - 2);
 				y = (victim->GetPositionY() + urand(0, 4) - 2);
-				if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+				if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()) && !me->IsUnderWater())
 				{
 					z = victim->GetMap()->GetHeight(me->GetPhaseMask(), x, y, MAX_HEIGHT, true);
 				}
