@@ -45,6 +45,8 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			uint32 ForceBranche = me->GetCreatureTemplate()->pickpocketLootId;
 			uint32 MessageAlagro = 0;
 			uint32 Spell_ContreAttaque = 0;
+			float x = 0.0f, y = 0.0f, z = 0.0f;
+			uint32 mapid = 0;
 
 			// Definitions des variables Cooldown et le 1er lancement
 			uint32 Cooldown_Spell1 = 1000;
@@ -59,6 +61,10 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			uint32 Cooldown_Spell_Heal_defaut = 6000;
 			uint32 Cooldown_Spell_ContreAttaque = 4000;
 			uint32 Cooldown_Spell_ContreAttaque_defaut = 8000;
+			uint32 Cooldown_Principal_B = 2000;										// Tempo pour s"eloigner
+			uint32 Cooldown_Principal_B_Defaut = 1500;								
+			uint32 Cooldown_Principal_C = 250;										// Tempo pour arreter le mouvement
+			uint32 Cooldown_Principal_C_Defaut = 1500;
 
 			// Spells
 			uint32 Buf_1 = 0;
@@ -126,9 +132,9 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 
 				}
 
-				// Forcer le choix par creature_template->pickpocketloot . Lancier = 0 , Archer = 1 , Fusilier = 2
-				if (ForceBranche == 1) { Tir_1 = Tir_Arc; }											// Tir a l'arc
-				else if (ForceBranche == 2) { Tir_1 = Tir_Fusil;	}								// Tir au fusil
+				// Forcer le choix par creature_template->pickpocketloot . Lancier = 0 , Archer = 1 , Fusilier = 2, Lancier (Distant) = 3 , Archer = 4  (Distant) , Fusilier= 5 (Distant) 
+				if (ForceBranche == 1 || 4) { Tir_1 = Tir_Arc; }									// Tir a l'arc
+				else if (ForceBranche == 2 || 5) { Tir_1 = Tir_Fusil;	}							// Tir au fusil
 				else { Tir_1 = Lancer_une_Arme; }													// Lance une arme				
 
 				
@@ -309,7 +315,11 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 					}
 
 					ContreAttaque(diff);
-					Mouvement_Caster(diff);
+
+					// Forcer le choix par creature_template->pickpocketloot . Lancier = 0, Archer = 1, Fusilier = 2, Lancier (Distant) = 3, Archer = 4 (Distant), Fusilier= 5 (Distant) 
+					if (ForceBranche < 3) { Mouvement_Caster_Puis_Contact(diff); }
+					else
+						Mouvement_Caster(diff);
 
 					// ############################################################################################################################################
 				}
@@ -330,6 +340,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);					// Retire flag "en combat"
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);				// Retire flag "non attaquable"
 			}
+
 			void Mouvement_All()
 			{
 				if (me->IsAlive() && !me->IsInCombat() && !me->isMoving() && (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 15))
@@ -348,7 +359,9 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);						// Quite le combat si la cible > 30m (Caster & Mélée) ou > 40m de home
 				}
 			}
-			void Mouvement_Caster(uint32 diff)
+
+			// ###### Reste a distance mais va au contact si la cible ce raproche ##################################################################################
+			void Mouvement_Caster_Puis_Contact(uint32 diff)
 			{
 				if (!UpdateVictim() || AuraFigé() /*|| me->HasUnitState(UNIT_STATE_CASTING)*/)
 					return;
@@ -392,6 +405,72 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				else Cooldown_ResteADistance -= diff;
 
 			}
+			// ###### Caster , reste a distance ####################################################################################################################
+			void Mouvement_Caster(uint32 diff)
+			{
+				if (!UpdateVictim() /*|| me->HasUnitState(UNIT_STATE_CASTING)*/ || AuraFigé() )
+					return;
+
+				Unit* victim = me->GetVictim();
+				Dist = me->GetDistance(victim);
+
+				if (Cooldown_Principal_B <= diff)
+				{
+					// Mouvement aléatoire si cible <= 5m  ---------------------------------------------------------------------------------------------------------
+
+					if (Dist <= 5)
+					{
+						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
+
+
+						x = (victim->GetPositionX() + irand(0, ResteADistance * 2) - ResteADistance);
+						y = (victim->GetPositionY() + irand(0, ResteADistance * 2) - ResteADistance);
+						if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()) && !me->IsUnderWater())
+						{
+							z = victim->GetMap()->GetHeight(victim->GetPhaseMask(), x, y, MAX_HEIGHT, true);
+						}
+						else
+						{
+							z = victim->GetPositionZ() + 2;	// Sinon bug en interieur
+						}
+						mapid = victim->GetMapId();
+						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
+						Cooldown_Principal_B = Cooldown_Principal_B_Defaut;
+					}
+				}
+				else Cooldown_Principal_B -= diff;
+
+
+				if (Cooldown_Principal_C <= diff)
+				{
+					// Mouvement OFF si distance >5m & <= 15m -------------------------------------------------------------------------------------------------------
+					if ((Dist > 5) && (Dist <= ResteADistance))
+					{
+						//if (me->isMoving())																	// Sinon bug d'animation
+						//{
+						me->StopMoving();
+						AttackStart(victim);
+						AttackStartCaster(victim, ResteADistance);										// Distance de combat
+						void DoRangedAttackIfReady();													// Combat a distance
+						me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
+																										//}
+
+					}
+
+					// Mouvement ON si distance > 20m -----------------------------------------------------------------------------------------------------------------
+					if (Dist > ResteADistance)
+					{
+						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// UNROOT
+						AttackStartCaster(victim, ResteADistance);											// Distance de cast
+						void DoRangedAttackIfReady();														// Combat a distance
+					}
+					Cooldown_Principal_C = Cooldown_Principal_C_Defaut;
+				}
+				else Cooldown_Principal_C -= diff;
+			}
+
+			
+
 			void Heal_En_Combat_Caster(uint32 diff)
 			{
 				//if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_MOVE))
