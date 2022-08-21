@@ -1628,16 +1628,16 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Trop_Loin_Defaut = urand(8000, 15000);
 							AI_Random = urand(1, 4);
 							break;
-						case 34:	//Raie du Neant  -  CREATURE_FAMILY_NETHER_RAY - AI : 1/2_Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance ) , 1/2_Mouvement_Caster, %Bouclier_De_Foudre
+						case 34:	//Raie du Neant  -  CREATURE_FAMILY_NETHER_RAY - AI : 1/2_Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance ) , 1/2_Mouvement_Caster
 							AI_Random = urand(1,2);
 							me->SetMeleeDamageSchool(SpellSchools(6));													// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = Spell_Bouclier_De_Foudre;
+							Spell_respawn_evade = 0;
 							Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A, Base_Cooldown_Cast_A + 500);
 							Cooldown_SpellB = 1000;
-							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B -3000 , Base_Cooldown_Cast_B -1000);
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B -3000 , Base_Cooldown_Cast_B -2000);
 							Cooldown_SpellB_rapide = 4000;
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
 							Cooldown_Spell_Heal_defaut = 60000;
