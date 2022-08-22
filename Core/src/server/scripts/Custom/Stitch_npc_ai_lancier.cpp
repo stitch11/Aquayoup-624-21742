@@ -80,7 +80,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			uint32 Spell_2 = 0;
 			uint32 liste_spell_2[4] = { 127171, 118532, 772, 62317 };				// Fendoir vicieux 15/lvl + 2/lvl/1s cumulable 5 fois 127171, Entaille infectée 118532, Pourfendre 772, Dévaster 62317	
 
-			uint32 Lancer_une_Arme = 79444;											// 8-40m Empaler
+			uint32 Lancer_une_Arme = 42332;											// 8-40m Empaler 79444, Lancer une arme 42332
 			uint32 Tir_Arc = 95826;
 			uint32 Tir_Fusil = 6660;
 			uint32 Tir_1 = 42332;
@@ -253,7 +253,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 						// Message a l'agro , ci le mob a plusieurs lignes (creature_text groupid>0) il y a de forte chance que ce soit pour un dialogue
 						// et non un simple message a l'agro. Donc on l'ignore.
 						Random = urand(1, 5);
-						if (!sCreatureTextMgr->TextExist(me->GetEntry(), 1) && Random == 1 || MessageAlagro == 1)
+						if ((sCreatureTextMgr->TextExist(me->GetEntry(), 0)) && (!sCreatureTextMgr->TextExist(me->GetEntry(), 1) && Random == 1) || MessageAlagro == 1)
 						{
 							Talk(0);
 						}

@@ -50,6 +50,7 @@ public: Stitch_npc_ai_level_scale_caster() : CreatureScript("Stitch_npc_ai_level
 			uint32 Cooldown_RegenMana = 3000;
 			uint32 Mana;
 			uint32 MaxMana = me->GetMaxPower(POWER_MANA);
+			uint32 MessageAlagro = 0;
 
 			void JustRespawned() override
 			{
@@ -78,8 +79,9 @@ public: Stitch_npc_ai_level_scale_caster() : CreatureScript("Stitch_npc_ai_level
 
 				// Message a l'agro , ci le mob a plusieurs lignes (creature_text groupid>0) il y a de forte chance que ce soit pour un dialogue
 				// et non un simple message a l'agro. Donc on l'ignore.
+				// Message a l'agro forcé par spell(8)
 				Random = urand(1, 5);
-				if (!sCreatureTextMgr->TextExist(me->GetEntry(), 1) && Random == 1)
+				if ((sCreatureTextMgr->TextExist(me->GetEntry(), 0)) && (!sCreatureTextMgr->TextExist(me->GetEntry(), 1) && Random == 1) || me->m_spells[7] == 1)
 				{
 					Talk(0);
 				}
