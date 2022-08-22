@@ -36,6 +36,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			Stitch_npc_ai_lancierAI(Creature* creature) : ScriptedAI(creature) { }
 
 			uint32 Random;
+			uint32 Random_AI = 0;
 			uint32 DistanceDeCast = 40;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
 			uint32 ResteADistance = 15;												// Distance max a laquelle un npc s'approchera
 			uint32 Dist;															// Distance entre le npc et sa cible
@@ -133,11 +134,12 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				}
 
 				// Forcer le choix par creature_template->pickpocketloot . Lancier = 0 , Archer = 1 , Fusilier = 2, Lancier (Distant) = 3 , Archer = 4  (Distant) , Fusilier= 5 (Distant) 
-				if (ForceBranche == 1 || 4) { Tir_1 = Tir_Arc; }									// Tir a l'arc
-				else if (ForceBranche == 2 || 5) { Tir_1 = Tir_Fusil;	}							// Tir au fusil
-				else { Tir_1 = Lancer_une_Arme; }													// Lance une arme				
+				if (ForceBranche == 1 || 4 || 7) { Tir_1 = Tir_Arc; }									// Tir a l'arc
+				else if (ForceBranche == 2 || 5 || 8) { Tir_1 = Tir_Fusil;	}							// Tir au fusil
+				else if (ForceBranche == 0 || 3 || 6) { Tir_1 = Lancer_une_Arme; }						// Lance une arme				
 
-				
+				Random_AI = urand(0,1);		// Caster_Puis_Contact ou Caster
+
 				// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
 				if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
 				{
@@ -316,8 +318,12 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 
 					ContreAttaque(diff);
 
-					// Forcer le choix par creature_template->pickpocketloot . Lancier = 0, Archer = 1, Fusilier = 2, Lancier (Distant) = 3, Archer = 4 (Distant), Fusilier= 5 (Distant) 
-					if (ForceBranche < 3) { Mouvement_Caster_Puis_Contact(diff); }
+					// Forcer le choix par creature_template->pickpocketloot . 
+					//Lancier = 0, Archer = 1, Fusilier = 2, Lancier (Distant) = 3, Archer = 4 (Distant), Fusilier= 5 (Distant), Arme (Random) = 6 , Tir a l'arc = 7  (Random) , Tir au fusil= 8 (Random) 
+					if (ForceBranche < 3 || (ForceBranche >=6 && Random_AI ==0) )
+					{ 
+						Mouvement_Caster_Puis_Contact(diff); 
+					}
 					else
 						Mouvement_Caster(diff);
 
