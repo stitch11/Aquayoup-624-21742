@@ -63,7 +63,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			uint32 Cooldown_Spell_ContreAttaque = 4000;
 			uint32 Cooldown_Spell_ContreAttaque_defaut = 8000;
 			uint32 Cooldown_Principal_B = 2000;										// Tempo pour s"eloigner
-			uint32 Cooldown_Principal_B_Defaut = 1500;								
+			uint32 Cooldown_Principal_B_Defaut = 2000;								
 			uint32 Cooldown_Principal_C = 250;										// Tempo pour arreter le mouvement
 			uint32 Cooldown_Principal_C_Defaut = 1500;
 
@@ -91,6 +91,11 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
 
 			uint32 Start_Agro = 0;
+
+			void InitializeAI() override
+			{
+				me->SetSheath(SHEATH_STATE_RANGED);
+			}
 
 			void Init_AI()
 			{
@@ -242,7 +247,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 					else
 					{
 						if (Tir_1 != Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_RANGED); }			// S'équipe d'arc ou fusil
-						if (Tir_1 == Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_MELEE); }			// S'équipe d'armes au contact
+						else if (Tir_1 == Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_MELEE); }			// S'équipe d'armes au contact
 					}
 
 
@@ -309,6 +314,8 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 						// Spell1 sur la cible  
 						if (Cooldown_Spell1 <= diff)
 						{
+							if (Tir_1 != Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_RANGED); }				// S'équipe d'arc ou fusil
+
 							me->StopMoving();
 							DoCast(victim, Tir_1);
 							Cooldown_Spell1 = urand(1500,2500);

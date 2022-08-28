@@ -62,7 +62,8 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			uint32 Bond_aleatoire_25m = 300267;
 
 			// Definitions des variables Cooldown et le 1er lancement
-			uint32 Cooldown_Spell1 = 1500;
+			uint32 Cooldown_Spell1 = 1000;
+			uint32 Cooldown_Spell1_defaut = urand(3000, 3750);
 			uint32 Cooldown_Spell2 = 4000;
 			uint32 Cooldown_Spell2_defaut = urand(7000,10000);
 			uint32 Cooldown_ResteADistance = 1000;									// Test si en contact
@@ -381,7 +382,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 
 								DoCast(victim, Spell_1);
 								//DoMeleeAttackIfReady();																// Combat en mélée
-								Cooldown_Spell1 = urand(3500,4000);
+								Cooldown_Spell1 = Cooldown_Spell1_defaut; 
 
 						}
 						else Cooldown_Spell1 -= diff;
