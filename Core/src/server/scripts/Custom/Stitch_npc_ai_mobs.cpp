@@ -1170,7 +1170,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = 6000;
-							Cooldown_Principal_B_Defaut = 8000 + ((urand(0, 4) * 500));
+							Cooldown_Principal_B_Defaut = urand(4000, 6000);
 							ResteADistance = 5;
 							Spell_Trop_Loin = Spell_Charge;																		//
 							Cooldown_Trop_Loin = 5000;
@@ -1219,10 +1219,11 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Trop_Loin = 500;
 							Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
 							break;
-						case 8:		// Crabe  -  CREATURE_FAMILY_CRAB - AI : Mouvement_Contact_Avance_Recule, %Ecorce
+						case 8:		// Crabe  -  CREATURE_FAMILY_CRAB - AI : Mouvement_Contact_Avance_Recule - 1/2 Mouvement_Contact_Basique
+							AI_Random = urand(1, 2);
 							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = Spell_Ecorce;
+							Spell_respawn_evade = 0;
 							Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
@@ -1751,7 +1752,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 40:	//Goule  -  CREATURE_FAMILY_GHOUL - AI : Mouvement_Contact_Basique, %Bouclier_Dos
 							me->SetMeleeDamageSchool(SpellSchools(5));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = Spell_Bouclier_Dos;
+							Spell_respawn_evade = 0;
 							Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
@@ -1879,6 +1880,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							if (AI_Random == 1)				//Mouvement_Caster_Puis_Contact(diff)
 							{
 								ResteADistance = 12;
+
 								Cooldown_Principal_A_Defaut = 2000;
 								Cooldown_Principal_B_Defaut = 1000;
 								Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
@@ -2550,7 +2552,9 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Mouvement_Contact_Prudent_Volant(diff);
 							break;
 						case 8:		// Crabe - CREATURE_FAMILY_CRAB
-							Mouvement_Contact_Avance_Recule(diff);
+							if (AI_Random == 1) { Mouvement_Contact_Avance_Recule(diff); }
+							else
+								Mouvement_Contact_Basique(diff);
 							break;
 						case 9:		// Gorille - CREATURE_FAMILY_GORILLA
 							Mouvement_Contact_Bondissant(diff);
