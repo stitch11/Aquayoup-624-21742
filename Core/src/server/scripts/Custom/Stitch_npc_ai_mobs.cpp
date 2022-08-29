@@ -1010,7 +1010,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			{
 
 				//Position const& homePos = me->GetHomePosition();
-				if (me->IsAlive() && !me->IsInCombat() && !me->isMoving() && (me->GetDistance(me->GetHomePosition()) >  15))
+				if (me->IsAlive() && !me->IsInCombat() && !me->isMoving() && (me->GetDistance(me->GetHomePosition()) >  40))
 				//if (me->IsAlive() && !me->IsInCombat() && !me->isMoving() && (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 1))
 				{
 					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);

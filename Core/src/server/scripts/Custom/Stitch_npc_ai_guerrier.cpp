@@ -487,13 +487,12 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 			}
 			void Mouvement_All()
 			{
-				if (me->IsAlive() && !me->IsInCombat() && !me->isMoving() )
 
+				//Position const& homePos = me->GetHomePosition();
+				if (me->IsAlive() && !me->IsInCombat() && !me->isMoving() && (me->GetDistance(me->GetHomePosition()) >  40))
+					//if (me->IsAlive() && !me->IsInCombat() && !me->isMoving() && (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 1))
 				{
-					if (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > DistanceDeCast)
-					{
-						EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);
-					}
+					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);
 				}
 
 				if (!UpdateVictim())
