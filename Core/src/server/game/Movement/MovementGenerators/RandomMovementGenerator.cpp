@@ -109,18 +109,19 @@ void RandomMovementGenerator<Creature>::_setRandomLocation(Creature* creature)
             }
         }
 	}
-	//if (is_air_ok)
-    if (is_air_ok | is_water_ok)			//Stitch mouvement aleatoire dans l'eau
-        i_nextMoveTime.Reset(0);
-    else
+	
+	//Stitch : temps entre 2 mouvements aleatoires des mobs 3000 a 5000 au lieu de 5000 10000
+	if (is_air_ok)
+	{
+		i_nextMoveTime.Reset(0);
+	}
+	else 	if (creature->IsUnderWater())
+	{
+		i_nextMoveTime.Reset(urand(0, 3000));
+	}
+	else
+		i_nextMoveTime.Reset(urand(3000, 10000));
 
-//Stitch : temps entre 2 mouvements aleatoires des mobs 3000 a 5000 au lieu de 5000 10000
-    {
-        if (roll_chance_i(50))
-            i_nextMoveTime.Reset(urand(3000, 10000));
-        else
-            i_nextMoveTime.Reset(urand(50, 400));
-    }
 
     creature->AddUnitState(UNIT_STATE_ROAMING_MOVE);
 
