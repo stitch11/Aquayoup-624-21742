@@ -517,9 +517,9 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 		case CREATURE_FAMILY_DRAGONHAWK:		// Faucon dragon
 		case CREATURE_FAMILY_MOTH:				// Papillon de nuit
 		case CREATURE_FAMILY_CARRION_BIRD:		// oiseau charognard
-			SetSpeedRate(MOVE_WALK, 1.5f);							// hors combat
+			SetSpeedRate(MOVE_WALK, 1.75f);							// hors combat
 			SetSpeedRate(MOVE_RUN, 1.75f);							// en combat
-			SetSpeedRate(MOVE_FLIGHT, 1.5f);						// en volant
+			SetSpeedRate(MOVE_FLIGHT, 2.0f);						// en volant
 			break;
 
 		case CREATURE_FAMILY_WOLF:				// Loup

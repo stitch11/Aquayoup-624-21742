@@ -67,7 +67,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			uint32 Cooldown_Spell2 = 4000;
 			uint32 Cooldown_Spell2_defaut = urand(7000,10000);
 			uint32 Cooldown_ResteADistance = 1000;									// Test si en contact
-			uint32 Cooldown_ResteADistance_Defaut = 2000;
+			uint32 Cooldown_ResteADistance_Defaut = 2500;
 			uint32 Cooldown_ResteADistance_Teleportation = 3000;
 			uint32 Cooldown_ResteADistance_Defaut_Teleportation = urand(5000, 7000);
 			uint32 Cooldown_Anti_Bug_Figer = 2000;
