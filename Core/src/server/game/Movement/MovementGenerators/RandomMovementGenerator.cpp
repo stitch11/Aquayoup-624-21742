@@ -39,6 +39,7 @@ void RandomMovementGenerator<Creature>::_setRandomLocation(Creature* creature)
     float respX, respY, respZ, respO, destX, destY, destZ, travelDistZ;
     creature->GetHomePosition(respX, respY, respZ, respO);
     Map const* map = creature->GetBaseMap();
+	uint8 tmp = 0;
 
     // For 2D/3D system selection
     //bool is_land_ok  = creature.CanWalk();                // not used?
@@ -111,16 +112,20 @@ void RandomMovementGenerator<Creature>::_setRandomLocation(Creature* creature)
 	}
 	
 	//Stitch : temps entre 2 mouvements aleatoires des mobs 3000 a 5000 au lieu de 5000 10000
+	tmp = urand(1, 2);
+
 	if (is_air_ok)
 	{
 		i_nextMoveTime.Reset(0);
 	}
-	else 	if (creature->IsUnderWater())
+	else if (creature->IsUnderWater())
 	{
 		i_nextMoveTime.Reset(urand(0, 3000));
 	}
-	else
-		i_nextMoveTime.Reset(urand(3000, 10000));
+	else if (tmp == 1)
+		i_nextMoveTime.Reset(urand(3000, 10000));// 1/2 de faire une pause longue
+	else 
+		i_nextMoveTime.Reset(urand(0, 1000));
 
 
     creature->AddUnitState(UNIT_STATE_ROAMING_MOVE);
