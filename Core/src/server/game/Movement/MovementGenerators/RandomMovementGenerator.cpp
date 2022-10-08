@@ -111,7 +111,7 @@ void RandomMovementGenerator<Creature>::_setRandomLocation(Creature* creature)
         }
 	}
 	
-	//Stitch : temps entre 2 mouvements aleatoires des mobs 3000 a 5000 au lieu de 5000 10000
+	//Stitch mouvements aleatoires, temps entre 2 mouvements des mobs 3000 a 5000 au lieu de 5000 10000
 	tmp = urand(1, 2);
 
 	if (is_air_ok)
@@ -123,7 +123,7 @@ void RandomMovementGenerator<Creature>::_setRandomLocation(Creature* creature)
 		i_nextMoveTime.Reset(urand(0, 3000));
 	}
 	else if (tmp == 1)
-		i_nextMoveTime.Reset(urand(3000, 10000));// 1/2 de faire une pause longue
+		i_nextMoveTime.Reset(urand(3000, 7000));// 1/2 de faire une pause longue
 	else 
 		i_nextMoveTime.Reset(urand(0, 1000));
 
