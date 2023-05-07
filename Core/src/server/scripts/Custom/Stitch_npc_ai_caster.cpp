@@ -262,6 +262,8 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					ResteADistance = 7;
 				}
 				// ################################################################################################################################################
+
+
 			}
 			void JustRespawned() override
 			{
@@ -448,7 +450,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
-
+				ForceBranche = me->GetCreatureTemplate()->pickpocketLootId;
 
 					// Bond aléatoire si cible < 6m & mana > 10%  ---------------------------------------------------------------------------------------------
 					if (Cooldown_bond_aleatoire_25m <= diff && !AuraFigé())
@@ -476,8 +478,6 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				// ------------------------------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_ResteADistance <= diff && !AuraFigé())
 				{
-					ForceBranche = me->GetCreatureTemplate()->pickpocketLootId;
-
 					// Mouvement aléatoire si cible < 6m & mana > 10%  
 					if (Dist <6 && (Mana > MaxMana / 10) && (ForceBranche != 7 && ForceBranche <11) )
 					{
@@ -539,6 +539,14 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 						me->SetSpeedRate(MOVE_RUN, 1.0f); // Uniquement si non ralenti par un spell 
 					}
 				}
+
+				// Mouvement OFF si distance =< 20m  & fixe
+				if ((Dist <= ResteADistance) && (ForceBranche == 7))
+				{
+					me->StopMoving();
+					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);								// ROOT
+				}
+
 
 				// Mouvement ON si Mana < 10%  
 				if (Mana < MaxMana / 10)
