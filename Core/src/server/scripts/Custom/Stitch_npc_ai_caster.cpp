@@ -379,12 +379,11 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					else Cooldown_RegenMana -= diff;
 
 						// Spell1 sur la cible  -------------------------------------------------------------------------------------------------------------------
-						if (Cooldown_Spell1 <= diff && Spell_1 !=0)
+						if (Cooldown_Spell1 <= diff && Spell_1 !=0 )
 						{
-
-								DoCast(victim, Spell_1);
-								//DoMeleeAttackIfReady();																// Combat en mélée
-								Cooldown_Spell1 = Cooldown_Spell1_defaut; 
+							DoCast(victim, Spell_1);
+							//DoMeleeAttackIfReady();
+							Cooldown_Spell1 = Cooldown_Spell1_defaut; 
 
 						}
 						else Cooldown_Spell1 -= diff;
