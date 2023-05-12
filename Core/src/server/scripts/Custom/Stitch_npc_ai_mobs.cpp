@@ -491,6 +491,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 liste_agro_158[3] = { 12097, 100, 0 };							// Perce-armure 12097 (armure -75%/15s 5m), charge 100
 			uint32 liste_Buf_158[3] = { 87228, 0, 0 };							// Peau épaisse 87228
 
+
 			void InitializeAI()
 			{
 				
@@ -2462,25 +2463,36 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						// ########################################################################################################################################
 						// Spell a lancer a l'agro 
 						// ########################################################################################################################################
-					if (Start_Agro2 == 0 && Dist < 3)
+					if (Start_Agro2 == 0)
 					{
 						Start_Agro2 = 1;
 
-						Random = urand(1, 5);									// 3 Chance sur 5 de lancer le sort sur la cible a d'agro
-						if (Random < 4 && Spell_agro != 0)
+						if (Dist < 3)
+						{
+							Random = urand(1, 5);								// 3 Chance sur 5 de lancer le sort sur la cible a d'agro
+							if (Random < 4 && Spell_agro != 0)
 							{
 								me->CastSpell(victim, Spell_agro, true);
 							}
 
-						Random = urand(1, 2);									// 1 chance sur 2 de lancer un buf a l'agro
-						if (Random == 1 && Buf_A != 0)
-							{
-								me->CastSpell(me, Buf_A, true);
-							}
+							Family_Special_Retire_au_contact();
+						}
 
-						Family_Special_Retire_au_contact();
+						// Buf_A & Spell_respawn_evade a l'agro
+						uint32 Tmp3 = me->m_spells[3];
+						uint32 Tmp4 = me->m_spells[4];
+						Random = urand(1, 2);									// 1 chance sur 2 de lancer un buf a l'agro
+						if (Random == 1 && Tmp4 != 0)
+						{
+							me->CastSpell(me, Tmp4, true);
+						}
+						if (Tmp3 != 0)
+						{ 
+							me->CastSpell(me, Tmp3, true);
+						}
 
 					}
+
 
 					// ############################################################################################################################################
 					// COMBAT 
