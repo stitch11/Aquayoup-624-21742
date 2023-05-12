@@ -98,6 +98,15 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 			// Emotes
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
 			
+			void InitializeAI() override
+			{
+				// Buf au lancement du serveur (Pet, armure de givre, etc)
+				uint32 Tmp = me->m_spells[3];
+				if (Tmp != 0)
+				{
+					me->CastSpell(me, Tmp, true);
+				}
+			}
 
 			void Init_AI() 
 			{

@@ -110,6 +110,16 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 
 			uint32 Start_Agro = 0;
 
+			void InitializeAI() override
+			{
+				// Buf au lancement du serveur (Pet, armure de givre, etc)
+				uint32 Tmp = me->m_spells[3];
+				if (Tmp != 0)
+				{
+					me->CastSpell(me, Tmp, true);
+				}
+			}
+
 			void Init_AI()
 			{
 				// ################################################################################################################################################

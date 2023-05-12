@@ -494,8 +494,13 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			void InitializeAI()
 			{
 				
-				Family_Special_Init();		// Spécificitée par family
-
+				Family_Special_Init();			// Spécificitée par family
+				
+				uint32 Tmp = me->m_spells[3];	// Buf au lancement du serveur (Pet, armure de givre, etc)
+					if (Tmp != 0)
+					{
+						me->CastSpell(me, Tmp, true);
+					}
 			}
 			void Init_AI()
 			{

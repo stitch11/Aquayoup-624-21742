@@ -95,6 +95,13 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			void InitializeAI() override
 			{
 				me->SetSheath(SHEATH_STATE_RANGED);
+
+				// Buf au lancement du serveur (Pet, armure de givre, etc)
+				uint32 Tmp = me->m_spells[3];
+				if (Tmp != 0)
+				{
+					me->CastSpell(me, Tmp, true);
+				}
 			}
 
 			void Init_AI()
