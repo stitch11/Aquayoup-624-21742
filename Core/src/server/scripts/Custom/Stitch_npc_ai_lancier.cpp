@@ -423,13 +423,10 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				// Mouvement OFF si distance >= 8m & <= 20m -------------------------------------------------------------------------------------------------------
 				if ((Dist >= 8) && (Dist <= ResteADistance + 5))
 				{
-					//if (me->isMoving())																	// Sinon bug d'animation
-					//{
 						AttackStart(victim);
 						AttackStartCaster(victim, ResteADistance);										// Distance de combat
 						void DoRangedAttackIfReady();													// Combat a distance
 						me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
-					//}
 				}
 				Cooldown_ResteADistance = 2000;
 				}
@@ -477,14 +474,11 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 					// Mouvement OFF si distance >5m & <= 15m -------------------------------------------------------------------------------------------------------
 					if ((Dist > 5) && (Dist <= ResteADistance))
 					{
-						//if (me->isMoving())																	// Sinon bug d'animation
-						//{
 						me->StopMoving();
 						AttackStart(victim);
 						AttackStartCaster(victim, ResteADistance);										// Distance de combat
 						void DoRangedAttackIfReady();													// Combat a distance
 						me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
-																										//}
 
 					}
 

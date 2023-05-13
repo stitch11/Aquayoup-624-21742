@@ -2467,6 +2467,19 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					{
 						Start_Agro2 = 1;
 
+						// Buf_A & Spell_respawn_evade a l'agro
+						uint32 Tmp3 = me->m_spells[3];
+						uint32 Tmp4 = me->m_spells[4];
+						Random = urand(1, 2);									// 1 chance sur 2 de lancer un buf a l'agro
+						if (Random == 1 && Tmp4 != 0)
+						{
+							me->CastSpell(me, Tmp4, true);
+						}
+						if (Tmp3 != 0)
+						{
+							me->CastSpell(me, Tmp3, true);
+						}
+
 						if (Dist < 3)
 						{
 							Random = urand(1, 5);								// 3 Chance sur 5 de lancer le sort sur la cible a d'agro
@@ -2477,20 +2490,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 							Family_Special_Retire_au_contact();
 						}
-
-						// Buf_A & Spell_respawn_evade a l'agro
-						uint32 Tmp3 = me->m_spells[3];
-						uint32 Tmp4 = me->m_spells[4];
-						Random = urand(1, 2);									// 1 chance sur 2 de lancer un buf a l'agro
-						if (Random == 1 && Tmp4 != 0)
-						{
-							me->CastSpell(me, Tmp4, true);
-						}
-						if (Tmp3 != 0)
-						{ 
-							me->CastSpell(me, Tmp3, true);
-						}
-
 					}
 
 

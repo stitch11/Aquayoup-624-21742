@@ -255,7 +255,7 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 					Unit* victim = me->GetVictim();
 					Dist = me->GetDistance(victim);
 
-					if (Start_Agro == 0 && Dist <= 5)
+					if (Start_Agro == 0)
 					{
 
 						// Message a l'agro , ci le mob a plusieurs lignes (creature_text groupid>0) il y a de forte chance que ce soit pour un dialogue
