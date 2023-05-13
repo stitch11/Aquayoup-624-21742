@@ -1092,7 +1092,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 2);
 							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 1;
-							Spell_respawn_evade = Spell_Invisible;
+							Spell_respawn_evade = Spell_Vitesse_4s /*Spell_Invisible*/;
 							Spell_Heal = Spell_Instincts_de_survie;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
@@ -1272,7 +1272,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 3);
 							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
+							Spell_respawn_evade = Spell_Vitesse_4s;
 							Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
