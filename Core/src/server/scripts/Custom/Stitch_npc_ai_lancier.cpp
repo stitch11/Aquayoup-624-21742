@@ -80,7 +80,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			uint32 Spell_2 = 0;
 			uint32 liste_spell_2[4] = { 127171, 118532, 772, 62317 };				// Fendoir vicieux 15/lvl + 2/lvl/1s cumulable 5 fois 127171, Entaille infectée 118532, Pourfendre 772, Dévaster 62317	
 
-			uint32 Lancer_une_Arme = 42332;											// 8-40m Empaler 79444, Lancer une arme 42332
+			uint32 Lancer_une_Arme = 42332;											// 8-40m Empaler 79444, Lancer une arme 42332 
 			uint32 Tir_Arc = 95826;
 			uint32 Tir_Fusil = 6660;
 			uint32 Tir_1 = 42332;
@@ -146,9 +146,10 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				}
 
 				// Forcer le choix par creature_template->pickpocketloot . Lancier = 0 , Archer = 1 , Fusilier = 2, Lancier (Distant) = 3 , Archer = 4  (Distant) , Fusilier= 5 (Distant) 
-				if (ForceBranche == 1 || 4 || 7) { Tir_1 = Tir_Arc; }									// Tir a l'arc
-				else if (ForceBranche == 2 || 5 || 8) { Tir_1 = Tir_Fusil;	}							// Tir au fusil
-				else if (ForceBranche == 0 || 3 || 6) { Tir_1 = Lancer_une_Arme; }						// Lance une arme				
+				//ForceBranche = me->GetCreatureTemplate()->pickpocketLootId;
+				if (ForceBranche == 1 || ForceBranche == 4 || ForceBranche == 7) { Tir_1 = Tir_Arc; }									// Tir a l'arc
+				else if (ForceBranche == 2 || ForceBranche == 5 || ForceBranche == 8) { Tir_1 = Tir_Fusil; }							// Tir au fusil
+				else if (ForceBranche == ForceBranche == 0 || ForceBranche == 3 || ForceBranche == 6) { Tir_1 = Lancer_une_Arme; }						// Lance une arme		
 
 				Random_AI = urand(0,1);		// Caster_Puis_Contact ou Caster
 
@@ -232,7 +233,10 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 					Cooldown_Npc_Emotes -= diff;
 
 				if (Tir_1 != Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_RANGED); }				// S'équipe d'arc ou fusil
-
+				else
+				{
+					me->SetSheath(SHEATH_STATE_MELEE);												// S'equipe de l'arme au contact
+				}
 				// ################################################################################################################################################
 				// En Combat ######################################################################################################################################
 				// ################################################################################################################################################
@@ -254,7 +258,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 					else
 					{
 						if (Tir_1 != Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_RANGED); }			// S'équipe d'arc ou fusil
-						else if (Tir_1 == Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_MELEE); }			// S'équipe d'armes au contact
+						else { me->SetSheath(SHEATH_STATE_MELEE); }										// S'équipe d'armes au contact
 					}
 
 
@@ -322,6 +326,10 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 						if (Cooldown_Spell1 <= diff)
 						{
 							if (Tir_1 != Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_RANGED); }				// S'équipe d'arc ou fusil
+							else
+							{
+								me->SetSheath(SHEATH_STATE_MELEE);												// S'equipe de l'arme au contact
+							}
 
 							me->StopMoving();
 							DoCast(victim, Tir_1);
