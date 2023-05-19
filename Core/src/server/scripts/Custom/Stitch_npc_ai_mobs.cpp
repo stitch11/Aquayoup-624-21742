@@ -170,10 +170,10 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 
 			// --- family defaut
-			uint32 liste_spell_A_0[2] = { 24187, 119004 };						// griffe 24187, Violent coup direct 119004
+			uint32 liste_spell_A_0[2] = { 24187, 11368 };						// griffe 24187, Morsure 11368, Violent coup direct 119004
 			uint32 liste_spell_B_0[3] = { 131193, 131172, 140476 };				// Choc(coup de poing 30 / lvl) 131193, Coup de tete(10 / lvl) 131172, Vil crachat 140476
 			uint32 liste_agro_0[2] = { 0, 0 };
-			uint32 liste_Buf_0[3] = { 22863, 22863, 18328 };					// Vitesse 10s 30% 22863, Cri incapacitant 18328
+			uint32 liste_Buf_0[3] = { 0, 0, 0 };					// Vitesse 10s 30% 22863, Cri incapacitant 18328
 
 
 
@@ -945,7 +945,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			void JustRespawned() override
 			{
 				me->GetMotionMaster()->MoveTargetedHome();															// Retour home pour rafraichir client
-				//me->SetSpeedRate(MOVE_RUN, 1.01f);
 				me->SetReactState(REACT_AGGRESSIVE);
 
 				Random = urand(1, 3);
@@ -987,10 +986,10 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			{
 				me->SetReactState(REACT_AGGRESSIVE);
 
-				me->UpdateSpeed(MOVE_WALK);
-				me->UpdateSpeed(MOVE_RUN);
-				me->UpdateSpeed(MOVE_SWIM);
-				me->UpdateSpeed(MOVE_FLIGHT);
+				//me->UpdateSpeed(MOVE_WALK);
+				//me->UpdateSpeed(MOVE_RUN);
+				//me->UpdateSpeed(MOVE_SWIM);
+				//me->UpdateSpeed(MOVE_FLIGHT);
 
 				Family_Special_Init();		// Spécificitée par family
 
