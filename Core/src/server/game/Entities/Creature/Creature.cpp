@@ -492,13 +492,18 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			SetSpeedRate(MOVE_SWIM, 0.6f);							// en nageant
 			break;
 
+		case CREATURE_TYPE_ELEMENTAL_GLISSANT:
+			SetSpeedRate(MOVE_WALK, 0.2f);							// hors combat
+			SetSpeedRate(MOVE_RUN, 0.5f);							// en combat
+			SetSpeedRate(MOVE_SWIM, 0.75f);							// en nageant
+			break;
+
 		default:
-			SetSpeedRate(MOVE_WALK, 0.5f);							// hors combat
-			SetSpeedRate(MOVE_RUN, 1.0f);							// en combat
-			SetSpeedRate(MOVE_SWIM, 0.8f);							// en nageant
+			//SetSpeedRate(MOVE_WALK, 0.5f);							// hors combat
+			//SetSpeedRate(MOVE_RUN, 1.0f);								// en combat
+			//SetSpeedRate(MOVE_SWIM, 0.8f);							// en nageant
 			break;
 		}
-
 
 		switch (Crfamily)
 		{
@@ -659,13 +664,15 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			SetSpeedRate(MOVE_RUN, 0.6f);							// en combat
 			SetSpeedRate(MOVE_SWIM, 0.5f);							// en nageant
 			break;
+
 		default:
+			//SetSpeedRate(MOVE_WALK, 0.5f);						// hors combat
+			//SetSpeedRate(MOVE_RUN, 1.0f);							// en combat
+			//SetSpeedRate(MOVE_SWIM, 0.8f);						// en nageant
 			break;
+}
+}
 
-
-		}
-
-	}
 	// Civils
 	if (Crentry >= 1000100 && Crentry <= 1001000)
 	{
