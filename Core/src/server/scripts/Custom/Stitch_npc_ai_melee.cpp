@@ -198,7 +198,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 					Unit* victim = me->GetVictim();
 					Dist = me->GetDistance(victim);
 
-					if (Start_Agro == 0 && Dist < 6)
+					if (Start_Agro == 0)
 					{
 						Start_Agro = 1;
 
@@ -221,16 +221,34 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 						// ########################################################################################################################################
 
 							Random = urand(1, 2);
-							if (Random == 1 && Spell_agro != 0)
-							{ me->CastSpell(victim, Spell_agro, true); }	// 1/2 Chance de lancer le sort d'agro
-
-							Random = urand(1, 2);
 							if (Random == 1 && Buf_1 != 0)
 								{ me->CastSpell(me, Buf_1, true); }			// 1/2 Chance de lancer le Buf
 
 							if (Spell_evade != 0) { me->CastSpell(me, Spell_evade, true); }
 
 					
+					}
+
+					// Spell agro au contact
+					if (Start_Agro == 1 && (Dist < 6) && isSpell_agro_charge() == false)
+					{
+						Start_Agro = 2;
+						Random = urand(1, 2);
+						if (Random == 1 && Spell_agro != 0)
+						{
+							me->CastSpell(victim, Spell_agro, true);
+						}	// 1/2 Chance de lancer le sort d'agro
+
+					}
+					if (Start_Agro == 1 && (Dist >= 10) && isSpell_agro_charge() == true)
+					{
+						Start_Agro = 2;
+						Random = urand(1, 2);
+						if (Random == 1 && Spell_agro != 0)
+						{
+							me->CastSpell(victim, Spell_agro, true);
+						}	// 1/2 Chance de lancer le sort d'agro
+
 					}
 						// ####################################################################################################################################
 
@@ -502,7 +520,17 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 					) return true;
 				else return false;
 			}
-
+			bool isSpell_agro_charge()
+			{
+				if (Spell_agro == 100 
+					|| Spell_agro ==  6268 || Spell_agro == 119517 || Spell_agro == 32323 || Spell_agro == 19196 
+					|| Spell_agro == 52311 || Spell_agro == 20508  || Spell_agro == 82635 || Spell_agro == 82797 
+					|| Spell_agro == 89712 || Spell_agro == 75002  || Spell_agro == 64431 || Spell_agro == 49576 
+					|| Spell_agro == 30010 || Spell_agro == 93515  || Spell_agro == 75002 || Spell_agro == 82635 
+					|| Spell_agro == 145763|| Spell_agro == 163036 || Spell_agro ==  6544 || Spell_agro == 47482 
+					|| Spell_agro == 300131) return true;
+				else return false;
+			}
 		};
 
 		
