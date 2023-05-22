@@ -138,7 +138,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 Spell_Griffure_bondissante = 89712;							// Griffure bondissante (bond)
 			uint32 Spell_Toile_Araignee = 15471;								// Linceul de toiles 20m 4s
 			uint32 Spell_Charge_Stun = 87187;									// Charge farouche 87187 (8-25 m ours, stun 4s)
-			uint32 Spell_Charge_Repousse = 19196;								// charge afflux 
+			uint32 Spell_Charge_Repousse = 19196;								// charge afflux,
 			uint32 Spell_Charge = 20508;										// Charge (dmg et sans effet) 93515, charge avec trainée 20508, charge 32323 (sonne 2s,8-25m ) 
 			uint32 Spell_Charge_Stun2s = 32323;									// Charge 32323 (sonne 2s,8-25m ) 
 			uint32 Spell_Poursuite = 30151;										// Poursuite 30151 (Gangregarde : charge, vit + 30 %/6s, >8m, recharge 15s)
@@ -1206,7 +1206,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 7:		// Oiseau charogniar  -  CREATURE_FAMILY_CARRION_BIRD - AI : Mouvement_Contact_Prudent_Volant
 							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
+							Spell_respawn_evade = Spell_Vitesse_4s;
 							Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
@@ -1523,7 +1523,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 26:	//Oiseau de proie  -  CREATURE_FAMILY_BIRD_OF_PREY - AI : Mouvement_Contact_Basique, %Griffure_bondissante
 							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
+							Spell_respawn_evade = Spell_Charge_Stun2s;
 							Spell_Heal = 0;																					// 
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
@@ -1638,7 +1638,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1,2);
 							me->SetMeleeDamageSchool(SpellSchools(6));													// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
+							Spell_respawn_evade = Spell_Vitesse_4s;
 							Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A, Base_Cooldown_Cast_A + 500);
@@ -1821,7 +1821,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 44:	//Guepe  -  CREATURE_FAMILY_WASP - AI : Mouvement_Contact_Prudent_Volant
 							me->SetMeleeDamageSchool(SpellSchools(3));									// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
+							Spell_respawn_evade = Spell_Vitesse_4s;
 							Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
