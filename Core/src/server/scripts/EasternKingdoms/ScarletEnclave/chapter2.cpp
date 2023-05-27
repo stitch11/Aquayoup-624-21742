@@ -224,6 +224,7 @@ public:
             wave = 0;
             waveTimer = 3000;
             valrothGUID.Clear();
+			me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
         }
 
         void Reset() override
@@ -234,7 +235,7 @@ public:
                 me->LoadEquipment(0, true);
                 me->RemoveAurasDueToSpell(SPELL_ANTI_MAGIC_ZONE);
                 me->RemoveAurasDueToSpell(SPELL_KOLTIRA_TRANSFORM);
-                me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+                //me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
             }
         }
 
@@ -301,18 +302,18 @@ public:
                     {
                         case 0:
                             Talk(SAY_BREAKOUT3);
-                            SummonAcolyte(3);
-                            waveTimer = 20000;
+                            SummonAcolyte(1);
+                            waveTimer = 8000;
                             break;
                         case 1:
                             Talk(SAY_BREAKOUT4);
-                            SummonAcolyte(3);
-                            waveTimer = 20000;
+                            SummonAcolyte(1);
+                            waveTimer = 8000;
                             break;
                         case 2:
                             Talk(SAY_BREAKOUT5);
-                            SummonAcolyte(4);
-                            waveTimer = 20000;
+                            SummonAcolyte(1);
+                            waveTimer = 8000;
                             break;
                         case 3:
                             Talk(SAY_BREAKOUT6);
