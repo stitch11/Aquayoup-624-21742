@@ -761,6 +761,7 @@ public:
                                     Talk(EMOTE_DIES);
                                     me->setDeathState(JUST_DIED);
                                     me->SetHealth(0);
+									player->RewardPlayerAndGroupAtEvent(29061, me);
                                     return;
                             }
                             break;
@@ -791,6 +792,7 @@ public:
                                     Talk(EMOTE_DIES);
                                     me->setDeathState(JUST_DIED);
                                     me->SetHealth(0);
+									player->RewardPlayerAndGroupAtEvent(29061, me);
                                     return;
                             }
                             break;
@@ -821,6 +823,7 @@ public:
                                     Talk(EMOTE_DIES);
                                     me->setDeathState(JUST_DIED);
                                     me->SetHealth(0);
+									player->RewardPlayerAndGroupAtEvent(29061, me);
                                     return;
                             }
                             break;
@@ -851,6 +854,7 @@ public:
                                     Talk(EMOTE_DIES);
                                     me->setDeathState(JUST_DIED);
                                     me->SetHealth(0);
+									player->RewardPlayerAndGroupAtEvent(29061, me);
                                     return;
                             }
                             break;
@@ -881,6 +885,7 @@ public:
                                     Talk(EMOTE_DIES);
                                     me->setDeathState(JUST_DIED);
                                     me->SetHealth(0);
+									player->RewardPlayerAndGroupAtEvent(29061, me);
                                     return;
                             }
                             break;
@@ -911,6 +916,7 @@ public:
                                     Talk(EMOTE_DIES);
                                     me->setDeathState(JUST_DIED);
                                     me->SetHealth(0);
+									player->RewardPlayerAndGroupAtEvent(29061, me);
                                     return;
                             }
                             break;
@@ -941,6 +947,7 @@ public:
                                     Talk(EMOTE_DIES);
                                     me->setDeathState(JUST_DIED);
                                     me->SetHealth(0);
+									player->RewardPlayerAndGroupAtEvent(29061, me);
                                     return;
                             }
                             break;
@@ -971,6 +978,7 @@ public:
                                     Talk(EMOTE_DIES);
                                     me->setDeathState(JUST_DIED);
                                     me->SetHealth(0);
+									player->RewardPlayerAndGroupAtEvent(29061, me);
                                     return;
                             }
                             break;
@@ -1001,6 +1009,7 @@ public:
                                     Talk(EMOTE_DIES);
                                     me->setDeathState(JUST_DIED);
                                     me->SetHealth(0);
+									player->RewardPlayerAndGroupAtEvent(29061, me);
                                     return;
                             }
                             break;
@@ -1031,6 +1040,7 @@ public:
                                     Talk(EMOTE_DIES);
                                     me->setDeathState(JUST_DIED);
                                     me->SetHealth(0);
+									player->RewardPlayerAndGroupAtEvent(29061, me);
                                     return;
                             }
                             break;
