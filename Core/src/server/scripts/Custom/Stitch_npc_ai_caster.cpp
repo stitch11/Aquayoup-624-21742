@@ -60,7 +60,8 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			uint32 Spell_ContreAttaque = 0;
 			uint32 Visuel_Teleportation = 87459;
 			uint32 Bond_aleatoire_25m = 300267;
-
+			//uint32 Spell_Canalise_hc = 0;					// Sort canalisé hors combat, doit etre fixe et en home
+			uint32 Spell_Canalise_hc = me->m_spells[7];
 			// Definitions des variables Cooldown et le 1er lancement
 			uint32 Cooldown_Spell1 = 1000;
 			uint32 Cooldown_Spell1_defaut = urand(3000, 3750);
@@ -123,6 +124,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				{
 					me->CastSpell(me, Tmp, true);
 				}
+				Spell_canalisé_hc_home();
 			}
 
 			void Init_AI()
@@ -279,6 +281,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				me->GetMotionMaster()->MoveTargetedHome();								// Retour home pour rafraichir client
 				//me->SetSpeedRate(MOVE_RUN, 1.01f);
 				me->SetReactState(REACT_AGGRESSIVE);
+				Spell_canalisé_hc_home();
 
 				Init_AI();
 				Random = urand(1, 2);
@@ -315,6 +318,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			{
 				me->SetReactState(REACT_AGGRESSIVE);
 				//me->SetSpeedRate(MOVE_RUN, 1.01f);										// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
+				Spell_canalisé_hc_home();
 			}
 			void UpdateAI(uint32 diff) override
 			{
@@ -350,6 +354,9 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 						Start_Agro = 1;
 						
 							me->StopMoving();
+
+							if (me->HasAura(Spell_Canalise_hc))
+								me->RemoveAura(Spell_Canalise_hc);
 
 							// Message a l'agro , ci le mob a plusieurs lignes (creature_text groupid>0) il y a de forte chance que ce soit pour un dialogue
 							// et non un simple message a l'agro. Donc on l'ignore.
@@ -714,6 +721,14 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
 					return false;
 				else return true;
+			}
+			void Spell_canalisé_hc_home()
+			{
+				// Sort canalisé hors combat, doit etre fixe et en home 
+				if (Spell_Canalise_hc > 1 && !me->IsInCombat())
+				{
+					me->CastSpell(me, Spell_Canalise_hc, true);
+				}
 			}
 		};
 
