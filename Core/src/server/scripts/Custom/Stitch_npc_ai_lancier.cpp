@@ -94,7 +94,17 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 
 			void InitializeAI() override
 			{
-				me->SetSheath(SHEATH_STATE_RANGED);
+				// Forcer le choix par creature_template->pickpocketloot . Lancier = 0 , Archer = 1 , Fusilier = 2, Lancier (Distant) = 3 , Archer = 4  (Distant) , Fusilier= 5 (Distant) 
+				//ForceBranche = me->GetCreatureTemplate()->pickpocketLootId;
+				if (ForceBranche == 1 || ForceBranche == 4 || ForceBranche == 7) { Tir_1 = Tir_Arc; }									// Tir a l'arc
+				else if (ForceBranche == 2 || ForceBranche == 5 || ForceBranche == 8) { Tir_1 = Tir_Fusil; }							// Tir au fusil
+				else if (ForceBranche == 0 || ForceBranche == 3 || ForceBranche == 6) { Tir_1 = Lancer_une_Arme; }						// Lance une arme		
+
+				if (Tir_1 != Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_RANGED); }				// S'équipe d'arc ou fusil
+				else
+				{
+					me->SetSheath(SHEATH_STATE_MELEE);												// S'equipe de l'arme au contact
+				}
 
 				// Buf au lancement du serveur (Pet, armure de givre, etc)
 				uint32 Tmp = me->m_spells[3];
@@ -144,11 +154,6 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 
 				}
 
-				// Forcer le choix par creature_template->pickpocketloot . Lancier = 0 , Archer = 1 , Fusilier = 2, Lancier (Distant) = 3 , Archer = 4  (Distant) , Fusilier= 5 (Distant) 
-				//ForceBranche = me->GetCreatureTemplate()->pickpocketLootId;
-				if (ForceBranche == 1 || ForceBranche == 4 || ForceBranche == 7) { Tir_1 = Tir_Arc; }									// Tir a l'arc
-				else if (ForceBranche == 2 || ForceBranche == 5 || ForceBranche == 8) { Tir_1 = Tir_Fusil; }							// Tir au fusil
-				else if (ForceBranche == ForceBranche == 0 || ForceBranche == 3 || ForceBranche == 6) { Tir_1 = Lancer_une_Arme; }						// Lance une arme		
 
 				Random_AI = urand(0,1);		// Caster_Puis_Contact ou Caster
 
