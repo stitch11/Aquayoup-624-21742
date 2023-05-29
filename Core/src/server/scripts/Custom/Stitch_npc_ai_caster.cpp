@@ -157,6 +157,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					switch (ForceClasse)
 					{
 					case 1: // Mage feu
+					case 12:
 						Buf_1 = 165743;													// Armure de givre	
 						Spell_agro = Liste_Spell_agro_1[urand(0, 3)];
 						Spell_1 = 9053;													// Boule de feu 
@@ -169,6 +170,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 						Cooldown_RegenMana_defaut = 4000;
 						break;
 					case 2: // Mage Givre
+					case 13:
 						Buf_1 = 165743;													// Armure de givre	
 						Spell_agro = Liste_Spell_agro_2[urand(0, 2)];
 						Spell_1 = 116;													// Eclair de givre
@@ -181,6 +183,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 						Cooldown_RegenMana_defaut = 2750;
 						break;
 					case 3: // Demo
+					case 14:
 						Buf_1 = 79934;  												// Armure démoniaque
 						Spell_agro = 44267;												// Immolation
 						Spell_1 = 686;													// Trait de l'ombre
@@ -193,6 +196,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 						Cooldown_RegenMana_defaut = 2500;
 						break;
 					case 4: // Druide
+					case 15:
 						Buf_1 = 1126;													// Marque du fauve
 						Spell_agro = Liste_Spell_agro_4[urand(0, 2)];
 						Spell_1 = Liste_Spell_1_4[urand(0, 1)];
@@ -205,6 +209,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 						Cooldown_RegenMana_defaut = 1000;
 						break;
 					case 5: // Pretre
+					case 16:
 						Buf_1 = 21562;													// Mot de pouvoir  : Robustesse 21562
 						Spell_agro = 8092;												// Attaque mentale 8092
 						Spell_1 = 585;													// Châtiment 585
@@ -217,6 +222,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 						Cooldown_RegenMana_defaut = 2000;
 						break;
 					case 6: // DK Chaos
+					case 17:
 						Buf_1 = 300049;													// Présence du Chaos 30049
 						Spell_agro = Liste_Spell_agro_6[urand(0, 3)];
 						Spell_1 = Liste_Spell_1[urand(0, 2)];							// Javelot de givre 300051, Javelot de peste 300052, Javelot de sang 300050
