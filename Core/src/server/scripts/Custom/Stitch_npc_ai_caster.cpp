@@ -125,6 +125,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					me->CastSpell(me, Tmp, true);
 				}
 				Spell_canalisé_hc_home();
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 			}
 
 			void Init_AI()
@@ -290,6 +291,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				Spell_canalisé_hc_home();
 
 				Init_AI();
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 				Random = urand(1, 2);
 				if (Random == 1 && Spell_respawn_evade != 0) { me->CastSpell(me, Spell_respawn_evade, true); }		// 1/2 Chance de lancer le sort au respawn ou evade
 			}
@@ -298,6 +300,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			{
 				Init_AI();
 				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);								// ROOT
+				me->SetSheath(SHEATH_STATE_MELEE);									//Arme sortie
 
 				if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() == WAYPOINT_MOTION_TYPE)
 				{
@@ -325,6 +328,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				me->SetReactState(REACT_AGGRESSIVE);
 				//me->SetSpeedRate(MOVE_RUN, 1.01f);										// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
 				Spell_canalisé_hc_home();
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 			}
 			void UpdateAI(uint32 diff) override
 			{

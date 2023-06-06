@@ -110,6 +110,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 				{
 					me->CastSpell(me, Tmp, true);
 				}
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 			}
 
 			void Init_AI()
@@ -213,6 +214,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 				me->SetReactState(REACT_AGGRESSIVE);
 
 				Init_AI();
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 			}
 			void EnterCombat(Unit* /*who*/) override
 			{
@@ -224,7 +226,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 					me->StopMoving();
 					me->GetMotionMaster()->MoveIdle();
 				}
-
+				me->SetSheath(SHEATH_STATE_MELEE);									//Arme sortie
 			}
 			void EnterEvadeMode(EvadeReason /*why*/) override
 			{
@@ -242,6 +244,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 				me->RemoveAura(Buf_branche3);
 				me->RemoveAura(Buf_all);
 
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 				me->SetReactState(REACT_AGGRESSIVE);
 				Bonus_Armure(100);														// Retire bonus d'armure
 			}

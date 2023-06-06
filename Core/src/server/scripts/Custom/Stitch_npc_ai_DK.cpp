@@ -144,6 +144,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 				{
 					me->CastSpell(me, Tmp, true);
 				}
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 			}
 
 			void Init_AI()
@@ -275,6 +276,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 
 				VisuelPowerRunic();
 				Init_AI();
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 			}
 
 			void EnterCombat(Unit* /*who*/) override
@@ -288,7 +290,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 					me->StopMoving();
 					me->GetMotionMaster()->MoveIdle();
 				}
-
+				me->SetSheath(SHEATH_STATE_MELEE);									//Arme sortie
 			}
 			void EnterEvadeMode(EvadeReason /*why*/) override
 			{
@@ -324,6 +326,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 
 				Bonus_Armure(100);														// Retire bonus d'armure
 
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 				me->SetReactState(REACT_AGGRESSIVE);
 				VisuelPowerRunic();
 			}

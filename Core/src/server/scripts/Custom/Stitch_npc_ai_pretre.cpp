@@ -100,6 +100,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 				{
 					me->CastSpell(me, Tmp, true);
 				}
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 			}
 
 			void Init_AI()
@@ -185,6 +186,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 				me->SetReactState(REACT_AGGRESSIVE);
 
 				Init_AI();
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 			}
 			void EnterCombat(Unit* /*who*/) override
 			{
@@ -196,7 +198,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 					me->StopMoving();
 					me->GetMotionMaster()->MoveIdle();
 				}
-
+				me->SetSheath(SHEATH_STATE_MELEE);									//Arme sortie
 			}
 			void EnterEvadeMode(EvadeReason /*why*/) override
 			{
@@ -213,6 +215,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 				me->RemoveAura(Buf_branche2);
 				me->RemoveAura(Buf_all);
 
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 				me->SetReactState(REACT_AGGRESSIVE);
 				//me->SetSpeedRate(MOVE_RUN, 1.01f);				
 			}

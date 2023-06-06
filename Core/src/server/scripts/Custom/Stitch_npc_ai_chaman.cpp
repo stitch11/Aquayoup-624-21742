@@ -115,6 +115,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 				{
 					me->CastSpell(me, Tmp, true);
 				}
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 			}
 
 			void Init_AI()
@@ -230,12 +231,14 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 				me->SetReactState(REACT_AGGRESSIVE);
 
 				Init_AI();
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 			}
 
 			void EnterCombat(Unit* /*who*/) override
 			{
 				ResteADistance = 10 + urand(0, 5);
 				Init_AI();
+				me->SetSheath(SHEATH_STATE_MELEE);									//Arme sortie
 
 				if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() == WAYPOINT_MOTION_TYPE)
 				{
@@ -265,6 +268,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 				me->RemoveAura(Buf_branche3);
 				Bonus_Armure(100);														// Retire bonus d'armure
 
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 				me->SetReactState(REACT_AGGRESSIVE);
 				//me->SetSpeedRate(MOVE_RUN, 1.01f);									// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
 			}

@@ -115,6 +115,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 				{
 					me->CastSpell(me, Tmp, true);
 				}
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 			}
 
 			void Init_AI()
@@ -222,6 +223,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 				me->SetReactState(REACT_AGGRESSIVE);
 
 				Init_AI();
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 			}
 			void EnterCombat(Unit* /*who*/) override
 			{
@@ -233,6 +235,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 					me->StopMoving();
 					me->GetMotionMaster()->MoveIdle();
 				}
+				me->SetSheath(SHEATH_STATE_MELEE);									//Arme sortie
 
 			}
 			void EnterEvadeMode(EvadeReason /*why*/) override
@@ -252,6 +255,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 				me->RemoveAura(Armure_Demoniaque);
 				me->RemoveAura(Gangrarmure);
 
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 				me->SetReactState(REACT_AGGRESSIVE);
 				//me->SetSpeedRate(MOVE_RUN, 1.01f);										// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
 			}

@@ -109,6 +109,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 				{
 					me->CastSpell(me, Tmp, true);
 				}
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 			}
 
 			void Init_AI()
@@ -191,17 +192,20 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			}
 			void JustRespawned() override
 			{
-				me->GetMotionMaster()->MoveTargetedHome();								// Retour home pour rafraichir client
+				me->GetMotionMaster()->MoveTargetedHome();							// Retour home pour rafraichir client
 				//me->SetSpeedRate(MOVE_RUN, 1.01f);
 				me->SetReactState(REACT_AGGRESSIVE);
 
 				Init_AI();
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 			}
 
 			void EnterCombat(Unit* /*who*/) override
 			{
 				ResteADistance = urand(4, 6);
 				Init_AI();
+
+				me->SetSheath(SHEATH_STATE_MELEE);									//Arme sortie
 
 				if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() == WAYPOINT_MOTION_TYPE)
 				{
@@ -240,6 +244,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 				Bonus_Armure(100);													// Retire bonus d'armure
 
 				me->SetReactState(REACT_AGGRESSIVE);
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 				//me->SetSpeedRate(MOVE_RUN, 1.01f);									// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
 			}
 			void UpdateAI(uint32 diff) override

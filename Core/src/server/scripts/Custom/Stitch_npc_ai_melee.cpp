@@ -80,6 +80,8 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 				{
 					me->CastSpell(me, Tmp, true);
 				}
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
+
 			}
 
 			void Init_AI()
@@ -138,6 +140,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 				me->SetReactState(REACT_AGGRESSIVE);
 
 				Init_AI();
+				//me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 				Random = urand(1, 2);
 				if (Random == 1 && Spell_evade != 0) { me->CastSpell(me, Spell_evade, true); }		// 1/2 Chance de lancer le sort au respawn ou evade
 			}
@@ -147,6 +150,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 				ResteADistance = urand(4, 6);
 				Init_AI();
 
+				me->SetSheath(SHEATH_STATE_MELEE);									//Arme sortie
 				if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() == WAYPOINT_MOTION_TYPE)
 				{
 					me->StopMoving();
@@ -172,6 +176,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 			void JustReachedHome() override
 			{
 				me->SetReactState(REACT_AGGRESSIVE);
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 				//me->SetSpeedRate(MOVE_RUN, 1.01f);										// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
 			}
 			void UpdateAI(uint32 diff) override
