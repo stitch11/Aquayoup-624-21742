@@ -15519,7 +15519,7 @@ void Unit::RewardRage(uint32 baseRage)
 
 
 	//Stitch Regen rage ours ------------------------------------------------------------------------------------------------------------
-//    ModifyPower(POWER_RAGE, uint32(addRage * 1));
+//    ModifyPower(POWER_RAGE, uint32(addRage * 10));
 	ModifyPower(POWER_RAGE, uint32(addRage * 35));
 
 
