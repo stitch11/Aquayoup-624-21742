@@ -1185,11 +1185,11 @@ void AchievementGlobalMgr::LoadRewardLocales()
 
     QueryResult result = WorldDatabase.Query("SELECT entry, subject_loc1, text_loc1, subject_loc2, text_loc2, subject_loc3, text_loc3, subject_loc4, text_loc4, "
                                              "subject_loc5, text_loc5, subject_loc6, text_loc6, subject_loc7, text_loc7, subject_loc8, text_loc8"
-                                             " FROM locales_achievement_reward");
+                                             " FROM achievement_reward_locales");
 
     if (!result)
     {
-        TC_LOG_INFO("server.loading", ">> Loaded 0 achievement reward locale strings.  DB table `locales_achievement_reward` is empty.");
+        TC_LOG_INFO("server.loading", ">> Loaded 0 achievement reward locale strings.  DB table `achievement_reward_locales` is empty.");
         return;
     }
 
@@ -1201,7 +1201,7 @@ void AchievementGlobalMgr::LoadRewardLocales()
 
         if (_achievementRewards.find(entry) == _achievementRewards.end())
         {
-            TC_LOG_ERROR("sql.sql", "Table `locales_achievement_reward` (Entry: %u) contains locale strings for a non-existing achievement reward.", entry);
+            TC_LOG_ERROR("sql.sql", "Table `achievement_reward_locales` (Entry: %u) contains locale strings for a non-existing achievement reward.", entry);
             continue;
         }
 

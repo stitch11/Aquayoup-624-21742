@@ -1000,7 +1000,7 @@ public:
     {
         TC_LOG_INFO("misc", "Re-Loading Locales Achievement Reward Data...");
         sAchievementMgr->LoadRewardLocales();
-        handler->SendGlobalGMSysMessage("DB table `locales_achievement_reward` reloaded.");
+        handler->SendGlobalGMSysMessage("DB table `achievement_reward_locales` reloaded.");
         return true;
     }
 
@@ -1024,7 +1024,7 @@ public:
     {
         TC_LOG_INFO("misc", "Re-Loading Locales Creature Texts...");
         sCreatureTextMgr->LoadCreatureTextLocales();
-        handler->SendGlobalGMSysMessage("DB table `locales_creature_text` reloaded.");
+        handler->SendGlobalGMSysMessage("DB table `creature_text_locales` reloaded.");
         return true;
     }
 
@@ -1040,7 +1040,7 @@ public:
     {
         TC_LOG_INFO("misc", "Re-Loading Locales Gossip Menu Option ... ");
         sObjectMgr->LoadGossipMenuItemsLocales();
-        handler->SendGlobalGMSysMessage("DB table `locales_gossip_menu_option` reloaded.");
+        handler->SendGlobalGMSysMessage("DB table `gossip_menu_option_locales` reloaded.");
         return true;
     }
 
