@@ -903,7 +903,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Cooldown_SpellB_defaut = urand(4500,6000);
 						Cooldown_SpellB_rapide = 3500;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
 						Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;						// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
-						Cooldown_Spell_Heal_defaut = 60000;
+						Cooldown_Spell_Heal_defaut = 15000;
 						Cooldown_Principal_A = 2000;
 						Cooldown_Principal_A_Defaut = 2000;
 						Cooldown_Principal_B = 1000;
@@ -977,6 +977,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				me->RemoveAllControlled();																			// renvois pet
 
 				me->RemoveAura(Buf_A);
+				me->RemoveAura(Spell_Heal);
 
 				Random = urand(1, 3);
 				if (Random == 1 && Spell_respawn_evade != 0) { me->CastSpell(me, Spell_respawn_evade, true); }		// 1/3 Chance de lancer le sort sur lui au respawn ou evade
@@ -1069,15 +1070,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 3);
 							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 1;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 2500;
 							Cooldown_SpellB_defaut = Base_Cooldown_Cast_B + 4000;
 							Cooldown_SpellB_rapide = 0;
 							Cooldown_SpellB_rapide_defaut = 0;
-							Cooldown_Spell_Heal_defaut = 30000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;																		// Temp de test pour aller sur la cible
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = 6000;																		// Temp de test pour mouvement (s'eloigner, passer dans le dos,...)
@@ -1091,15 +1092,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 2);
 							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 1;
-							Spell_respawn_evade = Spell_Vitesse_4s /*Spell_Invisible*/;
-							Spell_Heal = Spell_Instincts_de_survie;
+							if (Spell_respawn_evade == 0) { Spell_respawn_evade = Spell_Vitesse_4s; }	// spells[3] 
+							if (Spell_Heal == 0) { Spell_Heal = Spell_Instincts_de_survie; }			// spells[5]
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 2500;
 							Cooldown_SpellB_defaut = Base_Cooldown_Cast_B;
 							Cooldown_SpellB_rapide = 0;
 							Cooldown_SpellB_rapide_defaut = 0;
-							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = 6000;
@@ -1120,16 +1121,16 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 3:		// Araignee  -  CREATURE_FAMILY_SPIDER - AI : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance , Doit avoir du mana , % Toile_Araignee)
 							me->SetMeleeDamageSchool(SpellSchools(3));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 1;
-							Spell_respawn_evade = 0;
+							//Spell_respawn_evade = 0;
 							Buf_A = 0;
-							Spell_Heal = 0;
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 1500;
 							Cooldown_SpellB_defaut = Base_Cooldown_Cast_B - 3000;
 							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 4000;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;												// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
-							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 2000;
 							Cooldown_Principal_A_Defaut = 2000;
 							Cooldown_Principal_B = 1000;
@@ -1142,15 +1143,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 4:		// Ours  -  CREATURE_FAMILY_BEAR - AI : Mouvement_Contact_Basique, % Instincts_de_survie
 							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = Spell_Instincts_de_survie; ;
+							//Spell_respawn_evade = 0;
+							if (Spell_Heal == 0) { Spell_Heal = Spell_Instincts_de_survie; }			// spells[5]
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 3000;
 							Cooldown_SpellB_defaut = Base_Cooldown_Cast_B + 2000;
 							Cooldown_SpellB_rapide = 0;
 							Cooldown_SpellB_rapide_defaut = 0;
-							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1500;
 							Cooldown_Principal_A_Defaut = 1500;
 							Cooldown_Principal_B = 8000;
@@ -1163,8 +1164,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 5:		// Sanglier  -  CREATURE_FAMILY_BOAR - AI : Mouvement_Contact_Charges_Multiples
 							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 2500;
@@ -1185,15 +1186,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 3);
 							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 1;
-							Spell_respawn_evade = Spell_Ecorce;
-							Spell_Heal = 0;
+							if (Spell_respawn_evade == 0) { Spell_respawn_evade = Spell_Ecorce; }	// spells[3]
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 3000;
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B + 3000);
 							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3000;													// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;												// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
-							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 2000;
 							Cooldown_Principal_A_Defaut = 2000;
 							Cooldown_Principal_B = urand(5000, 7000);
@@ -1206,8 +1207,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 7:		// Oiseau charogniar  -  CREATURE_FAMILY_CARRION_BIRD - AI : Mouvement_Contact_Prudent_Volant
 							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = Spell_Vitesse_4s;
-							Spell_Heal = 0;
+							if (Spell_respawn_evade == 0) { Spell_respawn_evade = Spell_Vitesse_4s; }	// spells[3] 
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 2500;
@@ -1228,8 +1229,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 2);
 							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 2500;
@@ -1249,8 +1250,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 9:		// Gorille  -  CREATURE_FAMILY_GORILLA - AI : Mouvement_Contact_Bondissant, %Bondir_Guerrier
 							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 2500;
@@ -1271,8 +1272,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 3);
 							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = Spell_Vitesse_4s;
-							Spell_Heal = 0;
+							if (Spell_respawn_evade == 0) { Spell_respawn_evade = Spell_Vitesse_4s; }	// spells[3] 
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 2500;
@@ -1307,15 +1308,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 2);
 							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 1;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 3000;
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B -2000, Base_Cooldown_Cast_B);
 							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3000;													// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;												// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
-							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 2000;
 							Cooldown_Principal_A_Defaut = 2000;
 							Cooldown_Principal_B = urand(3000, 4000);
@@ -1329,15 +1330,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 2);
 							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 1;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 2500;
 							Cooldown_SpellB_defaut = Base_Cooldown_Cast_B -2000;
 							Cooldown_SpellB_rapide = 0;
 							Cooldown_SpellB_rapide_defaut = 0;
-							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = 6000;
@@ -1348,8 +1349,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 16:	//Marcheur du vide (Voidwalker)  -  CREATURE_FAMILY_VOIDWALKER - AI : Mouvement_Contact_Basique
 							me->SetMeleeDamageSchool(SpellSchools(5));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 17767;																				// Rempart de l’ombre 17767 (PV +65%/20s), Bouclier de l’ombre 115232 (dmg -60%/30s)
+							//Spell_respawn_evade = 0;
+							if (Spell_Heal == 0) { Spell_Heal = 17767; }			// spells[5]							// Rempart de l’ombre 17767 (PV +65%/20s), Bouclier de l’ombre 115232 (dmg -60%/30s)
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A + 250;
 							Cooldown_SpellB = 2500;
@@ -1370,8 +1371,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 2);
 							me->SetMeleeDamageSchool(SpellSchools(5));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;																					// 
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;																					// 
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A - 1500;
 							Cooldown_SpellB = urand(2500, 5000);
@@ -1397,8 +1398,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 19:	//Garde funeste (Doomguard)  -  CREATURE_FAMILY_DOOMGUARD - AI : Mouvement_Contact_Charges_Multiples, %Bondir_Guerrier
 							me->SetMeleeDamageSchool(SpellSchools(5));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;																					// 
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;																					// 
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = urand(2500, 3500);
@@ -1418,8 +1419,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 20:	//Scorpion  -  CREATURE_FAMILY_SCORPID - AI : Mouvement_Contact_Avance_Recule
 							me->SetMeleeDamageSchool(SpellSchools(3));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;																					// 
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;																					// 
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = urand(2500, 3500);
@@ -1439,8 +1440,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 21:	//Tortue  -  CREATURE_FAMILY_TURTLE - AI : Mouvement_Contact_Basique
 							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;																					// 
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;																					// 
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = urand(2500, 3500);
@@ -1460,8 +1461,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 23:	//Imp  -  CREATURE_FAMILY_IMP - AI : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance )
 							me->SetMeleeDamageSchool(SpellSchools(2));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;																// 
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;																// 
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A - 500, Base_Cooldown_Cast_A - 250);
 							Cooldown_SpellB = 2500;
@@ -1481,8 +1482,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 24:	//Chauve souris  -  CREATURE_FAMILY_BAT - AI : Mouvement_Contact_Prudent_Volant
 							me->SetMeleeDamageSchool(SpellSchools(3));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;																					// 
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;																					// 
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 2500;
@@ -1502,8 +1503,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 25:	//Hyene  -  CREATURE_FAMILY_HYENA - AI : Mouvement_Contact_Prudent
 							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 1;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;																					// 
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;																					// 
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = urand(2500, 8000);
@@ -1523,8 +1524,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 26:	//Oiseau de proie  -  CREATURE_FAMILY_BIRD_OF_PREY - AI : Mouvement_Contact_Basique, %Griffure_bondissante
 							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = Spell_Charge_Stun2s;
-							Spell_Heal = 0;																					// 
+							if (Spell_respawn_evade == 0) { Spell_respawn_evade = Spell_Charge_Stun2s; }	// spells[3] 
+							//Spell_Heal = 0;																					// 
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = urand(2500, 8000);
@@ -1537,22 +1538,22 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Principal_B = 5000;
 							Cooldown_Principal_B_Defaut = urand(4000, 8000);
 							ResteADistance = 5;
-							Spell_Trop_Loin = Spell_Griffure_bondissante;													// Griffure bondissante (bond) 89712
+							Spell_Trop_Loin = Spell_Griffure_bondissante;														// Griffure bondissante (bond) 89712
 							Cooldown_Trop_Loin = urand(3000, 8000);
 							Cooldown_Trop_Loin_Defaut = urand(5000, 7000);
 							break;
 						case 27:	//Serpent des vents  -  CREATURE_FAMILY_WIND_SERPENT - AI : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance, %Bouclier_De_Foudre )
-							me->SetMeleeDamageSchool(SpellSchools(6));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							me->SetMeleeDamageSchool(SpellSchools(6));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = Spell_Bouclier_De_Foudre;
-							Spell_Heal = 974;																				// bouclier de terre 974
+							if (Spell_respawn_evade == 0) { Spell_respawn_evade = Spell_Bouclier_De_Foudre; }	// spells[3] 
+							if (Spell_Heal == 0) { Spell_Heal = 974; }			                                // spells[5]	// bouclier de terre 974
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A - 250;
 							Cooldown_SpellB = Base_Cooldown_Cast_B - 4000;
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 4000, Base_Cooldown_Cast_B -2000);
 							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 4000;
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
-							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = 1000;
@@ -1565,8 +1566,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 29:	//Felguard  -  CREATURE_FAMILY_FELGUARD - AI : Mouvement_Contact_Basique, %Poursuite
 							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;																					// 
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;																					// 
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 2500;
@@ -1589,15 +1590,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 30:	//Faucon dragon  -  CREATURE_FAMILY_DRAGONHAWK - AI : Mouvement_Caster
 							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = urand(3000, 4000);
 							Cooldown_SpellB = 2000;
 							Cooldown_SpellB_defaut = urand(5000, 6000);
 							Cooldown_SpellB_rapide = 4000;
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
-							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = 2000;
@@ -1612,15 +1613,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Random = urand(1, 2);
 							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = urand(Base_Cooldown_Cast_B, 6000);
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 3000, Base_Cooldown_Cast_B - 2000);
 							Cooldown_SpellB_rapide = 0;
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
-							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = urand(3000, 5000);
@@ -1638,15 +1639,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1,2);
 							me->SetMeleeDamageSchool(SpellSchools(6));													// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = Spell_Vitesse_4s;
-							Spell_Heal = 0;
+							if (Spell_respawn_evade == 0) { Spell_respawn_evade = Spell_Vitesse_4s; }					// spells[3] 
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A, Base_Cooldown_Cast_A + 500);
 							Cooldown_SpellB = 1000;
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B -3000 , Base_Cooldown_Cast_B -2000);
 							Cooldown_SpellB_rapide = 4000;
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
-							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1500;
 							Cooldown_Principal_A_Defaut = 1500;
 							Cooldown_Principal_B = 1000;
@@ -1673,15 +1674,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 35:	//Serpent  -  CREATURE_FAMILY_SERPENT - AI : Mouvement_Contact_Basique
 							me->SetMeleeDamageSchool(SpellSchools(3));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 1;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A, Base_Cooldown_Cast_A + 500);
 							Cooldown_SpellB = 2000;
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 1500, Base_Cooldown_Cast_B - 500);
 							Cooldown_SpellB_rapide = 0;
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
-							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = 5000;
@@ -1692,17 +1693,17 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Trop_Loin_Defaut = urand(4000, 7000);
 							break;
 						case 37:	//Papillon de nuit  -  CREATURE_FAMILY_MOTH - AI :  Mouvement_Caster, Bouclier_De_Terre
-							me->SetMeleeDamageSchool(SpellSchools(3));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							me->SetMeleeDamageSchool(SpellSchools(3));											// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = Spell_Bouclier_De_Terre;
-							Spell_Heal = 0;
+							if (Spell_respawn_evade == 0) { Spell_respawn_evade = Spell_Bouclier_De_Terre; }	// spells[3]
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 500;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 1000;
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 2000, Base_Cooldown_Cast_B - 1000);
 							Cooldown_SpellB_rapide = 0;
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
-							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = 2000;
@@ -1715,15 +1716,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 38:	//Chimere  -  CREATURE_FAMILY_CHIMAERA - AI : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance, %Epines )
 							me->SetMeleeDamageSchool(SpellSchools(0));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = Spell_Epines;
-							Spell_Heal = 0;
+							if (Spell_respawn_evade == 0) { Spell_respawn_evade = Spell_Epines; }			// spells[3] 
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 500;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A + 500;
 							Cooldown_SpellB = 1000;
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 1000, Base_Cooldown_Cast_B);
 							Cooldown_SpellB_rapide = urand(Base_Cooldown_Cast_B - 2250, Base_Cooldown_Cast_B - 1250);
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
-							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = 1000;
@@ -1736,15 +1737,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 39:	//Diablosaure  -  CREATURE_FAMILY_DEVILSAUR - AI : Mouvement_Contact_Basique
 							me->SetMeleeDamageSchool(SpellSchools(0));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 500;
 							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A,Base_Cooldown_Cast_A + 1000);
 							Cooldown_SpellB = 1000;
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B -2000, Base_Cooldown_Cast_B);
 							Cooldown_SpellB_rapide = 0;
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
-							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = 8000;
@@ -1757,15 +1758,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 40:	//Goule  -  CREATURE_FAMILY_GHOUL - AI : Mouvement_Contact_Basique, %Bouclier_Dos
 							me->SetMeleeDamageSchool(SpellSchools(5));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = urand(3000, 5000);
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B + 2000);
 							Cooldown_SpellB_rapide = 0;
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
-							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 3000;
 							Cooldown_Principal_A_Defaut = 3000;
 							Cooldown_Principal_B = 8000;
@@ -1778,15 +1779,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 42:	//Ver  -  CREATURE_FAMILY_WORM - AI : Mouvement_Caster_Puis_Contact ( spell [2]=spell a distance 
 							me->SetMeleeDamageSchool(SpellSchools(0));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 500;
 							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A + 500, Base_Cooldown_Cast_A + 1500);
 							Cooldown_SpellB = 1000;
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 1000, Base_Cooldown_Cast_B);
 							Cooldown_SpellB_rapide = urand(Base_Cooldown_Cast_B - 2500, Base_Cooldown_Cast_B - 1500);
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
-							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = 1000;
@@ -1800,8 +1801,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 3);
 							me->SetMeleeDamageSchool(SpellSchools(0));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 2500;
@@ -1821,8 +1822,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 44:	//Guepe  -  CREATURE_FAMILY_WASP - AI : Mouvement_Contact_Prudent_Volant
 							me->SetMeleeDamageSchool(SpellSchools(3));									// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = Spell_Vitesse_4s;
-							Spell_Heal = 0;
+							if (Spell_respawn_evade == 0) { Spell_respawn_evade = Spell_Vitesse_4s; }	// spells[3] 
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 2500;
@@ -1843,8 +1844,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 3);
 							me->SetMeleeDamageSchool(SpellSchools(0));									// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 1;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;																// 
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;																// 
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = urand(2500, 8000);
@@ -1865,15 +1866,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1,3);
 							me->SetMeleeDamageSchool(SpellSchools(4));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 1500;
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 2500, Base_Cooldown_Cast_B - 500);
 							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3000;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;												// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
-							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = 2000;
@@ -1913,8 +1914,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 3);
 							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 1;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;																					// 
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;																					// 
 							Cooldown_SpellA = 2000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = urand(4000, 6000);
@@ -1936,8 +1937,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 51:	//Singe  -  CREATURE_FAMILY_MONKEY - AI : Mouvement_Caster
 							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;																					// 
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;																					// 
 							Cooldown_SpellA = 2000;
 							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A - 500, Base_Cooldown_Cast_A);
 							Cooldown_SpellB = 1000;
@@ -1958,8 +1959,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 5);
 							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 1;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;																					// 
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;																					// 
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A - 250;
 							Cooldown_SpellB = urand(4000, 6000);
@@ -1980,16 +1981,16 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 2);
 							me->SetMeleeDamageSchool(SpellSchools(6));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = Spell_Armure_De_La_Fournaise;
+							if (Spell_respawn_evade == 0) { Spell_respawn_evade = Spell_Armure_De_La_Fournaise; }			// spells[3] 
 							Buf_A = 0;
-							Spell_Heal = 0;
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1500;
 							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A - 500, Base_Cooldown_Cast_A - 250);
 							Cooldown_SpellB = 3000;
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B + 2000, Base_Cooldown_Cast_B + 4000);
 							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 1000;											// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;											// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
-							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 2000;
 							Cooldown_Principal_B = 3000;
@@ -2007,8 +2008,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 56:	//Zombie  -  CREATURE_FAMILY_ZOMBIE - AI : Mouvement_Contact_Basique
 							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;																					// 
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;																					// 
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A, Base_Cooldown_Cast_A + 500);
 							Cooldown_SpellB = urand(4000, 6000);
@@ -2029,8 +2030,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 2);
 							me->SetMeleeDamageSchool(SpellSchools(3));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 1;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;																					// 
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;																					// 
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A - 250, Base_Cooldown_Cast_A + 250);
 							Cooldown_SpellB = urand(3000, 4000);
@@ -2056,8 +2057,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 2);
 							me->SetMeleeDamageSchool(SpellSchools(5));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;																					// 
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;																					// 
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A - 250, Base_Cooldown_Cast_A);
 							Cooldown_SpellB = 2000;
@@ -2083,8 +2084,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 2);
 							me->SetMeleeDamageSchool(SpellSchools(5));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;																					// 
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;																					// 
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A - 1500;
 							Cooldown_SpellB = urand(2500, 4000);
@@ -2111,8 +2112,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 2);
 							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;																					// 
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;																					// 
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 2000;
@@ -2131,7 +2132,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 							if (AI_Random == 1)
 							{
-								Cooldown_Principal_B_Defaut = urand(5000, 6000);;
+								Cooldown_Principal_B_Defaut = urand(5000, 6000);
 							}
 
 							//me->SetVirtualItem(0, 12784);																	// Equipé d'une hache
@@ -2140,8 +2141,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 108:	//Infernal  -  CREATURE_FAMILY_INFERNAL - AI : Mouvement_Contact_Basique
 							me->SetMeleeDamageSchool(SpellSchools(2));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 1;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;																					// 
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;																					// 
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A + 3500, Base_Cooldown_Cast_A + 4500);
 							Cooldown_SpellB = 2000;
@@ -2162,15 +2163,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 4);
 							me->SetMeleeDamageSchool(SpellSchools(2));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = Spell_Armure_De_La_Fournaise;
-							Spell_Heal = 0;
+							if (Spell_respawn_evade == 0) { Spell_respawn_evade = Spell_Armure_De_La_Fournaise; }	// spells[3] 
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 1500;
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 2500, Base_Cooldown_Cast_B - 1500);
 							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3500;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;											// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
-							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = 2000;
@@ -2194,15 +2195,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 117:	//elementaire de terre  -  CREATURE_FAMILY_EARTHELEMENTAL - AI : Mouvement_Contact_Basique, %Ecorce %Lancer_Une_Pierre
 							me->SetMeleeDamageSchool(SpellSchools(3));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = Spell_Ecorce;
-							Spell_Heal = 0;
+							if (Spell_respawn_evade == 0) { Spell_respawn_evade = Spell_Ecorce; }	// spells[3] 
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 2000;
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B + 3000);
 							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3500;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;											// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
-							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = urand(4000, 4500);
@@ -2216,15 +2217,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 2);
 							me->SetMeleeDamageSchool(SpellSchools(3));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 1;
-							Spell_respawn_evade = Spell_Ecorce;
-							Spell_Heal = 0;
+							if (Spell_respawn_evade == 0) { Spell_respawn_evade = Spell_Ecorce; }	// spells[3] 
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 3000;
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B + 3000);
 							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3500;											// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;											// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
-							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 2000;
 							Cooldown_Principal_A_Defaut = 2000;
 							Cooldown_Principal_B = urand(4000, 6000);
@@ -2238,8 +2239,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 4);
 							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 1;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 2500;
@@ -2260,8 +2261,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 5);
 							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 1;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 2500;
@@ -2281,8 +2282,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 155:	//CREATURE_FAMILY_SENTERRE uniquement si fixe - AI : Mouvement_Contact_Basique 
 							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A + 250;
 							Cooldown_SpellB = 3000;
@@ -2303,8 +2304,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1, 3);
 							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A + 250;
 							Cooldown_SpellB = 3000;
@@ -2343,15 +2344,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 157:	//Rocher (elementaire de terre si fixe)  -  CREATURE_FAMILY_MORPH_ROCHER - AI : Mouvement_Contact_Basique
 							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							Spell_respawn_evade = Spell_Ecorce;
-							Spell_Heal = 0;
+							if (Spell_respawn_evade == 0) { Spell_respawn_evade = Spell_Ecorce; }							// spells[3] 
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 2000;
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 2000, Base_Cooldown_Cast_B);
 							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3500;											// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;											// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
-							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = urand(4000, 4500);
@@ -2365,15 +2366,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							AI_Random = urand(1,4); 
 							me->SetMeleeDamageSchool(SpellSchools(0));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 1;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = urand(Base_Cooldown_Cast_A, Base_Cooldown_Cast_A + 500);
 							Cooldown_SpellB = 2000;
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 1500, Base_Cooldown_Cast_B - 500);
 							Cooldown_SpellB_rapide = 0;
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
-							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = 6000;
@@ -2414,15 +2415,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 						default:
 							Spell_agro = 0;
-							Spell_respawn_evade = 0;
-							Spell_Heal = 0;
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 3000;
 							Cooldown_SpellB_defaut = Base_Cooldown_Cast_B - 1000;
 							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3000;
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
-							Cooldown_Spell_Heal_defaut = 60000;
+							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = 4000;
@@ -3386,7 +3387,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			void Heal_En_Combat(uint32 diff)
 			{
 
-				if (Cooldown_Spell_Heal <= diff && Spell_Heal != 0)
+				if (Cooldown_Spell_Heal <= diff && Spell_Heal != 0 && !me->HasAura(Spell_Heal))
 				{
 					// heal sur lui meme----------------------------------------------------------------------------------------------------------------------------
 					if ((me->GetHealth() < (me->GetMaxHealth()*0.60)))								// Si PV < 60%
@@ -3622,7 +3623,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					return;
 
 				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
-				if (Cooldown_Spell_ContreAttaque <= diff && Spell_ContreAttaque != 0)
+				if (Cooldown_Spell_ContreAttaque <= diff && Spell_ContreAttaque != 0 && !victim->HasAura(Spell_ContreAttaque))
 				{
 					if ((me->GetHealth() < (me->GetMaxHealth()*0.40)))									// Si PV =< 40%
 					{

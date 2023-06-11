@@ -47,7 +47,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 			uint32 Cooldown_Spell1 = 500;
 			uint32 Cooldown_Spell2 = 2000;
 			uint32 Cooldown_Spell3 = 3500;
-			uint32 Cooldown_Spell4 = urand(5000, 12000);;
+			uint32 Cooldown_Spell4 = urand(5000, 12000);
 			uint32 Cooldown_Spell_Heal = 3000;
 			uint32 Cooldown_RegenMana = 2000;
 			uint32 Cooldown_ResteADistance = 4000;									// Test si en contact

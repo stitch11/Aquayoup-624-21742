@@ -150,7 +150,7 @@ public:
         void IsSummonedBy(Unit* summoner) override
         {
             if (summoner->ToCreature())
-                casterGUID = summoner->ToCreature()->GetGUID();;
+                casterGUID = summoner->ToCreature()->GetGUID();
         }
 
         void JustDied(Unit* /*killer*/) override
