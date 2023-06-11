@@ -65,6 +65,12 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 			uint32 Spell_evade = 137573;																	// vitesse (+70%/4s) 
 			uint32 Spell_trop_Loin = 100;																	// Charge 100
 
+			uint32 Spell_changeform_felin = 768;
+			uint32 Spell_changeform_ours = 5487;
+			uint32 Spell_changeform_selenien = 24858;
+			uint32 Spell_changeform_arbre_de_vie = 33891;
+			uint32 Spell_changeform_treant = 114282;
+
 
 			// Emotes
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
@@ -86,7 +92,6 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 
 			void Init_AI()
 			{
-
 				// Message a l'agro forcé par spell(8)
 				if (me->m_spells[7] == 1) { MessageAlagro = 1; }
 
@@ -120,12 +125,6 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 					
 				}
 
-
-				
-
-
-
-
 				// ################################################################################################################################################
 				// Divers
 				// ################################################################################################################################################
@@ -135,7 +134,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 			}
 			void JustRespawned() override
 			{
-				me->GetMotionMaster()->MoveTargetedHome();								// Retour home pour rafraichir client
+				me->GetMotionMaster()->MoveTargetedHome();							// Retour home pour rafraichir client
 				//me->SetSpeedRate(MOVE_RUN, 1.01f);
 				me->SetReactState(REACT_AGGRESSIVE);
 
@@ -177,7 +176,14 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 			{
 				me->SetReactState(REACT_AGGRESSIVE);
 				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
-				//me->SetSpeedRate(MOVE_RUN, 1.01f);										// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
+				//me->SetSpeedRate(MOVE_RUN, 1.01f);								// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
+
+				// Retire changeform druide
+				me->RemoveAura(Spell_changeform_felin);
+				me->RemoveAura(Spell_changeform_ours);
+				me->RemoveAura(Spell_changeform_selenien);
+				me->RemoveAura(Spell_changeform_arbre_de_vie);
+				me->RemoveAura(Spell_changeform_treant);
 			}
 			void UpdateAI(uint32 diff) override
 			{
