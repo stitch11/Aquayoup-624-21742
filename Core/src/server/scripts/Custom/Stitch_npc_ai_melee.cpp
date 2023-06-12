@@ -87,7 +87,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 					me->CastSpell(me, Tmp, true);
 				}
 				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
-
+				Retire_changeform();
 			}
 
 			void Init_AI()
@@ -142,6 +142,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 				//me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 				Random = urand(1, 2);
 				if (Random == 1 && Spell_evade != 0) { me->CastSpell(me, Spell_evade, true); }		// 1/2 Chance de lancer le sort au respawn ou evade
+
 			}
 
 			void EnterCombat(Unit* /*who*/) override
@@ -177,13 +178,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 				me->SetReactState(REACT_AGGRESSIVE);
 				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 				//me->SetSpeedRate(MOVE_RUN, 1.01f);								// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
-
-				// Retire changeform druide
-				me->RemoveAura(Spell_changeform_felin);
-				me->RemoveAura(Spell_changeform_ours);
-				me->RemoveAura(Spell_changeform_selenien);
-				me->RemoveAura(Spell_changeform_arbre_de_vie);
-				me->RemoveAura(Spell_changeform_treant);
+				Retire_changeform();
 			}
 			void UpdateAI(uint32 diff) override
 			{
@@ -541,6 +536,15 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 					|| Spell_agro == 145763|| Spell_agro == 163036 || Spell_agro ==  6544 || Spell_agro == 47482 
 					|| Spell_agro == 300131) return true;
 				else return false;
+			}
+			void Retire_changeform()
+			{
+				// Retire changeform druide
+				me->RemoveAura(Spell_changeform_felin);
+				me->RemoveAura(Spell_changeform_ours);
+				me->RemoveAura(Spell_changeform_selenien);
+				me->RemoveAura(Spell_changeform_arbre_de_vie);
+				me->RemoveAura(Spell_changeform_treant);
 			}
 		};
 
