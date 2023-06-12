@@ -484,6 +484,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 						{
 							DoCast(me, Bond_aleatoire_25m);
 							Cooldown_bond_aleatoire_25m = Cooldown_bond_aleatoire_25m_Defaut;
+							Cooldown_ResteADistance = Cooldown_ResteADistance_Defaut;
 						}
 					}
 					else Cooldown_bond_aleatoire_25m -= diff;
@@ -496,6 +497,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					{
 						Teleport_Au_Tour_Aleatoire();
 						Cooldown_ResteADistance_Teleportation = Cooldown_ResteADistance_Defaut_Teleportation;
+						Cooldown_ResteADistance = Cooldown_ResteADistance_Defaut;
 					}
 				}
 				else Cooldown_ResteADistance_Teleportation -= diff;
