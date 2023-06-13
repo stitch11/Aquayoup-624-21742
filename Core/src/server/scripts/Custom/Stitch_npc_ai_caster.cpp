@@ -32,7 +32,6 @@
 //###########################################################################################################################################################################################################################################
 
 #include "CreatureTextMgr.h"
-//#include "ScriptedCreature.h"
 
 
 //################################################################################################
@@ -125,7 +124,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					me->CastSpell(me, Tmp, true);
 				}
 				Spell_canalisé_hc_home();
-				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
+				Arme_rangé();
 			}
 
 			void Init_AI()
@@ -291,7 +290,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				Spell_canalisé_hc_home();
 
 				Init_AI();
-				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
+				Arme_rangé();
 				Random = urand(1, 2);
 				if (Random == 1 && Spell_respawn_evade != 0) { me->CastSpell(me, Spell_respawn_evade, true); }		// 1/2 Chance de lancer le sort au respawn ou evade
 			}
@@ -328,7 +327,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				me->SetReactState(REACT_AGGRESSIVE);
 				//me->SetSpeedRate(MOVE_RUN, 1.01f);										// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
 				Spell_canalisé_hc_home();
-				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
+				Arme_rangé();
 			}
 			void UpdateAI(uint32 diff) override
 			{
@@ -741,6 +740,15 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				{
 					me->CastSpell(me, Spell_Canalise_hc, true);
 				}
+			}
+			void Arme_rangé()
+			{
+				// Certains Modelid posent probleme et seront donc ignorés
+				uint32 Tmp_Model = me->GetDisplayId();
+				if (Tmp_Model == 6824 || Tmp_Model == 6825 || Tmp_Model == 6821 || Tmp_Model == 5773 || Tmp_Model == 937)
+					return;
+
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 			}
 		};
 

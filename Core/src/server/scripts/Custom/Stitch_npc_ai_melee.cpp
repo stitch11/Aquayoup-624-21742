@@ -86,7 +86,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 				{
 					me->CastSpell(me, Tmp, true);
 				}
-				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
+				Arme_rangé();
 				Retire_changeform();
 			}
 
@@ -139,7 +139,6 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 				me->SetReactState(REACT_AGGRESSIVE);
 
 				Init_AI();
-				//me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 				Random = urand(1, 2);
 				if (Random == 1 && Spell_evade != 0) { me->CastSpell(me, Spell_evade, true); }		// 1/2 Chance de lancer le sort au respawn ou evade
 
@@ -176,7 +175,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 			void JustReachedHome() override
 			{
 				me->SetReactState(REACT_AGGRESSIVE);
-				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
+				Arme_rangé();
 				//me->SetSpeedRate(MOVE_RUN, 1.01f);								// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
 				Retire_changeform();
 			}
@@ -545,6 +544,15 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 				me->RemoveAura(Spell_changeform_selenien);
 				me->RemoveAura(Spell_changeform_arbre_de_vie);
 				me->RemoveAura(Spell_changeform_treant);
+			}
+			void Arme_rangé()
+			{
+				// Certains Modelid posent probleme et seront donc ignorés
+				uint32 Tmp_Model = me->GetDisplayId();
+				if (Tmp_Model == 6824 || Tmp_Model == 6825 || Tmp_Model == 6821 || Tmp_Model == 5773 || Tmp_Model == 937)
+					return;
+
+				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 			}
 		};
 
