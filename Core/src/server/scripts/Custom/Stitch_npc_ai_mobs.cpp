@@ -239,6 +239,12 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 liste_agro_11[3] = { 89712, 50231, 18328 };					// Griffure bondissante 89712 (bond), agro 50231, Cri incapacitant 18328 (vit -60%)	
 			uint32 liste_Buf_11[3] = { 22863, 1160, 8599 };						// Vitesse 22863 (10s 30%), Cri démoralisant 1160, Enrager 8599 (+degat physique+vit dattaque,visuel rouge)
 
+			// 12	Grand trotteur - CREATURE_FAMILY_TALLSTRIDER 
+			uint32 liste_spell_A_12[2] = { 115388, 115388 };					// Coup de bec 115388
+			uint32 liste_spell_B_12[3] = { 118682, 131172, 131172 };			// Taper du pied 118682, Coup de tete 131172
+			uint32 liste_agro_12[2] = { 42320, 42320 };							// Coup de tete avec confusion 42320
+			uint32 liste_Buf_12[3] = { 22863, 1160, 137573 };					// Vitesse 22863 (10s 30%), Cri démoralisant 1160, vitesse 4s 137573)
+
 			// 16    Marcheur du Vide - CREATURE_FAMILY_VOIDWALKER
 			uint32 liste_spell_A_16[2] = { 24187, 24187 };						// griffe 24187
 			uint32 liste_spell_B_16[2] = { 3716, 3716 };						// Tourment 3716
@@ -617,6 +623,12 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Spell_A = liste_spell_A_11[urand(0, 1)];
 							Spell_B = liste_spell_B_11[urand(0, 3)];
 							Spell_agro = liste_agro_11[urand(0, 2)];
+							Buf_A = liste_Buf_11[urand(0, 2)];
+							break;
+						case 12:	// 12	Grand trotteur - CREATURE_FAMILY_TALLSTRIDER 
+							Spell_A = liste_spell_A_12[urand(0, 1)];
+							Spell_B = liste_spell_B_12[urand(0, 2)];
+							Spell_agro = liste_agro_12[urand(0, 1)];
 							Buf_A = liste_Buf_11[urand(0, 2)];
 							break;
 						case 16:	// Marcheur du Vide (Voidwalker) - CREATURE_FAMILY_VOIDWALKER
@@ -1305,7 +1317,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							}
 							break;
 						case 12:	//Grand trotteur - CREATURE_FAMILY_TALLSTRIDER - AI : 1/2 Mouvement_Contact_Avance_Recule, 1/2 Mouvement_Contact_Basique
-							AI_Random = urand(1, 2);
+							AI_Random = urand(1, 3);
 							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 1;
 							//Spell_respawn_evade = 0;
@@ -1314,7 +1326,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 3000;
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B -2000, Base_Cooldown_Cast_B);
-							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3000;													// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
+							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 2000;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;												// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
 							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 2000;
@@ -1322,7 +1334,13 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Principal_B = urand(3000, 4000);
 							Cooldown_Principal_B_Defaut = urand(6000, 7000);
 							ResteADistance = 5;
-							Spell_Trop_Loin = 0;
+							Random = urand(1, 3);
+							if (Random == 1)
+							{
+								Spell_Trop_Loin = Spell_Griffure_bondissante;
+							} else
+								Spell_Trop_Loin = Spell_Vitesse_4s;
+
 							Cooldown_Trop_Loin = urand(0, 4000);
 							Cooldown_Trop_Loin_Defaut = urand(7000, 9000);
 							break;
@@ -2596,6 +2614,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							{
 								Mouvement_Contact_Basique(diff);
 							}
+							else
+								Mouvement_Contact_Tournant_Aleatoire(diff);
 							break;
 						case 15:	// Chasseur corrompu (Felhunter)  -  CREATURE_FAMILY_FELHUNTER
 							if (AI_Random == 1)
@@ -3294,26 +3314,29 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						{
 							Tourne_Au_Tour_Aleatoire(2);														// 1 chances sur 3 : tourne au tour de sa victime
 						}
-						else 
+						else
 						{
-							Recule_ou_Avance( 1 - urand(11,15) );												// 2 chances sur 3 : Recule
+							Recule_ou_Avance(1 - urand(11, 15));												// 2 chances sur 3 : Recule
 						}
 						Cooldown_Principal_B = Cooldown_Principal_B_Defaut;
-						Cooldown_Principal_A = 2000 + urand(0,1500);
+						Cooldown_Principal_A = 2000 + urand(0, 1500);
 					}
 				}
 				else Cooldown_Principal_B -= diff;
 
-				// VITESSE ------------------------------------------------------------------------------------------------------------------------------------------
+				// Si trop loin  ------------------------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Trop_Loin <= diff)
 				{
-					if (Dist >= 8 && Dist <= 25)
+					if (Dist >= 8 && Dist <= 25 && Spell_Trop_Loin != 0)
 					{
-						Random = urand(1, 2);
-						if (Random == 1 && Spell_Trop_Loin != 0)
+						if (Spell_Trop_Loin == Spell_Griffure_bondissante || Spell_Trop_Loin == Spell_Charge_Stun || Spell_Trop_Loin == Spell_Charge_Repousse || Spell_Trop_Loin == Spell_Charge ||
+							Spell_Trop_Loin == Spell_Charge_Stun2s || Spell_Trop_Loin == Spell_Poursuite)
 						{
-							//DoCastAOE(Spell_Trop_Loin, true);													// 1 chance sur 2 : vitesse
-							me->CastSpell(me, Spell_Trop_Loin, true);											// 1 chance sur 2 : vitesse
+							me->CastSpell(victim, Spell_Trop_Loin, true);									// sur la cible : charge etc
+						}
+						else
+						{
+							me->CastSpell(me, Spell_Trop_Loin, true);											// buf : vitesse
 						}
 						Cooldown_Trop_Loin = Cooldown_Trop_Loin_Defaut;
 					}
