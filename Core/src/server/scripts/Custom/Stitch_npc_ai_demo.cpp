@@ -67,6 +67,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 			uint32 Spell_Heal_Caster = 46155;  											// Drain de vie 46155
 			uint32 Armure_Demoniaque = 79934;											// Armure_Demoniaque
 			uint32 Gangrarmure = 79954;													// Gangrarmure
+			uint32 Spell_Agonie = 300230;
 
 			// Spells Affliction
 			uint32 Spell_branche1_agro = 0;
@@ -346,7 +347,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 
 					// Combat -------------------------------------------------------------------------------------------------------------------------------------
 					// Spell4 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot)
-					if (Cooldown_Spell4 <= diff)
+					if (Cooldown_Spell4 <= diff && !victim->HasAura(Spell_branche1_4))
 					{
 						DoCastAOE(Spell_branche1_4, true);
 						Cooldown_Spell4 = urand(8000, 10000);
@@ -354,7 +355,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 					else Cooldown_Spell4 -= diff;
 
 					// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot)
-					if (Cooldown_Spell3 <= diff)
+					if (Cooldown_Spell3 <= diff && !victim->HasAura(Spell_branche1_3))
 					{
 						DoCastVictim(Spell_branche1_3);
 						Cooldown_Spell3 = urand(10000, 12000);
@@ -362,7 +363,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 					else Cooldown_Spell3 -= diff;
 
 					// Spell2 sur la cible chaque (Sort secondaire plus lent)
-					if (Cooldown_Spell2 <= diff )
+					if (Cooldown_Spell2 <= diff && !victim->HasAura(Spell_branche1_2) && Spell_branche1_2 != Spell_Agonie)
 					{
 						DoCastVictim(Spell_branche1_2);
 						Cooldown_Spell2 = urand(12000, 14000);
@@ -402,7 +403,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 					else Cooldown_Spell1 -= diff;
 
 					// Spell2 sur la cible chaque (Sort secondaire plus lent)
-					if (Cooldown_Spell2 <= diff)
+					if (Cooldown_Spell2 <= diff && !victim->HasAura(Spell_branche2_2) && Spell_branche2_2 != Spell_Agonie)
 					{
 						DoCastVictim(Spell_branche2_2);
 						Cooldown_Spell2 = urand(14000, 18000);
@@ -410,7 +411,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 					else Cooldown_Spell2 -= diff;
 
 					// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot)
-					if (Cooldown_Spell3 <= diff)
+					if (Cooldown_Spell3 <= diff && !victim->HasAura(Spell_branche2_3))
 					{
 						DoCastVictim(Spell_branche2_3);
 						Cooldown_Spell3 = urand(12000, 14000);
@@ -429,7 +430,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 
 					// Combat --------------------------------------------------------------------------------------------------------------------------------------
 					// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot)
-					if (Cooldown_Spell3 <= diff)
+					if (Cooldown_Spell3 <= diff && !victim->HasAura(Spell_branche3_3))
 					{
 						DoCastVictim(Spell_branche3_3);
 						Cooldown_Spell3 = urand(10000, 12000);
@@ -437,7 +438,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 					else Cooldown_Spell3 -= diff;
 
 					// Spell2 sur la cible chaque (Sort secondaire plus lent)
-					if (Cooldown_Spell2 <= diff)
+					if (Cooldown_Spell2 <= diff && !victim->HasAura(Spell_branche3_2))
 					{
 						DoCastVictim(Spell_branche3_2, true);
 						Cooldown_Spell2 = 6500;

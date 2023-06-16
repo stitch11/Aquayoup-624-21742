@@ -61,6 +61,8 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			uint32 Lenteur_Treant = 6146;											// Lenteur
 			uint32 Spell_Heal_Caster = 300261;  									// Toucher guérisseur 300261/5185
 			uint32 Griffure_Bondissante = 89712;									// Griffure Bondissante (saut sur la cible + stun)
+			uint32 Eclat_lunaire = 15798;
+			uint32 Feu_stellaire = 21668;
 			uint32 Cooldown_Spell_ContreAttaque = 4000;
 			uint32 Cooldown_Spell_ContreAttaque_defaut = 8000;
 
@@ -418,7 +420,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 
 						// Combat ---------------------------------------------------------------------------------------------------------------------------------
 						// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot)
-						if (Cooldown_Spell3 <= diff)
+						if (Cooldown_Spell3 <= diff && (!victim->HasAura(Spell_branche1_3) && Spell_branche1_3 != Eclat_lunaire && Spell_branche1_3 != Feu_stellaire))
 						{
 							//DoCastVictim(Spell_branche1_3);
 							me->StopMoving();

@@ -81,6 +81,8 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 			uint32 branche1_3[5] = { 1776, 1776, 171957, 300249, 14874 };			// Suriner 1776 (stun 4s), Hémorragie 171957 (dps 24s), Frappe révélatrice 300249 (regen 24s), Rupture 14874 (dot 12s)  
 			uint32 Spell_Camouflage = 1784;
 			uint32 Spell_Embuscade = 24337;
+			uint32 Hemorragie = 171957;
+			uint32 Rupture = 14874;
 
 			// Spells Vampire Berserker
 			uint32 Spell_branche2_agro = 300131;									// Griffure bondissante 300131
@@ -307,8 +309,6 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 
 					// ############################################################################################################################################
 					// Combat suivant la Spécialisation
-
-
 					switch (BrancheSpe)
 					{
 					case 1: // Spécialisation Voleur ##############################################################################################################
@@ -345,7 +345,7 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 						else Cooldown_Spell2 -= diff;
 
 						// Spell3 sur la cible 
-						if (Cooldown_Spell3 <= diff)
+						if (Cooldown_Spell3 <= diff && (!victim->HasAura(Spell_branche1_3) && Spell_branche1_3 != Hemorragie && Spell_branche1_3 != Rupture))
 						{
 							Bonus_Degat_Arme_Done(-25);//
 							me->CastSpell(victim, Spell_branche1_3, true);

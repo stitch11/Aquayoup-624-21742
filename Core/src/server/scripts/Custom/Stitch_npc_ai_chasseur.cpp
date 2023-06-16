@@ -68,7 +68,8 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 			uint32 Buf_branche2 = 0;
 			uint32 Buf_branche2_liste[2] = { 109260, 109260 };							// Faucon de fer 109260
 			uint32 Spell_Heal_Caster = 300247;  										// Piqure du moustique 300247
-
+			uint32 Fleche_noire = 80003;
+			uint32 Morsure_de_serpent = 35511;
 
 			// Spells Survie
 			uint32 Spell_branche1_agro = 0;
@@ -293,9 +294,6 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 					// ################################################################################################################################################
 					// Spell a lancer a l'agro 
 					// ################################################################################################################################################
-				
-					
-
 
 				// ################################################################################################################################################
 				// Combat suivant la Spécialisation
@@ -320,7 +318,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 						break;
 
 						// Spell4 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot) : Flèche noire 3674 18s, Morsure de serpent 31975 15s
-					if (Cooldown_Spell4 <= diff)
+					if (Cooldown_Spell4 <= diff && (!victim->HasAura(Spell_branche1_4) && Spell_branche1_4 != Fleche_noire))
 					{
 						me->CastSpell(victim, Spell_branche1_4, true);
 						Cooldown_Spell4 = urand(15000, 18000);
@@ -336,7 +334,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 					else Cooldown_Spell3 -= diff;
 
 					// Spell2 sur la cible chaque (Sort secondaire plus lent) : Tir explosif 53301 6s, Trait de choc
-					if (Cooldown_Spell2 <= diff)
+					if (Cooldown_Spell2 <= diff && (!victim->HasAura(Spell_branche1_2) && Spell_branche1_2 != Morsure_de_serpent))
 					{
 						me->CastSpell(victim, Spell_branche1_2, true);
 						Cooldown_Spell2 = urand(6000, 7000);
@@ -379,7 +377,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 					else Cooldown_Spell1 -= diff;
 
 					// Spell2 sur la cible chaque (Sort secondaire plus lent) : Tir assuré
-					if (Cooldown_Spell2 <= diff)
+					if (Cooldown_Spell2 <= diff && !victim->HasAura(Spell_branche2_2))
 					{
 						me->CastSpell(victim, Spell_branche2_2, true);
 						Cooldown_Spell2 = urand(5000, 6000);

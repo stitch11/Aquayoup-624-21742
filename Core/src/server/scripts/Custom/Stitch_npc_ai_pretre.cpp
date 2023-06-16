@@ -66,6 +66,9 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 			uint32 Mot_de_pouvoir_Bouclier = 17;									// Mot de pouvoir : Bouclier
 			uint32 Mot_de_pouvoir_Bouclier_effet = 11835;
 			uint32 Soins_Rapides = 300265;											// Soins Rapides 300265/2061
+			uint32 Toucher_Vampirique = 300231;
+			uint32 Peste_devorante = 138490;
+			uint32 Mot_de_lombre_Douleur = 34941;
 
 			// Spells Ombre
 			uint32 Spell_branche1_agro = 0;
@@ -283,8 +286,6 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 
 					// ####################################################################################################################################################
 					// Combat suivant la Spécialisation
-
-
 					switch (BrancheSpe)
 					{
 					case 1: // Spécialisation Ombre #######################################################################################################################
@@ -303,7 +304,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 						// Combat -----------------------------------------------------------------------------------------------------------------------------------------
 
 						// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot)
-						if (Cooldown_Spell3 <= diff )
+						if (Cooldown_Spell3 <= diff && (!victim->HasAura(Spell_branche1_3) && Spell_branche1_3 != Toucher_Vampirique && Spell_branche1_3 != Peste_devorante && Spell_branche1_3 != Mot_de_lombre_Douleur))
 						{
 							//DoCastVictim(Spell_branche1_3);
 							me->CastSpell(victim, Spell_branche1_3, true);
@@ -368,7 +369,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 
 
 						// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot)
-						if (Cooldown_Spell3 <= diff)
+						if (Cooldown_Spell3 <= diff && (!victim->HasAura(Spell_branche2_3) && Spell_branche2_3 != Mot_de_lombre_Douleur))
 						{
 							DoCastVictim(Spell_branche2_3);
 							Cooldown_Spell3 = urand(8000, 10000);
