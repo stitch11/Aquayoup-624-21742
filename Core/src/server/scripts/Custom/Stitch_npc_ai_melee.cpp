@@ -114,6 +114,14 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 					Spell_2 = liste_spell_2[urand(0, 8)];
 					Spell_agro = liste_agro[urand(0, 2)];
 					Buf_1 = liste_Buf[urand(0, 4)];
+
+					// Pas de DOT ou Heal si level <25 sinon trop dur
+					if (me->getLevel() < 25)
+					{
+						Spell_2 = 0;
+						Spell_Heal = 0;
+					}
+
 				} else 
 				{ 
 					Spell_1 = me->m_spells[0]; 

@@ -891,6 +891,12 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Buf_A = liste_Buf_0[urand(0, 2)];
 							break;
 						}
+						// Pas de DOT ou Heal si level <25 sinon trop dur
+						if (me->getLevel() < 25)
+						{
+							Spell_B = 0;
+							Spell_Heal = 0;
+						}
 					}
 
 
@@ -2455,8 +2461,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 
 						// ----------------------------------------------------------------------------------------------------------------------------------------
-
-
 						// Message a l'agro , ci le mob a plusieurs lignes (creature_text groupid>0) il y a de forte chance que ce soit pour un dialogue
 						// et non un simple message a l'agro. Donc on l'ignore.
 						Random = urand(1, 5);

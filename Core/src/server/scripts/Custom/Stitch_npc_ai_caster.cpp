@@ -236,6 +236,12 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 						break;
 					}
 
+					// Pas de DOT ou Heal si level <25 sinon trop dur
+					if (me->getLevel() < 25)
+					{
+						Spell_2 = 0;
+						Spell_Heal = 0;
+					}
 				} else 
 				{ 
 					Spell_1 = me->m_spells[0]; 
