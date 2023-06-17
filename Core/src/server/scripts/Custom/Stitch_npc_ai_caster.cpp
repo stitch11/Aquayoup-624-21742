@@ -753,9 +753,9 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				uint32 Tmp_Model = me->GetDisplayId();
 				if (Tmp_Model == 6824 || Tmp_Model == 6825 || Tmp_Model == 6821 || Tmp_Model == 5773 || Tmp_Model == 937 || Tmp_Model == 16861)
 					return;
-				// Uniquement pour les humanoides, mort-vivants
+				// Uniquement pour les humanoides, mort-vivants + family 0
 				uint32 Tmp_Type = me->GetCreatureTemplate()->type;
-				if (Tmp_Type != CREATURE_TYPE_HUMANOID && Tmp_Type != CREATURE_TYPE_UNDEAD)
+				if ((Tmp_Type != CREATURE_TYPE_HUMANOID && Tmp_Type != CREATURE_TYPE_UNDEAD) || me->GetCreatureTemplate()->family != 0 )
 					return;
 
 				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
@@ -763,7 +763,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 		};
 
 
-
+		
 
 		CreatureAI* GetAI(Creature* creature) const override
 		{
