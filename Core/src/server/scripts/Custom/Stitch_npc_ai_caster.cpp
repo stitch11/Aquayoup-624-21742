@@ -751,7 +751,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			{
 				// Certains Modelid posent probleme et seront donc ignorés
 				uint32 Tmp_Model = me->GetDisplayId();
-				if (Tmp_Model == 6824 || Tmp_Model == 6825 || Tmp_Model == 6821 || Tmp_Model == 5773 || Tmp_Model == 937)
+				if (Tmp_Model == 6824 || Tmp_Model == 6825 || Tmp_Model == 6821 || Tmp_Model == 5773 || Tmp_Model == 937 || Tmp_Model == 16861)
 					return;
 				// Uniquement pour les humanoides, mort-vivants
 				uint32 Tmp_Type = me->GetCreatureTemplate()->type;
