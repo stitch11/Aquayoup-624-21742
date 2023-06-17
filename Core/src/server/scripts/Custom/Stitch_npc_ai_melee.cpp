@@ -31,6 +31,9 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 		{
 			Stitch_npc_ai_meleeAI(Creature* creature) : ScriptedAI(creature) { }
 
+			uint32 Npc_Type = me->GetCreatureTemplate()->type;
+			uint32 Npc_Family = me->GetCreatureTemplate()->family;
+			uint32 Npc_Model = me->GetDisplayId();
 			uint32 Random = 0;
 			uint32 DistanceDeCast = 40;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
 			uint32 ResteADistance = 5;												// Distance max a laquelle un npc s'approchera
@@ -192,9 +195,9 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 				if (me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED) || me->HasUnitState(UNIT_STATE_CANNOT_TURN) || me->HasUnitState(UNIT_STATE_CONTROLLED) || me->HasUnitState(UNIT_STATE_POSSESSED) || me->HasUnitState(UNIT_STATE_CONFUSED_MOVE))
 					return;
 				// ################################################################################################################################################
-				// Emotes hors combat & mouvement #################################################################################################################
+				// Emotes hors combat & mouvement & humanoides ou mort-vivants ####################################################################################
 				// ################################################################################################################################################
-				if ((Cooldown_Npc_Emotes <= diff) && (!me->isMoving()) && (!me->IsInCombat()))
+				if ((Cooldown_Npc_Emotes <= diff) && (!me->isMoving()) && (!me->IsInCombat()) && (Npc_Type == CREATURE_TYPE_HUMANOID || Npc_Type == CREATURE_TYPE_UNDEAD))
 				{
 					uint32 Npc_Play_Emotes = Npc_Emotes[urand(0, 21)];
 					me->HandleEmoteCommand(Npc_Play_Emotes);
@@ -556,12 +559,11 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 			void Arme_rangé()
 			{
 				// Certains Modelid posent probleme et seront donc ignorés
-				uint32 Tmp_Model = me->GetDisplayId();
-				if (Tmp_Model == 6824 || Tmp_Model == 6825 || Tmp_Model == 6821 || Tmp_Model == 5773 || Tmp_Model == 937 || Tmp_Model == 16861)
+				if (Npc_Model == 6824 || Npc_Model == 6825 || Npc_Model == 6821 || Npc_Model == 5773 || Npc_Model == 937 || Npc_Model == 16861)
 					return;
+
 				// Uniquement pour les humanoides, mort-vivants + family 0
-				uint32 Tmp_Type = me->GetCreatureTemplate()->type;
-				if ((Tmp_Type != CREATURE_TYPE_HUMANOID && Tmp_Type != CREATURE_TYPE_UNDEAD) || me->GetCreatureTemplate()->family != 0)
+				if ((Npc_Type != CREATURE_TYPE_HUMANOID && Npc_Type != CREATURE_TYPE_UNDEAD) || Npc_Family != 0)
 					return;
 
 				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
