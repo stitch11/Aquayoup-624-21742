@@ -57,7 +57,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 			uint32 Cooldown_Spell_ContreAttaque_defaut = 8000;
 
 			// Spells
-			uint32 Buf_1 = 12712;													
+			uint32 Buf_1 = 12712;																			// Soldat aguerri
 			uint32 liste_Buf[5] = { 12712, 6673, 1160, 159362, 8599 };										// Soldat aguerri 12712 (2 mains= dmg+15%), Cri de guerre 6673, Cri démoralisant 1160 (8s 10m Soi-même), Folie sanguinaire 159362 (pv 1%/3s), Enrager 8599
 			uint32 Spell_agro = 0;
 			uint32 liste_agro[3] = { 100, 355, 145763 };													// Charge 100, Provocation 355, Bondir 8-40m 145763
@@ -236,11 +236,17 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 						// Spell a lancer a l'agro 
 						// ########################################################################################################################################
 
-							Random = urand(1, 2);
-							if (Random == 1 && Buf_1 != 0)
-								{ me->CastSpell(me, Buf_1, true); }			// 1/2 Chance de lancer le Buf
+						if (Random == 1 && Buf_1 != 0)
+						{
+							me->CastSpell(me, Buf_1, true); 			// 1/2 Chance de lancer le Buf : Soldat aguerri
+						}
+						
+						Random = urand(1, 3);
+						if (Random == 1 && Spell_evade == 137573 && Spell_agro != 100 && Spell_agro != 145763)
+						{
+							me->CastSpell(me, Spell_evade, true);	// vitesse_4s si spell_agro n'est pas charge ou Bondir
+						}
 
-							if (Spell_evade != 0) { me->CastSpell(me, Spell_evade, true); }
 
 					
 					}
