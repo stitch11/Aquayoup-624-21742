@@ -3609,7 +3609,8 @@ enum CreatureType
     CREATURE_TYPE_GAS_CLOUD        = 13,
     CREATURE_TYPE_WILD_PET         = 14,
     CREATURE_TYPE_ABERRATION       = 15,
-	CREATURE_TYPE_ELEMENTAL_GLISSANT	= 16
+	CREATURE_TYPE_ELEMENTAL_GLISSANT	= 16,
+	CREATURE_TYPE_HUMANOID_AUTRE		= 17		// Pour ne pas prendre en compte certaines particularitées de CREATURE_TYPE_HUMANOID comme les armes rangées, emotes ...
 };
 
 uint32 const CREATURE_TYPEMASK_DEMON_OR_UNDEAD = (1 << (CREATURE_TYPE_DEMON-1)) | (1 << (CREATURE_TYPE_UNDEAD-1));

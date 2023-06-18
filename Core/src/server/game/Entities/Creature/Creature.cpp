@@ -472,6 +472,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			break;
 
 		case CREATURE_TYPE_HUMANOID:		// Humanoide
+		case CREATURE_TYPE_HUMANOID_AUTRE:
 		case CREATURE_TYPE_NOT_SPECIFIED:	// Non specifié
 			SetSpeedRate(MOVE_WALK, 0.6f);							// hors combat
 			SetSpeedRate(MOVE_RUN, 1.0f);							// en combat
@@ -845,6 +846,7 @@ void Creature::Update(uint32 diff)
 			break;
 
 		case CREATURE_TYPE_HUMANOID:		// Humanoide
+		case CREATURE_TYPE_HUMANOID_AUTRE:
 		case CREATURE_TYPE_NOT_SPECIFIED:	// Non specifié
 			SetSpeedRate(MOVE_SWIM, 0.6f);							// en nageant
 			break;
