@@ -497,6 +497,11 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 liste_agro_158[3] = { 12097, 100, 0 };							// Perce-armure 12097 (armure -75%/15s 5m), charge 100
 			uint32 liste_Buf_158[3] = { 87228, 0, 0 };							// Peau épaisse 87228
 
+			// 159	CUSTOM - CREATURE_FAMILY_SENTERRE_FIXE
+			uint32 liste_spell_A_159[3] = { 9591, 21067,78129 };				// Crachat acide 9591,Eclair de poison (+cumulable) 21067, Éclair crépusculaire 78129
+			uint32 liste_spell_B_159[4] = { 119004, 3358, 26419, 79607 };		// Violent coup direct 119004, Poison de sangsue (5m,Draine) 3358, pluie d acide 26419,poison (catapulte,zone) 79607
+			uint32 liste_agro_159[2] = { 49576, 128425 };						// Poigne de la mort 49576, Résine corrosive 128425 
+			uint32 liste_Buf_159[2] = { 126336, 87228 };						// Poix caustique 126336, Peau épaisse 87228
 
 			void InitializeAI()
 			{
@@ -883,6 +888,13 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Spell_agro = liste_agro_158[urand(0, 2)];
 							Buf_A = liste_Buf_158[urand(0, 2)];
 							break;
+						case 159:	// CUSTOM - CREATURE_FAMILY_SENTERRE_FIXE
+							Spell_A = liste_spell_A_159[urand(0, 2)];
+							Spell_B = liste_spell_B_159[urand(0, 3)];
+							Spell_agro = liste_agro_159[urand(0, 1)];
+							Buf_A = liste_Buf_159[urand(0, 1)];
+							break;
+
 
 						default:
 							Spell_A = liste_spell_A_0[urand(0, 1)];
@@ -951,7 +963,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				if (me->m_spells[7] == 1) { MessageAlagro = 1; }
 
 				// Spell contre attaque si PV bas
-				if (me->m_spells[6] != 0) { Spell_ContreAttaque = me->m_spells[6]; }
+				uint32 Spell_Tmp = me->m_spells[6];
+				if (Spell_Tmp != 0) { Spell_ContreAttaque = Spell_Tmp; }
 
 				// Divers  ----------------------------------------------------------------------------------------------------------------------------------------
 				me->SetReactState(REACT_AGGRESSIVE);
@@ -2434,7 +2447,29 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 								Cooldown_Trop_Loin = 6000;
 								Cooldown_Trop_Loin_Defaut = urand(5000, 7000);
 							}
+							break;
 
+						case 159:	//CREATURE_FAMILY_SENTERRE_FIXE
+							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = urand(3000, 4000);
+							Cooldown_SpellB = 2000;
+							Cooldown_SpellB_defaut = urand(5000, 6000);
+							Cooldown_SpellB_rapide = 4000;
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_Spell_Heal_defaut = 15000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 100;
+							Cooldown_Principal_B_Defaut = 2000;
+							ResteADistance = DistanceDeCast - 1;
+							Spell_Trop_Loin = 0;
+							Cooldown_Trop_Loin = urand(6000, 8000);
+							Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
+							Spell_B_Non_Cumulable = 0;
 							break;
 
 						default:
@@ -2868,8 +2903,9 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							else if (AI_Random == 2) { Mouvement_Contact_Prudent_Volant(diff); }
 							else
 								Mouvement_Contact_Basique(diff);
-
-
+							break;
+						case 159:	//CREATURE_FAMILY_SENTERRE_FIXE
+							Mouvement_Fixe(diff);
 							break;
 
 
@@ -2951,6 +2987,28 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					Cooldown_Principal_C = Cooldown_Principal_C_Defaut;
 				}
 				else Cooldown_Principal_C -= diff;
+			}
+
+			// ###### Mob fixe/Root
+			void Mouvement_Fixe(uint32 diff) 
+			{
+				if (!UpdateVictim())
+					return;
+
+				Unit* victim = me->GetVictim();
+				Dist = me->GetDistance(victim);
+
+				if (Cooldown_Principal_B <= diff)
+				{
+					me->StopMoving();
+					AttackStart(victim);
+					AttackStartCaster(victim, ResteADistance);										// Distance de combat
+					void DoRangedAttackIfReady();													// Combat a distance
+					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
+					
+					Cooldown_Principal_B = Cooldown_Principal_B_Defaut;
+				}
+				else Cooldown_Principal_B -= diff;
 			}
 
 			// ###### Reste a distance mais va au contact si la cible ce raproche , spellB plus rapide de loin #####################################################
@@ -3515,8 +3573,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			}
 			void Senterre_sans_fumee()
 			{
-				if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE)
-					return;
+				//if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE)
+				//	return;
 
 				me->CastSpell(me, Spell_Senterre_sans_fumee, true);								// Fumée et terre remuée Temporaire
 				me->CastSpell(me, Spell_Sedeterre_sans_fumee, true);							// Pour visuel sedeterrer
@@ -3570,7 +3628,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					}
 				}
 
-				//Custom
+				//Custom 155
 				if (Crfamily == 155 && !me->HasUnitState(UNIT_STATE_MOVE))
 				{
 					Random = urand(1, 3);
@@ -3581,14 +3639,29 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					else
 						Senterre_sans_fumee();
 				}
+
+				// Custom 156
 				if (Crfamily == 156 && !me->HasUnitState(UNIT_STATE_MOVE))
 				{
 					Senterre_sans_fumee();
 				}
+
 				if (Crfamily == 157 && !me->HasUnitState(UNIT_STATE_MOVE))
 				{
 					Morph_Rocher();
 				}
+
+				//Custom 159
+				if (Crfamily == 159)
+				{
+					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
+					Random = urand(1, 3);
+					if (Random != 1)
+					{
+						Senterre_sans_fumee();
+					}
+				}
+
 			}
 			void Family_Special_Retire_a_l_Agro()
 			{
@@ -3596,13 +3669,20 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				{
 					Se_Deterre();
 				}
+
 				if (Crfamily == 156 /*&& me->GetDefaultMovementType() == IDLE_MOTION_TYPE*/)
 				{
 					DoCastAOE(Spell_Senterre, true);  // Pour visuel de fumée pendant la 1ere avance
 				}
+
 				if (Crfamily == 157 /*&& me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE*/)
 				{
 					DeMorph_Rocher();
+				}
+
+				if (Crfamily == 159 /*&& me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE*/)
+				{
+					Se_Deterre();
 				}
 			}
 			void Family_Special_Retire_au_contact()
