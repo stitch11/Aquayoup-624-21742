@@ -979,6 +979,7 @@ void Creature::Update(uint32 diff)
 	switch (Crtype)
 	{
 	case CREATURE_TYPE_HUMANOID:
+	case CREATURE_TYPE_HUMANOID_AUTRE:
 	case CREATURE_TYPE_GIANT:
 	case CREATURE_TYPE_UNDEAD:
 		if (this->IsInWater())
