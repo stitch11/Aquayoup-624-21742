@@ -107,9 +107,10 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 Cooldown_SpellB_defaut = 5000;
 			uint32 Cooldown_SpellB_rapide = 3000;									// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
 			uint32 Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;			// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
+			uint32 Cooldown_New_SpellB_rapide_defaut = 0;							// Remplace Cooldown_SpellB_rapide_* pour le cast
 			uint32 Cooldown_Principal_A = 2000;										// ex Cooldown_Anti_Bug_Figer
 			uint32 Cooldown_Principal_A_Defaut = 2000;								// Cooldown_Anti_Bug_Figer_Defaut
-			uint32 Cooldown_Spell_Heal = 4000;												// Heal ou sort de sauvegarde si perte de pv
+			uint32 Cooldown_Spell_Heal = 4000;										// Heal ou sort de sauvegarde si perte de pv
 			uint32 Cooldown_Spell_Heal_defaut = 8000;
 			uint32 Cooldown_Principal_B = 3500;										// Test si en contact , Cooldown_ResteADistance
 			uint32 Cooldown_Principal_B_Defaut = 3500 + ((urand(0, 4) * 500));		// Cooldown_ResteADistance_Defaut, tourne au tour , etc
@@ -1151,16 +1152,17 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							break;
 						case 3:		// Araignee  -  CREATURE_FAMILY_SPIDER - AI : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance , Doit avoir du mana , % Toile_Araignee)
 							me->SetMeleeDamageSchool(SpellSchools(3));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-							Spell_B_Non_Cumulable = 1;
+							Spell_B_Non_Cumulable = 0;
 							//Spell_respawn_evade = 0;
 							Buf_A = 0;
 							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 1500;
-							Cooldown_SpellB_defaut = Base_Cooldown_Cast_B - 3000;
+							Cooldown_SpellB_defaut = Base_Cooldown_Cast_B - 2000;
 							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 4000;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;												// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
+							Cooldown_New_SpellB_rapide_defaut = urand(3000, 3500);
 							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 2000;
 							Cooldown_Principal_A_Defaut = 2000;
@@ -1225,6 +1227,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B, Base_Cooldown_Cast_B + 3000);
 							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3000;													// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;												// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
+							Cooldown_New_SpellB_rapide_defaut = 0;
 							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 2000;
 							Cooldown_Principal_A_Defaut = 2000;
@@ -1338,7 +1341,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 12:	//Grand trotteur - CREATURE_FAMILY_TALLSTRIDER - AI : 1/2 Mouvement_Contact_Avance_Recule, 1/2 Mouvement_Contact_Basique
 							AI_Random = urand(1, 3);
 							me->SetMeleeDamageSchool(SpellSchools(0));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-							Spell_B_Non_Cumulable = 1;
+							Spell_B_Non_Cumulable = 0;
 							//Spell_respawn_evade = 0;
 							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
@@ -1347,6 +1350,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B -2000, Base_Cooldown_Cast_B);
 							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 2000;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;												// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
+							Cooldown_New_SpellB_rapide_defaut = urand(4000, 5000);
 							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 2000;
 							Cooldown_Principal_A_Defaut = 2000;
@@ -1506,6 +1510,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 4000, Base_Cooldown_Cast_B - 3000);
 							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 4000;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;											// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
+							Cooldown_New_SpellB_rapide_defaut = urand(3000, 3500);
 							Cooldown_Spell_Heal_defaut = 120000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 2000;
@@ -1590,6 +1595,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 4000, Base_Cooldown_Cast_B -2000);
 							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 4000;
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_New_SpellB_rapide_defaut = urand(3000, 3500);
 							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
@@ -1635,6 +1641,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_SpellB_defaut = urand(5000, 6000);
 							Cooldown_SpellB_rapide = 4000;
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_New_SpellB_rapide_defaut = urand(3500, 4000);
 							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
@@ -1654,10 +1661,11 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
-							Cooldown_SpellB = urand(Base_Cooldown_Cast_B, 6000);
+							Cooldown_SpellB = urand(6000,Base_Cooldown_Cast_B);
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 3000, Base_Cooldown_Cast_B - 2000);
 							Cooldown_SpellB_rapide = 0;
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_New_SpellB_rapide_defaut = urand(4000, 4750);
 							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
@@ -1684,6 +1692,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B -3000 , Base_Cooldown_Cast_B -2000);
 							Cooldown_SpellB_rapide = 4000;
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_New_SpellB_rapide_defaut = urand(3500, 4500);
 							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1500;
 							Cooldown_Principal_A_Defaut = 1500;
@@ -1718,7 +1727,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_SpellB = 2000;
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 1500, Base_Cooldown_Cast_B - 500);
 							Cooldown_SpellB_rapide = 0;
-							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_SpellB_rapide_defaut = 0;
 							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
@@ -1739,7 +1748,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_SpellB = 1000;
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 2000, Base_Cooldown_Cast_B - 1000);
 							Cooldown_SpellB_rapide = 0;
-							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_SpellB_rapide_defaut = 0;
 							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
@@ -1824,6 +1833,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 1000, Base_Cooldown_Cast_B);
 							Cooldown_SpellB_rapide = urand(Base_Cooldown_Cast_B - 2500, Base_Cooldown_Cast_B - 1500);
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_New_SpellB_rapide_defaut = urand(3000, 4000);
 							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
@@ -1911,6 +1921,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 2500, Base_Cooldown_Cast_B - 500);
 							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3000;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;												// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
+							Cooldown_New_SpellB_rapide_defaut = urand(4500, 5000);
 							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
@@ -1945,6 +1956,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 								Cooldown_Principal_A_Defaut = 1000;
 								Cooldown_Principal_B_Defaut = 6000;
 								Cooldown_SpellA_defaut = Base_Cooldown_Cast_A -500;
+								Cooldown_New_SpellB_rapide_defaut = 0;
 							}
 							break;
 						case 50:	//Renard  -  CREATURE_FAMILY_FOX - AI : 1/3_Mouvement_Contact_Basique , 2/3_Mouvement_Contact_Prudent
@@ -2027,6 +2039,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B + 2000, Base_Cooldown_Cast_B + 4000);
 							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 1000;											// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;											// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
+							Cooldown_New_SpellB_rapide_defaut = urand(7000, 8000);
 							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 2000;
@@ -2102,6 +2115,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 3000, Base_Cooldown_Cast_B - 2500);
 							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3000;
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_New_SpellB_rapide_defaut = urand(3000, 4000);
 							Cooldown_Spell_Heal_defaut = 120000;
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
@@ -2206,7 +2220,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 							Cooldown_SpellB = 1500;
 							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 2500, Base_Cooldown_Cast_B - 1500);
-							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3500;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
+							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 3500;											// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
 							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;											// Cadence de tir SpellB normale pour Mouvement_Cast_Puis_Contact
 							Cooldown_Spell_Heal_defaut = 15000;
 							Cooldown_Principal_A = 1000;
@@ -2577,10 +2591,18 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							{
 								if (Dist <= DistanceDeCast /*ResteADistance*/)
 								{
-									if (Spell_B_Non_Cumulable == 0 || (Spell_B_Non_Cumulable == 1) && !victim->HasAura(Spell_B) )
+									if (Spell_B_Non_Cumulable == 0 || Spell_B_Non_Cumulable == 1 && !victim->HasAura(Spell_B) )
 									{
 										me->CastSpell(victim, Spell_B, true);
-										Cooldown_SpellB = Cooldown_SpellB_defaut;
+
+										if (Dist > 6 && Cooldown_New_SpellB_rapide_defaut != 0)
+										{
+											Cooldown_SpellB = Cooldown_New_SpellB_rapide_defaut;
+										}
+										else 
+											if (Dist <= 6 || Cooldown_New_SpellB_rapide_defaut == 0)
+												Cooldown_SpellB = Cooldown_SpellB_defaut;
+
 									}
 								}
 							}
@@ -3027,7 +3049,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					// Mouvement ON si distance < 6m ------------------------------------------------------------------------------------------------------------------
 					if (Dist <6)
 					{
-						Cooldown_SpellB_defaut = Cooldown_SpellB_rapide_defaut;								// Cadence de tir SpellB normale
+						//Cooldown_SpellB_defaut = Cooldown_SpellB_rapide_defaut;								// Cadence de tir SpellB normale
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// UNROOT
 						me->GetMotionMaster()->MoveChase(victim, 1, frand(0, 6.2836f));
 						DoMeleeAttackIfReady();																// Combat en mélée
@@ -3036,7 +3058,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					// Mouvement ON si distance > 20m -----------------------------------------------------------------------------------------------------------------
 					if (Dist > ResteADistance + 5)
 					{
-						Cooldown_SpellB_defaut = Cooldown_SpellB_rapide_defaut;								// Cadence de tir SpellB normale
+						//Cooldown_SpellB_defaut = Cooldown_SpellB_rapide_defaut;								// Cadence de tir SpellB normale
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// UNROOT
 						me->GetMotionMaster()->MoveChase(victim, 1, frand(0, 6.2836f));
 						void DoRangedAttackIfReady();														// Combat a distance
@@ -3045,7 +3067,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					// Mouvement OFF si distance >= 6m & <= 20m -------------------------------------------------------------------------------------------------------
 					if ((Dist >= 6) && (Dist <= ResteADistance + 5))
 					{
-						Cooldown_SpellB_defaut = Cooldown_SpellB_rapide;									// Cadence de tir SpellB rapide
+						//Cooldown_SpellB_defaut = Cooldown_SpellB_rapide;									// Cadence de tir SpellB rapide
 
 						if (me->isMoving())
 						{
