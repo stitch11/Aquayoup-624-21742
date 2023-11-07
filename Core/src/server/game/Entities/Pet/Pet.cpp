@@ -85,8 +85,8 @@ void Pet::AddToWorld()
     }
 
 
-	//Stitch Pet (TempSummon) agressif au spawn
-	SetReactState(REACT_AGGRESSIVE);
+	//Stitch Pet (TempSummon) Defensif au spawn
+	SetReactState(REACT_DEFENSIVE);
 	GetCharmInfo()->SetIsCommandAttack(true);
 
 
