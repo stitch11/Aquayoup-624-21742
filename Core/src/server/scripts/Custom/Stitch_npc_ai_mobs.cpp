@@ -1048,7 +1048,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			{
 
 				//Position const& homePos = me->GetHomePosition();
-				if (me->IsAlive() && !me->IsInCombat() && !me->isMoving() && (me->GetDistance(me->GetHomePosition()) >  40))
+				if (me->IsAlive() /*&& !me->IsInCombat()*/ && !me->isMoving() && (me->GetDistance(me->GetHomePosition()) >  50))
 				//if (me->IsAlive() && !me->IsInCombat() && !me->isMoving() && (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 1))
 				{
 					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);
@@ -2605,6 +2605,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 									}
 								}
+							
 							}
 							else Cooldown_SpellB -= diff;
 						}
@@ -3748,11 +3749,11 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			}
 			void ContreAttaque(uint32 diff)
 			{
-				if (!UpdateVictim())
+				if (!UpdateVictim() || Spell_ContreAttaque == 0 || victim->HasAura(Spell_ContreAttaque))
 					return;
 
 				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
-				if (Cooldown_Spell_ContreAttaque <= diff && Spell_ContreAttaque != 0 && !victim->HasAura(Spell_ContreAttaque))
+				if (Cooldown_Spell_ContreAttaque <= diff)
 				{
 					if ((me->GetHealth() < (me->GetMaxHealth()*0.40)))									// Si PV =< 40%
 					{
