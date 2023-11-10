@@ -480,13 +480,19 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 			}
 			void Mouvement_All()
 			{
-
-				//Position const& homePos = me->GetHomePosition();
-				if (me->IsAlive() /*&& !me->IsInCombat()*/ && !me->isMoving() && (me->GetDistance(me->GetHomePosition()) >  50))
-					//if (me->IsAlive() && !me->IsInCombat() && !me->isMoving() && (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 1))
+				// Anti bug de combat
+				if (me->IsAlive() && (me->GetDistance(me->GetHomePosition()) >  50))
 				{
 					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);
+
+					if (me->IsInCombat() && me->getAttackers().empty())
+					{
+						EnterEvadeMode(EVADE_REASON_NO_HOSTILES);
+					}
 				}
+
+
+
 
 				if (!UpdateVictim())
 					return;
