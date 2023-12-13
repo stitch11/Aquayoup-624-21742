@@ -331,6 +331,11 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 				// Anti bug de combat
 				if (me->IsAlive() && (me->GetDistance(me->GetHomePosition()) >  50))
 				{
+					if (me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE) && me->IsInCombat())
+					{
+						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+					}
+
 					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);
 
 					if (me->IsInCombat() && me->getAttackers().empty())
@@ -500,7 +505,8 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 			}
 			void ContreAttaque(uint32 diff)
 			{
-				if (!UpdateVictim())
+				Unit* victim = me->GetVictim();
+				if (!UpdateVictim() || victim->HasAura(Spell_ContreAttaque))
 					return;
 
 				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------

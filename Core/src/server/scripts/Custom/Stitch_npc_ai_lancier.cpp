@@ -396,6 +396,11 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				Dist = me->GetDistance(me->GetVictim());
 				if ((Dist > DistanceDeCast) || (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 40))
 				{
+					if (me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE) && me->IsInCombat())
+					{
+						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+					}
+
 					RetireBugDeCombat();
 					me->AddUnitState(UNIT_STATE_EVADE);
 					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);						// Quite le combat si la cible > 30m (Caster & Mélée) ou > 40m de home
@@ -533,7 +538,8 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			}
 			void ContreAttaque(uint32 diff)
 			{
-				if (!UpdateVictim())
+				Unit* victim = me->GetVictim();
+				if (!UpdateVictim() || victim->HasAura(Spell_ContreAttaque))
 					return;
 
 				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
