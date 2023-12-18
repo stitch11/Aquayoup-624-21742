@@ -677,8 +677,10 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 			}
 			void ContreAttaque(uint32 diff)
 			{
+				if (!UpdateVictim())
+					return;
 				Unit* victim = me->GetVictim();
-				if (!UpdateVictim() || victim->HasAura(Spell_ContreAttaque))
+				if (victim->HasAura(Spell_ContreAttaque) || Spell_ContreAttaque == 0)
 					return;
 
 				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------

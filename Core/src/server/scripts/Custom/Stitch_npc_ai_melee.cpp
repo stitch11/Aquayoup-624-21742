@@ -118,8 +118,8 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 					Spell_agro = liste_agro[urand(0, 2)];
 					Buf_1 = liste_Buf[urand(0, 4)];
 
-					// Pas de DOT ou Heal si level <25 sinon trop dur
-					if (me->getLevel() < 25)
+					// Pas de DOT ou Heal si level <15 sinon trop dur
+					if (me->getLevel() < 15)
 					{
 						Spell_2 = 0;
 						Spell_Heal = 0;
@@ -505,8 +505,10 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 			}
 			void ContreAttaque(uint32 diff)
 			{
+				if (!UpdateVictim())
+					return;
 				Unit* victim = me->GetVictim();
-				if (!UpdateVictim() || victim->HasAura(Spell_ContreAttaque))
+				if (victim->HasAura(Spell_ContreAttaque) || Spell_ContreAttaque == 0)
 					return;
 
 				// Contre attaque sur la cible (2 chance sur 3) -------------------------------------------------------------------------------------------------
