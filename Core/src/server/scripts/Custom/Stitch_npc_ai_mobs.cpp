@@ -167,6 +167,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 Poison_Tir_Catapulte = 79607;
 			uint32 Lancer_Une_Pierre = 130775;
 			uint32 Cri_Incapacitant = 18328;
+			uint32 Camouflage_dans_lombre = 58984;
 
 
 
@@ -3622,8 +3623,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				me->RemoveAurasDueToSpell(Spell_Senterre_sans_fumee);							// Retire fumée et terre remuée Temporaire
 				me->RemoveAurasDueToSpell(Spell_Sedeterre_sans_fumee);							// Visuel explosion de fumée
 				me->RemoveAurasDueToSpell(Spell_No_ModelID);									// Retire invisible
+				me->RemoveAurasDueToSpell(Camouflage_dans_lombre);
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Selectionnable
-
 			}
 			void Morph_Rocher()
 			{
