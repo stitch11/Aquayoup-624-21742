@@ -69,7 +69,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 
 			// Spells
 			uint32 Buf_1 = 0;
-			uint32 liste_Buf[4] = { 6673, 1160, 159362, 8599 };						// Cri de guerre 6673, Cri démoralisant 1160 (8s 10m Soi-même), Folie sanguinaire 159362 (pv 1%/3s), Enrager 8599
+			uint32 liste_Buf[4] = { 6673, 1160, 97462, 8599 };						// Cri de guerre 6673, Cri démoralisant 1160 (8s 10m Soi-même), Cri de ralliement 97462 (+10% pv), Enrager 8599
 
 			uint32 Spell_agro = 0;
 			uint32 liste_agro[2] = { 133308, 79444 };								// Lancer le filet 133308 (25m 5s), Empaler 79444 (Jette une lance 60m) 
