@@ -238,6 +238,18 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 				}
 				me->SetSheath(SHEATH_STATE_MELEE);									//Arme sortie
 
+																					//Retire certaines Aura, emotes & Bytes a l'agro
+				me->RemoveAura(80264);	// Retire Marche a pas de loup
+				me->RemoveAura(152891);	// Retire Avance a pas de loup invisible
+				me->RemoveAura(104015);	// Retire afaissé / Stun
+				me->RemoveAura(153964);	// Retire agenouillé, avec evade
+				me->RemoveAura(42648);	// Retire Dort allongé + zzz
+				me->RemoveAura(18795);	// Retire Dort allongé + zzz 
+				me->RemoveAura(43905);	// Retire Ivre
+				me->HandleEmoteCommand(0);
+				me->SetByteValue(UNIT_FIELD_BYTES_1, 0, 0);
+				me->SetByteValue(UNIT_FIELD_BYTES_2, 0, 0);
+
 			}
 			void EnterEvadeMode(EvadeReason /*why*/) override
 			{
