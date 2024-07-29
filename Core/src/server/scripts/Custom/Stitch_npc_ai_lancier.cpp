@@ -63,7 +63,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			uint32 Cooldown_Spell_ContreAttaque = 4000;
 			uint32 Cooldown_Spell_ContreAttaque_defaut = 8000;
 			uint32 Cooldown_Principal_B = 2000;										// Tempo pour s"eloigner
-			uint32 Cooldown_Principal_B_Defaut = 2000;								
+			uint32 Cooldown_Principal_B_Defaut = 3000;								
 			uint32 Cooldown_Principal_C = 250;										// Tempo pour arreter le mouvement
 			uint32 Cooldown_Principal_C_Defaut = 1500;
 
@@ -328,17 +328,23 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 						}
 						else Cooldown_Spell1 -= diff;
 					}
+
+
+
 						// Spell2 sur la cible  
 						if (Cooldown_Spell2 <= diff && Spell_2 != 0)
 						{
 							me->CastSpell(victim, Spell_2, true);
-							Cooldown_Spell2 = urand(6000, 8000);
+							Cooldown_Spell2 = urand(5000, 7000);
+
 						}
 						else Cooldown_Spell2 -= diff;
 
 					// Combat a distance --------------------------------------------------------------------------------------------------------------------------
 					if (Dist >= 6)
 					{
+
+
 						// Spell1 sur la cible  
 						if (Cooldown_Spell1 <= diff)
 						{
@@ -479,6 +485,10 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
 
+						if (AuraLenteur() == false)
+						{
+							me->SetSpeedRate(MOVE_RUN, 1.2f); // Uniquement si non ralenti par un spell joueur
+						}
 
 						x = (victim->GetPositionX() + irand(0, ResteADistance * 2) - ResteADistance);
 						y = (victim->GetPositionY() + irand(0, ResteADistance * 2) - ResteADistance);
@@ -493,6 +503,8 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 						mapid = victim->GetMapId();
 						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 						Cooldown_Principal_B = Cooldown_Principal_B_Defaut;
+						Cooldown_Spell1 = 2750;
+						Cooldown_Spell2 = 2750;
 					}
 				}
 				else Cooldown_Principal_B -= diff;
