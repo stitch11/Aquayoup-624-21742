@@ -1,6 +1,6 @@
 ////#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour https:\\Aquayoup.123.fr
-// AI generique npc par famille : Mobs Ver 2022-08-08 (family)
+// AI generique npc par famille : Mobs Ver 2024-07-30 (family)
 //
 // Si spell[1] = 0 : alors affectation aléatoire de tous les spells(prédéfini dans le core), sinon utilisera les spells définis dans creature_template spell[1 a 5]
 // BETE
@@ -3128,7 +3128,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				{
 					if (Dist >= 6)
 					{
-					me->GetMotionMaster()->MoveChase(victim, 1, urand(0, 4));								// Pour suivre la cible avec un angle
+					me->GetMotionMaster()->MoveChase(victim);								// Pour suivre la cible avec un angle
 					Cooldown_Principal_A = Cooldown_Principal_A_Defaut;
 					}
 				}
