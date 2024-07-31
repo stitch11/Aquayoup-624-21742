@@ -1590,7 +1590,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 26:	//Oiseau de proie  -  CREATURE_FAMILY_BIRD_OF_PREY - AI : Mouvement_Contact_Basique, %Griffure_bondissante
 							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
-							if (Spell_respawn_evade == 0) { Spell_respawn_evade = Spell_Charge_Stun2s; }	// spells[3] 
+							if (Spell_respawn_evade == 0) { Spell_respawn_evade = Spell_Vitesse_4s; }	// spells[3] 
 							//Spell_Heal = 0;																					// 
 							Cooldown_SpellA = 1000;
 							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
