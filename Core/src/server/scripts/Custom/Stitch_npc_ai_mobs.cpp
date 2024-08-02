@@ -507,7 +507,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 			void InitializeAI()
 			{
-				
+				if (ForceFamily > 0 && ForceFamily < 301) { Crfamily = ForceFamily; }
 				Family_Special_Init();			// Spécificitée par family
 				
 				uint32 Tmp = me->m_spells[3];	// Buf au lancement du serveur (Pet, armure de givre, etc)
@@ -3638,6 +3638,14 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				me->RemoveAurasDueToSpell(Camouflage_dans_lombre);
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Selectionnable
 			}
+			void Se_DeterreSansFumee()
+			{
+				me->RemoveAurasDueToSpell(Spell_Senterre_sans_fumee);							// Retire fumée et terre remuée Temporaire
+				me->RemoveAurasDueToSpell(Spell_Sedeterre_sans_fumee);							// Visuel explosion de fumée
+				me->RemoveAurasDueToSpell(Spell_No_ModelID);									// Retire invisible
+				me->RemoveAurasDueToSpell(Camouflage_dans_lombre);
+				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Selectionnable
+			}
 			void Morph_Rocher()
 			{
 				if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE)
@@ -3729,7 +3737,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 				if (Crfamily == 159 /*&& me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE*/)
 				{
-					Se_Deterre();
+					Se_DeterreSansFumee();
+						//Se_Deterre();
 				}
 			}
 			void Family_Special_Retire_au_contact()
