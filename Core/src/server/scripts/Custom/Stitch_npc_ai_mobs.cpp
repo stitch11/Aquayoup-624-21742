@@ -1062,6 +1062,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// Anti bug de combat
 				if (me->IsAlive() && (me->GetDistance(me->GetHomePosition()) >  50))
 				{
+					RetireBugDeCombat();
+
 					if (me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE) && me->IsInCombat())
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
@@ -3674,7 +3676,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			{
 				// --- Spécificitée par family ---
 				//Scorpion, ver
-				if (Crfamily == 20 || Crfamily == 42)
+				if (Crfamily == CREATURE_FAMILY_SCORPID  /*20*/ || Crfamily == CREATURE_FAMILY_WORM /*42*/)
 				{
 					Random = urand(1, 3);
 					if (Random == 1)
@@ -3684,7 +3686,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				}
 
 				//Custom 155
-				if (Crfamily == 155 && !me->HasUnitState(UNIT_STATE_MOVE))
+				if (Crfamily == CREATURE_FAMILY_SENTERRE /*155*/ && !me->HasUnitState(UNIT_STATE_MOVE))
 				{
 					Random = urand(1, 3);
 					if (Random == 1)
@@ -3696,18 +3698,18 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				}
 
 				// Custom 156
-				if (Crfamily == 156 && !me->HasUnitState(UNIT_STATE_MOVE))
+				if (Crfamily == CREATURE_FAMILY_SE_DETERRE_AU_CONTACT /*156*/ && !me->HasUnitState(UNIT_STATE_MOVE))
 				{
 					Senterre_sans_fumee();
 				}
 
-				if (Crfamily == 157 && !me->HasUnitState(UNIT_STATE_MOVE))
+				if (Crfamily == CREATURE_FAMILY_MORPH_ROCHER  /*157*/ && !me->HasUnitState(UNIT_STATE_MOVE))
 				{
 					Morph_Rocher();
 				}
 
 				//Custom 159
-				if (Crfamily == 159)
+				if (Crfamily == CREATURE_FAMILY_SENTERRE_FIXE /*159*/)
 				{
 					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
 					Random = urand(1, 3);
@@ -3720,22 +3722,22 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			}
 			void Family_Special_Retire_a_l_Agro()
 			{
-				if (Crfamily == 20 || Crfamily == 42 || Crfamily == 155)
+				if (Crfamily == CREATURE_FAMILY_SCORPID  /*20*/ || Crfamily == CREATURE_FAMILY_WORM /*42*/ || Crfamily == CREATURE_FAMILY_SENTERRE /*155*/)
 				{
 					Se_Deterre();
 				}
 
-				if (Crfamily == 156 /*&& me->GetDefaultMovementType() == IDLE_MOTION_TYPE*/)
+				if (Crfamily == CREATURE_FAMILY_SE_DETERRE_AU_CONTACT /*156*/ /*&& me->GetDefaultMovementType() == IDLE_MOTION_TYPE*/)
 				{
 					DoCastAOE(Spell_Senterre, true);  // Pour visuel de fumée pendant la 1ere avance
 				}
 
-				if (Crfamily == 157 /*&& me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE*/)
+				if (Crfamily == CREATURE_FAMILY_MORPH_ROCHER  /*157*/ /*&& me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE*/)
 				{
 					DeMorph_Rocher();
 				}
 
-				if (Crfamily == 159 /*&& me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE*/)
+				if (Crfamily == CREATURE_FAMILY_SENTERRE_FIXE /*159*/ /*&& me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE*/)
 				{
 					Se_DeterreSansFumee();
 						//Se_Deterre();
@@ -3743,7 +3745,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			}
 			void Family_Special_Retire_au_contact()
 			{
-				if (Crfamily == 156 && me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE)
+				if (Crfamily == CREATURE_FAMILY_SE_DETERRE_AU_CONTACT /*156*/ && me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE)
 				{
 					Se_Deterre();
 				}
