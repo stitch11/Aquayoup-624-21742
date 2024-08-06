@@ -473,6 +473,8 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				// Anti bug de combat
 				if (me->IsAlive() && (me->GetDistance(me->GetHomePosition()) >  50) )
 				{
+					RetireBugDeCombat();
+
 					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);
 
 					if (me->IsInCombat() && me->getAttackers().empty())

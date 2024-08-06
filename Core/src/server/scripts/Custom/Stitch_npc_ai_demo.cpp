@@ -499,6 +499,8 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 				// Anti bug de combat
 				if (me->IsAlive() && (me->GetDistance(me->GetHomePosition()) >  50))
 				{
+					RetireBugDeCombat();
+
 					if (me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE) && me->IsInCombat())
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
