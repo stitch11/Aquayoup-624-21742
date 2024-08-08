@@ -141,6 +141,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 				// ################################################################################################################################################
 				me->SetSheath(SHEATH_STATE_MELEE);												// S'equipe de l'arme au contact
 				me->SetReactState(REACT_AGGRESSIVE);
+				me->CastSpell(me, Spell_evade, true);
 				// ################################################################################################################################################
 			}
 			void JustRespawned() override
@@ -150,8 +151,8 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 				me->SetReactState(REACT_AGGRESSIVE);
 
 				Init_AI();
-				Random = urand(1, 2);
-				if (Random == 1 && Spell_evade != 0) { me->CastSpell(me, Spell_evade, true); }		// 1/2 Chance de lancer le sort au respawn ou evade
+				//Random = urand(1, 2);
+				if (/*Random == 1 && */Spell_evade != 0) { me->CastSpell(me, Spell_evade, true); }		// 1/2 Chance de lancer le sort au respawn ou evade
 
 			}
 
@@ -191,8 +192,8 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 
 				me->RemoveAura(Buf_1);
 
-				Random = urand(1, 3);
-				if (Random == 1 && Spell_evade != 0) { me->CastSpell(me, Spell_evade, true); }		// 1/3 Chance de lancer le sort au respawn ou evade
+				//Random = urand(1, 3);
+				//if (Random == 1 && Spell_evade != 0) { me->CastSpell(me, Spell_evade, true); }		// 1/3 Chance de lancer le sort au respawn ou evade
 
 			}
 			void JustReachedHome() override
@@ -201,6 +202,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 				Arme_rangé();
 				//me->SetSpeedRate(MOVE_RUN, 1.01f);								// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
 				Retire_changeform();
+				me->CastSpell(me, Spell_evade, true);
 			}
 			void UpdateAI(uint32 diff) override
 			{
@@ -253,11 +255,11 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 							me->CastSpell(me, Buf_1, true); 			// 1/2 Chance de lancer le Buf : Soldat aguerri
 						}
 						
-						Random = urand(1, 3);
-						if (Random == 1 && Spell_evade == 137573 && Spell_agro != 100 && Spell_agro != 145763)
-						{
+						//Random = urand(1, 3);
+						//if (Random == 1 && Spell_evade == 137573 && Spell_agro != 100 && Spell_agro != 145763)
+						//{
 							me->CastSpell(me, Spell_evade, true);	// vitesse_4s si spell_agro n'est pas charge ou Bondir
-						}
+						//}
 
 
 					
