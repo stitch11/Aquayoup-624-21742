@@ -3629,6 +3629,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				me->CastSpell(me, Spell_Sedeterre_sans_fumee, true);							// Pour visuel sedeterrer
 				me->CastSpell(me, Spell_No_ModelID, true);										// Masque le ModelID
 				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Non selectionnable
+				me->RemoveAura(79690);
 			}
 			void Se_Deterre()
 			{
