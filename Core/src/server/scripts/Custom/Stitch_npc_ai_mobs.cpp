@@ -1889,8 +1889,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Principal_B_Defaut = urand(8000, 10000);
 							ResteADistance = 5;
 							Spell_Trop_Loin = Spell_Charge_Repousse;									//
-							Cooldown_Trop_Loin = urand(6000, 8000);
-							Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
+							Cooldown_Trop_Loin = urand(4000, 5000);
+							Cooldown_Trop_Loin_Defaut = urand(5000, 7000);
 							break;
 						case 44:	//Guepe  -  CREATURE_FAMILY_WASP - AI : Mouvement_Contact_Prudent_Volant
 							me->SetMeleeDamageSchool(SpellSchools(3));									// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
