@@ -667,7 +667,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 
 		case CREATURE_FAMILY_CREATURE_AQUATIQUE:	//CUSTOM 158
 			SetSpeedRate(MOVE_WALK, 0.5f);							// hors combat
-			SetSpeedRate(MOVE_RUN, 0.6f);							// en combat
+			SetSpeedRate(MOVE_RUN, 1.1f);							// en combat
 			SetSpeedRate(MOVE_SWIM, 0.5f);							// en nageant
 			break;
 
