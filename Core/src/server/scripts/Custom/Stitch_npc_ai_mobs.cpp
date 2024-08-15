@@ -144,7 +144,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 Spell_Charge_Stun2s = 32323;									// Charge 32323 (sonne 2s,8-25m ) 
 			uint32 Spell_Poursuite = 30151;										// Poursuite 30151 (Gangregarde : charge, vit + 30 %/6s, >8m, recharge 15s)
 			uint32 Spell_Vitesse_Flamboyante = 108843;							// 6s 150 %
-			uint32 Spell_Vitesse_4s = 300273;									// 300273/137573 vitesse + 70 % / 4s
+			uint32 Spell_Vitesse_4s = 137573;									// 300273/137573 vitesse + 70 % / 4s
+			uint32 Spell_Vitesse_vol_4s = 300273;									// 300273/137573 vitesse + 70 % / 4
 			uint32 Spell_stun_1s = 149902;										// stun 1s 10m
 			uint32 Spell_Bondir_Guerrier = 145763;								// Bondir 8-40m
 			uint32 Spell_Invisible = 1784;										// Invisibilitée fufu
@@ -3314,7 +3315,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				{
 					if (Dist < 6)
 					{
-						me->CastSpell(me, Spell_Vitesse_4s, true);
+						me->CastSpell(me, Spell_Vitesse_vol_4s, true);
 						Tourne_Au_Tour_Aleatoire_Volant( urand(8, 12) );
 						Cooldown_Principal_A = 3000;
 						Cooldown_Principal_B = Cooldown_Principal_B_Defaut + ((urand(0, 2) * 1000));
