@@ -99,6 +99,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 MessageAlagro = 0;
 			uint32 Spell_ContreAttaque = 0;
 			uint8 Spell_B_Non_Cumulable = 0;											// == 1 : Spell_B ne sera pas appliqué s'il est deja actif sur la cible . Par exemple pour Brise-genou
+			uint32 spell_Id = 0;
+			uint32 Spell_agro_Distant = 0;
 
 			// Definitions des variables Cooldown et le 1er lancement
 			uint32 Cooldown_SpellA = 1000;											// Sort principal
@@ -2555,15 +2557,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						// ---------------------------
 
 						if (Spell_respawn_evade != 0) { me->CastSpell(me, Spell_respawn_evade, true); }
-					}
 
-
-						// ########################################################################################################################################
-						// Spell a lancer a l'agro 
-						// ########################################################################################################################################
-					if (Start_Agro2 == 0)
-					{
-						Start_Agro2 = 1;
 
 						// Buf_A & Spell_respawn_evade a l'agro
 						uint32 Tmp3 = me->m_spells[3];
@@ -2578,14 +2572,23 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							me->CastSpell(me, Tmp3, true);
 						}
 
-						if (Dist < 3)
+
+					}
+
+
+						// ########################################################################################################################################
+						// Spell a lancer a l'agro 
+						// ########################################################################################################################################
+					if (Start_Agro2 == 0)
+					{
+						if (Dist < 3 || Spell_agro_isdistant(Spell_agro) == true)
 						{
 							Random = urand(1, 5);								// 3 Chance sur 5 de lancer le sort sur la cible a d'agro
 							if (Random < 4 && Spell_agro != 0)
 							{
 								me->CastSpell(victim, Spell_agro, true);
 							}
-
+							Start_Agro2 = 1;
 							Family_Special_Retire_au_contact();
 						}
 					}
@@ -3840,8 +3843,18 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				else return false;
 			}
 
+			bool Spell_agro_isdistant(uint32 spell_Id)
+			{
+				if (spell_Id == 0 || !UpdateVictim())
+				return false;
+				
+				SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spell_Id);
+				if (me->IsWithinCombatRange(me->GetVictim(), spellInfo->GetMaxRange(true)))
+					return true;
+					else return false;
+			}
+		};    
 
-		};
 		
 		CreatureAI* GetAI(Creature* creature) const override
 		{
