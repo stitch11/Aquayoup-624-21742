@@ -1,6 +1,6 @@
 //#########################################################################################################################################################################################################################################
 // Copyright (C) Juillet 2020 Stitch pour https:\\Aquayoup.123.fr
-// AI generique npc par classe : Caster Ver 2022-07-31 (caster simple, combat a distance)
+// AI generique npc par classe : Caster Ver 2024-09-01 (caster simple, combat a distance)
 //
 // ScriptName = Stitch_npc_ai_caster : npc d'exemple : 15100013
 // spell1 : Attaque principale
@@ -428,7 +428,8 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 						// Spell1 sur la cible  -------------------------------------------------------------------------------------------------------------------
 						if (Cooldown_Spell1 <= diff && Spell_1 !=0 )
 						{
-							DoCast(victim, Spell_1);
+							me->CastSpell(victim, Spell_1, true);
+							//DoCast(victim, Spell_1);
 							//DoMeleeAttackIfReady();
 							Cooldown_Spell1 = Cooldown_Spell1_defaut; 
 
