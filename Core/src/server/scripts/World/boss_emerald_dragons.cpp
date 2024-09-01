@@ -803,7 +803,7 @@ void AddSC_emerald_dragons()
     new npc_spirit_shade();
 
     // dragons
-    new boss_ysondre();
+    //new boss_ysondre();
     new boss_taerar();
     new boss_emeriss();
     new boss_lethon();
