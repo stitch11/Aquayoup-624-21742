@@ -605,6 +605,11 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			break;
 
 		case CREATURE_FAMILY_WIND_SERPENT:			// Serpent des vents
+			SetSpeedRate(MOVE_WALK, 1.0f);							// hors combat
+			SetSpeedRate(MOVE_RUN, 1.25f);							// en combat
+			SetSpeedRate(MOVE_SWIM, 0.8f);							// en nageant
+			break;
+
 		case CREATURE_FAMILY_SUCCUBUS:				// Succube
 		case CREATURE_FAMILY_DOOMGUARD:				// Doomguard
 		case CREATURE_FAMILY_NETHER_RAY:			// Raie du Neant
