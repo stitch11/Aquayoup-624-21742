@@ -7546,11 +7546,10 @@ void Player::_ApplyItemBonuses(Item* item, uint8 slot, bool apply)
                 ApplyRatingMod(CR_RESILIENCE_PLAYER_DAMAGE_TAKEN, int32(val), apply);
                 break;
 
-//Stitch ITEM rate Hate *1.332 : 10 item = 1% stat
             case ITEM_MOD_HASTE_RATING:                                                  
-				ApplyRatingMod(CR_HASTE_MELEE, int32(val) * 1.332, apply);
-				ApplyRatingMod(CR_HASTE_RANGED, int32(val) * 1.332, apply);
-				ApplyRatingMod(CR_HASTE_SPELL, int32(val) * 1.332, apply);
+				ApplyRatingMod(CR_HASTE_MELEE, int32(val) , apply);
+				ApplyRatingMod(CR_HASTE_RANGED, int32(val) , apply);
+				ApplyRatingMod(CR_HASTE_SPELL, int32(val) , apply);
                 break;
 
 

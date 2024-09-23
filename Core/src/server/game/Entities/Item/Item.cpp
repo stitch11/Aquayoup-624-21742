@@ -600,8 +600,8 @@ int32 Item::GenerateItemRandomPropertyId(uint32 item_id)
 
 
 //Stitch item stat : suppression des stats sur item stat aleatoires RandomProperty >0 pour cause de bug toujour 1 affiché
-//	if ((itemProto->GetRandomProperty()>0) && (!itemProto->GetRandomSuffix()))
-//		return 0;
+	if ((itemProto->GetRandomProperty()>0) && (!itemProto->GetRandomSuffix()))
+		return 0;
 
 
 
