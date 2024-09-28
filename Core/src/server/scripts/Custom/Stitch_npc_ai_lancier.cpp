@@ -210,6 +210,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				me->RemoveAura(42648);	// Retire Dort allongé + zzz
 				me->RemoveAura(18795);	// Retire Dort allongé + zzz 
 				me->RemoveAura(43905);	// Retire Ivre
+				me->RemoveAura(101090);	// Retire Danse
 				me->HandleEmoteCommand(0);
 				me->SetByteValue(UNIT_FIELD_BYTES_1, 0, 0);
 				me->SetByteValue(UNIT_FIELD_BYTES_2, 0, 0);
