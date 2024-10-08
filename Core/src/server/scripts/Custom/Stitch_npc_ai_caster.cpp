@@ -69,8 +69,8 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			uint32 Cooldown_Spell1_defaut = urand(3000, 3750);
 			uint32 Cooldown_Spell2 = 4000;
 			uint32 Cooldown_Spell2_defaut = urand(7000,10000);
-			uint32 Cooldown_ResteADistance = 1000;									// Test si en contact
-			uint32 Cooldown_ResteADistance_Defaut = 2500;
+			uint32 Cooldown_ResteADistance = 3000;									// Test si en contact
+			uint32 Cooldown_ResteADistance_Defaut = 3000;
 			uint32 Cooldown_ResteADistance_Teleportation = 3000;
 			uint32 Cooldown_ResteADistance_Defaut_Teleportation = urand(5000, 7000);
 			uint32 Cooldown_Anti_Bug_Figer = 2000;
@@ -541,7 +541,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				if (Cooldown_ResteADistance <= diff && !AuraFigé())
 				{
 					// Mouvement aléatoire si cible < 6m & mana > 10%  
-					if (Dist <6 && (Mana > MaxMana / 10) && (ForceBranche != 7 && ForceBranche <11) )
+					if (Dist <=5 && (Mana > MaxMana / 10) && (ForceBranche != 7 && ForceBranche <12 ))
 					{
 
 						if(!AuraLenteur() && !Interieur())
@@ -576,7 +576,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 
 
 				// Mouvement OFF si distance >= 8m & <= 15m 
-				if ((Dist >= 8) && (Dist <= ResteADistance))
+				if ((Dist > 5) && (Dist <= ResteADistance))
 				{
 					//if (!me->isMoving())																// Sinon bug d'animation
 					if (!me->HasUnitState(UNIT_STATE_MOVE))
