@@ -2986,6 +2986,14 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING) || AuraFigé() == true)
 					return;
 
+
+				// Reste a une distance moins importante ci le mob est a l'Intérieur
+				if (!me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+				{
+					ResteADistance = 10;
+				}
+
+
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
 
@@ -2996,7 +3004,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					if (Dist <= 5)
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
-
 
 						x = (victim->GetPositionX() + irand(0, ResteADistance * 2) - ResteADistance);
 						y = (victim->GetPositionY() + irand(0, ResteADistance * 2) - ResteADistance);
