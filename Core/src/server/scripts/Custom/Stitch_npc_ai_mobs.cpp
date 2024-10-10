@@ -1198,7 +1198,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Principal_A_Defaut = 2000;
 							Cooldown_Principal_B = 1000;
 							Cooldown_Principal_B_Defaut = 1000;
-							ResteADistance = 15;
+							// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+							if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+							{
+								ResteADistance = urand(12, 16);
+							}
+							else
+							{
+								ResteADistance = urand(8, 10);
+							}
 							Spell_Trop_Loin = Spell_Toile_Araignee;
 							Cooldown_Trop_Loin = 8000;
 							Cooldown_Trop_Loin_Defaut = urand(8000, 10000);
@@ -1630,8 +1638,16 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = 1000;
-							Cooldown_Principal_B_Defaut = 1000;
-							ResteADistance = urand(15, 20);
+							Cooldown_Principal_B_Defaut = 2000;
+							// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+							if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+							{
+								ResteADistance = urand(15, 20);
+							}
+							else
+							{
+								ResteADistance = urand(8, 10);
+							}
 							Spell_Trop_Loin = 0;
 							Cooldown_Trop_Loin = urand(3000, 8000);
 							Cooldown_Trop_Loin_Defaut = urand(8000, 10000);
@@ -1677,7 +1693,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = 2000;
 							Cooldown_Principal_B_Defaut = 3000;
-							ResteADistance = 15;
+							// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+							if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+							{
+								ResteADistance = urand(14, 16);
+							}
+							else
+							{
+								ResteADistance = urand(8, 10);
+							}
 							Spell_Trop_Loin = 0;
 							Cooldown_Trop_Loin = urand(6000, 8000);
 							Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
@@ -1728,7 +1752,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Principal_A_Defaut = 1500;
 							Cooldown_Principal_B = 1000;
 							Cooldown_Principal_B_Defaut = 2000;
-							ResteADistance = urand(12, 18);
+							// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+							if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+							{
+								ResteADistance = urand(12, 16);
+							}
+							else
+							{
+								ResteADistance = urand(8, 10);
+							}
 							Spell_Trop_Loin = 0;
 							Cooldown_Trop_Loin = urand(3000, 8000);
 							Cooldown_Trop_Loin_Defaut = urand(5000, 10000);
@@ -1739,7 +1771,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							{
 								Cooldown_Principal_B = 1000;
 								Cooldown_Principal_B_Defaut = 2000;
-								ResteADistance = urand(12, 18);
 								Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
 								Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 4000, Base_Cooldown_Cast_B - 3000);
 								Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 4000;												// Cadence de tir SpellB rapide pour Mouvement_Cast_Puis_Contact
@@ -1784,7 +1815,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = 2000;
 							Cooldown_Principal_B_Defaut = 6000;
-							ResteADistance = urand(12, 15);
+							// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+							if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+							{
+								ResteADistance = urand(12, 15);
+							}
+							else
+							{
+								ResteADistance = urand(8, 10);
+							}
 							Spell_Trop_Loin = 0;
 							Cooldown_Trop_Loin = urand(3000, 8000);
 							Cooldown_Trop_Loin_Defaut = urand(8000, 15000);
@@ -1804,8 +1843,16 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = 1000;
-							Cooldown_Principal_B_Defaut = 2000;
-							ResteADistance = urand(15, 20);
+							Cooldown_Principal_B_Defaut = 3000;
+							// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+							if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+							{
+								ResteADistance = urand(15, 20);
+							}
+							else
+							{
+								ResteADistance = urand(8, 10);
+							}
 							Spell_Trop_Loin = 0;
 							Cooldown_Trop_Loin = urand(3000, 8000);
 							Cooldown_Trop_Loin_Defaut = urand(6000, 12000);
@@ -1868,8 +1915,16 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Principal_A = 1000;
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = 1000;
-							Cooldown_Principal_B_Defaut = 1000;
-							ResteADistance = urand(15, 20);
+							Cooldown_Principal_B_Defaut = 4000;
+							// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+							if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+							{
+								ResteADistance = urand(15, 20);
+							}
+							else
+							{
+								ResteADistance = urand(8, 10);
+							}
 							Spell_Trop_Loin = 0;
 							Cooldown_Trop_Loin = urand(5000, 8000);
 							Cooldown_Trop_Loin_Defaut = urand(8000, 12000);
@@ -1912,7 +1967,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = 5000;
 							Cooldown_Principal_B_Defaut = urand(4000, 6000);
-							ResteADistance = 15;
+							// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+							if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+							{
+								ResteADistance = urand(12, 16);
+							}
+							else
+							{
+								ResteADistance = urand(8, 10);
+							}
 							Spell_Trop_Loin = 0;														//
 							Cooldown_Trop_Loin = 500;
 							Cooldown_Trop_Loin_Defaut = urand(5000, 6000);
@@ -1963,7 +2026,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Trop_Loin_Defaut = 15000;
 							if (AI_Random == 1)				//Mouvement_Caster_Puis_Contact(diff)
 							{
-								ResteADistance = 12;
+								// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+								if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+								{
+									ResteADistance = urand(12, 14);
+								}
+								else
+								{
+									ResteADistance = urand(8, 10);
+								}
 
 								Cooldown_Principal_A_Defaut = 2000;
 								Cooldown_Principal_B_Defaut = 1000;
@@ -1973,7 +2044,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							}
 							else if (AI_Random == 2)		//Mouvement_Caster(diff)
 							{
-								ResteADistance = 15;
+								// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+								if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+								{
+									ResteADistance = urand(14, 17);
+								}
+								else
+								{
+									ResteADistance = urand(8, 10);
+								}
 								Cooldown_Principal_A_Defaut = 2000;
 								Cooldown_Principal_B_Defaut = 4000;
 								Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
@@ -2029,7 +2108,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = 1500;
 							Cooldown_Principal_B_Defaut = urand(3500, 4500);
-							ResteADistance = urand(12, 15);
+							// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+							if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+							{
+								ResteADistance = urand(12, 14);
+							}
+							else
+							{
+								ResteADistance = urand(8, 10);
+							}
 							Spell_Trop_Loin = 0;																			// 
 							Cooldown_Trop_Loin = urand(5000, 10000);
 							Cooldown_Trop_Loin_Defaut = urand(6000, 10000);
@@ -2151,7 +2238,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Principal_A_Defaut = 1000;
 							Cooldown_Principal_B = 1000;
 							Cooldown_Principal_B_Defaut = urand(5000, 6000);
-							ResteADistance = urand(12, 15);
+							// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+							if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+							{
+								ResteADistance = urand(11, 14);
+							}
+							else
+							{
+								ResteADistance = urand(8, 10);
+							}
 							Spell_Trop_Loin = 0;																			// 
 							Cooldown_Trop_Loin = urand(5000, 7000);
 							Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
@@ -2264,12 +2359,28 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 							if (AI_Random == 1)
 							{
-								ResteADistance = urand(8, 10);
-								Cooldown_Principal_B_Defaut = 1000;
+								// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+								if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+								{
+									ResteADistance = urand(10, 14);
+								}
+								else
+								{
+									ResteADistance = urand(8, 10);
+								}
+								Cooldown_Principal_B_Defaut = 2500;
 							}
 							else if (AI_Random == 2)
 							{
-								ResteADistance = urand(8, 10);
+								// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+								if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+								{
+									ResteADistance = urand(10, 14);
+								}
+								else
+								{
+									ResteADistance = urand(8, 10);
+								}
 								Cooldown_Principal_B_Defaut = 4000;
 							}
 							break;
