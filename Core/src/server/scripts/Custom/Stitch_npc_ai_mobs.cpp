@@ -3806,7 +3806,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					Random = urand(1, 3);
 					if (Random == 1)
 					{
-						Senterre();
+						Senterre_sans_fumee();
 					}
 				}
 
@@ -3849,7 +3849,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			{
 				if (Crfamily == CREATURE_FAMILY_SCORPID  /*20*/ || Crfamily == CREATURE_FAMILY_WORM /*42*/ || Crfamily == CREATURE_FAMILY_SENTERRE /*155*/)
 				{
-					Se_Deterre();
+					Se_DeterreSansFumee();
 				}
 
 				if (Crfamily == CREATURE_FAMILY_SE_DETERRE_AU_CONTACT /*156*/ /*&& me->GetDefaultMovementType() == IDLE_MOTION_TYPE*/)
