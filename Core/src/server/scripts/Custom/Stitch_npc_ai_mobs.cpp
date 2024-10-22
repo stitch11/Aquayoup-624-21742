@@ -3804,7 +3804,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				if (Crfamily == CREATURE_FAMILY_SCORPID  /*20*/ || Crfamily == CREATURE_FAMILY_WORM /*42*/)
 				{
 					Random = urand(1, 3);
-					if (Random == 1)
+					if (Random != 1)
 					{
 						Senterre_sans_fumee();
 					}
