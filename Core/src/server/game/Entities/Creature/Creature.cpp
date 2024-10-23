@@ -499,6 +499,13 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			SetSpeedRate(MOVE_SWIM, 0.75f);							// en nageant
 			break;
 
+		case CREATURE_TYPE_MACHINE_VOLANTE:
+			SetSpeedRate(MOVE_WALK, 4.0f);							// hors combat
+			SetSpeedRate(MOVE_RUN, 4.0f);							// en combat
+			SetSpeedRate(MOVE_SWIM, 4.0f);							// en nageant
+			SetSpeedRate(MOVE_FLIGHT, 6.0f);
+			break;
+
 		default:
 			//SetSpeedRate(MOVE_WALK, 0.5f);							// hors combat
 			//SetSpeedRate(MOVE_RUN, 1.0f);								// en combat
@@ -681,6 +688,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			SetSpeedRate(MOVE_RUN, 0.1f);							// en combat
 			SetSpeedRate(MOVE_SWIM, 0.1f);							// en nageant
 			break;
+
 
 		default:
 			//SetSpeedRate(MOVE_WALK, 0.5f);						// hors combat
