@@ -1,0 +1,51 @@
+<div class="modal-header">
+  <h3 class="modal-title">dynamicflags</h3>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-xs-8">
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[0]">
+        <small>0 HIDE_MODEL</small>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" class="input-xs" ng-model="values[1]">
+        <small>1 LOOTABLE</small>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" class="input-xs" ng-model="values[2]">
+        <small>2  TRACK_UNIT</small>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" class="input-xs" ng-model="values[3]">
+        <small>3 TAPPED (lua)</small>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" class="input-xs" ng-model="values[4]">
+        <small>4 TAPPED_BY_PLAYER (lua)</small>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" class="input-xs" ng-model="values[5]">
+        <small>5 SPECIALINFO</small>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" class="input-xs" ng-model="values[6]">
+        <small>6 Mort (barre de vie)</small>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" class="input-xs" ng-model="values[7]">
+        <small>7 REFER_A_FRIEND</small>
+      </label>
+       <label class="checkbox">
+        <input type="checkbox" class="input-xs" ng-model="values[8]">
+       <small>8 UNIT_DYNFLAG_TAPPED_BY_ALL_THREAT_LIST (lua)</small>
+      </label>
+    </div>
+    <div class="col-xs-6">
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" ng-click="modalOk()">OK</button>
+  <button class="btn btn-danger" ng-click="modalCancel()">Cancel</button>
+</div>

@@ -1,0 +1,893 @@
+﻿<p class="text-right doc-link">Table <a target="_blank" ng-href="{{ wikiLink }}creature_template"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>creature_template</a></p>
+<div class="row">
+  <div class="col-xs-5">
+
+    <div class="borders">
+      <h5 class="text-left"><font color="#6666FF">Creature I</font></h5>
+      <div class="row">
+        <div class="col-xs-4">
+          <small>Entry</small>
+          <div class="input-group">
+            <input class="form-control input-xs" type="text" ng-model="new_creature_template.entry">
+            <div class="input-group-btn">
+              <a ng-href="#/creature/{{ new_creature_template.entry }}"><button class="btn btn-info btn-xs">→</button></a>
+            </div>
+          </div>
+        </div>
+        
+          <div class="col-xs-4 text-left">
+            <small>KillCredit1</small>
+            <input type="text" class="form-control input-xs" ng-model="new_creature_template.KillCredit1">
+          </div>
+          <div class="col-xs-4 text-left">
+            <small>KillCredit2</small>
+            <input type="text" class="form-control input-xs" ng-model="new_creature_template.KillCredit2">
+          </div>
+
+</div>
+
+        <div class="row">
+      
+        <div class="col-xs-4">
+          <small>difficulty_entry_1</small>
+          <div class="input-group">
+            <input class="form-control input-xs" type="text" ng-model="new_creature_template.difficulty_entry_1">
+            <div class="input-group-btn">
+              <a ng-href="#/creature/{{ new_creature_template.difficulty_entry_1 }}"><button class="btn btn-info btn-xs">→</button></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-4">
+          <small>difficulty_entry_2</small>
+          <div class="input-group">
+            <input class="form-control input-xs" type="text" ng-model="new_creature_template.difficulty_entry_2">
+            <div class="input-group-btn">
+              <a ng-href="#/creature/{{ new_creature_template.difficulty_entry_2 }}"><button class="btn btn-info btn-xs">→</button></a>
+            </div>
+          </div></div>
+        <div class="col-xs-4">
+          <small>difficulty_entry_3</small>
+          <div class="input-group">
+            <input class="form-control input-xs" type="text" ng-model="new_creature_template.difficulty_entry_3">
+            <div class="input-group-btn">
+              <a ng-href="#/creature/{{ new_creature_template.difficulty_entry_3 }}"><button class="btn btn-info btn-xs">→</button></a>
+            </div>
+          </div>
+        </div>
+                
+
+        <div class="row">
+          <div class="col-xs-6 text-left">
+            <small>Name</small>
+            <input type="text" class="form-control input-xs" ng-model="new_creature_template.name">
+          </div>
+          <div class="col-xs-6 text-left" ng-show="version.name == '6.x'">
+            <small>femaleName</small>
+            <input type="text" class="form-control input-xs" ng-model="new_creature_template.femaleName">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6 text-left">
+            <small>subname</small>
+            <input type="text" class="form-control input-xs" ng-model="new_creature_template.subname">
+          </div>
+
+        
+        
+              <div class="col-xs-6">
+
+
+             <small>Iconname</small> <input type="text" class="form-control input-xs" ng-model="new_creature_template.IconName">
+                <div class="col-xs-15">
+
+
+
+
+    </div></div></div> 
+                 <small>Attack, Speak, vehichleCursor, Buy, Directions, Trainer, Interact, questinteract</small>
+             <small>LootAll, mine, Pickup, Point, PVP, Quest,Driver, Pickup, Interact, Trainer, Taxi,LootAll</small>
+            <small>PVP, gatherherbs, workorders, wildpetcapturable, wildpet, Voidstorage, architect</small>
+            <small>crosshairs, Directions, Driver, EngineerSkin, fishing, GatherHerbs, Gunner, innkeeper</small>
+            <small>inspect, item, mail, missions, openhand, openhandglow, PickLock, Reforge, Repair</small>
+            <small>stablemaster, Taxi, Transmogrify, Cast, questinteract, ui-cursor-move</small>
+          </br>
+          
+          
+        <div class="row">
+        	
+          <div class="col-xs-3 text-left">
+            <small>modelid1</small>
+            <input type="text" class="form-control input-xs" ng-model="new_creature_template.modelid1">
+          </div>
+          <div class="col-xs-3 text-left">
+            <small>modelid2</small>
+            <input type="text" class="form-control input-xs" ng-model="new_creature_template.modelid2">
+          </div>
+          <div class="col-xs-3 text-left">
+            <small>modelid3</small>
+            <input type="text" class="form-control input-xs" ng-model="new_creature_template.modelid3">
+          </div>
+          <div class="col-xs-3 text-left">
+            <small>modelid4</small>
+            <input type="text" class="form-control input-xs" ng-model="new_creature_template.modelid4">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-3 text-left">
+            <small>mingold</small>
+            <input type="text" class="form-control input-xs" ng-model="new_creature_template.mingold">
+          </div>
+          <div class="col-xs-3 text-left">
+            <small>maxgold</small>
+            <input type="text" class="form-control input-xs" ng-model="new_creature_template.maxgold">
+          </div>
+          <div class="col-xs-3 text-left">
+            <small>minlevel</small>
+            <input type="text" class="form-control input-xs" ng-model="new_creature_template.minlevel">
+          </div>
+          <div class="col-xs-3 text-left">
+            <small>maxlevel</small>
+            <input type="text" class="form-control input-xs" ng-model="new_creature_template.maxlevel">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-2 text-left">
+            <small>Health_mod</small>
+            <input type="text" class="form-control input-xs" ng-model="new_creature_template.HealthModifier">
+          </div>
+          <div class="col-xs-2 text-left">
+            <small>Mana_mod</small>
+            <input type="text" class="form-control input-xs" ng-model="new_creature_template.ManaModifier">
+          </div>
+          <div class="col-xs-3 text-left">
+            <small>Vehicleid (bug)</small>
+            <input type="text" class="form-control input-xs" ng-model="new_creature_template.Vehicleid">
+          </div>
+          <div class="col-xs-2 text-left">
+            <small>exp</small>
+            <input type="text" class="form-control input-xs" ng-model="new_creature_template.exp">
+          </div>
+        </div>
+        <div class="row">
+          <div ng-show="version.name == '6.x'">
+            <div class="col-xs-3 text-left">
+              <small>HealthModifierExtra</small>
+              <input type="text" class="form-control input-xs" ng-model="new_creature_template.HealthModifierExtra">
+            </div>
+            <div class="col-xs-3 text-left">
+              <small>ManaModifierExtra</small>
+              <input type="text" class="form-control input-xs" ng-model="new_creature_template.ManaModifierExtra">
+            </div>
+          </div>
+          <div class="col-xs-2 text-left" ng-show="version.name == '6.x'">
+            <small>exp_unk</small>
+            <input type="text" class="form-control input-xs" ng-model="new_creature_template.exp_unk">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-xs-4 text-left borders">
+
+        <h5 class="text-left">Loot</h5>
+        <small>lootid</small>
+        <input type="text" class="form-control input-xs" ng-model="new_creature_template.lootid">
+        <small>pickpocketloot =<301</br>npc_ai_mobs = force AI</small>
+        <input type="text" class="form-control input-xs" ng-model="new_creature_template.pickpocketloot">
+        <small>skinloot</small>
+        <input type="text" class="form-control input-xs" ng-model="new_creature_template.skinloot">
+
+      </div>
+      <div class="col-xs-8 text-left borders">
+
+        <h5 class="text-left">Resistance</h5>
+        <div class="row">
+          <div class="col-xs-6 text-left">
+            <small>resistance Sacré</small>
+            <input type="text" class="form-control input-xs" ng-model="new_creature_template.resistance1">
+            </br><small>resistance Feu</small>
+            <input type="text" class="form-control input-xs" ng-model="new_creature_template.resistance2">
+            <small>resistance Nature </small>
+            <input type="text" class="form-control input-xs" ng-model="new_creature_template.resistance3">
+          </div>
+          <div class="col-xs-6 text-left">
+            <small>resistance Givre</small>
+            <input type="text" class="form-control input-xs" ng-model="new_creature_template.resistance4">
+            </br><small>resistance Ombre</small>
+            <input type="text" class="form-control input-xs" ng-model="new_creature_template.resistance5">
+            <small>resistance Arcane </small>
+            <input type="text" class="form-control input-xs" ng-model="new_creature_template.resistance6">
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    
+    
+    <div class="col-xs-12 text-left borders">
+    <div class="row">
+
+      <div class="col-xs-2 text-left">
+        <small>RacialLeader</small>
+        <input type="text" class="form-control input-xs" ng-model="new_creature_template.RacialLeader">
+      </div>
+      <div class="col-xs-5 text-left">
+        <small>flags_extra</small>
+        <div class="input-group">
+          <input type="text" class="form-control input-xs" ng-model="new_creature_template.flags_extra">
+          <div class="input-group-btn">
+            <button class="btn btn-info input-xs" ng-click="openFlagModal('partials/creature/modals/flags-extra.html', new_creature_template, 'flags_extra', 32)">...</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-3 text-left" ng-show="version.name == '3.3.5'">
+        <small>PetSpellDataId</small>
+        <input type="text" class="form-control input-xs" ng-model="new_creature_template.PetSpellDataId">
+      </div>
+      <div class="col-xs-5 text-left">
+        <small>mechanic_immune_mask</small>
+        <div class="input-group">
+          <input type="text" class="form-control input-xs" ng-model="new_creature_template.mechanic_immune_mask">
+          <div class="input-group-btn">
+            <button class="btn btn-info input-xs" ng-click="openFlagModal( 'partials/creature/modals/mechanic.html', new_creature_template, 'mechanic_immune_mask', 31)">...</button>
+          </div>
+        </div>
+      </div>
+    </div></div>
+
+
+    <div class="col-xs-12 text-left borders">
+    <div class="row">
+<b><u><h2><font color="#6666FF">ScriptName :</font></h2></u></b>
+	<font color="#FFFF00">Adapte son lvl a l'agresseur aprés le 1er sort :</font></br>
+<font color="#00FF00">Stitch_npc_ai_level_scale_caster</font> (exemple : 15000319)</br>
+<font color="#00FF00">Stitch_npc_ai_level_scale_melee </font> (exemple : 15000317 ,  15000318)</br>
+<font color="#00FF00">Stitch_npc_ai_level_scale_heal</font> (exemple : 15000320)</br>
+
+ - spell1 : Buff sur le caster a l'agro</br>
+ - spell2 : Sort sur la cible a l'agro</br>
+ - spell3 : Le sort utilisé sur la cible en combat ( chaque 2 a 3s environ)</br>
+ - spell4 : DOT ( chaque 10 a 15s environ)</br>
+ - spell5 : Le sort pour ce soigner ou soigner un alliés dans les 30m</br>
+</br>
+<font color="#FFFF00">Choix du joueur au level 1 du lieu & level de départ 30,58,68,80,85,90  :</font>
+<font color="#00FF00">npc_level </font>(exemple : 15000386)</br>
+</br>
+<font color="#FFFF00">Changer de Faction, Race, Apparence :</font></br>
+<font color="#00FF00">npc_changer </font>(exemple : 15000142)</br>
+</br>
+<font color="#FFFF00">Pnj pour le choix de faction Pandaren (quete 31450) :</font></br>
+<font color="#00FF00">npc_ChangeFactionPanda</font> (exemple : 56013)</br>
+
+
+    	  </div></div>
+    	  
+</br></br>
+<div class="row">
+  <div class="col-xs-6"></br>
+    <button class="btn btn-primary" ng-click="openFullScriptModal(new_creature_template, 'creature_template', 'entry')">FULL SQL Script</button>
+  </div>
+  <div class="col-xs-2"></br>
+    <button class="btn btn-success" ng-click="openScriptTab()">UPDATE SQL Script</button>
+  </div>
+</div>
+</br></br>
+
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <div class="col-xs-7">
+    <div class="borders">
+      <div >
+      
+        <h5 class="text-left">&nbsp;&nbsp;<font color="#6666FF">Creature II</font></h5>
+        <div class="col-xs-2">
+          <small>RegenHealth</small>
+          <div class="input-group">
+            <input class="form-control input-xs" type="text" ng-model="new_creature_template.RegenHealth">
+          </div>
+        </div>
+
+            <div class="col-xs-2">
+              <small>unit_class</small>
+              <div class="input-group">
+                <input class="form-control input-xs" type="text" ng-model="new_creature_template.unit_class">
+                <div class="input-group-btn">
+                  <button class="btn btn-info input-xs" ng-click="openValueModal(new_creature_template, 'unit_class', 'classes')">...</button>
+                </div>
+              </div>
+            </div>
+           
+            <div class="col-xs-2">
+              <small>dmgSchool</small>
+              <div class="input-group">
+                <input class="form-control input-xs" type="text" ng-model="new_creature_template.dmgschool">
+                <div class="input-group-btn">
+                  <button class="btn btn-info input-xs" ng-click="openValueModal(new_creature_template, 'dmgschool', 'dmgschool')">...</button>
+                </div>
+              </div>
+            </div>
+                    
+        
+        <div class="col-xs-2">
+          <small>RangeAttackTime</small>
+          <div class="input-group">
+            <input class="form-control input-xs" type="text" ng-model="new_creature_template.RangeAttackTime">
+          </div>
+        </div>
+        <div class="col-xs-2">
+          <small>BaseAttackTime</small>
+          <div class="input-group">
+            <input class="form-control input-xs" type="text" ng-model="new_creature_template.BaseAttackTime">
+          </div>
+        </div>
+      </div>
+              <div class="col-xs-2">
+          <small>family (vitesses de deplacements)</small>
+          <div class="input-group">
+            <input class="form-control input-xs" type="text" ng-model="new_creature_template.family">
+            <div class="input-group-btn">
+              <button class="btn btn-info input-xs" ng-click="openValueModal(new_creature_template, 'family')">...</button>
+            </div>
+          </div>
+        </div>
+      <div class="row">
+        <div class="col-xs-3">
+          <small>npcflag</small>
+          <div class="input-group">
+            <input class="form-control input-xs" type="text" ng-model="new_creature_template.npcflag">
+            <div class="input-group-btn">
+              <button class="btn btn-info input-xs" ng-click="openFlagModal( 'partials/creature/modals/npcflag.html', new_creature_template, 'npcflag', 38)">...</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xs-3">
+          <small>unit_flags2</small>
+          <div class="input-group">
+            <input class="form-control input-xs" type="text" ng-model="new_creature_template.unit_flags2">
+            <div class="input-group-btn">
+              <button class="btn btn-info input-xs" ng-click="openFlagModal('partials/creature/modals/unit-flags2.html', new_creature_template, 'unit_flags2', 22)">...</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-2">
+          <small>faction</small>
+          <div class="input-group">
+            <input class="form-control input-xs" type="text" ng-model="new_creature_template.faction">
+            <div class="input-group-btn">
+              <button class="btn btn-info input-xs" ng-click="openValueModal(new_creature_template, 'faction')">...</button>
+            </div>
+          </div>
+        </div>
+        
+                        <div class="col-xs-2">
+          <small>VerifiedBuild</small>
+          <div class="input-group">
+            <input class="form-control input-xs" type="text" ng-model="new_creature_template.VerifiedBuild">
+          </div>
+        </div>
+        
+        <div class="col-xs-2">
+          <small>type</small>
+          <div class="input-group">
+            <input class="form-control input-xs" type="text" ng-model="new_creature_template.type">
+            <div class="input-group-btn">
+              <button class="btn btn-info input-xs" ng-click="openValueModal(new_creature_template, 'type')">...</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-xs-2">
+          <small>rank</small>
+          <div class="input-group">
+            <input class="form-control input-xs" type="text" ng-model="new_creature_template.rank">
+            <div class="input-group-btn">
+              <button class="btn btn-info input-xs" ng-click="openValueModal(new_creature_template, 'rank')">...</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <small>unit_flags</small>
+          <div class="input-group">
+            <input class="form-control input-xs" type="text" ng-model="new_creature_template.unit_flags">
+            <div class="input-group-btn">
+              <button class="btn btn-info input-xs" ng-click="openFlagModal('partials/creature/modals/unit-flags.html', new_creature_template, 'unit_flags', 32)">...</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <small>type_flags</small>
+          <div class="input-group">
+            <input class="form-control input-xs" type="text" ng-model="new_creature_template.type_flags">
+            <div class="input-group-btn">
+              <button class="btn btn-info input-xs" ng-click="openFlagModal('partials/creature/modals/type-flags.html', new_creature_template, 'type_flags', 32)">...</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-2" ng-show="version.name == '6.x'">
+          <small>type_flags2</small>
+          <div class="input-group">
+            <input class="form-control input-xs" type="text" ng-model="new_creature_template.type_flags2">
+            <div class="input-group-btn">
+              <button class="btn btn-info input-xs" ng-click="openFlagModal('partials/creature/modals/type-flags2.html', new_creature_template, 'type_flags2', 32)">...</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-2">
+          <small>dynamicflags</small>
+          <div class="input-group">
+            <input class="form-control input-xs" type="text" ng-model="new_creature_template.dynamicflags">
+            <div class="input-group-btn">
+              <button class="btn btn-info input-xs" ng-click="openFlagModal('partials/creature/modals/dynamicflags.html', new_creature_template, 'dynamicflags', 8)">...</button>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <div class="row">
+      <div class="col-xs-5">
+        <div class="borders">
+          <div class="row">
+            <h5 class="text-center"><font color="#6666FF">Entraineur</font></h5>
+            <div class="col-xs-6">
+              <small>trainer_type</small>
+              <div class="input-group">
+                <input class="form-control input-xs" type="text" ng-model="new_creature_template.trainer_type">
+                <div class="input-group-btn">
+                  <button class="btn btn-info input-xs" ng-click="openValueModal(new_creature_template, 'trainer_type')">...</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-6">
+              <small>trainer_class</small>
+              <div class="input-group">
+                <input class="form-control input-xs" type="text" ng-model="new_creature_template.trainer_class">
+                <div class="input-group-btn">
+                  <button class="btn btn-info input-xs" ng-click="openValueModal(new_creature_template, 'trainer_class', 'trainer')">...</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-6">
+              <small>trainer_race</small>
+              <div class="input-group">
+                <input class="form-control input-xs" type="text" ng-model="new_creature_template.trainer_race">
+                <div class="input-group-btn">
+                  <button class="btn btn-info input-xs" ng-click="openValueModal(new_creature_template, 'trainer_race', 'race')">...</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-4" ng-show="version.name == '3.3.5'">
+              <small>trainer_spell</small>
+              <div class="input-group">
+                <input class="form-control input-xs" type="text" ng-model="new_creature_template.trainer_spell">
+                <div class="input-group-btn">
+                  <button class="btn btn-info input-xs" ng-click="openSearchModal(new_creature_template, 'trainer_spell', 'dbc/spells')">...</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="borders">
+          <div class="row">
+
+            <div class="col-xs-12">
+              <small><font color="#00FF00">SPELL1</font></small>
+              <div class="input-group">
+                <input class="form-control input-xs" type="text" ng-model="new_creature_template.spell1">
+                <div class="input-group-btn">
+                  <button class="btn btn-info input-xs" ng-click="openSearchModal(new_creature_template, 'spell1', 'dbc/spells')">...</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12">
+              <small></br><font color="#00FF00">SPELL2 - DOT</font></small>
+              <div class="input-group">
+                <input class="form-control input-xs" type="text" ng-model="new_creature_template.spell2">
+                <div class="input-group-btn">
+                  <button class="btn btn-info input-xs" ng-click="openSearchModal(new_creature_template, 'spell2', 'dbc/spells')">...</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <small></br><font color="#00FF00">SPELL3</font><br/>% a l'agro sur cible</small>
+              <div class="input-group">
+                <input class="form-control input-xs" type="text" ng-model="new_creature_template.spell3">
+                <div class="input-group-btn">
+                  <button class="btn btn-info input-xs" ng-click="openSearchModal(new_creature_template, 'spell3', 'dbc/spells')">...</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12">
+              <small></br><font color="#00FF00">SPELL4</font><br/>evade, respawn, agro </small>
+              <div class="input-group">
+                <input class="form-control input-xs" type="text" ng-model="new_creature_template.spell4">
+                <div class="input-group-btn">
+                  <button class="btn btn-info input-xs" ng-click="openSearchModal(new_creature_template, 'spell4', 'dbc/spells')">...</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <small></br><font color="#00FF00">SPELL5</font><br/>Buf % a l'agro</small>
+              <div class="input-group">
+                <input class="form-control input-xs" type="text" ng-model="new_creature_template.spell5">
+                <div class="input-group-btn">
+                  <button class="btn btn-info input-xs" ng-click="openSearchModal(new_creature_template, 'spell5', 'dbc/spells')">...</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12">
+              <small></br><font color="#00FF00">SPELL6</font><br/>PV bas: spell sur cast</small>
+              <div class="input-group">
+                <input class="form-control input-xs" type="text" ng-model="new_creature_template.spell6">
+                <div class="input-group-btn">
+                  <button class="btn btn-info input-xs" ng-click="openSearchModal(new_creature_template, 'spell6', 'dbc/spells')">...</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <small></br><font color="#00FF00">SPELL7</font><br/>PV bas: spell sur cible</small>
+              <div class="input-group">
+                <input class="form-control input-xs" type="text" ng-model="new_creature_template.spell7">
+                <div class="input-group-btn">
+                  <button class="btn btn-info input-xs" ng-click="openSearchModal(new_creature_template, 'spell7', 'dbc/spells')">...</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12">
+              <small></br><font color="#00FF00">SPELL8</font><br/> 1 = Message a l'agro<br/> >1 Canalisé si HC+home+npc_ai_caster</small>
+              <div class="input-group">
+                <input class="form-control input-xs" type="text" ng-model="new_creature_template.spell8">
+                <div class="input-group-btn">
+                  <button class="btn btn-info input-xs" ng-click="openSearchModal(new_creature_template, 'spell8', 'dbc/spells')">...</button>
+                </div>
+              </div>
+            </div>
+            
+                        <div class="col-xs-12">
+              <small></br><font color="#00FF00">Mémo Spells divers</font><br/> 
+              <font color="#BBBBBB">PL = Version moins puissante</font><br/> <br/> 
+              <h6 class="text-left"><font color="#FFFFFF">
+<font color="#FFFF00">griffe</font> 24187/113188 PL<br/>
+<font color="#FFFF00">Morsure</font> 113687<br/>
+<font color="#FFFF00">Mutiler</font> 85835/300206<br/>
+<font color="#FFFF00">Balayage fracassant</font> 84867<br/>
+<font color="#FFFF00">Griffure bondissante</font> 89712<br/>
+<font color="#FFFF00">Pince</font> 118140<br/>
+<font color="#FFFF00">Heurt de queue</font> 136870<br/>
+<font color="#FFFF00">Piétiner</font> 51944<br/>
+<font color="#FFFF00">Coup de tete</font> 131172<br/>
+<font color="#FFFF00">Déchirure du tendon</font> 3604<br/>
+<font color="#FFFF00">Frappe du sabot</font> 29577<br/>
+<font color="#FFFF00">Coup de bec</font> 115388<br/>
+<font color="#FFFF00">Cornépine</font> 81691<br/>
+<font color="#FFFF00">Eclair de poison</font> 21067<br/>
+<font color="#00FF00">vit. (+70%/4s)</font> 137573<br/>
+<font color="#00FF00">vit.nage/terre (150% 4s)</font> 300273<br/>
+<font color="#00FF00">vit.nage (100% perm.) </font> 300255<br/>
+<font color="#00FF00">vit.nage (150% 30s)  </font> 300256<br/>
+<font color="#00FF00">vit.nage (150% perm.) </font> 300259<br/>
+<font color="#00FF00">vit.vol (125% perm.)  </font> 300257<br/>
+<font color="#00FF00">vit.vol (125%/30s) </font> 300258<br/>
+<font color="#00FF00">Célérité</font> 44531<br/>
+<font color="#00FFFF">Peau épaisse</font> 87228<br/>
+</br>
+<font color="#00FFFF">Post. de combat</font> 2457</br>
+<font color="#00FFFF">Post. défensive</font> 71</br>
+<font color="#00FFFF">Post. du gladiateur</font> 156291</br>
+<font color="#00FFFF">Camouflage</font> 1784/22766PL</br>
+<font color="#00FFFF">Cri de guerre</font> 6673</br>
+<font color="#00FFFF">Cri démoralisant</font> 1160</br>
+<font color="#FFFF00">violent coup direct</font> 119004</br>
+<font color="#FFFF00">Coup de pied ret.</font> 34802</br>
+<font color="#FFFF00">Frappe heroique</font> 29426</br>
+<font color="#FFFF00">Coup de tonnerre </font>8147</br>
+<font color="#FFFF00">Frappe</font> 5547 PL/ 11976</br>
+<font color="#FFFF00">Enchainement</font> 172851</br>			
+<font color="#FFFF00">Coup de masse</font> 123649</br>
+<font color="#FFFF00">Coups de hache</font> 130521</br>
+<font color="#FFFF00">Att. pernicieuse </font>172028</br>
+<font color="#FFFF00">Heurt de bouclier</font> 125978</br>
+<font color="#FFFF00">Brise-genou</font> 1715</br>
+<font color="#FFFF00">provocation</font> 355/138937</br>
+
+</br>
+<font color="#FFFF00">Eclair de givre</font> 71318</br>
+<font color="#FFFF00">Trait d'eau</font> 34425</br>
+<font color="#FFFF00">Boule de feu</font> 9053</br>
+<font color="#FFFF00">Trait de l'ombre</font> 9613</br>
+<font color="#FFFF00">eclair</font> 9532</br>
+<font color="#FFFF00">Trait du chaos</font> 77069</br>
+<font color="#FFFF00">Incinérer</font> 44519</br>
+<font color="#FFFF00">Colere</font> 149466</br>
+<font color="#FFFF00">Chatiment</font> 168380</br>
+<font color="#FFFF00">Tir des arcanes</font> 171943</br>
+<font color="#FFAA00">Soins rapides</font> 300265</br>
+<font color="#FFAA00">Afflux de soins</font>300263 PL</br>
+<font color="#FFAA00">Graine de vie (touché)</font>  48504</br>
+
+              	</font></h6></small>
+
+
+                </div>
+
+            
+          </div>
+        </div>
+        
+        
+        
+      </div>
+      <div class="col-xs-4 borders">
+        <div class="row">
+          <h5 class="text-center"><font color="#6666FF">Modificateurs</font></h5>
+          <div class="col-xs-6">
+            <small>ArmorModifier</small>
+            <div class="input-group">
+              <input class="form-control input-xs" type="text" ng-model="new_creature_template.ArmorModifier">
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <small>scale</small>
+            <div class="input-group">
+              <input class="form-control input-xs" type="text" ng-model="new_creature_template.scale">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6">
+            <small>speed_walk</small>
+            <div class="input-group">
+              <input class="form-control input-xs" type="text" ng-model="new_creature_template.speed_walk">
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <small>speed_run</small>
+            <div class="input-group">
+              <input class="form-control input-xs" type="text" ng-model="new_creature_template.speed_run">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6">
+            <small>Exp.Modifier</small>
+            <div class="input-group">
+              <input class="form-control input-xs" type="text" ng-model="new_creature_template.ExperienceModifier">
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <small>Dmg.Modifier</small>
+            <div class="input-group">
+              <input class="form-control input-xs" type="text" ng-model="new_creature_template.DamageModifier">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6">
+            <small>HealthModifier</small>
+            <div class="input-group">
+              <input class="form-control input-xs" type="text" ng-model="new_creature_template.HealthModifier">
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <small>ManaModifier</small>
+            <div class="input-group">
+              <input class="form-control input-xs" type="text" ng-model="new_creature_template.ManaModifier">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6">
+            <small>BaseVariance</small>
+            <div class="input-group">
+              <input class="form-control input-xs" type="text" ng-model="new_creature_template.BaseVariance">
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <small>RangeVariance</small>
+            <div class="input-group">
+              <input class="form-control input-xs" type="text" ng-model="new_creature_template.RangeVariance">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-3 borders">
+        <div class="row">
+
+          <div class="col-xs-10">
+            <h5 class="text-center"><font color="#6666FF">Comportement</font></h5>
+
+          </div>
+          
+          <div class="col-xs-10">
+            <small>MovementType</small>
+            <div class="input-group">
+              <input class="form-control input-xs" type="text" ng-model="new_creature_template.MovementType">
+              <div class="input-group-btn">
+                <button class="btn btn-info input-xs" ng-click="openValueModal(new_creature_template, 'MovementType')">...</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-10">
+            <small>movementId</small>
+            <div class="input-group">
+              <input class="form-control input-xs" type="text" ng-model="new_creature_template.movementId">
+            </div>
+          </div>
+          <div class="col-xs-10">
+            <small>InhabitType</small>
+            <div class="input-group">
+              <input class="form-control input-xs" type="text" ng-model="new_creature_template.InhabitType">
+              <div class="input-group-btn">
+                <button class="btn btn-info input-xs" ng-click="openFlagModal('partials/creature/modals/inhabit-type.html', new_creature_template, 'InhabitType', 3)">...</button>
+              </div>
+            </div>
+          </div>
+
+
+            <div class="col-xs-10">
+              <small>HoverHeight</small>
+              <div class="input-group">
+                <input class="form-control input-xs" type="text" ng-model="new_creature_template.HoverHeight">
+                <div class="input-group-btn">
+                  <button class="btn btn-info input-xs" ng-click="openValueModal(new_creature_template, 'HoverHeight')">...</button>
+                </div>
+              </div>
+            </div>
+                      
+          
+          <div class="col-xs-10">
+            <small>gossip_menu_id</small>
+            <div class="input-group">
+              <input class="form-control input-xs" type="text" ng-model="new_creature_template.gossip_menu_id">
+            </div>
+          </div>
+         </div>
+         
+      </div>
+      
+  <div class="col-xs-7" >    <div class="row">
+    	<div >
+    <div class="input-group">
+      <div  >
+      	
+
+  <div class="col-xs-6">
+            	</br><font color="#6666FF">ScriptName</font>
+              <input class="form-control input-xs" type="text" ng-model="new_creature_template.ScriptName">
+</div>
+      	            
+  <div class="col-xs-6">
+            </br><font color="#6666FF">AIName</font>
+              <input class="form-control input-xs" type="text" ng-model="new_creature_template.AIName">
+</div>
+
+
+            </div>
+            
+     
+    <div class="row">
+    	<div class="col-xs-13 text-left borders"></br></br></br>
+<b><u><h2><font color="#6666FF">ScriptName :</font></h2></u></b>           
+          <font color="#ffff00"> Les spells peuvent etre imposé en manuel ci spell1 > 0 </font></br>
+          	<font color="#ffff00"> Les spells peuvent etre générés et aléatoires ci spell1 = 0 </font></br> </br>
+              <div class="col-xs-20"><b><u><font color="#00FF00"> Stitch_npc_ai_mobs</font></u></b></br>
+              <font color="#ffff00">Si pickpocketloot >0 <301 le family sera forcé pour le mouvement en combat</font></br>
+                      		30 Mouvement_Caster </br>
+                      		23 Mouvement_Caster_Puis_Contact </br>
+                      		16 Mouvement_Contact_Basique</br>
+                      		17 Mouvement_Contact_Tournant_Aleatoire + Contact_Basique</br>
+                      		25 Mouvement_Contact_Prudent</br>
+                      		 7 Mouvement_Contact_Prudent_Volant</br>
+                      		 5 Mouvement_Contact_Charges_Multiples</br>
+                      		20 Mouvement_Contact_Avance_Recule</br>
+                      		 9 Mouvement_Contact_Bondissant</br>
+
+                    </br><b><u><font color="#00FF00"> Stitch_npc_ai_melee</font></u></b></br>
+                    <font color="#FFFF00">Si pickpocketLootId = 1 : Tourne au tour de la cible plus rapidement</font></br>
+                    	</br>
+                      <b><u><font color="#00FF00"> Stitch_npc_ai_caster</font></u></b> --- ( mana obligatoire )</br>
+                      	<font color="#FF6666">( Préférer npc_ai_mobs->30 si Distant uniquement )</font></br>
+                     <font color="#BBBBBB">Si spell1=0 alors pickpocketloot : </font> </br>0 =Classe Random Distant,11 = Classe Random Fixe</br>
+                     1 = Mage feu (Distant), 2 = Mage Givre (Distant), 3 = Demo (Distant), 4 = Druide (Distant), 5 = Pretre (Distant), 6 = DK Chaos (Distant)</br>
+                     12 = Mage feu (fixe), 13 = Mage Givre (fixe), 14 = Demo (fixe), 15 = Druide (fixe), 16 = Pretre (fixe), 17 = DK Chaos (fixe)</br>
+                     </br>
+                     <font color="#BBBBBB">Si spell1 >0 alors pickpocketloot : </font></br>
+                      <font color="#FFFFFF"> <font color="#AAAA00">7</font>=Fixe,  <font color="#AAAA00">8</font>=garde une petite distance,  <font color="#AAAA00">9</font>=TP 15m autour de la cible, <font color="#AAAA00">10</font>=Bondir 25m</font></br>
+                     </br>
+                     <b><u><font color="#00FF00"> Stitch_npc_ai_lancier</font></u></b>-(0-2 caster puis contact , 3-5 distant , 6-8 rnd)</br>
+                     <font color="#FFFF00">Si pickpocketloot : </font></br>
+                     Lancer_une_Arme = 0 , Tir a l'arc = 1 , Tir au fusil= 2 </br>
+                    Arme (Distant) = 3 , Tir a l'arc (Distant) = 4  , Tir au fusil (Distant) = 5 </br>
+                    Arme (Random) = 6 , Tir a l'arc (Random) = 7   , Tir au fusil (Random) = 8
+                     <font color="#BBBBBB"></br>Spell2=tir a distance : Tir a l'arc = 95826 - Tir au fusil & arbalete = 6660</font></br>
+                      </br>
+           
+                      		<b><h4><font color="#6666FF">------ Ci dessous : plus de sorts , peut heal des alliers: ------</font></h4></b>
+                      		<font color="#ffff00"> Les spells ne peuvent pas etre imposé en manuel</br>
+                      		Les spécialitées peuvent etre imposé par pickpocketloot =1,2,3 ou 4</font></br></br>
+                      	<b><u><font color="#00FF00">Stitch_npc_ai_guerrier</font></u></b></br>
+                      	Armes = 1 , Fureur = 2 , Protection = 3</br></br>
+                      	
+                      	<b><u><font color="#00FF00">Stitch_npc_ai_paladin</font></u></b></br>
+                      Vindice	= 1 , Sacré (heal allié) = 2 , Protection = 3 </br></br>
+                      	
+                      	<b><u><font color="#00FF00">Stitch_npc_ai_voleur</font></u></b></br>
+                      Voleur = 1 , Vampire Berserker = 2 </br></br>
+                      	
+                      	<b><u><font color="#00FF00">Stitch_npc_ai_druide</font></u></b> </br>
+                      	Equilibre (heal allié) = 1 , Ours = 2 , Felin = 3 , Tréant = 4 </br></br>
+                      	
+                      	<b><u><font color="#00FF00">Stitch_npc_ai_chaman</font></u></b> </br>
+                      	Restauration  (heal allié) = 1 , Elementaire = 2 , Amelioration = 3 </br></br>
+                      	
+                      	<b><u><font color="#00FF00">Stitch_npc_ai_pretre</font></u></b></br>
+                      	Ombre = 1 , Discipline (heal allié) = 2 </br></br>
+                      	
+                      	<b><u><font color="#00FF00">Stitch_npc_ai_demo</font></u></b></br>
+                      	Affliction  = 1 , Démontologie = 2 , Destruction = 3 </br></br>
+                      	
+                      	<b><u><font color="#00FF00">Stitch_npc_ai_mage</font></u></b></br>
+                      	Arcane = 1 , Feu = 2 , Givre = 3 </br></br>
+                      	
+                      	<b><u><font color="#00FF00">Stitch_npc_ai_chasseur</font></u></b> </br>
+                      	Survie = 1 , Bete = 2 </br></br>
+                      	
+                      	<b><u><font color="#00FF00">Stitch_npc_ai_dk</font></u></b></br>
+                      	Sang = 1 , Givre = 2 , Impie = 3 , Chaos = 4</br></br>
+                      	
+                      	<b><u><font color="#00FF00">Stitch_npc_ai_moine</font></u></b></br>
+                      	Maitre-Brasseur = 1 , Tisse-Brume (heal allié) = 2 ,  Marche-vent = 3 </br></br>
+          </div>
+          </div>
+           </div>         
+          
+          
+            </div>
+            </div>
+  
+          </div>
+          
+          
+      
+    </div>
+  </div>
+</div>
+
+<br><br>
+

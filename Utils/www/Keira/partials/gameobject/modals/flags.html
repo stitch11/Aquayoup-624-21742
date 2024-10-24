@@ -1,0 +1,62 @@
+<div class="modal-header">
+  <h3 class="modal-title">Flags</h3>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-xs-12">
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[0]">
+        <small>0 IN_USE (Desactive l'interaction lors de l'animation)</small>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" class="input-xs" ng-model="values[1]">
+        <small>1 LOCKED (l'ouverture necessite d'une cle, un sort ou un evenement)</small>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" class="input-xs" ng-model="values[2]">
+        <small>2 INTERACT_COND (Untargetable, cannot interact)</small>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" class="input-xs" ng-model="values[3]">
+        <small>3 TRANSPORT (Peut transporter : bateau, ascenseur, voiture))</small>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" class="input-xs" ng-model="values[4]">
+        <small>4 NOT_SELECTABLE (Not even in GM-mode)</small>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" class="input-xs" ng-model="values[5]">
+        <small>5 NODESPAWN (Pas de despawn mais juste un changement d'etat , exemple : les portes)</small>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" class="input-xs" ng-model="values[6]">
+        <small>6 AI_OBSTACLE (objets invoques. Declenche par un sort ou evenements)</small>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" class="input-xs" ng-model="values[7]">
+        <small>7 FREEZE_ANIMATION</small>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" class="input-xs" ng-model="values[8]">
+        <small>8 UNK</small>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" class="input-xs" ng-model="values[9]">
+        <small>9 DAMAGED</small>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" class="input-xs" ng-model="values[10]">
+        <small>10 DESTROYED</small>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" class="input-xs" ng-model="values[11]">
+        <small>11 INTERACT_DISTANCE_USES_TEMPLATE_MODEL</small>
+      </label>
+
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" ng-click="modalOk()">OK</button>
+  <button class="btn btn-danger" ng-click="modalCancel()">Cancel</button>
+</div>

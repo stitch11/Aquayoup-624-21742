@@ -1,0 +1,143 @@
+<div class="modal-header">
+  <h3 class="modal-title">Flags</h3>
+</div>
+  <div class="row">
+<div class="modal-body">
+    <div class="col-xs-5">
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[0]">
+        <small>0 RESTE EN VIE</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[1]">
+        <small>1 PARTIE ACCEPTER</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[2]">
+        <small>2 EXPLORATION</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[3]">
+        <small>3 PARTAGEABLE</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[4]">
+        <small>4 NON UTILISE</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[5]">
+        <small>5 EPIQUE</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[6]">
+        <small>6 RAID</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[7]">
+        <small>7 TBC</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[8]">
+        <small>8 LIVRER PLUS</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[9]">
+        <small>9 RECOMPENSES CACHEES</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[10]">
+        <small>10 AUTO RENDU</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[11]">
+        <small>11 TBC_RACES</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[12]">
+        <small>12 TOUS LES JOURS</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[13]">
+        <small>13 REPETABLE</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[14]">
+        <small>14 NON DISPONIBLE</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[15]">
+        <small>15 CHAQUE SEMAINE</small>
+      </label>
+    </div>
+    <div class="col-xs-7">
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[16]">
+        <small>16 AUTO COMPLETE</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[17]">
+        <small>17 SPECIAL_ITEM</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[18]">
+        <small>18 OBJ_TEXT</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[19]">
+        <small>19 AUTO ACCEPTATION</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[20]">
+        <small>20 QUEST_FLAGS_PLAYER_CAST_ON_ACCEPT</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[21]">
+        <small>21 QUEST_FLAGS_PLAYER_CAST_ON_COMPLETE</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[22]">
+        <small>22 QUEST_FLAGS_UPDATE_PHASE_SHIFT</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[23]">
+        <small>23 QUEST_FLAGS_SOR_WHITELIST</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[24]">
+        <small>24 QUEST_FLAGS_LAUNCH_GOSSIP_COMPLETE</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[25]">
+        <small>25 QUEST_FLAGS_REMOVE_EXTRA_GET_ITEMS</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[26]">
+        <small>26 QUEST_FLAGS_HIDE_UNTIL_DISCOVERED</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[27]">
+        <small>27 QUEST_FLAGS_PORTRAIT_IN_QUEST_LOG</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[28]">
+        <small>28 QUEST_FLAGS_SHOW_ITEM_WHEN_COMPLETED</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[29]">
+        <small>29 QUEST_FLAGS_LAUNCH_GOSSIP_ACCEPT</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[30]">
+        <small>30QUEST_FLAGS_ITEMS_GLOW_WHEN_DONE</small>
+      </label>
+      <label class="checkbox" >
+        <input type="checkbox" class="input-xs" ng-model="values[31]">
+        <small>31 QUEST_FLAGS_FAIL_ON_LOGOUT</small>
+      </label>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" ng-click="modalOk()">OK</button>
+  <button class="btn btn-danger" ng-click="modalCancel()">Cancel</button>
+</div>

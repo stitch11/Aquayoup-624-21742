@@ -1,0 +1,143 @@
+/* Remove responsive from container */
+.container {
+  width: 1270px !important;
+  max-width: none !important;
+}
+
+.input-xs {
+  padding: 2px 5px !important;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px !important;
+}
+
+input.input-xs,
+select.input-xs,
+button.input-xs {
+  height: 22px;
+}
+
+.pointer { cursor: pointer; }
+
+.tr-selected {
+  background-color: rgba(44,105,158, 0.4) !important;
+}
+
+.doc-link {
+  margin-top: 8px;
+  margin-bottom: 2px;
+}
+
+.lh {
+  display: block;
+  margin: 4px 0px 0px 0px;
+}
+
+.hr {
+  margin-bottom: 4px;
+}
+
+.selection-text {
+  margin-bottom: 4px;
+}
+
+.nav-tabs {
+  margin-top: 8px;
+}
+
+.input-margin input {
+  margin-top: 5px;
+}
+
+.tooltip-inner {
+  max-width: 300px !important;
+  width: 300px !important;
+}
+
+.borders {
+  padding: 10px 20px 10px 20px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  border: 3px solid rgba(9,9,9,0.2);
+}
+
+/* Info CSS */
+
+.info-table {
+  max-width: 400px;
+  margin: auto;
+}
+
+.info-table tr td:first-child {
+  text-align: right;
+}
+
+.info-table tr td:last-child {
+  text-align: left;
+}
+
+/* Modal CSS */
+
+.modal-lg {
+  width: 1270px;
+}
+
+.modal-title {
+  text-transform: capitalize;
+}
+
+.modal-body * {
+  padding-left: 10px;
+}
+
+.modal-body tr, .modal-body label {
+  cursor: pointer;
+}
+
+.modal-body input[type='checkbox'] {
+  max-height: 16px;
+}
+
+.modal-overflow {
+  height: 600px;
+  overflow: auto;
+}
+
+/* SAI CSS */
+
+.sai-editor-head > div {
+  border-left: 1px solid grey;
+  border-top: 1px solid grey;
+  min-height: 256px;
+}
+
+.sai-editor-head > div:last-child {
+  border-right: 1px solid grey;
+}
+
+.sai-options-container {
+  min-height: 30px;
+  padding-top: 8px;
+}
+
+.sai-option {
+  margin-left: 8px;
+}
+
+.sai-table {
+  transition: 1s linear;
+  overflow-x: auto;
+  width: 1270px;
+  display: inline-block;
+}
+
+.sai-table-large {
+  transition: 1s linear;
+  width: 98vw;
+}
+
+.sai-table-box {
+  left: 0px;
+  position: absolute;
+  width: 100vw;
+}
