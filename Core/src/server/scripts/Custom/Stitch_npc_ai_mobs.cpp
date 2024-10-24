@@ -2527,11 +2527,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 								Cooldown_Trop_Loin = 1000;
 								Cooldown_Trop_Loin_Defaut = urand(5000, 7000);
 							}
-
-							if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE)
-							{
-								Se_Deterre();
-							}
 							break;
 						case 157:	//Rocher (elementaire de terre si fixe)  -  CREATURE_FAMILY_MORPH_ROCHER - AI : Mouvement_Contact_Basique
 							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
@@ -3852,11 +3847,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					Se_DeterreSansFumee();
 				}
 
-				if (Crfamily == CREATURE_FAMILY_SE_DETERRE_AU_CONTACT /*156*/ /*&& me->GetDefaultMovementType() == IDLE_MOTION_TYPE*/)
-				{
-					DoCastAOE(Spell_Senterre, true);  // Pour visuel de fumée pendant la 1ere avance
-				}
-
 				if (Crfamily == CREATURE_FAMILY_MORPH_ROCHER  /*157*/ /*&& me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE*/)
 				{
 					DeMorph_Rocher();
@@ -3870,7 +3860,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			}
 			void Family_Special_Retire_au_contact()
 			{
-				if (Crfamily == CREATURE_FAMILY_SE_DETERRE_AU_CONTACT /*156*/ && me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE)
+				if (Crfamily == CREATURE_FAMILY_SE_DETERRE_AU_CONTACT /*156 && me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE*/)
 				{
 					Se_Deterre();
 				}
