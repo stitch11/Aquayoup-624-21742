@@ -908,8 +908,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Buf_A = liste_Buf_0[urand(0, 2)];
 							break;
 						}
-						// Pas de DOT ou Heal si level <25 sinon trop dur
-						if (me->getLevel() < 25)
+						// Pas de DOT ou Heal si level <15 sinon trop dur
+						if (me->getLevel() < 15)
 						{
 							Spell_B = 0;
 							Spell_Heal = 0;
@@ -2624,7 +2624,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							break;
 
 						default:
-							Spell_agro = 0;
+							//Spell_agro = 0;
 							//Spell_respawn_evade = 0;
 							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
@@ -2683,7 +2683,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 					}
 
-
 						// ########################################################################################################################################
 						// Spell a lancer a l'agro 
 						// ########################################################################################################################################
@@ -2694,13 +2693,13 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Random = urand(1, 5);								// 3 Chance sur 5 de lancer le sort sur la cible a d'agro
 							if (Random < 4 && Spell_agro != 0)
 							{
-								me->CastSpell(victim, Spell_agro, true);
+								me->CastSpell(victim, Spell_agro, true);//
+
 							}
 							Start_Agro2 = 1;
 							Family_Special_Retire_au_contact();
 						}
 					}
-
 
 					// ############################################################################################################################################
 					// COMBAT 

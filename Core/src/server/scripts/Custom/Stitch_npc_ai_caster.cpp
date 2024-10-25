@@ -239,8 +239,8 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 						break;
 					}
 
-					// Pas de DOT ou Heal si level <25 sinon trop dur
-					if (me->getLevel() < 25)
+					// Pas de DOT ou Heal si level <15 sinon trop dur
+					if (me->getLevel() < 15)
 					{
 						Spell_2 = 0;
 						Spell_Heal = 0;
@@ -248,11 +248,11 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				} else 
 				{ 
 					Spell_1 = me->m_spells[0]; 
-					if (me->m_spells[1] != 0) { Spell_2 = me->m_spells[1]; } else Spell_2 = 0;
-					if (me->m_spells[2] != 0) { Spell_agro = me->m_spells[2]; } else Spell_agro = 0;
-					if (me->m_spells[3] != 0) { Spell_respawn_evade = me->m_spells[3]; } else Spell_respawn_evade = 0;
-					if (me->m_spells[4] != 0) { Buf_1 = me->m_spells[4]; } else Buf_1 = 0;
-					if (me->m_spells[5] != 0) { Spell_Heal = me->m_spells[5]; } else Spell_Heal = 0;
+					Spell_2 = me->m_spells[1]; 
+					Spell_agro = me->m_spells[2];
+					Spell_respawn_evade = me->m_spells[3];
+					Buf_1 = me->m_spells[4];
+					Spell_Heal = me->m_spells[5];
 				}
 
 				// Message a l'agro forcé par spell(8)
