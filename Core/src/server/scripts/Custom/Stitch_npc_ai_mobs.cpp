@@ -364,6 +364,13 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 liste_agro_40[2] = { 3436, 3436 };							// peste galopante 3436 (degat +5%,endurance -5% , 10% de contaminer un allier quand touché,30s)
 			uint32 liste_Buf_40[2] = { 50366, 50366 };							// Nuée de peste 50366 (infecte les cibles proches)	
 
+			// 41    case 41:	//	Silithide - CREATURE_FAMILY_SILITHID
+			uint32 liste_spell_A_41[2] = { 113687, 3393 };						// Morsure 113687, Dévoreur de chair 3393
+			uint32 liste_spell_B_41[4] = { 772, 33745, 84867, 33745 };			// Pourfendre 772, Lacerer 33745, Balayage fracassant 84867
+			uint32 liste_agro_41[2] = { 89712, 50231 };							// Griffure bondissante 89712 (bond), agro 50231
+			uint32 liste_Buf_41[4] = { 33907, 33907, 106898, 66060 };			// Epines 33907, Ruée rugissante 106898 (vit +60%), Sprint 66060 
+
+
 			// 42    Ver - CREATURE_FAMILY_WORM
 			uint32 liste_spell_A_42[2] = { 69203, 20667 };						// Morsure vicieuse 69203, jet dacide 20667 (cône  20m,Réduit l'armure,dmg 5s/15s )
 			uint32 liste_spell_B_42[2] = { 26419, 26419 };						// pluie d acide 26419 (degat nature augmenté par le nbr d'application)
@@ -754,6 +761,12 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Spell_B = liste_spell_B_40[urand(0, 1)];
 							Spell_agro = liste_agro_40[urand(0, 1)];
 							Buf_A = liste_Buf_40[urand(0, 1)];
+							break;
+						case 41:	// case 41:	//	Silithide - CREATURE_FAMILY_SILITHID
+							Spell_A = liste_spell_A_41[urand(0, 1)];
+							Spell_B = liste_spell_B_41[urand(0, 3)];
+							Spell_agro = liste_agro_41[urand(0, 1)];
+							Buf_A = liste_Buf_41[urand(0, 3)];
 							break;
 						case 42:	// Ver - CREATURE_FAMILY_WORM
 							Spell_A = liste_spell_A_42[urand(0, 1)];
@@ -1709,7 +1722,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Spell_B_Non_Cumulable = 1;
 							break;
 						case 31:	//Ravageur  -  CREATURE_FAMILY_RAVAGER - AI : 1/4_Mouvement_Contact_Prudent , 1/4_Mouvement_Contact_Avance_Recule , 1/4_Mouvement_Contact_Tournant_Aleatoire , 1/4_Mouvement_Contact_Charges_Multiples, %Poursuite %Griffure_bondissante
-							Random = urand(1, 2);
 							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
 							//Spell_respawn_evade = 0;
@@ -1727,7 +1739,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Principal_B = urand(3000, 5000);
 							Cooldown_Principal_B_Defaut = urand(5000, 9000);
 							ResteADistance = 5;
-
+							Random = urand(1, 2);
 							if (Random == 1) { Spell_Trop_Loin = Spell_Poursuite; }										//
 							if (Random == 2) { Spell_Trop_Loin = Spell_Griffure_bondissante; }							//
 
@@ -1899,6 +1911,32 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Spell_Trop_Loin = 0;
 							Cooldown_Trop_Loin = 7000;
 							Cooldown_Trop_Loin_Defaut = 7000;
+							break;
+						case 41:	//	Silithide - CREATURE_FAMILY_SILITHID - AI : 1/3_Mouvement_Contact_Basique , 1/3_Mouvement_Contact_Tournant_Aleatoire , 1/3_Mouvement_Contact_Charges_Multiples
+							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = urand(6000, Base_Cooldown_Cast_B);
+							Cooldown_SpellB_defaut = urand(Base_Cooldown_Cast_B - 3000, Base_Cooldown_Cast_B - 2000);
+							Cooldown_SpellB_rapide = 0;
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_New_SpellB_rapide_defaut = urand(4000, 4750);
+							Cooldown_Spell_Heal_defaut = 15000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = urand(3000, 5000);
+							Cooldown_Principal_B_Defaut = urand(5000, 9000);
+							ResteADistance = 5;
+							Random = urand(1, 2);
+							if (Random == 1) { Spell_Trop_Loin = Spell_Poursuite; }										//
+							if (Random == 2) { Spell_Trop_Loin = Spell_Griffure_bondissante; }							//
+
+							Cooldown_Trop_Loin = urand(4000, 6000);
+							Cooldown_Trop_Loin_Defaut = urand(7000, 9000);
+							AI_Random = urand(1, 4);
 							break;
 						case 42:	//Ver  -  CREATURE_FAMILY_WORM - AI : Mouvement_Caster_Puis_Contact ( spell [2]=spell a distance 
 							me->SetMeleeDamageSchool(SpellSchools(0));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
@@ -2874,7 +2912,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							if (AI_Random == 2) { Mouvement_Contact_Avance_Recule(diff); }
 							if (AI_Random == 3) { Mouvement_Contact_Tournant_Aleatoire(diff); }
 							if (AI_Random == 4) { Mouvement_Contact_Charges_Multiples(diff); }
-							
 							break;
 						case 34:	// Raie du Neant - CREATURE_FAMILY_NETHER_RAY
 							if (AI_Random == 1)
@@ -2898,6 +2935,11 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							break;
 						case 40:	// Goule - CREATURE_FAMILY_GHOUL
 							Mouvement_Contact_Basique(diff);
+							break;
+						case 41:	// Silithide - CREATURE_FAMILY_SILITHID - AI : 1/4_Mouvement_Contact_Basique , 2/4_Mouvement_Contact_Tournant_Aleatoire , 1/4_Mouvement_Contact_Charges_Multiples
+							if (AI_Random == 1) { Mouvement_Contact_Basique(diff); }
+							if (AI_Random == 2 || AI_Random == 3) { Mouvement_Contact_Tournant_Aleatoire(diff); }
+							if (AI_Random == 4) { Mouvement_Contact_Charges_Multiples(diff); }
 							break;
 						case 42:	// Ver - CREATURE_FAMILY_WORM
 							Mouvement_Caster_Puis_Contact(diff);
@@ -3452,8 +3494,18 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					return;
 
 				Unit* victim = me->GetVictim();
+				uint32 Distance_Charges_Multiples;
 				Dist = me->GetDistance(victim);
 
+				// Distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+				if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+				{
+					Distance_Charges_Multiples = urand(20,30);
+				}
+				else
+				{
+					Distance_Charges_Multiples = urand(8, 15);
+				}
 				// ------ CHARGE -----------------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Trop_Loin <= diff)
 				{
@@ -3499,7 +3551,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					if (Dist <= 3)
 					{
 					me->CastSpell(me, Spell_Vitesse_4s, true);
-					Tourne_Au_Tour_Aleatoire(15);
+					Tourne_Au_Tour_Aleatoire(Distance_Charges_Multiples);
 					Cooldown_Principal_A = 3000;
 					Cooldown_Trop_Loin = 2000;
 					Cooldown_Principal_B = Cooldown_Principal_B_Defaut;
@@ -3546,7 +3598,17 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						}
 						else
 						{
-							Recule_ou_Avance(1 - urand(11, 15));												// 2 chances sur 3 : Recule
+							// Distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
+							uint32 Distance_Avance_Recule;
+							if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
+							{
+								Distance_Avance_Recule = urand(15, 20);	//Exterieur
+							}
+							else
+							{
+								Distance_Avance_Recule = urand(8, 15);	//Interieur
+							}
+							Recule_ou_Avance(Distance_Avance_Recule);												// 2 chances sur 3 : Recule
 						}
 						Cooldown_Principal_B = Cooldown_Principal_B_Defaut;
 						Cooldown_Principal_A = 2000 + urand(0, 1500);
