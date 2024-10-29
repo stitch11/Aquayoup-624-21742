@@ -897,7 +897,7 @@
   app.modalConstants.family[38] = "Chimere  -  CREATURE_FAMILY_CHIMAERA - (1.4 1.6 1.4) : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance, (Epines) )";
   app.modalConstants.family[39] = "Diablosaure  -  CREATURE_FAMILY_DEVILSAUR - AI : Mouvement_Contact_Basique";
   app.modalConstants.family[40] = "Goule  -  CREATURE_FAMILY_GHOUL - (0.4 1.0 0.5) : Mouvement_Contact_Basique (vit 0.4-1-0.5)";
-  app.modalConstants.family[41] = "Silithide  -  CREATURE_FAMILY_SILITHID - AI : ";
+  app.modalConstants.family[41] = "Silithide  -  CREATURE_FAMILY_SILITHID - AI 1/3_Mouvement_Contact_Basique , 1/3_Mouvement_Contact_Tournant_Aleatoire , 1/3_Mouvement_Contact_Charges_Multiples";
   app.modalConstants.family[42] = "Ver  -  CREATURE_FAMILY_WORM - (0.4 1.0 0.5) : Mouvement_Caster_Puis_Contact ( spell [2]=spell a distance  - (UPDATE `creature_template_addon` SET `auras` = '58984 164339' WHERE `creature_template_addon`.`entry` = 8603)";
   app.modalConstants.family[43] = "Rhinoceros/Kodo  -  CREATURE_FAMILY_RHINO (0.6 1.3 0.5) - AI : 1/3_Mouvement_Contact_Basique , 2/3_Mouvement_Contact_Charges_Multiples, %Charge_Repousse";
   app.modalConstants.family[44] = "Guepe  -  CREATURE_FAMILY_WASP - (0.75 1.0 0.8): Mouvement_Contact_Prudent_Volant";
