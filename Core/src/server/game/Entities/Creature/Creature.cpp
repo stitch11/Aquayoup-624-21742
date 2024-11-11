@@ -946,7 +946,7 @@ void Creature::Update(uint32 diff)
 		case CREATURE_FAMILY_CRAB:					// Crabe
 		case CREATURE_FAMILY_TURTLE:				// Tortue
 		case CREATURE_FAMILY_RIVERBEAST:
-			SetSpeedRate(MOVE_SWIM, 1.75f);
+			SetSpeedRate(MOVE_SWIM, 1.5f);
 			break;
 
 		case CREATURE_FAMILY_HYDRA:					// Hydre
