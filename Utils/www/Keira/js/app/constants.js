@@ -938,11 +938,11 @@ app.modalConstants.family[150] = "Potamodonte  -  CREATURE_FAMILY_RIVERBEAST - (
 app.modalConstants.family[151] = "Cerf  -  CREATURE_FAMILY_STAG - - (0.5 1.2 0.5) : ";
 app.modalConstants.family[152] = "Murloc 1.2 - CREATURE_FAMILY_MURLOC - (0.5 1.0 1.2) : 1/4_Mouvement_Contact_Prudent, 1/4_Mouvement_Contact_Avance_Recule, 2/4_Mouvement_Contact_Basique";
 app.modalConstants.family[153] = "Naga 2.0 - CREATURE_FAMILY_NAGA - - (0.5 1.0 2.0) : 1/3_Mouvement_Contact_Basique, 1/3_Mouvement_Contact_Tournant_Aleatoire, 1/3_Mouvement_Contact_Prudent_Volant";
-app.modalConstants.family[155] = "CREATURE_FAMILY_SENTERRE uniquement si fixe - (0.25 1.0 1.5) : Mouvement_Contact_Basique --- UPDATE `creature_template_addon` SET `auras` = '58984 164339' WHERE `creature_template_addon`.`entry` = XXXXX; ";
-app.modalConstants.family[156] = "CREATURE_FAMILY_SE_DETERRE_AU_CONTACT - (0.5 0.9 1.5) : 1/3_Mouvement_Contact_Basique, 1/3_Mouvement_Contact_Tournant_Aleatoire, 1/3_Mouvement_Contact_Avance_Recule --- Sans fumee : UPDATE `creature_template_addon` SET `auras` = '58984 164339' WHERE `creature_template_addon`.`entry` = 43851;)";
-app.modalConstants.family[157] = "Rocher (elementaire de terre si fixe)  -  CREATURE_FAMILY_MORPH_ROCHER - (0.7 1.0 0.8) : Mouvement_Contact_Basique";
+app.modalConstants.family[155] = "CREATURE_FAMILY_SENTERRE uniquement si fixe - (0.25 1.0 1.5) : Mouvement_Contact_Basique ------   >>> SI PICKPOCKETLOOT <<< --- UPDATE `creature_template_addon` SET `auras` = '58984 164339' WHERE `creature_template_addon`.`entry` = XXXXX; ";
+app.modalConstants.family[156] = "CREATURE_FAMILY_SE_DETERRE_AU_CONTACT - (0.5 0.9 1.5) : 1/3_Mouvement_Contact_Basique, 1/3_Mouvement_Contact_Tournant_Aleatoire, 1/3_Mouvement_Contact_Avance_Recule   ->>> SI PICKPOCKETLOOT <<<- Sans fumee : UPDATE `creature_template_addon` SET `auras` = '58984 164339' WHERE `creature_template_addon`.`entry` = xxxx;) ";
+app.modalConstants.family[157] = "Rocher (elementaire de terre si fixe)  -  CREATURE_FAMILY_MORPH_ROCHER - (0.7 1.0 0.8) : Mouvement_Contact_Basique  >>> SI PICKPOCKETLOOT <<<";
 app.modalConstants.family[158] = "CREATURE_FAMILY_CREATURE_AQUATIQUE - (0.5  1.1  2.0) : 1/4_Mouvement_Contact_Prudent, 1/4_Mouvement_Contact_Prudent_Volant, 2/4_Mouvement_Contact_Basique";
-app.modalConstants.family[159] = "CREATURE_FAMILY_SENTERRE_FIXE (ROOT) - (0.1 0.1 0.1) : Mouvement_Fixe - (Asticot 16030)";
+app.modalConstants.family[159] = "CREATURE_FAMILY_SENTERRE_FIXE (ROOT) - (0.1 0.1 0.1) : Mouvement_Fixe - (Asticot 16030)  >>> SI PICKPOCKETLOOT <<<";
 
 
 
