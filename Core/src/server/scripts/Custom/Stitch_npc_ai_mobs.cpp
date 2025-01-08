@@ -1056,9 +1056,10 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				//me->UpdateSpeed(MOVE_FLIGHT);
 
 				Family_Special_Init();		// Spécificitée par family
-
 				// -------------------------------
-
+				me->SetSpeedRate(MOVE_SWIM, 0.8f);
+				me->SetSpeedRate(MOVE_FLIGHT, 1.5f);
+				me->SetSpeedRate(MOVE_WALK, me->GetCreatureTemplate()->speed_walk);
 
 
 			}
