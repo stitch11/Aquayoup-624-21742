@@ -776,7 +776,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			void Spell_canalisé_hc_home()
 			{
 				// Sort canalisé hors combat, doit etre fixe et en home 
-				if (Spell_Canalise_hc > 1 && !me->IsInCombat())
+				if (Spell_Canalise_hc > 1 && !me->IsInCombat() && !me->HasAura(Spell_Canalise_hc))
 				{
 					me->CastSpell(me, Spell_Canalise_hc, true);
 				}
