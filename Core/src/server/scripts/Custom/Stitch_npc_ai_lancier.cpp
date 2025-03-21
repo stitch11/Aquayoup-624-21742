@@ -348,7 +348,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 
 
 						// Spell1 sur la cible  
-						if (Cooldown_Spell1 <= diff)
+						if (Cooldown_Spell1 <= diff && Spell_2 == 0)	//Uniquement si Spell_2 non defini et avec la cadence de Spell_1
 						{
 							if (Tir_1 != Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_RANGED); }				// S'équipe d'arc ou fusil
 							else
