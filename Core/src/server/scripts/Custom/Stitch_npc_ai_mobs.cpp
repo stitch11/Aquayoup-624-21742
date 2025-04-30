@@ -528,7 +528,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			}
 			void Init_AI()
 			{
-				Spell_B_Non_Cumulable = 0;
+
 
 				// ################################################################################################################################################
 				// Tirages aléatoires des spells & cooldown
@@ -941,9 +941,9 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					case 42:
 					case 100:
 						me->SetMeleeDamageSchool(SpellSchools(0));									// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-						Spell_B_Non_Cumulable = 0;
+						//Spell_B_Non_Cumulable = 1;
 						Spell_respawn_evade = 0;
-						Buf_A = 0;
+						//Buf_A = 0;
 						Spell_Heal = 0;
 						Cooldown_SpellA = 1000;
 						Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
@@ -1197,7 +1197,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							break;
 						case 3:		// Araignee  -  CREATURE_FAMILY_SPIDER - AI : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance , Doit avoir du mana , % Toile_Araignee)
 							me->SetMeleeDamageSchool(SpellSchools(3));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-							Spell_B_Non_Cumulable = 0;
+							Spell_B_Non_Cumulable = 1;
 							//Spell_respawn_evade = 0;
 							Buf_A = 0;
 							//Spell_Heal = 0;
@@ -1554,7 +1554,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							break;
 						case 23:	//Imp  -  CREATURE_FAMILY_IMP - AI : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance )
 							me->SetMeleeDamageSchool(SpellSchools(2));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-							Spell_B_Non_Cumulable = 0;
+							Spell_B_Non_Cumulable = 1;
 							//Spell_respawn_evade = 0;
 							//Spell_Heal = 0;																// 
 							Cooldown_SpellA = 1000;
@@ -1639,7 +1639,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							break;
 						case 27:	//Serpent des vents  -  CREATURE_FAMILY_WIND_SERPENT - AI : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance, %Bouclier_De_Foudre )
 							me->SetMeleeDamageSchool(SpellSchools(6));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-							Spell_B_Non_Cumulable = 0;
+							Spell_B_Non_Cumulable = 1;
 							if (Spell_respawn_evade == 0) { Spell_respawn_evade = Spell_Bouclier_De_Foudre; }	// spells[3] 
 							if (Spell_Heal == 0) { Spell_Heal = 974; }			                                // spells[5]	// bouclier de terre 974
 							Cooldown_SpellA = 1000;
@@ -1751,7 +1751,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 34:	//Raie du Neant  -  CREATURE_FAMILY_NETHER_RAY - AI : 1/2_Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance ) , 1/2_Mouvement_Caster
 							AI_Random = urand(1,2);
 							me->SetMeleeDamageSchool(SpellSchools(6));													// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-							Spell_B_Non_Cumulable = 0;
+							Spell_B_Non_Cumulable = 1;
 							if (Spell_respawn_evade == 0) { Spell_respawn_evade = Spell_Vitesse_4s; }					// spells[3] 
 							//Spell_Heal = 0;
 							Cooldown_SpellA = 1000;
@@ -1844,7 +1844,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							break;
 						case 38:	//Chimere  -  CREATURE_FAMILY_CHIMAERA - AI : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance, %Epines )
 							me->SetMeleeDamageSchool(SpellSchools(0));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-							Spell_B_Non_Cumulable = 0;
+							Spell_B_Non_Cumulable = 1;
 							if (Spell_respawn_evade == 0) { Spell_respawn_evade = Spell_Epines; }			// spells[3] 
 							//Spell_Heal = 0;
 							Cooldown_SpellA = 500;
@@ -1941,7 +1941,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							break;
 						case 42:	//Ver  -  CREATURE_FAMILY_WORM - AI : Mouvement_Caster_Puis_Contact ( spell [2]=spell a distance 
 							me->SetMeleeDamageSchool(SpellSchools(0));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-							Spell_B_Non_Cumulable = 0;
+							Spell_B_Non_Cumulable = 1;
 							//Spell_respawn_evade = 0;
 							//Spell_Heal = 0;
 							Cooldown_SpellA = 500;
@@ -2263,7 +2263,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 100:	//Diablotin gangrene  -  CREATURE_FAMILY_FELIMP - AI : 1/2_Mouvement_Contact_Avance_Recule , 1/2_Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance 
 							AI_Random = urand(1, 2);
 							me->SetMeleeDamageSchool(SpellSchools(5));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-							Spell_B_Non_Cumulable = 0;
+							Spell_B_Non_Cumulable = 1;
 							//Spell_respawn_evade = 0;
 							//Spell_Heal = 0;																					// 
 							Cooldown_SpellA = 1000;
@@ -2765,9 +2765,10 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						{
 							if (Cooldown_SpellB <= diff)
 							{
+
 								if (Dist <= DistanceDeCast /*ResteADistance*/)
 								{
-									if (Spell_B_Non_Cumulable == 0 || Spell_B_Non_Cumulable == 1 && !victim->HasAura(Spell_B) )
+									if (Spell_B_Non_Cumulable == 0 || (Spell_B_Non_Cumulable == 1 && !victim->HasAura(Spell_B)))
 									{
 										me->CastSpell(victim, Spell_B, true);
 
