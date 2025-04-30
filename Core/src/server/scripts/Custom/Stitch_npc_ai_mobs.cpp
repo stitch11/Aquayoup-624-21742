@@ -1137,6 +1137,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						// Tirage aléatoire de l'AI pour le mouvement en combat : ne marchait pas dans void Init_AI() 
 						// ################################################################################################################################################
 
+						if (ForceFamily > 300) { ForceFamily = 0; }
 						if (ForceFamily > 0 && ForceFamily < 301) { Crfamily = ForceFamily; }
 
 						// Tirage aléatoire des spells ----------------------------------------------------------------------------------------------------------------
