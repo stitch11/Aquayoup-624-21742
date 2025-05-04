@@ -1196,9 +1196,9 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 								Cooldown_Trop_Loin_Defaut = 6000;
 							}
 							break;
-						case 3:		// Araignee  -  CREATURE_FAMILY_SPIDER - AI : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance , Doit avoir du mana , % Toile_Araignee)
+						case 3:		// Araignee  -  CREATURE_FAMILY_SPIDER - AI : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance Cumulable, Doit avoir du mana , % Toile_Araignee)
 							me->SetMeleeDamageSchool(SpellSchools(3));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-							Spell_B_Non_Cumulable = 1;
+							Spell_B_Non_Cumulable = 0;
 							//Spell_respawn_evade = 0;
 							Buf_A = 0;
 							//Spell_Heal = 0;
@@ -1638,7 +1638,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Trop_Loin = urand(3000, 8000);
 							Cooldown_Trop_Loin_Defaut = urand(5000, 7000);
 							break;
-						case 27:	//Serpent des vents  -  CREATURE_FAMILY_WIND_SERPENT - AI : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance, %Bouclier_De_Foudre )
+						case 27:	//Serpent des vents  -  CREATURE_FAMILY_WIND_SERPENT - AI : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance Non cumulable, %Bouclier_De_Foudre )
 							me->SetMeleeDamageSchool(SpellSchools(6));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 1;
 							if (Spell_respawn_evade == 0) { Spell_respawn_evade = Spell_Bouclier_De_Foudre; }	// spells[3] 
@@ -1749,7 +1749,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Trop_Loin_Defaut = urand(8000, 15000);
 							AI_Random = urand(1, 4);
 							break;
-						case 34:	//Raie du Neant  -  CREATURE_FAMILY_NETHER_RAY - AI : 1/2_Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance ) , 1/2_Mouvement_Caster
+						case 34:	//Raie du Neant  -  CREATURE_FAMILY_NETHER_RAY - AI : 1/2_Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance Non cumulable) , 1/2_Mouvement_Caster
 							AI_Random = urand(1,2);
 							me->SetMeleeDamageSchool(SpellSchools(6));													// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 1;
@@ -1843,7 +1843,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Trop_Loin = urand(3000, 8000);
 							Cooldown_Trop_Loin_Defaut = urand(8000, 15000);
 							break;
-						case 38:	//Chimere  -  CREATURE_FAMILY_CHIMAERA - AI : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance, %Epines )
+						case 38:	//Chimere  -  CREATURE_FAMILY_CHIMAERA - AI : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance Non cumulable, %Epines )
 							me->SetMeleeDamageSchool(SpellSchools(0));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 1;
 							if (Spell_respawn_evade == 0) { Spell_respawn_evade = Spell_Epines; }			// spells[3] 
@@ -1940,9 +1940,9 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Trop_Loin_Defaut = urand(7000, 9000);
 							AI_Random = urand(1, 4);
 							break;
-						case 42:	//Ver  -  CREATURE_FAMILY_WORM - AI : Mouvement_Caster_Puis_Contact ( spell [2]=spell a distance 
+						case 42:	//Ver  -  CREATURE_FAMILY_WORM - AI : Mouvement_Caster_Puis_Contact ( spell [2]=spell a distance Cumulable 
 							me->SetMeleeDamageSchool(SpellSchools(0));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-							Spell_B_Non_Cumulable = 1;
+							Spell_B_Non_Cumulable = 0;
 							//Spell_respawn_evade = 0;
 							//Spell_Heal = 0;
 							Cooldown_SpellA = 500;
@@ -2043,7 +2043,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Trop_Loin = urand(7000, 8000);
 							Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
 							break;
-						case 49:	//Elementaire d'eau  -  CREATURE_FAMILY_WATER_ELEMENTAL - AI : 1/3_Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance ) , 1/3_Mouvement_Caster , 1/3_Mouvement_Contact_Basique
+						case 49:	//Elementaire d'eau  -  CREATURE_FAMILY_WATER_ELEMENTAL - AI : 1/3_Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance Cumulable ) , 1/3_Mouvement_Caster , 1/3_Mouvement_Contact_Basique
 							AI_Random = urand(1,3);
 							me->SetMeleeDamageSchool(SpellSchools(4));										// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
@@ -2261,10 +2261,10 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 								Cooldown_Principal_B_Defaut = urand(6000, 8000);
 							}
 							break;
-						case 100:	//Diablotin gangrene  -  CREATURE_FAMILY_FELIMP - AI : 1/2_Mouvement_Contact_Avance_Recule , 1/2_Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance 
+						case 100:	//Diablotin gangrene  -  CREATURE_FAMILY_FELIMP - AI : 1/2_Mouvement_Contact_Avance_Recule , 1/2_Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance Cumulable)
 							AI_Random = urand(1, 2);
 							me->SetMeleeDamageSchool(SpellSchools(5));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
-							Spell_B_Non_Cumulable = 1;
+							Spell_B_Non_Cumulable = 0;
 							//Spell_respawn_evade = 0;
 							//Spell_Heal = 0;																					// 
 							Cooldown_SpellA = 1000;
@@ -2376,7 +2376,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Trop_Loin = urand(7000, 12000);
 							Cooldown_Trop_Loin_Defaut = urand(8000, 12000);
 							break;
-						case 116:	//elementaire de feu  -  CREATURE_FAMILY_FIREELEMENTAL - AI : 1/4_Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance ) , 1/4_Mouvement_Caster , 2/4_Mouvement_Contact_Basique, %Armure_De_La_Fournaise
+						case 116:	//elementaire de feu  -  CREATURE_FAMILY_FIREELEMENTAL - AI : 1/4_Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance Cumulable) , 1/4_Mouvement_Caster , 2/4_Mouvement_Contact_Basique, %Armure_De_La_Fournaise
 							AI_Random = urand(1, 4);
 							me->SetMeleeDamageSchool(SpellSchools(2));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
