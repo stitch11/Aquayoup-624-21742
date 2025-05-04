@@ -1638,7 +1638,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Trop_Loin = urand(3000, 8000);
 							Cooldown_Trop_Loin_Defaut = urand(5000, 7000);
 							break;
-						case 27:	//Serpent des vents  -  CREATURE_FAMILY_WIND_SERPENT - AI : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance Non cumulable, %Bouclier_De_Foudre )
+						case 27:	//Serpent des vents  -  CREATURE_FAMILY_WIND_SERPENT - AI : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance  Non cumulable, %Bouclier_De_Foudre )
 							me->SetMeleeDamageSchool(SpellSchools(6));															// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 1;
 							if (Spell_respawn_evade == 0) { Spell_respawn_evade = Spell_Bouclier_De_Foudre; }	// spells[3] 
@@ -2261,7 +2261,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 								Cooldown_Principal_B_Defaut = urand(6000, 8000);
 							}
 							break;
-						case 100:	//Diablotin gangrene  -  CREATURE_FAMILY_FELIMP - AI : 1/2_Mouvement_Contact_Avance_Recule , 1/2_Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance Cumulable)
+						case 100:	//Diablotin gangrene  -  CREATURE_FAMILY_FELIMP - AI : 1/2_Mouvement_Contact_Avance_Recule , 1/2_Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance Ccumulable)
 							AI_Random = urand(1, 2);
 							me->SetMeleeDamageSchool(SpellSchools(5));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
@@ -3426,17 +3426,17 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				{
 					if (Dist < 6)
 					{
-						Random = urand(1, 5);
+						Random = urand(1, 3);
 						if ((Random != 1) && Player_Caster() == false)
 						{
-							Tourne_Au_Tour_Aleatoire(urand(10, 12));											// 4 chances sur 5 pour s'eloigner si le joueur n'est pas un caster
+							Tourne_Au_Tour_Aleatoire(urand(10, 12));											// 2 chances sur 3 pour s'eloigner si le joueur n'est pas un caster
 							Cooldown_Principal_A = 3000;
 
 							//me->SetSpeedRate(MOVE_RUN, 1.02f);												// Vitesse de déplacement
 						}
 						else
 						{
-							Recule_ou_Avance(3);																// 1 chances sur 5 pour passe dans le dos de la cible
+							Recule_ou_Avance(3);																// 1 chances sur 3 pour passe dans le dos de la cible
 						}
 						
 						Cooldown_Principal_B = Cooldown_Principal_B_Defaut + ((urand(0, 2) * 1000));
