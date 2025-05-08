@@ -1394,11 +1394,40 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 				
 				default:
 				//Stitch Degat par defaut des Guardians
-					setPowerType(POWER_ENERGY);
-					SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK)));
-					SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 5));
-					SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 7));
-					break;
+
+					if (GetCreatureTemplate()->unit_class == 2)
+					{
+						setPowerType(POWER_MANA);
+						SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK)));
+						SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 3));
+						SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 5));
+						break;
+					}
+					else if (GetCreatureTemplate()->unit_class == 8)
+					{
+						setPowerType(POWER_MANA);
+						SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK)));
+						SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 5));
+						SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 7));
+						break;
+					}
+					else if (GetCreatureTemplate()->unit_class == 4)
+					{
+						setPowerType(POWER_ENERGY);
+						SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK)));
+						SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 4));
+						SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 6));
+						break;
+					}
+					else
+					{
+						setPowerType(POWER_RAGE);
+						SetBonusDamage(int32(GetOwner()->GetTotalAttackPowerValue(BASE_ATTACK)));
+						SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(petlevel * 6));
+						SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(petlevel * 8));
+						break;
+					}
+
 			}	
 
 
