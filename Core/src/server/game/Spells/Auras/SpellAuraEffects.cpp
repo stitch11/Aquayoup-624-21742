@@ -1821,6 +1821,7 @@ void AuraEffect::HandleAuraModShapeshift(AuraApplication const* aurApp, uint8 mo
         case FORM_GHOUL:
         case FORM_TIGER_STANCE:
         case FORM_OX_STANCE:
+		case FORM_VOL_VAMPIRE:
             PowerType = POWER_ENERGY;
             break;
 
@@ -1829,8 +1830,14 @@ void AuraEffect::HandleAuraModShapeshift(AuraApplication const* aurApp, uint8 mo
         case FORM_BATTLE_STANCE:
         case FORM_DEFENSIVE_STANCE:
         case FORM_BERSERKER_STANCE:
+		case FORM_GLADIATOR_STANCE:			//Stitch
             PowerType = POWER_RAGE;
             break;
+
+		case FORM_VAMPIRE_BERSERKER:		//Stitch Unknown Shapeshift Type
+		case FORM_VAMPIRE_ANCESTRAL:
+			PowerType = POWER_DEMONIC_FURY;
+			break;
 
         case FORM_TREE_OF_LIFE:
         case FORM_TRAVEL_FORM:
@@ -1854,7 +1861,6 @@ void AuraEffect::HandleAuraModShapeshift(AuraApplication const* aurApp, uint8 mo
         case FORM_STEALTH:
         case FORM_MOONKIN_FORM:
         case FORM_SPIRIT_OF_REDEMPTION:
-		case FORM_GLADIATOR_STANCE:	//Stitch
             break;
         default:
             TC_LOG_ERROR("spells", "Auras: Unknown Shapeshift Type: %u", GetMiscValue());
