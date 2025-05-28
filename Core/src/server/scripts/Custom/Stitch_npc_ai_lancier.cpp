@@ -229,11 +229,18 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 
 				Random = urand(1, 3);
 				if (Random == 1 && Spell_respawn_evade != 0) { me->CastSpell(me, Spell_respawn_evade, true); }		// 1/3 Chance de lancer le sort au respawn ou evade
+
 			}
 			void JustReachedHome() override
 			{
 				me->SetReactState(REACT_AGGRESSIVE);
 				//me->SetSpeedRate(MOVE_RUN, 1.01f);										// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
+
+				if (Tir_1 != Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_RANGED); }				// S'équipe d'arc ou fusil
+				else
+				{
+					me->SetSheath(SHEATH_STATE_MELEE);												// S'equipe de l'arme au contact
+				}
 			}
 			void UpdateAI(uint32 diff) override
 			{
@@ -263,6 +270,8 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 
 					// Ce heal s'il a un sort de Heal(tir sur cible) -----------------------------------------------------------------
 					Heal_En_Combat_Caster(diff);
+
+					me->SetSheath(SHEATH_STATE_RANGED);
 
 					//----------------------------------------------------------------------------------------------------------------
 
@@ -340,8 +349,16 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 								me->SetSheath(SHEATH_STATE_MELEE);												// S'equipe de l'arme au contact
 							}
 
+
 							me->StopMoving();
-							DoCast(victim, Tir_1);
+							if (Spell_2 != 0)
+							{
+								me->CastSpell(victim, Spell_2, true);
+							}
+							else
+								DoCast(victim, Tir_1);
+
+
 							Cooldown_Spell1 = urand(2500,3500);
 						}
 						else Cooldown_Spell1 -= diff;
