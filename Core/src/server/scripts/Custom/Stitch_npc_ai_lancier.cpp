@@ -251,11 +251,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				else
 					Cooldown_Npc_Emotes -= diff;
 
-				if (Tir_1 != Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_RANGED); }				// S'équipe d'arc ou fusil
-				else
-				{
-					me->SetSheath(SHEATH_STATE_MELEE);												// S'equipe de l'arme au contact
-				}
+
 				// ################################################################################################################################################
 				// En Combat ######################################################################################################################################
 				// ################################################################################################################################################
@@ -269,17 +265,6 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 					Heal_En_Combat_Caster(diff);
 
 					//----------------------------------------------------------------------------------------------------------------
-
-					if (Dist < 6)
-					{
-						me->SetSheath(SHEATH_STATE_MELEE);												// S'équipe d'armes au contact
-					}
-					else
-					{
-						if (Tir_1 != Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_RANGED); }			// S'équipe d'arc ou fusil
-						else { me->SetSheath(SHEATH_STATE_MELEE); }										// S'équipe d'armes au contact
-					}
-
 
 					if (Start_Agro == 0)
 					{
@@ -318,6 +303,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 					// Combat au contat ---------------------------------------------------------------------------------------------------------------------------
 					if (Dist < 6)
 					{
+						me->SetSheath(SHEATH_STATE_MELEE);												// S'equipe de l'arme au contact
 						// Spell1 sur la cible  
 						if (Cooldown_Spell1 <= diff && Spell_1 !=0)
 						{
@@ -329,8 +315,6 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 							Cooldown_Spell1 = urand(3000,3500);
 						}
 						else Cooldown_Spell1 -= diff;
-					}
-
 
 
 						// Spell2 sur la cible  
@@ -341,14 +325,14 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 
 						}
 						else Cooldown_Spell2 -= diff;
+					}
 
 					// Combat a distance --------------------------------------------------------------------------------------------------------------------------
 					if (Dist >= 6)
 					{
 
-
 						// Spell1 sur la cible  
-						if (Cooldown_Spell1 <= diff && Spell_2 == 0)	//Uniquement si Spell_2 non defini et avec la cadence de Spell_1
+						if (Cooldown_Spell1 <= diff )	//Uniquement si Spell_2 non defini et avec la cadence de Spell_1
 						{
 							if (Tir_1 != Lancer_une_Arme) { me->SetSheath(SHEATH_STATE_RANGED); }				// S'équipe d'arc ou fusil
 							else
@@ -358,7 +342,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 
 							me->StopMoving();
 							DoCast(victim, Tir_1);
-							Cooldown_Spell1 = urand(1500,2500);
+							Cooldown_Spell1 = urand(2500,3500);
 						}
 						else Cooldown_Spell1 -= diff;
 					}
