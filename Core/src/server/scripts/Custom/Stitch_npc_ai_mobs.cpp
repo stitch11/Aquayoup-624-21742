@@ -3712,7 +3712,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					{
 						//DoCastAOE(Spell_Heal);
 						me->CastSpell(me, Spell_Heal, true);
-						Cooldown_Spell_Heal = Cooldown_Spell_Heal_defaut;
+						Cooldown_Spell_Heal = urand(7000,8000);
 					}
 				}
 				else Cooldown_Spell_Heal -= diff;
