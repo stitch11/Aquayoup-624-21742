@@ -850,6 +850,8 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 
 			bool AuraLenteur()
 			{
+				if (!me->HasAura(137573)) return false;	//vitesse (+70%/4s) , annule tous les effets affectant le déplacement
+
 				if (me->HasAura(116)		// Eclair_de_givre 116 
 					|| me->HasAura(71318)	// Eclair_de_givre 71318
 					|| me->HasAura(31589)	// Lenteur 31589
@@ -867,6 +869,8 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 					|| me->HasAura(116095) 	// Handicap 116095
 					|| me->HasAura(300197) 	// Toucher_de_glace 300197
 					|| me->HasAura(20170)	// Sceau de justice 20170
+					|| me->HasAura(6343)	// Coup de tonnerre
+					|| me->HasAura(8147)	// Coup de tonnerre
 					) return true;
 				else return false;
 			}
