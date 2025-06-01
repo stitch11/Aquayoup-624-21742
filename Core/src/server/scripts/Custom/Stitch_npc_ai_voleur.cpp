@@ -672,7 +672,10 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 
 			bool AuraLenteur()
 			{
-				if (!me->HasAura(137573) ) return false;	//vitesse (+70%/4s) , annule tous les effets affectant le déplacement
+				if (me->HasAura(137573)		// vitesse (+70%/4s) , annule tous les effets affectant le déplacement
+					|| me->HasAura(31224)	// Cape d'ombre    
+					|| me->HasAura(1856)	// Disparition
+					) return false;
 
 				if (me->HasAura(116)		// Eclair_de_givre 116 
 					|| me->HasAura(71318)	// Eclair_de_givre 71318
