@@ -1190,8 +1190,12 @@ void Spell::SelectImplicitAreaTargets(SpellEffIndex effIndex, SpellImplicitTarge
             break;
         }
         default:
-            ASSERT(false && "Spell::SelectImplicitAreaTargets: received not implemented target reference type");
-            return;
+
+			//Stitch : Anti crash si erreur de target : SelectImplicitAreaTargets
+			break;
+
+            //ASSERT(false && "Spell::SelectImplicitAreaTargets: received not implemented target reference type");
+            //return;
     }
 
     if (!referer)
