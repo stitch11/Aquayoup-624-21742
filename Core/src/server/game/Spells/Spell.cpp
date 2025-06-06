@@ -1191,11 +1191,17 @@ void Spell::SelectImplicitAreaTargets(SpellEffIndex effIndex, SpellImplicitTarge
         }
         default:
 
-			//Stitch : Anti crash si erreur de target : SelectImplicitAreaTargets
+			//Stitch : Anti crash si erreur de target : SelectImplicitAreaTargets -"|cffffffff|target incorrect ou non supporté (SelectImplicitAreaTargets) Spell id :"
+			//ASSERT(false && "Spell::SelectImplicitAreaTargets: received not implemented target reference type");
+			//return;
+			printf("ERREUR target incorrect ou non supporté (SelectImplicitAreaTargets) \r\n");
+
+			std :: ostringstream ss;
+			ss << "Erreur Target incorrect spell " << m_spellInfo->Id;
+			sWorld->SendWorldText(4, ss.str().c_str());
+
 			break;
 
-            //ASSERT(false && "Spell::SelectImplicitAreaTargets: received not implemented target reference type");
-            //return;
     }
 
     if (!referer)
