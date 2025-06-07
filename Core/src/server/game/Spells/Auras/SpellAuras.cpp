@@ -303,7 +303,254 @@ _flags(AFLAG_NONE), _effectsToApply(effMask), _needClientUpdate(false), _effectM
 		break;
 	}
 
+	//Stitch 1 seul regen boisson a la fois
+	switch (GetBase()->GetId())
+	{
+	case 430:
+		caster->RemoveAura(431);
+		caster->RemoveAura(432);
+		caster->RemoveAura(1133);
+		caster->RemoveAura(1135);
+		caster->RemoveAura(1137);
+		caster->RemoveAura(34291);
+		caster->RemoveAura(27089);
+		caster->RemoveAura(43182);
+		caster->RemoveAura(43183);
+		caster->RemoveAura(80166);
+		caster->RemoveAura(80167);
+		caster->RemoveAura(172786);
+		caster->RemoveAura(105232);
+		caster->RemoveAura(167152); // Rafraîchissement Mage
+		break;
+	case 431:
+		caster->RemoveAura(430);
+		caster->RemoveAura(432);
+		caster->RemoveAura(1133);
+		caster->RemoveAura(1135);
+		caster->RemoveAura(1137);
+		caster->RemoveAura(34291);
+		caster->RemoveAura(27089);
+		caster->RemoveAura(43182);
+		caster->RemoveAura(43183);
+		caster->RemoveAura(80166);
+		caster->RemoveAura(80167);
+		caster->RemoveAura(172786);
+		caster->RemoveAura(105232);
+		caster->RemoveAura(167152); // Rafraîchissement Mage
+		break;
+	case 432:
+		caster->RemoveAura(430);
+		caster->RemoveAura(431);
+		caster->RemoveAura(1133);
+		caster->RemoveAura(1135);
+		caster->RemoveAura(1137);
+		caster->RemoveAura(34291);
+		caster->RemoveAura(27089);
+		caster->RemoveAura(43182);
+		caster->RemoveAura(43183);
+		caster->RemoveAura(80166);
+		caster->RemoveAura(80167);
+		caster->RemoveAura(172786);
+		caster->RemoveAura(105232);
+		caster->RemoveAura(167152); // Rafraîchissement Mage
+		break;
+	case 1133:
+		caster->RemoveAura(430);
+		caster->RemoveAura(431);
+		caster->RemoveAura(432);
+		caster->RemoveAura(1135);
+		caster->RemoveAura(1137);
+		caster->RemoveAura(34291);
+		caster->RemoveAura(27089);
+		caster->RemoveAura(43182);
+		caster->RemoveAura(43183);
+		caster->RemoveAura(80166);
+		caster->RemoveAura(80167);
+		caster->RemoveAura(172786);
+		caster->RemoveAura(105232);
+		caster->RemoveAura(167152); // Rafraîchissement Mage
+		break;
+	case 1135:
+		caster->RemoveAura(430);
+		caster->RemoveAura(431);
+		caster->RemoveAura(432);
+		caster->RemoveAura(1133);
+		caster->RemoveAura(1137);
+		caster->RemoveAura(34291);
+		caster->RemoveAura(27089);
+		caster->RemoveAura(43182);
+		caster->RemoveAura(43183);
+		caster->RemoveAura(80166);
+		caster->RemoveAura(80167);
+		caster->RemoveAura(172786);
+		caster->RemoveAura(105232);
+		caster->RemoveAura(167152); // Rafraîchissement Mage
+		break;
+	case 1137:
+		caster->RemoveAura(430);
+		caster->RemoveAura(431);
+		caster->RemoveAura(432);
+		caster->RemoveAura(1133);
+		caster->RemoveAura(1135);
+		caster->RemoveAura(34291);
+		caster->RemoveAura(27089);
+		caster->RemoveAura(43182);
+		caster->RemoveAura(43183);
+		caster->RemoveAura(80166);
+		caster->RemoveAura(80167);
+		caster->RemoveAura(172786);
+		caster->RemoveAura(105232);
+		caster->RemoveAura(167152); // Rafraîchissement Mage
+		break;
+	case 34291:
+		caster->RemoveAura(430);
+		caster->RemoveAura(431);
+		caster->RemoveAura(432);
+		caster->RemoveAura(1133);
+		caster->RemoveAura(1135);
+		caster->RemoveAura(1137);
+		caster->RemoveAura(27089);
+		caster->RemoveAura(43182);
+		caster->RemoveAura(43183);
+		caster->RemoveAura(80166);
+		caster->RemoveAura(80167);
+		caster->RemoveAura(172786);
+		caster->RemoveAura(105232);
+		caster->RemoveAura(167152); // Rafraîchissement Mage
+		break;
+	case 27089:
+		caster->RemoveAura(430);
+		caster->RemoveAura(431);
+		caster->RemoveAura(432);
+		caster->RemoveAura(1133);
+		caster->RemoveAura(1135);
+		caster->RemoveAura(1137);
+		caster->RemoveAura(34291);
+		caster->RemoveAura(43182);
+		caster->RemoveAura(43183);
+		caster->RemoveAura(80166);
+		caster->RemoveAura(80167);
+		caster->RemoveAura(172786);
+		caster->RemoveAura(105232);
+		caster->RemoveAura(167152); // Rafraîchissement Mage
+		break;
+	case 43182:
+		caster->RemoveAura(430);
+		caster->RemoveAura(431);
+		caster->RemoveAura(432);
+		caster->RemoveAura(1133);
+		caster->RemoveAura(1135);
+		caster->RemoveAura(1137);
+		caster->RemoveAura(34291);
+		caster->RemoveAura(27089);
+		caster->RemoveAura(43183);
+		caster->RemoveAura(80166);
+		caster->RemoveAura(80167);
+		caster->RemoveAura(172786);
+		caster->RemoveAura(105232);
+		caster->RemoveAura(167152); // Rafraîchissement Mage
+		break;
+	case 43183:
+		caster->RemoveAura(430);
+		caster->RemoveAura(431);
+		caster->RemoveAura(432);
+		caster->RemoveAura(1133);
+		caster->RemoveAura(1135);
+		caster->RemoveAura(1137);
+		caster->RemoveAura(34291);
+		caster->RemoveAura(27089);
+		caster->RemoveAura(43182);
+		caster->RemoveAura(80166);
+		caster->RemoveAura(80167);
+		caster->RemoveAura(172786);
+		caster->RemoveAura(105232);
+		caster->RemoveAura(167152); // Rafraîchissement Mage
+		break;
+	case 80166:
+		caster->RemoveAura(430);
+		caster->RemoveAura(431);
+		caster->RemoveAura(432);
+		caster->RemoveAura(1133);
+		caster->RemoveAura(1135);
+		caster->RemoveAura(1137);
+		caster->RemoveAura(34291);
+		caster->RemoveAura(27089);
+		caster->RemoveAura(43182);
+		caster->RemoveAura(43183);
+		caster->RemoveAura(80167);
+		caster->RemoveAura(172786);
+		caster->RemoveAura(105232);
+		caster->RemoveAura(167152); // Rafraîchissement Mage
+		break;
+	case 80167:
+		caster->RemoveAura(430);
+		caster->RemoveAura(431);
+		caster->RemoveAura(432);
+		caster->RemoveAura(1133);
+		caster->RemoveAura(1135);
+		caster->RemoveAura(1137);
+		caster->RemoveAura(34291);
+		caster->RemoveAura(27089);
+		caster->RemoveAura(43182);
+		caster->RemoveAura(43183);
+		caster->RemoveAura(80166);
+		caster->RemoveAura(172786);
+		caster->RemoveAura(105232);
+		caster->RemoveAura(167152); // Rafraîchissement Mage
+		break;
+	case 172786:
+		caster->RemoveAura(430);
+		caster->RemoveAura(431);
+		caster->RemoveAura(432);
+		caster->RemoveAura(1133);
+		caster->RemoveAura(1135);
+		caster->RemoveAura(1137);
+		caster->RemoveAura(34291);
+		caster->RemoveAura(27089);
+		caster->RemoveAura(43182);
+		caster->RemoveAura(43183);
+		caster->RemoveAura(80166);
+		caster->RemoveAura(80167);
+		caster->RemoveAura(105232);
+		caster->RemoveAura(167152); // Rafraîchissement Mage
+		break;
+	case 105232:
+		caster->RemoveAura(430);
+		caster->RemoveAura(431);
+		caster->RemoveAura(432);
+		caster->RemoveAura(1133);
+		caster->RemoveAura(1135);
+		caster->RemoveAura(1137);
+		caster->RemoveAura(34291);
+		caster->RemoveAura(27089);
+		caster->RemoveAura(43182);
+		caster->RemoveAura(43183);
+		caster->RemoveAura(80166);
+		caster->RemoveAura(80167);
+		caster->RemoveAura(172786);
+		caster->RemoveAura(167152); // Rafraîchissement Mage
+		break;
+	case 167152:
+		caster->RemoveAura(430);
+		caster->RemoveAura(431);
+		caster->RemoveAura(432);
+		caster->RemoveAura(1133);
+		caster->RemoveAura(1135);
+		caster->RemoveAura(1137);
+		caster->RemoveAura(34291);
+		caster->RemoveAura(27089);
+		caster->RemoveAura(43182);
+		caster->RemoveAura(43183);
+		caster->RemoveAura(80166);
+		caster->RemoveAura(80167);
+		caster->RemoveAura(105232);
+		caster->RemoveAura(172786);
+		break;
 
+
+	default:
+		break;
+	}
 
 }
 
