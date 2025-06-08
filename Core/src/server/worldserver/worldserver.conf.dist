@@ -21,6 +21,7 @@ Aquayoup.Solocraft = 1
 # FunHealSpell			- Defaut/Arcade : 2	- Coefficient de heal & Leech des sorts  fait par un joueur (1=50% | 2=normal | 3=150% | 4=200% etc)
 # FunSpeedCast			- Defaut/Arcade : 1	- Coefficient de temps pour lancer un sort (affichage non modifié) (1=Normal | 2=200% | 3=300% : tres lent)
 # FunArmor					- Defaut/Arcade : 1	- Coefficient d'armure (1=normal | 2=200% | 3=300% etc)
+# Rate.Mana  (mettre Rate.Mana = 0.45)
 
 FunAllStat = 2
 FunDamageDefaut = 1
