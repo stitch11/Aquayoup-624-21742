@@ -2138,7 +2138,7 @@ Visibility.Notify.Period.InBGArenas   = 1000
 #                     1 - (Rate.Loyalty)
 
 Rate.Health            = 1
-Rate.Mana              = 2
+Rate.Mana              = 0.45
 Rate.Rage.Income       = 1
 Rate.Rage.Loss         = 1
 Rate.RunicPower.Income = 1
