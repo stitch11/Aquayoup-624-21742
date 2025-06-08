@@ -153,7 +153,9 @@ public:
     // void OnPlayerTalentsReset(Player* player, bool noCost)
     // void OnPlayerEnter(map, player) {}
 	// void ScriptMgr::OnPlayerEnterMap(Map* map, Player* player)
+	// void OnPlayerEnterZone(Player* player, uint32 newZone, uint32 newArea)
 	// OnPlayerEnterZone(Player* player) {}
+	// void OnPlayerUpdateZone(Player* player, uint32 newZone, uint32 newArea);
 	// void OnPlayerLeaveZone(Player* player)
     // void OnPlayerLogin(Player* player, bool firstLogin) {}
     // void OnPlayerRepop(Player* player) {}
@@ -161,6 +163,7 @@ public:
     // void OnCreatureKill(Player* /*killer*/, Creature* /*killed*/) { }
     // void OnLogout(Player* /*player*/) { }
     // void OnCreate(Player* /*player*/) { }
+	// void OnPlayerCreate(Player* player);
     // void OnMapChanged(Player* /*player*/) { }
     // void Player::Update(uint32 p_time)
     // void Player::KillPlayer()
@@ -169,6 +172,12 @@ public:
     // void OnPlayerSpellCast(Player* player, Spell* spell, bool skipCheck) {}
     // void OnAccountLogin(uint32 /*accountId*/) {}
 	// void OnCombatExit();
+	// void OnPlayerReputationChange(Player* player, uint32 factionID, int32& standing, bool incremental);
+	// void OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg);
+	// void OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg, Player* receiver);
+	// void OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg, Guild* guild);
+	// void OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg, Channel* channel);
+
 
 
 	// ################################################################################################################################################
