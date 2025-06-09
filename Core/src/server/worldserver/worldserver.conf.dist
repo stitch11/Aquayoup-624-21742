@@ -3205,7 +3205,10 @@ PlayerDump.DisallowOverwrite = 1
 #     UI.ShowQuestLevelsInDialogs
 #        Description: Show quest levels next to quest titles in UI dialogs
 #        Example:     [13] Westfall Stew
-#        Default:     0  - (Do not show)
+#        Default:       0 	- n'affiche rien avant le nom de la quete
+#							 1		- Affiche le level avant le nom de la quete
+#							 2		- Affiche l'ID avant le nom de la quete
+#							>2  	- n'affiche rien avant le nom de la quete
 
 UI.ShowQuestLevelsInDialogs = 0
 

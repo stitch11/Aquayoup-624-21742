@@ -213,7 +213,10 @@ void PlayerMenu::SendGossipMenu(uint32 titleTextId, ObjectGuid objectGUID)
     }
 
     // Store this instead of checking the Singleton every loop iteration
-    bool questLevelInTitle = sWorld->getBoolConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS);
+
+	//Stitch affichage id quete dans le nom de quete 
+	//bool questLevelInTitle = sWorld->getBoolConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS);
+	uint8 questLevelInTitle = sWorld->getIntConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS);
 
     packet.GossipText.resize(_questMenu.GetMenuItemCount());
     count = 0;
@@ -344,7 +347,9 @@ void PlayerMenu::SendQuestGiverQuestList(ObjectGuid guid)
         TC_LOG_ERROR("misc", "Guid: %s - No quest greeting found.", guid.ToString().c_str());
 
     // Store this instead of checking the Singleton every loop iteration
-    bool questLevelInTitle = sWorld->getBoolConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS);
+	//Stitch id quete   bool questLevelInTitle = sWorld->getBoolConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS);
+	uint8 questLevelInTitle = sWorld->getIntConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS);
+
 
     for (uint32 i = 0; i < _questMenu.GetMenuItemCount(); ++i)
     {
@@ -409,8 +414,19 @@ void PlayerMenu::SendQuestGiverQuestDetails(Quest const* quest, ObjectGuid npcGU
         }
     }
 
-    if (sWorld->getBoolConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS))
+	//Stitch affichage id quete dans le nom de quete
+	//if (sWorld->getBoolConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS))
+	//	AddQuestLevelToTitle(questLogTitle, quest->GetQuestLevel());
+
+    if (sWorld->getIntConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS) == 1)
         AddQuestLevelToTitle(questLogTitle, quest->GetQuestLevel());
+	else if (sWorld->getIntConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS) == 2)
+		AddQuestLevelToTitle(questLogTitle, quest->GetQuestId());
+
+
+
+
+		
 
     WorldPackets::Quest::QuestGiverQuestDetails packet;
     packet.QuestGiverGUID = npcGUID;
@@ -560,8 +576,18 @@ void PlayerMenu::SendQuestQueryResponse(Quest const* quest) const
     packet.Info.POIy = quest->GetPOIy();
     packet.Info.POIPriority = quest->GetPOIPriority();
 
-    if (sWorld->getBoolConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS))
+
+	//Stitch affichage id quete dans le nom de quete
+	//if (sWorld->getBoolConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS))
+	//	AddQuestLevelToTitle(questLogTitle, quest->GetQuestLevel());
+
+	if (sWorld->getIntConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS) == 1)
         AddQuestLevelToTitle(questLogTitle, quest->GetQuestLevel());
+	else if(sWorld->getIntConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS) == 2)
+		AddQuestLevelToTitle(questLogTitle, quest->GetQuestId());
+
+
+
 
     packet.Info.LogTitle = questLogTitle;
     packet.Info.LogDescription = questLogDescription;
@@ -624,8 +650,9 @@ void PlayerMenu::SendQuestGiverOfferReward(Quest const* quest, ObjectGuid npcGUI
             ObjectMgr::GetLocaleString(questTemplateLocale->PortraitTurnInName, locale, portraitTurnInName);
         }
     }
-
-    if (sWorld->getBoolConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS))
+	//Stitch affichage id quete dans le nom de quete
+	// if (sWorld->getBoolConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS))
+    if (sWorld->getIntConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS))
         AddQuestLevelToTitle(questTitle, quest->GetQuestLevel());
 
     WorldPackets::Quest::QuestGiverOfferRewardMessage packet;
@@ -686,7 +713,9 @@ void PlayerMenu::SendQuestGiverRequestItems(Quest const* quest, ObjectGuid npcGU
         return;
     }
 
-    if (sWorld->getBoolConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS))
+	//Stitch affichage id quete dans le nom de quete
+	// if (sWorld->getBoolConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS))
+    if (sWorld->getIntConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS))
         AddQuestLevelToTitle(questTitle, quest->GetQuestLevel());
 
     WorldPackets::Quest::QuestGiverRequestItems packet;
