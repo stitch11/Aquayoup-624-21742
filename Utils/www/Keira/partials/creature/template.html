@@ -174,7 +174,7 @@
         <h5 class="text-left">Loot</h5>
         <small>lootid</small>
         <input type="text" class="form-control input-xs" ng-model="new_creature_template.lootid">
-        <small>pickpocketloot =<301</br>npc_ai_mobs = force AI</small>
+        <small><font color="#ffff00"> pickpocketloot =< 301 :</br>npc_ai_mobs = AI imposé</font> </small>
         <input type="text" class="form-control input-xs" ng-model="new_creature_template.pickpocketloot">
         <small>skinloot</small>
         <input type="text" class="form-control input-xs" ng-model="new_creature_template.skinloot">
@@ -912,7 +912,7 @@
           <font color="#ffff00"> Les spells peuvent etre imposé en manuel ci spell1 > 0 </font></br>
           	<font color="#ffff00"> Les spells peuvent etre générés et aléatoires ci spell1 = 0 </font></br> </br>
               <div class="col-xs-20"><b><u><font color="#00FF00"> Stitch_npc_ai_mobs</font></u></b></br>
-              <font color="#ffff00">Si pickpocketloot >0 <301 le family sera forcé pour le mouvement en combat</font></br>
+              <font color="#ffff00">Si pickpocketloot >0 & <301 le family sera forcé pour le mouvement et sa tactique de combat</font></br>
                       		30 Mouvement_Caster </br>
                       		23 Mouvement_Caster_Puis_Contact </br>
                       		16 Mouvement_Contact_Basique</br>
@@ -924,11 +924,11 @@
                       		 9 Mouvement_Contact_Bondissant</br>
 
                     </br><b><u><font color="#00FF00"> Stitch_npc_ai_melee</font></u></b></br>
-                    <font color="#FFFF00">Si pickpocketLootId = 1 : Tourne au tour de la cible plus rapidement</font></br>
+                    <font color="#FFFF00">Si pickpocketLootId = 1 : Tourne au tour de la cible plus souvent</font></br>
                     	</br>
                       <b><u><font color="#00FF00"> Stitch_npc_ai_caster</font></u></b> --- ( mana obligatoire )</br>
                       	<font color="#FF6666">( Préférer npc_ai_mobs->30 si Distant uniquement )</font></br>
-                     <font color="#BBBBBB">Si spell1=0 alors pickpocketloot : </font> </br>0 =Classe Random Distant,11 = Classe Random Fixe</br>
+                     <font color="#FFFF00">Si pickpocketloot : </font> </br>0 =Classe Random Distant,11 = Classe Random Fixe</br>
                      1 = Mage feu (Distant), 2 = Mage Givre (Distant), 3 = Demo (Distant), 4 = Druide (Distant), 5 = Pretre (Distant), 6 = DK Chaos (Distant)</br>
                      12 = Mage feu (fixe), 13 = Mage Givre (fixe), 14 = Demo (fixe), 15 = Druide (fixe), 16 = Pretre (fixe), 17 = DK Chaos (fixe)</br>
                      </br>
@@ -938,12 +938,12 @@
                      <b><u><font color="#00FF00"> Stitch_npc_ai_lancier</font></u></b>-(0-2 caster puis contact , 3-5 distant , 6-8 rnd)</br>
                      <font color="#FFFF00">Si pickpocketloot : </font></br>
                      Lancer_une_Arme = 0 , Tir a l'arc = 1 , Tir au fusil= 2 </br>
-                    Arme (Distant) = 3 , Tir a l'arc (Distant) = 4  , Tir au fusil (Distant) = 5 </br>
-                    Arme (Random) = 6 , Tir a l'arc (Random) = 7   , Tir au fusil (Random) = 8
-                     <font color="#BBBBBB"></br>Spell2=tir a distance : Laisser a 0 pour une cadence plus rapide - Tir a l'arc = 95826 - Tir au fusil & arbalete = 6660 - Lancer une arme = 42332</font></br>
+                   Lancer_une_ Arme (Distant) = 3 , Tir a l'arc (Distant) = 4  , Tir au fusil (Distant) = 5 </br>
+                    Lancer_une_Arme (Random) = 6 , Tir a l'arc (Random) = 7   , Tir au fusil (Random) = 8
+                     <font color="#BBBBBB"></br>Spell1=au contact , Spell2=tir a distance (Laisser a 0 pour un spell "Tir" + cadence plus rapide)</br>Tir a l'arc = 95826 - Tir au fusil & arbalete = 6660 - Lancer une arme = 42332</font></br>
                       </br>
            
-                      		<b><h4><font color="#6666FF">------ Ci dessous : plus de sorts , peut heal des alliers: ------</font></h4></b>
+                      		<b><h4><font color="#6666FF">-- Ci dessous : plus de sorts , peut heal des alliers --</font></h4></b>
                       		<font color="#ffff00"> Les spells ne peuvent pas etre imposé en manuel</br>
                       		Les spécialitées peuvent etre imposé par pickpocketloot =1,2,3 ou 4</font></br></br>
                       	<b><u><font color="#00FF00">Stitch_npc_ai_guerrier</font></u></b></br>
