@@ -103,6 +103,7 @@ _flags(AFLAG_NONE), _effectsToApply(effMask), _needClientUpdate(false), _effectM
 		caster->RemoveAura(104235);
 		caster->RemoveAura(104934);
 		caster->RemoveAura(167152); // Rafraichissement Mage
+		caster->RemoveAura(5006);
 		break;
 	case 434:
 		caster->RemoveAura(433);
@@ -118,6 +119,7 @@ _flags(AFLAG_NONE), _effectsToApply(effMask), _needClientUpdate(false), _effectM
 		caster->RemoveAura(104235);
 		caster->RemoveAura(104934);
 		caster->RemoveAura(167152); // Rafraichissement Mage
+		caster->RemoveAura(5006);
 		break;
 	case 435:
 		caster->RemoveAura(433);
@@ -133,6 +135,7 @@ _flags(AFLAG_NONE), _effectsToApply(effMask), _needClientUpdate(false), _effectM
 		caster->RemoveAura(104235);
 		caster->RemoveAura(104934);
 		caster->RemoveAura(167152); // Rafraichissement Mage
+		caster->RemoveAura(5006);
 		break;
 	case 1127:
 		caster->RemoveAura(433);
@@ -148,6 +151,7 @@ _flags(AFLAG_NONE), _effectsToApply(effMask), _needClientUpdate(false), _effectM
 		caster->RemoveAura(104235);
 		caster->RemoveAura(104934);
 		caster->RemoveAura(167152); // Rafraichissement Mage
+		caster->RemoveAura(5006);
 		break;
 	case 1129:
 		caster->RemoveAura(433);
@@ -163,6 +167,7 @@ _flags(AFLAG_NONE), _effectsToApply(effMask), _needClientUpdate(false), _effectM
 		caster->RemoveAura(104235);
 		caster->RemoveAura(104934);
 		caster->RemoveAura(167152); // Rafraichissement Mage
+		caster->RemoveAura(5006);
 		break;
 	case 1131:
 		caster->RemoveAura(433);
@@ -178,6 +183,7 @@ _flags(AFLAG_NONE), _effectsToApply(effMask), _needClientUpdate(false), _effectM
 		caster->RemoveAura(104235);
 		caster->RemoveAura(104934);
 		caster->RemoveAura(167152); // Rafraichissement Mage
+		caster->RemoveAura(5006);
 		break;
 	case 27094:
 		caster->RemoveAura(433);
@@ -193,6 +199,7 @@ _flags(AFLAG_NONE), _effectsToApply(effMask), _needClientUpdate(false), _effectM
 		caster->RemoveAura(104235);
 		caster->RemoveAura(104934);
 		caster->RemoveAura(167152); // Rafraichissement Mage
+		caster->RemoveAura(5006);
 		break;
 	case 43180:
 		caster->RemoveAura(433);
@@ -208,6 +215,7 @@ _flags(AFLAG_NONE), _effectsToApply(effMask), _needClientUpdate(false), _effectM
 		caster->RemoveAura(104235);
 		caster->RemoveAura(104934);
 		caster->RemoveAura(167152); // Rafraichissement Mage
+		caster->RemoveAura(5006);
 		break;
 	case 45548:
 		caster->RemoveAura(433);
@@ -223,6 +231,7 @@ _flags(AFLAG_NONE), _effectsToApply(effMask), _needClientUpdate(false), _effectM
 		caster->RemoveAura(104235);
 		caster->RemoveAura(104934);
 		caster->RemoveAura(167152); // Rafraichissement Mage
+		caster->RemoveAura(5006);
 		break;
 	case 80168:
 		caster->RemoveAura(433);
@@ -238,6 +247,7 @@ _flags(AFLAG_NONE), _effectsToApply(effMask), _needClientUpdate(false), _effectM
 		caster->RemoveAura(104235);
 		caster->RemoveAura(104934);
 		caster->RemoveAura(167152); // Rafraichissement Mage
+		caster->RemoveAura(5006);
 		break;
 	case 80169:
 		caster->RemoveAura(433);
@@ -253,6 +263,7 @@ _flags(AFLAG_NONE), _effectsToApply(effMask), _needClientUpdate(false), _effectM
 		caster->RemoveAura(104235);
 		caster->RemoveAura(104934);
 		caster->RemoveAura(167152); // Rafraichissement Mage
+		caster->RemoveAura(5006);
 		break;
 	case 104235:
 		caster->RemoveAura(433);
@@ -268,6 +279,7 @@ _flags(AFLAG_NONE), _effectsToApply(effMask), _needClientUpdate(false), _effectM
 		caster->RemoveAura(80169);
 		caster->RemoveAura(104934);
 		caster->RemoveAura(167152); // Rafraichissement Mage
+		caster->RemoveAura(5006);
 		break;
 	case 104934:
 		caster->RemoveAura(433);
@@ -283,6 +295,7 @@ _flags(AFLAG_NONE), _effectsToApply(effMask), _needClientUpdate(false), _effectM
 		caster->RemoveAura(80169);
 		caster->RemoveAura(104235);
 		caster->RemoveAura(167152); // Rafraichissement Mage
+		caster->RemoveAura(5006);
 		break;
 	case 167152:
 		caster->RemoveAura(433);
@@ -298,6 +311,24 @@ _flags(AFLAG_NONE), _effectsToApply(effMask), _needClientUpdate(false), _effectM
 		caster->RemoveAura(80169);
 		caster->RemoveAura(104235);
 		caster->RemoveAura(104934);
+		caster->RemoveAura(5006);
+		break;
+	case 5006:
+		caster->RemoveAura(433);
+		caster->RemoveAura(434);
+		caster->RemoveAura(435);
+		caster->RemoveAura(1127);
+		caster->RemoveAura(1129);
+		caster->RemoveAura(1131);
+		caster->RemoveAura(27094);
+		caster->RemoveAura(43180);
+		caster->RemoveAura(45548);
+		caster->RemoveAura(80168);
+		caster->RemoveAura(80169);
+		caster->RemoveAura(104235);
+		caster->RemoveAura(104934);
+		caster->RemoveAura(167152); // Rafraichissement Mage
+		caster->RemoveAura(5006);
 		break;
 	default:
 		break;
