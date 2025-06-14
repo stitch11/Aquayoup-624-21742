@@ -29,7 +29,7 @@
  //Stitch FunRate
 #include "Config.h"
 uint32 m_FunDamageDefaut = sConfigMgr->GetIntDefault("FunDamageDefaut", 1);
-uint32 m_FunAllStat = sConfigMgr->GetIntDefault("FunAllStat", 2);
+uint32 m_FunAllStat;
 uint32 m_FunArmor;
 
 
@@ -207,6 +207,7 @@ bool Player::UpdateAllStats()
         float value = GetTotalStatValue(Stats(i));
 
 //Stitch FunRate m_FunAllStat
+		m_FunAllStat = sConfigMgr->GetIntDefault("FunAllStat", 2);
 		if (m_FunAllStat < 1)
 		{
 			m_FunAllStat = 1;
