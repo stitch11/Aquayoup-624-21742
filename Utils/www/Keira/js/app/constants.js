@@ -621,7 +621,7 @@
   app.goConstants.data6[3]  = "6| event_scripts.ID";
   app.goConstants.data6[5]  = "6| conditionID1";
   app.goConstants.data6[8]  = "6| floatingTooltip (0/1)";
-  app.goConstants.data6[10] = "6| cooldown / temp d'ouverture";
+  app.goConstants.data6[10] = "6| cooldown / temp d'ouverture en seconde";
   app.goConstants.data6[11] = "6| Timeto3rdfloor";
   app.goConstants.data6[12] = "6| openTextID";
   app.goConstants.data6[15] = "6| SpawnMap";
