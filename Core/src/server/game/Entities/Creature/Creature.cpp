@@ -590,6 +590,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 		case CREATURE_FAMILY_STAG:				// Cerf
 		case CREATURE_FAMILY_PORCUPINE:			// Porc epic
 		case CREATURE_FAMILY_RYLAK:
+		case CREATURE_FAMILY_SILITHID:
 			SetSpeedRate(MOVE_WALK, 0.5f);							// hors combat
 			SetSpeedRate(MOVE_RUN, 1.2f);							// en combat
 			SetSpeedRate(MOVE_SWIM, 0.5f);							// en nageant:
