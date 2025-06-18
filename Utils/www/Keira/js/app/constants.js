@@ -881,7 +881,7 @@
   app.modalConstants.family[20] = "Scorpion  -  CREATURE_FAMILY_SCORPID - (0.5 1.2 0.5) : Mouvement_Contact_Avance_Recule";
   app.modalConstants.family[21] = "Tortue  -  CREATURE_FAMILY_TURTLE - (0.4 0.8 1.5) : Mouvement_Contact_Basique";
   app.modalConstants.family[23] = "Imp  -  CREATURE_FAMILY_IMP - (0.5 1.0 0.6) : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance Non cumulable )";
-  app.modalConstants.family[24] = "Chauve souris  -  CREATURE_FAMILY_BAT - (1.4 1.6 1.4) : Mouvement_Contact_Prudent_Volant";
+  app.modalConstants.family[24] = "Chauve souris  -  CREATURE_FAMILY_BAT - (1.4 1.6 1.4) : 1/2 Mouvement_Contact_Basique, 1/2 Mouvement_Contact_Prudent_Volant";
   app.modalConstants.family[25] = "Hyene  -  CREATURE_FAMILY_HYENA - (0.5 1.0 0.6) : Mouvement_Contact_Prudent";
   app.modalConstants.family[26] = "Oiseau de proie  -  CREATURE_FAMILY_BIRD_OF_PREY - (1.75 1.75 2.0) : Mouvement_Contact_Basique, (Griffure_bondissante)";
   app.modalConstants.family[27] = "Serpent des vents  -  CREATURE_FAMILY_WIND_SERPENT - (0.75 1.0 0.5) : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance Non cumulable, (Bouclier_De_Foudre) )";
