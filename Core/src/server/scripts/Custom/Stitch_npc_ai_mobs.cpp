@@ -1576,6 +1576,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Trop_Loin_Defaut = 5000;
 							break;
 						case 24:	//Chauve souris  -  CREATURE_FAMILY_BAT - AI : Mouvement_Contact_Prudent_Volant
+							AI_Random = urand(1, 2); 
 							me->SetMeleeDamageSchool(SpellSchools(3));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
 							//Spell_respawn_evade = 0;
@@ -1592,9 +1593,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Principal_B = 6000;
 							Cooldown_Principal_B_Defaut = urand(6000, 8000);
 							ResteADistance = 5;
-							Spell_Trop_Loin = 0;																			// 
+							Spell_Trop_Loin = Spell_Vitesse_4s;																			// 
 							Cooldown_Trop_Loin = urand(7000, 10000);
 							Cooldown_Trop_Loin_Defaut = urand(7000, 10000);
+							if (AI_Random == 1) 
+							{ 
+								Spell_Trop_Loin = 0;
+								Cooldown_Trop_Loin = 4000;
+								Cooldown_Trop_Loin_Defaut = 4000;
+							}
 							break;
 						case 25:	//Hyene  -  CREATURE_FAMILY_HYENA - AI : Mouvement_Contact_Prudent
 							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
@@ -2893,7 +2900,12 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Mouvement_Caster_Puis_Contact(diff);
 							break;
 						case 24:	// Chauve souris - CREATURE_FAMILY_BAT
-							Mouvement_Contact_Prudent_Volant(diff);
+							if (AI_Random == 1)
+							{
+								Mouvement_Contact_Basique(diff);
+							}
+							else
+								Mouvement_Contact_Prudent_Volant(diff);
 							break;
 						case 25:	// Hyene - CREATURE_FAMILY_HYENA
 							Mouvement_Contact_Prudent(diff);
