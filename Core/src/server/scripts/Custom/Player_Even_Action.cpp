@@ -51,7 +51,7 @@ public:
 		uint8 SpecActive = player->GetSpecId(player->GetActiveTalentGroup());
 		uint8 _class = player->getClass();
 
-        Apprentissage_Ou_Additem_Suivant_classes_races(player);
+		Apprentissage_Suivant_classes_races(player);
 
         // 1ere connexion joueur
 		if(firstLogin == true)						// a tester
@@ -123,7 +123,7 @@ public:
     // Au level up
     virtual void OnLevelChanged(Player* player, uint8 /*oldLevel*/) 
     {
-        Apprentissage_Ou_Additem_Suivant_classes_races(player);
+		Apprentissage_Suivant_classes_races(player);
     }
 
 
@@ -184,7 +184,7 @@ public:
     // Routines d'actions secondaires suite a un évènement 
 	// ################################################################################################################################################
 
-	void Apprentissage_Ou_Additem_Suivant_classes_races(Player* player)
+	void Apprentissage_Suivant_classes_races(Player* player)	//Ou_Additem_
     {
     uint8 _team = player->GetTeamId();      
     uint8 _class = player->getClass();
@@ -192,11 +192,19 @@ public:
     uint8 _race = player->getRace();
     uint8 _GenderID = player->getGender();
 
+	if (_level > 10) 
+	{ 
+		player->LearnSpell(300283, false);//Feu de camp
+	}	
+	else player->RemoveSpell(300283, false); 
+
+
     switch (_class)
 {
 
 case CLASS_WARRIOR:
-	if (_level > 3) { player->LearnSpell(6343, false); }			//Coup de tonnerre 
+	if (_level > 3) { player->LearnSpell(6343, true); }			//Coup de tonnerre 
+	else player->RemoveSpell(6343, false); 
     break;
 case CLASS_PALADIN:
     break;
@@ -216,22 +224,43 @@ case CLASS_HUNTER:
         player->LearnSpell(1462, true);     // Connaissance des bêtes
         player->GetSession()->SendNotification("|cffffffff[Vous avez appris de nouvelles competances]:|r");
     }
+	else
+	{
+		player->RemoveSpell(883, false);
+		player->RemoveSpell(2641, false);
+		player->RemoveSpell(9321, false);
+		player->RemoveSpell(6991, false);
+		player->RemoveSpell(136, false);
+		player->RemoveSpell(33976, false);
+		player->RemoveSpell(982, false);
+		player->RemoveSpell(1515, false);
+		player->RemoveSpell(1462, false);
+	}
+
     if (_level >= 10)
     {
         player->LearnSpell(83242, true);      // Appel du familier 2
     }
+	else player->RemoveSpell(83242, false);
+
     if (_level >= 17)
     {
         player->LearnSpell(83243, true);      // Appel du familier 3
     }
+	else player->RemoveSpell(83243, false);
+
     if (_level >= 41)
     {
         player->LearnSpell(83244, true);      // Appel du familier 4
     }
+	else player->RemoveSpell(83244, false);
+
     if (_level >= 48)
     {
         player->LearnSpell(83245, true);      // Appel du familier 5
     }
+	else player->RemoveSpell(83245, false);
+
     break;
 case CLASS_ROGUE:
 	// Vampire ------
@@ -271,8 +300,6 @@ case CLASS_ROGUE:
 		player->RemoveSpell(5277);
 		player->RemoveSpell(408);
 		player->RemoveSpell(108209);
-
-
 	}
     break;
 case CLASS_PRIEST:
@@ -283,11 +310,18 @@ case CLASS_DEATH_KNIGHT:
     {
         player->LearnSpell(53428, true); // Runeforge
     }
+	else player->RemoveSpell(53428, false);
+
     if (_level >= 10)
     {
         player->LearnSpell(50977, true); // Porte de la mort
         player->LearnSpell(73313, true); // Destrier de la mort cramoisi
     }
+	else
+	{
+		player->RemoveSpell(50977, false);
+		player->RemoveSpell(73313, false);
+	}
 
 	if (player->GetUInt32Value(PLAYER_FIELD_CURRENT_SPEC_ID) == TALENT_SPEC_DEATHKNIGHT_CHAOS)
 	{
@@ -342,15 +376,25 @@ case RACE_WORGEN:
 	{		
 		player->LearnSpell(68992, true); // Sombre course	
 	}
+	else player->RemoveSpell(68992, false);
+
 	if (_level >= 10)	
 	{		
 		player->LearnSpell(68996, true); // Deux formes
 		player->LearnSpell(94293, true); // Forme modifiée
 	}
+	else
+	{
+		player->RemoveSpell(68996, false);
+		player->RemoveSpell(94293, false);
+	}
+
 	if (_level >= 20)
 	{
 		player->LearnSpell(87840, true); // Ventre à terre	
 	}
+	else player->RemoveSpell(87840, false);
+
     break;
 case RACE_PANDAREN_NEUTRAL:
     break;

@@ -1598,7 +1598,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Trop_Loin_Defaut = urand(7000, 10000);
 							if (AI_Random == 1) 
 							{ 
-								Spell_Trop_Loin = 0;
 								Cooldown_Trop_Loin = 4000;
 								Cooldown_Trop_Loin_Defaut = 4000;
 							}
