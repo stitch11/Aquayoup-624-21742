@@ -136,7 +136,7 @@ extern int main(int argc, char** argv)
     TC_LOG_INFO("server.worldserver", "%s (worldserver-daemon)", GitRevision::GetFullVersion());
     TC_LOG_INFO("server.worldserver", "<Ctrl-C> to stop.\n");
     TC_LOG_INFO("server.worldserver", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-    TC_LOG_INFO("server.worldserver", "xx Trinity 19/05/2016 - TrinityCore/tree/498725f3de8d18b26986c2c2e0ceec6c384a8016 xx");
+    TC_LOG_INFO("server.worldserver", "xx Trinity 20/06/2025 - TrinityCore/tree/498725f3de8d18b26986c2c2e0ceec6c384a8016 xx");
 	TC_LOG_INFO("server.worldserver", "xx                                                                                xx");
 	TC_LOG_INFO("server.worldserver", "xx  Derniere maj du core 06/2022 - Stitch                                         xx");
     TC_LOG_INFO("server.worldserver", "xx                                                                                xx");
@@ -155,8 +155,8 @@ extern int main(int argc, char** argv)
 	TC_LOG_INFO("server.worldserver", "xx * DressNPC (creature_template_outfits , modelid1 a modelid4 en négatif)        xx");
 	TC_LOG_INFO("server.worldserver", "xx * NPC_AI_xxx Script de classes et autres pour mobs classiques                  xx");
 	TC_LOG_INFO("server.worldserver", "xx * Action suite a un événement Joueur(Apprentissage, connexion, levelup, zone...xx");
-	TC_LOG_INFO("server.worldserver", "xx                                                                                xx");
-	TC_LOG_INFO("server.worldserver", "xx * Diverse majs & debugs                                                        xx");
+	TC_LOG_INFO("server.worldserver", "xx                                                                              xx");
+	TC_LOG_INFO("server.worldserver", "xx * Diverses autres majs,debugs,custom, etc ... voir forum                                                        xx");
 	TC_LOG_INFO("server.worldserver", "xx * Un grand Merci a Noc & Scade pour leurs aides                                xx");
     TC_LOG_INFO("server.worldserver", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     TC_LOG_INFO("server.worldserver", " ");
