@@ -125,7 +125,11 @@ public:
     {
 		Apprentissage_Suivant_classes_races(player);
     }
-
+	//void OnPlayerTalentsReset(Player* player, bool noCost) override
+	void OnPlayerTalentsReset(Player* player, bool noCost) 
+	{
+		Apprentissage_Suivant_classes_races(player);
+	}
 
 
 
@@ -140,7 +144,6 @@ public:
         if (!player->IsInWorld()) { return; }
 
     }
-
 	void OnPlayerEnterZone(Player* player)
 	{
 	}
