@@ -652,8 +652,10 @@ void PlayerMenu::SendQuestGiverOfferReward(Quest const* quest, ObjectGuid npcGUI
     }
 	//Stitch affichage id quete dans le nom de quete
 	// if (sWorld->getBoolConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS))
-    if (sWorld->getIntConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS))
+    if (sWorld->getIntConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS) == 1)
         AddQuestLevelToTitle(questTitle, quest->GetQuestLevel());
+	else if (sWorld->getIntConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS) == 2)
+		AddQuestLevelToTitle(questTitle, quest->GetQuestId());
 
     WorldPackets::Quest::QuestGiverOfferRewardMessage packet;
     WorldPackets::Quest::QuestGiverOfferReward& offer = packet.QuestData;
@@ -715,8 +717,10 @@ void PlayerMenu::SendQuestGiverRequestItems(Quest const* quest, ObjectGuid npcGU
 
 	//Stitch affichage id quete dans le nom de quete
 	// if (sWorld->getBoolConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS))
-    if (sWorld->getIntConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS))
+    if (sWorld->getIntConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS) == 1)
         AddQuestLevelToTitle(questTitle, quest->GetQuestLevel());
+	else if (sWorld->getIntConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS) == 2)
+		AddQuestLevelToTitle(questTitle, quest->GetQuestId());
 
     WorldPackets::Quest::QuestGiverRequestItems packet;
     packet.QuestGiverGUID = npcGUID;

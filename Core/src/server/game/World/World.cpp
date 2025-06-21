@@ -1418,7 +1418,7 @@ void World::LoadConfigSettings(bool reload)
     m_bool_configs[CONFIG_PDUMP_NO_OVERWRITE] = sConfigMgr->GetBoolDefault("PlayerDump.DisallowOverwrite", true);
 	//Stitch affichage id quete dans le nom de quete
 	//m_bool_configs[CONFIG_UI_QUESTLEVELS_IN_DIALOGS] = sConfigMgr->GetBoolDefault("UI.ShowQuestLevelsInDialogs", false);
-	m_int_configs[CONFIG_UI_QUESTLEVELS_IN_DIALOGS] = sConfigMgr->GetIntDefault("UI.ShowQuestLevelsInDialogs", false);
+	m_int_configs[CONFIG_UI_QUESTLEVELS_IN_DIALOGS] = sConfigMgr->GetIntDefault("UI.ShowQuestLevelsInDialogs", 0);
 
     // Wintergrasp battlefield
     m_bool_configs[CONFIG_WINTERGRASP_ENABLE] = sConfigMgr->GetBoolDefault("Wintergrasp.Enable", false);
