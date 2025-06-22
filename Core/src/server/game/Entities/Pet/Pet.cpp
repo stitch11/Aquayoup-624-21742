@@ -968,6 +968,7 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
 			case 26125:		// // Goule DK
 				{
 					SetObjectScale(1.0f);
+					break;
 				}
 
 //Stitch Pet : Dmg & type de Power pour FAKEPLAYER & autres - Par ID -  InitCharmInfo();
