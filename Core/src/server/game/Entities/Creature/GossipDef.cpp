@@ -214,7 +214,7 @@ void PlayerMenu::SendGossipMenu(uint32 titleTextId, ObjectGuid objectGUID)
 
     // Store this instead of checking the Singleton every loop iteration
 
-	//Stitch affichage id quete dans le nom de quete 
+	//Stitch id quete : affichage avant le nom de quete 
 	//bool questLevelInTitle = sWorld->getBoolConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS);
 	uint8 questLevelInTitle = sWorld->getIntConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS);
 
@@ -347,7 +347,8 @@ void PlayerMenu::SendQuestGiverQuestList(ObjectGuid guid)
         TC_LOG_ERROR("misc", "Guid: %s - No quest greeting found.", guid.ToString().c_str());
 
     // Store this instead of checking the Singleton every loop iteration
-	//Stitch id quete   bool questLevelInTitle = sWorld->getBoolConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS);
+	//Stitch id quete : affichage avant le nom de quete 
+	//bool questLevelInTitle = sWorld->getBoolConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS);
 	uint8 questLevelInTitle = sWorld->getIntConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS);
 
 
@@ -414,7 +415,7 @@ void PlayerMenu::SendQuestGiverQuestDetails(Quest const* quest, ObjectGuid npcGU
         }
     }
 
-	//Stitch affichage id quete dans le nom de quete
+	//Stitch id quete : affichage avant le nom de quete 
 	//if (sWorld->getBoolConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS))
 	//	AddQuestLevelToTitle(questLogTitle, quest->GetQuestLevel());
 
@@ -577,7 +578,7 @@ void PlayerMenu::SendQuestQueryResponse(Quest const* quest) const
     packet.Info.POIPriority = quest->GetPOIPriority();
 
 
-	//Stitch affichage id quete dans le nom de quete
+	//Stitch id quete : affichage avant le nom de quete 
 	//if (sWorld->getBoolConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS))
 	//	AddQuestLevelToTitle(questLogTitle, quest->GetQuestLevel());
 
@@ -650,7 +651,7 @@ void PlayerMenu::SendQuestGiverOfferReward(Quest const* quest, ObjectGuid npcGUI
             ObjectMgr::GetLocaleString(questTemplateLocale->PortraitTurnInName, locale, portraitTurnInName);
         }
     }
-	//Stitch affichage id quete dans le nom de quete
+	//Stitch id quete : affichage avant le nom de quete 
 	// if (sWorld->getBoolConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS))
     if (sWorld->getIntConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS) == 1)
         AddQuestLevelToTitle(questTitle, quest->GetQuestLevel());
@@ -715,7 +716,7 @@ void PlayerMenu::SendQuestGiverRequestItems(Quest const* quest, ObjectGuid npcGU
         return;
     }
 
-	//Stitch affichage id quete dans le nom de quete
+	//Stitch id quete : affichage avant le nom de quete 
 	// if (sWorld->getBoolConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS))
     if (sWorld->getIntConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS) == 1)
         AddQuestLevelToTitle(questTitle, quest->GetQuestLevel());

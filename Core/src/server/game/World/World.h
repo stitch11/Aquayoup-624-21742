@@ -169,7 +169,7 @@ enum WorldBoolConfigs
     CONFIG_WINTERGRASP_ENABLE,
     CONFIG_TOLBARAD_ENABLE,
 
-	//Stitch affichage id quete dans le nom de quete
+	//Stitch id quete : affichage avant le nom de quete 
     //CONFIG_UI_QUESTLEVELS_IN_DIALOGS,     // Should we add quest levels to the title in the NPC dialogs?
     CONFIG_EVENT_ANNOUNCE,
     CONFIG_STATS_LIMITS_ENABLE,
@@ -400,7 +400,7 @@ enum WorldIntConfigs
     CONFIG_TALENTS_INSPECTING,
     CONFIG_BLACKMARKET_MAXAUCTIONS,
     CONFIG_BLACKMARKET_UPDATE_PERIOD,
-	CONFIG_UI_QUESTLEVELS_IN_DIALOGS, //Stitch affichage id quete dans le nom de quete
+	CONFIG_UI_QUESTLEVELS_IN_DIALOGS, //Stitch id quete : affichage avant le nom de quete 
     INT_CONFIG_VALUE_COUNT
 };
 
