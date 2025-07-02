@@ -111,7 +111,12 @@ void CollectionMgr::SaveAccountHeirlooms(SQLTransaction& trans)
         stmt = LoginDatabase.GetPreparedStatement(LOGIN_REP_ACCOUNT_HEIRLOOMS);
         stmt->setUInt32(0, _owner->GetBattlenetAccountId());
         stmt->setUInt32(1, heirloom.first);
-        stmt->setUInt32(2, heirloom.second.flags);
+
+		//Stitch Heritage , correction du crash : EN TEST
+        //stmt->setUInt32(2, heirloom.second.flags);
+		stmt->setUInt32(2, 134217728);
+
+
         trans->Append(stmt);
     }
 }
