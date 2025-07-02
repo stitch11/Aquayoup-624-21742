@@ -3851,11 +3851,12 @@ void Spell::EffectScriptEffect(SpellEffIndex effIndex)
                     m_caster->CastSpell(m_caster, spellPlayer[urand(0, 4)], true);
                     unitTarget->CastSpell(unitTarget, spellTarget[urand(0, 4)], true);
                     break;
+				}
 
 //Stitch info , a voir SpellEffect
 
 
-                }
+               
             }
             break;
         }
