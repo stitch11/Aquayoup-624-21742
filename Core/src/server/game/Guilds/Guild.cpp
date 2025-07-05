@@ -3530,7 +3530,7 @@ bool Guild::CreationDeLaStitchGuild(Player* _player, std::string const& _nomGuil
 
 		// Informe le joueur qu'il a rejoint la guilde
 		std::ostringstream Texte;
-		Texte << "|cffffffff|>>> Bienvenue dans la Guilde " << _player->GetGuildName() << " , " << _player->GetName() << " ! <<<";
+		Texte << "|cffffffff|>>> Bienvenue dans la Guilde " << _player->GetGuildName() <<  _player->GetName() << " ! |cfffff000| (/gquit pour quiter la guilde)<<<";
 
 		ChatHandler(_player->GetSession()).SendSysMessage(Texte.str().c_str());
 	}

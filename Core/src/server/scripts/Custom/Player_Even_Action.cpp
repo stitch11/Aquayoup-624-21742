@@ -148,6 +148,12 @@ public:
 	{
 	}
 
+	void OnPlayerLogin(Player* player, bool firstLogin) 
+	{
+		std::ostringstream ss;
+		ss << "|cffffffff|ATTENTION " << player << " est arrivé";
+		sWorld->SendWorldText(4, ss.str().c_str());
+	}
 
 
 	//player->CastSpell(player, 14867, true);		// Pour visuel
@@ -246,19 +252,19 @@ case CLASS_HUNTER:
     }
 	else player->RemoveSpell(83242, false);
 
-    if (_level >= 17)
+    if (_level >= 42)
     {
         player->LearnSpell(83243, true);      // Appel du familier 3
     }
 	else player->RemoveSpell(83243, false);
 
-    if (_level >= 41)
+    if (_level >= 62)
     {
         player->LearnSpell(83244, true);      // Appel du familier 4
     }
 	else player->RemoveSpell(83244, false);
 
-    if (_level >= 48)
+    if (_level >= 82)
     {
         player->LearnSpell(83245, true);      // Appel du familier 5
     }

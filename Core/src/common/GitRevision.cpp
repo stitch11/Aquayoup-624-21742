@@ -68,26 +68,7 @@ char const* GitRevision::GetHotfixesDatabase()
 
 char const* GitRevision::GetFullVersion()
 {
-  return "TrinityCore rev. " VER_PRODUCTVERSION_STR
-    " (" TRINITY_PLATFORM_STR ", " _BUILD_DIRECTIVE ", " TRINITY_LINKAGE_TYPE_STR ")";
+	return "Core Aquayoup 6.2.4 21742 - rev. Juillet 2025 " "(" TRINITY_PLATFORM_STR ", "", " TRINITY_LINKAGE_TYPE_STR ")";
 }
 
-char const* GitRevision::GetCompanyNameStr()
-{
-    return VER_COMPANYNAME_STR;
-}
 
-char const* GitRevision::GetLegalCopyrightStr()
-{
-    return VER_LEGALCOPYRIGHT_STR;
-}
-
-char const* GitRevision::GetFileVersionStr()
-{
-    return VER_FILEVERSION_STR;
-}
-
-char const* GitRevision::GetProductVersionStr()
-{
-    return VER_PRODUCTVERSION_STR;
-}

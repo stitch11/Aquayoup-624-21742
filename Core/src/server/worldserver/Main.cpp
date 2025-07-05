@@ -136,10 +136,10 @@ extern int main(int argc, char** argv)
     TC_LOG_INFO("server.worldserver", "%s (worldserver-daemon)", GitRevision::GetFullVersion());
     TC_LOG_INFO("server.worldserver", "<Ctrl-C> to stop.\n");
     TC_LOG_INFO("server.worldserver", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-    TC_LOG_INFO("server.worldserver", "xx Trinity 20/06/2025 - TrinityCore/tree/498725f3de8d18b26986c2c2e0ceec6c384a8016 xx");
+    TC_LOG_INFO("server.worldserver", "xx                             Core Aquayoup 2025                                 xx");
 	TC_LOG_INFO("server.worldserver", "xx                                                                                xx");
-	TC_LOG_INFO("server.worldserver", "xx  Derniere maj du core 06/2022 - Stitch                                         xx");
-    TC_LOG_INFO("server.worldserver", "xx                                                                                xx");
+	TC_LOG_INFO("server.worldserver", "xx   basé sur le core Trinity 2017-06-16 , Commit ff6aa40                         xx");
+	TC_LOG_INFO("server.worldserver", "xx                                                                                xx");
 	TC_LOG_INFO("server.worldserver", "xx * Toutes les Classes pour toutes les Races                                     xx");
 	TC_LOG_INFO("server.worldserver", "xx * Extension de classe Vampire pour le voleur                                   xx");
 	TC_LOG_INFO("server.worldserver", "xx * Extension de classe posture Chaos pour le DK                                 xx");
@@ -155,12 +155,11 @@ extern int main(int argc, char** argv)
 	TC_LOG_INFO("server.worldserver", "xx * DressNPC (creature_template_outfits , modelid1 a modelid4 en négatif)        xx");
 	TC_LOG_INFO("server.worldserver", "xx * NPC_AI_xxx Script de classes et autres pour mobs classiques                  xx");
 	TC_LOG_INFO("server.worldserver", "xx * Action suite a un événement Joueur(Apprentissage, connexion, levelup, zone...xx");
-	TC_LOG_INFO("server.worldserver", "xx                                                                              xx");
-	TC_LOG_INFO("server.worldserver", "xx * Diverses autres majs,debugs,custom, etc ... voir forum                                                        xx");
+	TC_LOG_INFO("server.worldserver", "xx                                                                                xx");
+	TC_LOG_INFO("server.worldserver", "xx * Diverses autres majs,debugs,custom, etc ... voir forum                       xx");
 	TC_LOG_INFO("server.worldserver", "xx * Un grand Merci a Noc & Scade pour leurs aides                                xx");
     TC_LOG_INFO("server.worldserver", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     TC_LOG_INFO("server.worldserver", " ");
-    TC_LOG_INFO("server.worldserver", "Base sur le core Trinity 624 http://TrinityCore.org");
     TC_LOG_INFO("server.worldserver", "Using configuration file %s.", sConfigMgr->GetFilename().c_str());
     TC_LOG_INFO("server.worldserver", "Using SSL version: %s (library: %s)", OPENSSL_VERSION_TEXT, SSLeay_version(SSLEAY_VERSION));
     TC_LOG_INFO("server.worldserver", "Using Boost version: %i.%i.%i", BOOST_VERSION / 100000, BOOST_VERSION / 100 % 1000, BOOST_VERSION % 100);
