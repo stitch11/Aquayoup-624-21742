@@ -148,13 +148,6 @@ public:
 	{
 	}
 
-	void OnPlayerLogin(Player* player, bool firstLogin) 
-	{
-		std::ostringstream ss;
-		ss << "|cffffffff|ATTENTION " << player << " est arrivé";
-		sWorld->SendWorldText(4, ss.str().c_str());
-	}
-
 
 	//player->CastSpell(player, 14867, true);		// Pour visuel
 
