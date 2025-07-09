@@ -3316,7 +3316,9 @@ void SmartScript::ProcessEvent(SmartScriptHolder& e, Unit* unit, uint32 var0, ui
                     creature = list.front();
             }
 
-            if (creature)
+		//Stitch : SMART_EVENT_DISTANCE_CREATURE uniquement ci la cible est en vie
+        // if (creature)
+		  if (creature && creature->IsAlive())
                 ProcessTimedAction(e, e.event.distance.repeat, e.event.distance.repeat, creature);
 
             break;
