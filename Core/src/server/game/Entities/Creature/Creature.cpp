@@ -827,10 +827,7 @@ void Creature::Update(uint32 diff)
 		GetMotionMaster()->MoveTargetedHome();		//Stitch : Retour home des mobs apres commande .respawn
     }
 
-    UpdateMovementFlags();
-
-
-
+  
 
 	//Stitch Vitesse de nage en combat : bete , Elementaire 
 	uint32 Crtype = GetCreatureTemplate()->type;
@@ -1013,7 +1010,7 @@ void Creature::Update(uint32 diff)
 		break;
 	}
 
-	
+	UpdateMovementFlags();
 
 
     switch (m_deathState)
