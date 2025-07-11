@@ -62,8 +62,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			uint32 Spell_ContreAttaque = 0;
 			uint32 Visuel_Teleportation = 87459;
 			uint32 Bond_aleatoire_25m = 300267;
-			//uint32 Spell_Canalise_hc = 0;					// Sort canalisé hors combat, doit etre fixe et en home
-			uint32 Spell_Canalise_hc = me->m_spells[7];
+			uint32 Spell_Canalise_hc = me->m_spells[7];								// Sort canalisé hors combat, doit etre fixe et en home
 			// Definitions des variables Cooldown et le 1er lancement
 			uint32 Cooldown_Spell1 = 1000;
 			uint32 Cooldown_Spell1_defaut = urand(3000, 3750);
@@ -81,6 +80,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			uint32 Cooldown_RegenMana_defaut = 3500;
 			uint32 Cooldown_bond_aleatoire_25m = 3000;
 			uint32 Cooldown_bond_aleatoire_25m_Defaut = urand(6000, 8000);
+			uint32 Cooldown_Spell_Canalise_hc = 1000;								// Sort canalisé hors combat
 
 			// Spells
 			uint32 Buf_1 = 0;													
@@ -349,7 +349,6 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			{
 				me->SetReactState(REACT_AGGRESSIVE);
 				//me->SetSpeedRate(MOVE_RUN, 1.01f);										// Vitesse par defaut définit a 1.01f puisque le patch modification par type,famille test si 1.0f
-				Spell_canalisé_hc_home();
 				Arme_rangé();
 			}
 			void UpdateAI(uint32 diff) override
@@ -456,6 +455,14 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				}
 				// ################################################################################################################################################
 				Mouvement_All();
+
+				if (Cooldown_Spell_Canalise_hc <= diff)
+				{
+					Spell_canalisé_hc_home();
+					Cooldown_Spell_Canalise_hc = urand(1000, 1500);
+				}
+				else Cooldown_Spell_Canalise_hc -= diff;
+
 			}
 
 			void RetireBugDeCombat()

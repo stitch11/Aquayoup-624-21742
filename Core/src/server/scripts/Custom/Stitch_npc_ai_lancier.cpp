@@ -46,6 +46,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			uint32 ForceBranche = me->GetCreatureTemplate()->pickpocketLootId;
 			uint32 MessageAlagro = 0;
 			uint32 Spell_ContreAttaque = 0;
+			uint32 Spell_Canalise_hc = me->m_spells[7];								// Pour spell canalisé hors combat
 			float x = 0.0f, y = 0.0f, z = 0.0f;
 			uint32 mapid = 0;
 
@@ -66,6 +67,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			uint32 Cooldown_Principal_B_Defaut = 3000;								
 			uint32 Cooldown_Principal_C = 250;										// Tempo pour arreter le mouvement
 			uint32 Cooldown_Principal_C_Defaut = 1500;
+			uint32 Cooldown_Spell_Canalise_hc = 3000;								// Pour spell canalisé hors combat
 
 			// Spells
 			uint32 Buf_1 = 0;
@@ -379,6 +381,14 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				}
 				// ################################################################################################################################################
 				Mouvement_All();
+
+				if (Cooldown_Spell_Canalise_hc <= diff)
+				{
+					Spell_canalisé_hc_home();
+					Cooldown_Spell_Canalise_hc = urand(5000, 15000);
+				}
+				else Cooldown_Spell_Canalise_hc -= diff;
+
 			}
 
 			void RetireBugDeCombat()
@@ -626,6 +636,15 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 					) return true;
 				else return false;
 			}
+			void Spell_canalisé_hc_home()
+			{
+				// Sort canalisé hors combat, doit etre fixe et en home 
+				if (Spell_Canalise_hc > 1 && !me->IsInCombat() && !me->HasAura(Spell_Canalise_hc))
+				{
+					me->CastSpell(me, Spell_Canalise_hc, true);
+				}
+			}
+
 		};
 
 

@@ -88,8 +88,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 			uint32 Random;
 			uint32 DistanceDeCast = 40;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
-			uint32 ResteADistance = 5;	///////////											// Distance max a laquelle un npc s'approchera
-			uint32 Dist = 0;															// Distance entre le npc et sa cible
+			uint32 ResteADistance = 5;	///////////									// Distance max a laquelle un npc s'approchera
+			uint32 Dist = 0;														// Distance entre le npc et sa cible
 			Unit* victim = me->GetVictim();					
 			uint32 Crfamily = me->GetCreatureTemplate()->family;
 			uint32 ForceFamily = me->GetCreatureTemplate()->pickpocketLootId;
@@ -98,9 +98,10 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 mapid = 0;
 			uint32 MessageAlagro = 0;
 			uint32 Spell_ContreAttaque = 0;
-			uint8 Spell_B_Non_Cumulable = 0;											// == 1 : Spell_B ne sera pas appliqué s'il est deja actif sur la cible . Par exemple pour Brise-genou
+			uint8 Spell_B_Non_Cumulable = 0;										// == 1 : Spell_B ne sera pas appliqué s'il est deja actif sur la cible . Par exemple pour Brise-genou
 			uint32 spell_Id = 0;
 			uint32 Spell_agro_Distant = 0;
+			uint32 Spell_Canalise_hc = me->m_spells[7];								// Pour spell canalisé hors combat
 
 			// Definitions des variables Cooldown et le 1er lancement
 			uint32 Cooldown_SpellA = 1000;											// Sort principal
@@ -127,6 +128,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 Start_Agro2 = 0;
 			uint32 Cooldown_Spell_ContreAttaque = 4000;
 			uint32 Cooldown_Spell_ContreAttaque_defaut = 8000;
+			uint32 Cooldown_Spell_Canalise_hc = 5000;								// Pour spell canalisé hors combat
 
 			// Spells 
 			uint32 Spell_A = 0;
@@ -3135,8 +3137,18 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 				}
 
+
 				// ################################################################################################################################################
 				Mouvement_All();
+
+				if (Cooldown_Spell_Canalise_hc <= diff)
+				{
+					Spell_canalisé_hc_home();
+					Cooldown_Spell_Canalise_hc = urand(5000, 15000);
+				}
+				else Cooldown_Spell_Canalise_hc -= diff;
+
+
 			}
 
 
@@ -4045,6 +4057,17 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					return true;
 					else return false;
 			}
+
+			void Spell_canalisé_hc_home()
+			{
+				// Sort canalisé hors combat, doit etre fixe et en home 
+				if (Spell_Canalise_hc > 1 && !me->IsInCombat() && !me->HasAura(Spell_Canalise_hc))
+				{
+						me->CastSpell(me, Spell_Canalise_hc, true);
+				}
+			}
+
+
 		};    
 
 		
