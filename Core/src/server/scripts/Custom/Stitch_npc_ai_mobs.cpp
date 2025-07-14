@@ -3144,7 +3144,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				if (Cooldown_Spell_Canalise_hc <= diff)
 				{
 					Spell_canalisé_hc_home();
-					Cooldown_Spell_Canalise_hc = urand(5000, 15000);
+					Cooldown_Spell_Canalise_hc = urand(10000, 15000);
 				}
 				else Cooldown_Spell_Canalise_hc -= diff;
 
@@ -4063,6 +4063,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// Sort canalisé hors combat, doit etre fixe et en home 
 				if (Spell_Canalise_hc > 1 && !me->IsInCombat() && !me->HasAura(Spell_Canalise_hc))
 				{
+					if (urand(1,2) == 1)
 						me->CastSpell(me, Spell_Canalise_hc, true);
 				}
 			}
