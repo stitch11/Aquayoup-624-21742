@@ -602,7 +602,8 @@ void ObjectMgr::LoadCreatureTemplateAddons()
                 continue;
             }
 
-            if (AdditionalSpellInfo->HasAura(DIFFICULTY_NONE, SPELL_AURA_CONTROL_VEHICLE))
+			//if (AdditionalSpellInfo->HasAura(DIFFICULTY_NONE, SPELL_AURA_CONTROL_VEHICLE)) //Stitch pour AI s'enterre
+            if (AdditionalSpellInfo->HasAura(DIFFICULTY_NONE, SPELL_AURA_CONTROL_VEHICLE) && spellId != 164339)
                 TC_LOG_ERROR("sql.sql", "Creature (Entry: %u) has SPELL_AURA_CONTROL_VEHICLE aura %u defined in `auras` field in `creature_template_addon`.", entry, spellId);
 
             if (std::find(creatureAddon.auras.begin(), creatureAddon.auras.end(), spellId) != creatureAddon.auras.end())
@@ -1058,8 +1059,8 @@ void ObjectMgr::LoadCreatureAddons()
                 TC_LOG_ERROR("sql.sql", "Creature (GUID: " UI64FMTD ") has wrong spell %u defined in `auras` field in `creature_addon`.", guid, spellId);
                 continue;
             }
-
-            if (AdditionalSpellInfo->HasAura(DIFFICULTY_NONE, SPELL_AURA_CONTROL_VEHICLE))
+			//if (AdditionalSpellInfo->HasAura(DIFFICULTY_NONE, SPELL_AURA_CONTROL_VEHICLE)) //Stitch pour AI s'enterre
+            if (AdditionalSpellInfo->HasAura(DIFFICULTY_NONE, SPELL_AURA_CONTROL_VEHICLE) && spellId != 164339)
                 TC_LOG_ERROR("sql.sql", "Creature (GUID: " UI64FMTD ") has SPELL_AURA_CONTROL_VEHICLE aura %u defined in `auras` field in `creature_addon`.", guid, spellId);
 
             if (std::find(creatureAddon.auras.begin(), creatureAddon.auras.end(), spellId) != creatureAddon.auras.end())
