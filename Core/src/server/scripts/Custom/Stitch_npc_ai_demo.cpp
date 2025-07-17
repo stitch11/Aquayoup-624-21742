@@ -551,7 +551,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 						
 						if (AuraLenteur() == false && !Interieur())
 						{
-							me->SetSpeedRate(MOVE_RUN, 1.2f); // Uniquement si non ralenti par un spell 
+							me->SetSpeedRate(MOVE_RUN, 1.1f); // Uniquement si non ralenti par un spell 
 						}
 
 						float x = 0.0f, y = 0.0f, z = 0.0f;

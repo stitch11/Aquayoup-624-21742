@@ -566,7 +566,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 						
 						if (!AuraLenteur() && !Interieur())
 						{
-							me->SetSpeedRate(MOVE_RUN, 1.2f); // Uniquement si non ralenti par un spell 
+							me->SetSpeedRate(MOVE_RUN, 1.1f); // Uniquement si non ralenti par un spell 
 						}
 
 						float x = 0.0f, y = 0.0f, z = 0.0f;

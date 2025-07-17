@@ -502,7 +502,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 
 						if (AuraLenteur() == false)
 						{
-							me->SetSpeedRate(MOVE_RUN, 1.2f); // Uniquement si non ralenti par un spell joueur
+							me->SetSpeedRate(MOVE_RUN, 1.1f); // Uniquement si non ralenti par un spell joueur
 						}
 
 						x = (victim->GetPositionX() + irand(0, ResteADistance * 2) - ResteADistance);

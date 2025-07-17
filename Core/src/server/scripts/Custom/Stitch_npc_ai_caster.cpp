@@ -51,7 +51,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			uint32 Npc_Model = me->GetDisplayId();
 			uint32 Random;
 			uint32 ForceClasse;
-			uint32 DistanceDeCast = 40;												// Distance max a laquelle un npc attaquera , au dela il quite le combat
+			uint32 DistanceDeCast = 40;												// Distance max a laquelle un npc attaquera , au dela il quite le combat,Est aussi utilisé pour la distance max de son home (DistanceDeCast+20)
 			uint32 ResteADistance = 15;												// Distance max a laquelle un npc s'approchera
 			uint32 Dist;															// Distance entre le npc et sa cible
 			Unit* victim = me->GetVictim();										 
@@ -480,8 +480,8 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			}
 			void Mouvement_All()
 			{
-				// Anti bug de combat
-				if (me->IsAlive() && (me->GetDistance(me->GetHomePosition()) >  50) )
+				// Anti bug de combat : si s'éloigne trop de son home : DistanceDeCast+20
+				if (me->IsAlive() && (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > DistanceDeCast+20) )
 				{
 					RetireBugDeCombat();
 
@@ -494,12 +494,12 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				}
 
 
-
+				// Si la cible est trop loin >DistanceDeCast
 				if (!UpdateVictim())
 					return;
 
 				Dist = me->GetDistance(me->GetVictim());
-				if ((Dist > DistanceDeCast) || (me->GetDistance2d(me->GetHomePosition().GetPositionX(), me->GetHomePosition().GetPositionY()) > 40))
+				if ((Dist > DistanceDeCast))
 				{
 					if (me->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE) && me->IsInCombat())
 					{
@@ -508,7 +508,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 
 					RetireBugDeCombat();
 					me->AddUnitState(UNIT_STATE_EVADE);
-					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);						// Quite le combat si la cible > 30m (Caster & Mélée) ou > 40m de home
+					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);						
 				}
 			}
 			void Mouvement_Caster(uint32 diff)
@@ -554,7 +554,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 
 						if(!AuraLenteur() && !Interieur())
 						{
-							me->SetSpeedRate(MOVE_RUN, 1.2f); // Uniquement si non ralenti par un spell 
+							me->SetSpeedRate(MOVE_RUN, 1.1f); // Uniquement si non ralenti par un spell 
 						}
 
 						float x = 0.0f, y = 0.0f, z = 0.0f;
