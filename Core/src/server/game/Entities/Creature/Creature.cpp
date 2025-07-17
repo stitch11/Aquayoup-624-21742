@@ -421,14 +421,149 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 
 
 
-	//Stitch vitesse de deplacement des creatures par type & famille
-	// UPDATE `creature_template` SET `speed_walk` = 1, `speed_run` = 1 WHERE `speed_walk` <1.5 AND `type` = 4 OR `type` = 5 OR `type` =  6 OR `type` =  9 OR `type` = 8 OR `type` = 12 OR `type` = 13 OR `type` = 14 OR `type` = 7 OR `type` = 10 OR `type` = 1;
+	//Stitch vitesse de deplacement des civils
 	uint32 Crtype = GetCreatureTemplate()->type;
 	uint32 Crfamily = GetCreatureTemplate()->family;
 	float Crspeed = GetCreatureTemplate()->speed_walk;
 	uint32 Crentry = GetCreatureTemplate()->Entry;
 
-	if (Crspeed == 1.0f /*&& !IsInCombat()*/ )
+
+	// Civils
+	if (Crentry >= 1000100 && Crentry <= 1001000)
+	{
+		SetSpeedRate(MOVE_WALK, frand(0.5f, 1.2f));							// hors combat
+	}
+	
+	
+
+
+
+    // Will set UNIT_FIELD_BOUNDINGRADIUS and UNIT_FIELD_COMBATREACH
+    SetObjectScale(cinfo->scale);
+
+    SetFloatValue(UNIT_FIELD_HOVERHEIGHT, cinfo->HoverHeight);
+
+    // checked at loading
+    m_defaultMovementType = MovementGeneratorType(cinfo->MovementType);
+    if (!m_respawnradius && m_defaultMovementType == RANDOM_MOTION_TYPE)
+        m_defaultMovementType = IDLE_MOTION_TYPE;
+
+    for (uint8 i=0; i < CREATURE_MAX_SPELLS; ++i)
+        m_spells[i] = GetCreatureTemplate()->spells[i];
+
+    return true;
+}
+
+bool Creature::UpdateEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
+{
+    if (!InitEntry(entry, data))
+        return false;
+
+    CreatureTemplate const* cInfo = GetCreatureTemplate();
+
+    m_regenHealth = cInfo->RegenHealth;
+
+    // creatures always have melee weapon ready if any unless specified otherwise
+    if (!GetCreatureAddon())
+        SetSheath(SHEATH_STATE_MELEE);
+
+    setFaction(cInfo->faction);
+
+    uint32 unit_flags, dynamicflags;
+    uint64 npcflag;
+    ObjectMgr::ChooseCreatureFlags(cInfo, npcflag, unit_flags, dynamicflags, data);
+
+    if (cInfo->flags_extra & CREATURE_FLAG_EXTRA_WORLDEVENT)
+        SetUInt64Value(UNIT_NPC_FLAGS, npcflag | sGameEventMgr->GetNPCFlag(this));
+    else
+        SetUInt64Value(UNIT_NPC_FLAGS, npcflag);
+
+    SetUInt32Value(UNIT_FIELD_FLAGS, unit_flags);
+	if (GetOutfit() < 0 && GetDisplayId())
+		SetUInt32Value(UNIT_FIELD_FLAGS_2, cInfo->unit_flags2 | UNIT_FLAG2_MIRROR_IMAGE);
+	else
+		SetUInt32Value(UNIT_FIELD_FLAGS_2, cInfo->unit_flags2);
+
+    SetUInt32Value(OBJECT_DYNAMIC_FLAGS, dynamicflags);
+
+    RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);
+
+    SetAttackTime(BASE_ATTACK,   cInfo->BaseAttackTime);
+    SetAttackTime(OFF_ATTACK,    cInfo->BaseAttackTime);
+    SetAttackTime(RANGED_ATTACK, cInfo->RangeAttackTime);
+
+    SelectLevel();
+
+    SetMeleeDamageSchool(SpellSchools(cInfo->dmgschool));
+    CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(getLevel(), cInfo->unit_class);
+    float armor = (float)stats->GenerateArmor(cInfo); /// @todo Why is this treated as uint32 when it's a float?
+    SetModifierValue(UNIT_MOD_ARMOR,             BASE_VALUE, armor);
+    SetModifierValue(UNIT_MOD_RESISTANCE_HOLY,   BASE_VALUE, float(cInfo->resistance[SPELL_SCHOOL_HOLY]));
+    SetModifierValue(UNIT_MOD_RESISTANCE_FIRE,   BASE_VALUE, float(cInfo->resistance[SPELL_SCHOOL_FIRE]));
+    SetModifierValue(UNIT_MOD_RESISTANCE_NATURE, BASE_VALUE, float(cInfo->resistance[SPELL_SCHOOL_NATURE]));
+    SetModifierValue(UNIT_MOD_RESISTANCE_FROST,  BASE_VALUE, float(cInfo->resistance[SPELL_SCHOOL_FROST]));
+    SetModifierValue(UNIT_MOD_RESISTANCE_SHADOW, BASE_VALUE, float(cInfo->resistance[SPELL_SCHOOL_SHADOW]));
+    SetModifierValue(UNIT_MOD_RESISTANCE_ARCANE, BASE_VALUE, float(cInfo->resistance[SPELL_SCHOOL_ARCANE]));
+
+    SetCanModifyStats(true);
+    UpdateAllStats();
+
+    // checked and error show at loading templates
+    if (FactionTemplateEntry const* factionTemplate = sFactionTemplateStore.LookupEntry(cInfo->faction))
+    {
+        if (factionTemplate->Flags & FACTION_TEMPLATE_FLAG_PVP)
+            SetPvP(true);
+        else
+            SetPvP(false);
+    }
+
+    // updates spell bars for vehicles and set player's faction - should be called here, to overwrite faction that is set from the new template
+    if (IsVehicle())
+    {
+        if (Player* owner = Creature::GetCharmerOrOwnerPlayerOrPlayerItself()) // this check comes in case we don't have a player
+        {
+            setFaction(owner->getFaction()); // vehicles should have same as owner faction
+            owner->VehicleSpellInitialize();
+        }
+    }
+
+    // trigger creature is always not selectable and can not be attacked
+    if (IsTrigger())
+        SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+
+    InitializeReactState();
+
+    if (cInfo->flags_extra & CREATURE_FLAG_EXTRA_NO_TAUNT)
+    {
+        ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_TAUNT, true);
+        ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_ATTACK_ME, true);
+    }
+
+    UpdateMovementFlags();
+    LoadCreaturesAddon();
+    return true;
+}
+
+void Creature::Update(uint32 diff)
+{
+    if (IsAIEnabled && m_TriggerJustRespawned)
+    {
+        m_TriggerJustRespawned = false;
+        AI()->JustRespawned();
+        if (m_vehicleKit)
+            m_vehicleKit->Reset();
+
+		GetMotionMaster()->MoveTargetedHome();		//Stitch : Retour home des mobs apres commande .respawn
+    }
+
+  
+
+	//Stitch vitesse de deplacement des creatures par type & famille
+	uint32 Crtype = GetCreatureTemplate()->type;
+	uint32 Crfamily = GetCreatureTemplate()->family;
+	float Crspeed = GetCreatureTemplate()->speed_walk;
+
+	if (Crspeed == 1.0f  && !this->IsInWater()/*&& !IsInCombat()*/)
 	{
 		switch (Crtype)
 		{
@@ -667,9 +802,9 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			break;
 
 		case CREATURE_FAMILY_SE_DETERRE_AU_CONTACT: //CUSTOM 156
-				SetSpeedRate(MOVE_WALK, 0.5f);							// hors combat
-				SetSpeedRate(MOVE_RUN, 0.9f);							// en combat
-				SetSpeedRate(MOVE_SWIM, 0.5f);							// en nageant
+			SetSpeedRate(MOVE_WALK, 0.5f);							// hors combat
+			SetSpeedRate(MOVE_RUN, 0.9f);							// en combat
+			SetSpeedRate(MOVE_SWIM, 0.5f);							// en nageant
 			break;
 
 		case CREATURE_FAMILY_MORPH_ROCHER:			//CUSTOM 157 - Rocher (Elementaire de terre si fixe)
@@ -696,145 +831,11 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 			//SetSpeedRate(MOVE_RUN, 1.0f);							// en combat
 			//SetSpeedRate(MOVE_SWIM, 0.8f);						// en nageant
 			break;
-}
-}
-
-	// Civils
-	if (Crentry >= 1000100 && Crentry <= 1001000)
-	{
-		SetSpeedRate(MOVE_WALK, frand(0.5f, 1.2f));							// hors combat
+		}
 	}
-	
-	
-
-
-
-    // Will set UNIT_FIELD_BOUNDINGRADIUS and UNIT_FIELD_COMBATREACH
-    SetObjectScale(cinfo->scale);
-
-    SetFloatValue(UNIT_FIELD_HOVERHEIGHT, cinfo->HoverHeight);
-
-    // checked at loading
-    m_defaultMovementType = MovementGeneratorType(cinfo->MovementType);
-    if (!m_respawnradius && m_defaultMovementType == RANDOM_MOTION_TYPE)
-        m_defaultMovementType = IDLE_MOTION_TYPE;
-
-    for (uint8 i=0; i < CREATURE_MAX_SPELLS; ++i)
-        m_spells[i] = GetCreatureTemplate()->spells[i];
-
-    return true;
-}
-
-bool Creature::UpdateEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
-{
-    if (!InitEntry(entry, data))
-        return false;
-
-    CreatureTemplate const* cInfo = GetCreatureTemplate();
-
-    m_regenHealth = cInfo->RegenHealth;
-
-    // creatures always have melee weapon ready if any unless specified otherwise
-    if (!GetCreatureAddon())
-        SetSheath(SHEATH_STATE_MELEE);
-
-    setFaction(cInfo->faction);
-
-    uint32 unit_flags, dynamicflags;
-    uint64 npcflag;
-    ObjectMgr::ChooseCreatureFlags(cInfo, npcflag, unit_flags, dynamicflags, data);
-
-    if (cInfo->flags_extra & CREATURE_FLAG_EXTRA_WORLDEVENT)
-        SetUInt64Value(UNIT_NPC_FLAGS, npcflag | sGameEventMgr->GetNPCFlag(this));
-    else
-        SetUInt64Value(UNIT_NPC_FLAGS, npcflag);
-
-    SetUInt32Value(UNIT_FIELD_FLAGS, unit_flags);
-	if (GetOutfit() < 0 && GetDisplayId())
-		SetUInt32Value(UNIT_FIELD_FLAGS_2, cInfo->unit_flags2 | UNIT_FLAG2_MIRROR_IMAGE);
-	else
-		SetUInt32Value(UNIT_FIELD_FLAGS_2, cInfo->unit_flags2);
-
-    SetUInt32Value(OBJECT_DYNAMIC_FLAGS, dynamicflags);
-
-    RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IN_COMBAT);
-
-    SetAttackTime(BASE_ATTACK,   cInfo->BaseAttackTime);
-    SetAttackTime(OFF_ATTACK,    cInfo->BaseAttackTime);
-    SetAttackTime(RANGED_ATTACK, cInfo->RangeAttackTime);
-
-    SelectLevel();
-
-    SetMeleeDamageSchool(SpellSchools(cInfo->dmgschool));
-    CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(getLevel(), cInfo->unit_class);
-    float armor = (float)stats->GenerateArmor(cInfo); /// @todo Why is this treated as uint32 when it's a float?
-    SetModifierValue(UNIT_MOD_ARMOR,             BASE_VALUE, armor);
-    SetModifierValue(UNIT_MOD_RESISTANCE_HOLY,   BASE_VALUE, float(cInfo->resistance[SPELL_SCHOOL_HOLY]));
-    SetModifierValue(UNIT_MOD_RESISTANCE_FIRE,   BASE_VALUE, float(cInfo->resistance[SPELL_SCHOOL_FIRE]));
-    SetModifierValue(UNIT_MOD_RESISTANCE_NATURE, BASE_VALUE, float(cInfo->resistance[SPELL_SCHOOL_NATURE]));
-    SetModifierValue(UNIT_MOD_RESISTANCE_FROST,  BASE_VALUE, float(cInfo->resistance[SPELL_SCHOOL_FROST]));
-    SetModifierValue(UNIT_MOD_RESISTANCE_SHADOW, BASE_VALUE, float(cInfo->resistance[SPELL_SCHOOL_SHADOW]));
-    SetModifierValue(UNIT_MOD_RESISTANCE_ARCANE, BASE_VALUE, float(cInfo->resistance[SPELL_SCHOOL_ARCANE]));
-
-    SetCanModifyStats(true);
-    UpdateAllStats();
-
-    // checked and error show at loading templates
-    if (FactionTemplateEntry const* factionTemplate = sFactionTemplateStore.LookupEntry(cInfo->faction))
-    {
-        if (factionTemplate->Flags & FACTION_TEMPLATE_FLAG_PVP)
-            SetPvP(true);
-        else
-            SetPvP(false);
-    }
-
-    // updates spell bars for vehicles and set player's faction - should be called here, to overwrite faction that is set from the new template
-    if (IsVehicle())
-    {
-        if (Player* owner = Creature::GetCharmerOrOwnerPlayerOrPlayerItself()) // this check comes in case we don't have a player
-        {
-            setFaction(owner->getFaction()); // vehicles should have same as owner faction
-            owner->VehicleSpellInitialize();
-        }
-    }
-
-    // trigger creature is always not selectable and can not be attacked
-    if (IsTrigger())
-        SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
-
-    InitializeReactState();
-
-    if (cInfo->flags_extra & CREATURE_FLAG_EXTRA_NO_TAUNT)
-    {
-        ApplySpellImmune(0, IMMUNITY_STATE, SPELL_AURA_MOD_TAUNT, true);
-        ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_ATTACK_ME, true);
-    }
-
-    UpdateMovementFlags();
-    LoadCreaturesAddon();
-    return true;
-}
-
-void Creature::Update(uint32 diff)
-{
-    if (IsAIEnabled && m_TriggerJustRespawned)
-    {
-        m_TriggerJustRespawned = false;
-        AI()->JustRespawned();
-        if (m_vehicleKit)
-            m_vehicleKit->Reset();
-
-		GetMotionMaster()->MoveTargetedHome();		//Stitch : Retour home des mobs apres commande .respawn
-    }
-
-  
 
 	//Stitch Vitesse de nage en combat : bete , Elementaire 
-	uint32 Crtype = GetCreatureTemplate()->type;
-	uint32 Crfamily = GetCreatureTemplate()->family;
-	float Crspeed = GetCreatureTemplate()->speed_walk;
-
-	if (Crspeed == 1.0f && IsInCombat() )
+	if (Crspeed == 1.0f && IsInCombat() && this->IsInWater())
 	{
 		switch (Crtype)
 		{
