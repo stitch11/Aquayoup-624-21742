@@ -878,7 +878,7 @@
   app.modalConstants.family[16] = "Marcheur du vide (Voidwalker)  -  CREATURE_FAMILY_VOIDWALKER - AI : Mouvement_Contact_Basique";
   app.modalConstants.family[17] = "Succube  -  CREATURE_FAMILY_SUCCUBUS - (0.75 1.0 0.6): 1/2_Mouvement_Contact_Tournant_Aleatoire - 1/2_Mouvement_Contact_Basique";
   app.modalConstants.family[19] = "Garde funeste (Doomguard)  -  CREATURE_FAMILY_DOOMGUARD - (0.75 1.0 0.6): Mouvement_Contact_Charges_Multiples, (Bondir_Guerrier)";
-  app.modalConstants.family[20] = "Scorpion  -  CREATURE_FAMILY_SCORPID - (0.5 1.2 0.5) : Mouvement_Contact_Avance_Recule";
+  app.modalConstants.family[20] = "Scorpion  -  CREATURE_FAMILY_SCORPID - (0.5 1.2 0.5) : Mouvement_Contact_Avance_Recule - spell [2] Cumulable";
   app.modalConstants.family[21] = "Tortue  -  CREATURE_FAMILY_TURTLE - (0.4 0.8 1.5) : Mouvement_Contact_Basique";
   app.modalConstants.family[23] = "Imp  -  CREATURE_FAMILY_IMP - (0.5 1.0 0.6) : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance Non cumulable )";
   app.modalConstants.family[24] = "Chauve souris  -  CREATURE_FAMILY_BAT - (1.4 1.6 1.4) : 1/2 Mouvement_Contact_Basique, 1/2 Mouvement_Contact_Prudent_Volant";
