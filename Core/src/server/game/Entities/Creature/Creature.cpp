@@ -834,6 +834,13 @@ void Creature::Update(uint32 diff)
 		}
 	}
 
+	if (this->HasAura(137358))									//Stitchvitese reduite si No_model , par exemple pour déplacement sous terre
+	{
+		SetSpeedRate(MOVE_WALK, 0.5f);							// hors combat
+		SetSpeedRate(MOVE_RUN, 0.5f);							// en combat
+	}
+
+
 	//Stitch Vitesse de nage en combat : bete , Elementaire 
 	if (Crspeed == 1.0f && IsInCombat() && this->IsInWater())
 	{

@@ -2747,6 +2747,11 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Start_Agro2 = 1;
 							Family_Special_Retire_au_contact();
 						}
+
+						if (Crfamily == CREATURE_FAMILY_SE_DETERRE_AU_CONTACT && Dist > 3 && me->HasAura(Spell_No_ModelID))
+							me->CastSpell(me, 300285, true);
+
+
 					}
 
 					// ############################################################################################################################################
@@ -3820,13 +3825,12 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 			void Senterre()
 			{
-				if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE)
-					return;
+				//if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE)
+				//	return;
 				me->CastSpell(me, Spell_No_ModelID, true);										// Masque le ModelID
 				me->CastSpell(me, Spell_Senterre, true);										// Fumée et terre remuée Persistant
 				me->CastSpell(me, Spell_Sedeterre_sans_fumee, true);							// Pour visuel sedeterrer
 				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Non selectionnable
-				me->CastSpell(me, 61458, true);													// Vitesse reduite sous terre -35%
 			}
 			void Senterre_sans_fumee()
 			{
@@ -3838,7 +3842,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				me->CastSpell(me, Spell_No_ModelID, true);										// Masque le ModelID
 				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Non selectionnable
 				me->RemoveAura(79690);
-				me->CastSpell(me, 61458, true);													// Vitesse reduite sous terre -35%
 			}
 			void Se_Deterre()
 			{
@@ -3847,18 +3850,14 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				me->RemoveAurasDueToSpell(Spell_Senterre_sans_fumee);							// Retire fumée et terre remuée Temporaire
 				me->RemoveAurasDueToSpell(Spell_Sedeterre_sans_fumee);							// Visuel explosion de fumée
 				me->RemoveAurasDueToSpell(Spell_No_ModelID);									// Retire invisible
-				me->RemoveAurasDueToSpell(Camouflage_dans_lombre);
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Selectionnable
-				me->RemoveAurasDueToSpell(61458);												// Retire Vitesse reduite sous terre -35%
 			}
 			void Se_DeterreSansFumee()
 			{
 				me->RemoveAurasDueToSpell(Spell_Senterre_sans_fumee);							// Retire fumée et terre remuée Temporaire
 				me->RemoveAurasDueToSpell(Spell_Sedeterre_sans_fumee);							// Visuel explosion de fumée
 				me->RemoveAurasDueToSpell(Spell_No_ModelID);									// Retire invisible
-				me->RemoveAurasDueToSpell(Camouflage_dans_lombre);
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Selectionnable
-				me->RemoveAurasDueToSpell(61458);												// Retire Vitesse reduite sous terre -35%
 			}
 			void Morph_Rocher()
 			{
@@ -3891,7 +3890,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				if (Crfamily == CREATURE_FAMILY_SCORPID  /*20*/ || Crfamily == CREATURE_FAMILY_WORM /*42*/)
 				{
 					Random = urand(1, 3);
-					if (Random != 1)
+					if (Random == 1)
 					{
 						Senterre_sans_fumee();
 					}
@@ -3912,7 +3911,12 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// Custom 156
 				if (Crfamily == CREATURE_FAMILY_SE_DETERRE_AU_CONTACT /*156*/ && !me->HasUnitState(UNIT_STATE_MOVE))
 				{
-					Senterre_sans_fumee();
+					Random = urand(1, 3);
+					if (Random == 1)
+					{
+						Senterre_sans_fumee();
+					}
+
 				}
 
 				if (Crfamily == CREATURE_FAMILY_MORPH_ROCHER  /*157*/ && !me->HasUnitState(UNIT_STATE_MOVE))
@@ -3955,6 +3959,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				if (Crfamily == CREATURE_FAMILY_SE_DETERRE_AU_CONTACT /*156 && me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE*/)
 				{
 					Se_Deterre();
+					me->RemoveAurasDueToSpell(300285);									//
+
 				}
 			}
 
