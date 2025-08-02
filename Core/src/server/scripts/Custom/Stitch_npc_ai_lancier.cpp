@@ -67,7 +67,9 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			uint32 Cooldown_Principal_B_Defaut = 3000;								
 			uint32 Cooldown_Principal_C = 250;										// Tempo pour arreter le mouvement
 			uint32 Cooldown_Principal_C_Defaut = 1500;
-			uint32 Cooldown_Spell_Canalise_hc = 3000;								// Pour spell canalisé hors combat
+			uint32 Cooldown_Spell_Canalise_hc = 3000;
+			uint32 Cooldown_Spell_Canalise_hc_defaut = 3000;						// Sort canalisé hors combat
+
 
 			// Spells
 			uint32 Buf_1 = 0;
@@ -168,6 +170,12 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				{
 					ResteADistance = 10;
 				}
+
+				Cooldown_Spell_Canalise_hc_defaut = me->GetCurrentSpellCastTime(Spell_Canalise_hc);
+				if (Cooldown_Spell_Canalise_hc_defaut < 2000)
+					Cooldown_Spell_Canalise_hc_defaut = urand(5000,15000);
+
+				Cooldown_Spell_Canalise_hc_defaut = Cooldown_Spell_Canalise_hc_defaut + urand(1000, 2000);
 
 				// ################################################################################################################################################
 				// Divers
@@ -385,7 +393,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				if (Cooldown_Spell_Canalise_hc <= diff)
 				{
 					Spell_canalisé_hc_home();
-					Cooldown_Spell_Canalise_hc = urand(5000, 15000);
+					Cooldown_Spell_Canalise_hc = Cooldown_Spell_Canalise_hc_defaut;
 				}
 				else Cooldown_Spell_Canalise_hc -= diff;
 

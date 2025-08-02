@@ -80,7 +80,8 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			uint32 Cooldown_RegenMana_defaut = 3500;
 			uint32 Cooldown_bond_aleatoire_25m = 3000;
 			uint32 Cooldown_bond_aleatoire_25m_Defaut = urand(6000, 8000);
-			uint32 Cooldown_Spell_Canalise_hc = 1000;								// Sort canalisé hors combat
+			uint32 Cooldown_Spell_Canalise_hc = 1000;
+			uint32 Cooldown_Spell_Canalise_hc_defaut = 3000;						// Sort canalisé hors combat
 
 			// Spells
 			uint32 Buf_1 = 0;													
@@ -287,6 +288,11 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				{
 					ResteADistance = 7;
 				}
+
+				Cooldown_Spell_Canalise_hc_defaut = me->GetCurrentSpellCastTime(Spell_Canalise_hc)+urand(500,1500);
+				if (Cooldown_Spell_Canalise_hc_defaut < 2000)
+					Cooldown_Spell_Canalise_hc_defaut = 2000;
+
 				// ################################################################################################################################################
 
 
@@ -458,8 +464,9 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 
 				if (Cooldown_Spell_Canalise_hc <= diff)
 				{
+
 					Spell_canalisé_hc_home();
-					Cooldown_Spell_Canalise_hc = urand(1000, 1500);
+					Cooldown_Spell_Canalise_hc = Cooldown_Spell_Canalise_hc_defaut;
 				}
 				else Cooldown_Spell_Canalise_hc -= diff;
 
