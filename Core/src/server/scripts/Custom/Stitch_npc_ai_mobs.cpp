@@ -4074,7 +4074,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				if (Spell_Canalise_hc > 1 && !me->IsInCombat() && !me->HasAura(Spell_Canalise_hc))
 				{
 					if (urand(1,2) == 1)
-						me->CastSpell(me, Spell_Canalise_hc, true);
+						//me->CastSpell(me, Spell_Canalise_hc, true);
+						DoCast(me, Spell_Canalise_hc);
 				}
 			}
 

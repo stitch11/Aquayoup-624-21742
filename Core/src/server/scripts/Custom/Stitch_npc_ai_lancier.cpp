@@ -70,7 +70,6 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			uint32 Cooldown_Spell_Canalise_hc = 3000;
 			uint32 Cooldown_Spell_Canalise_hc_defaut = 3000;						// Sort canalisé hors combat
 
-
 			// Spells
 			uint32 Buf_1 = 0;
 			uint32 liste_Buf[4] = { 6673, 1160, 97462, 8599 };						// Cri de guerre 6673, Cri démoralisant 1160 (8s 10m Soi-même), Cri de ralliement 97462 (+10% pv), Enrager 8599
@@ -172,7 +171,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				}
 
 				Cooldown_Spell_Canalise_hc_defaut = me->GetCurrentSpellCastTime(Spell_Canalise_hc);
-				if (Cooldown_Spell_Canalise_hc_defaut < 2000)
+				if (Cooldown_Spell_Canalise_hc_defaut < 3000)
 					Cooldown_Spell_Canalise_hc_defaut = urand(5000,15000);
 
 				Cooldown_Spell_Canalise_hc_defaut = Cooldown_Spell_Canalise_hc_defaut + urand(1000, 2000);
@@ -649,7 +648,8 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				// Sort canalisé hors combat, doit etre fixe et en home 
 				if (Spell_Canalise_hc > 1 && !me->IsInCombat() && !me->HasAura(Spell_Canalise_hc))
 				{
-					me->CastSpell(me, Spell_Canalise_hc, true);
+					//me->CastSpell(me, Spell_Canalise_hc, true);
+					DoCast(me, Spell_Canalise_hc);
 				}
 			}
 
