@@ -671,7 +671,8 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					if ((Dist <6) && (Mana > MaxMana / 20) && !AuraFigé())
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
-						
+						me->SetWalk(false);																// Ne pas marcher
+
 						if (!AuraLenteur() && !Interieur())
 						{
 							me->SetSpeedRate(MOVE_RUN, 1.1f); // Uniquement si non ralenti par un spell 

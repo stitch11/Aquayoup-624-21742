@@ -3183,6 +3183,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					if (Dist <= 5)
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
+						me->SetWalk(false);																// Ne pas marcher
 
 						x = (victim->GetPositionX() + irand(0, ResteADistance * 2) - ResteADistance);
 						y = (victim->GetPositionY() + irand(0, ResteADistance * 2) - ResteADistance);

@@ -558,6 +558,8 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					// Mouvement aléatoire si cible < 6m & mana > 10%  
 					if (Dist <=5 && (Mana > MaxMana / 10) && (ForceBranche != 7 && ForceBranche <12 ))
 					{
+						
+						me->SetWalk(false);																// Ne pas marcher
 
 						if(!AuraLenteur() && !Interieur())
 						{

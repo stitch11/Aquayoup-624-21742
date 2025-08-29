@@ -466,6 +466,8 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 
 					if ((Dist <6) && (Mana > MaxMana / 20) )
 					{
+						me->SetWalk(false);																// Ne pas marcher
+
 						if (AuraLenteur() == false && !Interieur())
 						{
 							me->SetSpeedRate(MOVE_RUN, 1.1f); // Uniquement si non ralenti par un spell 

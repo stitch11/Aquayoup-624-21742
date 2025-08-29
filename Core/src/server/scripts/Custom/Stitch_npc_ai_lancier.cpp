@@ -506,6 +506,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 					if (Dist <= 5)
 					{
 						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);						// UNROOT
+						me->SetWalk(false);																// Ne pas marcher
 
 						if (AuraLenteur() == false)
 						{
