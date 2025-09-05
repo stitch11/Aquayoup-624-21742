@@ -3954,6 +3954,14 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					Se_DeterreSansFumee();
 						//Se_Deterre();
 				}
+
+
+
+				if (me->HasAura(34038))
+				{
+					me->RemoveAurasDueToSpell(34038);
+				}
+				
 			}
 			void Family_Special_Retire_au_contact()
 			{
