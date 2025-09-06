@@ -517,6 +517,12 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 liste_agro_159[2] = { 49576, 128425 };						// Poigne de la mort 49576, Résine corrosive 128425 
 			uint32 liste_Buf_159[2] = { 126336, 87228 };						// Poix caustique 126336, Peau épaisse 87228
 
+			//160	CUSTOM - CREATURE_FAMILY_TOURELLE_FIXE
+			uint32 liste_spell_A_160[3] = { 36238, 9053,43799 };				// Tir de gangrecanon 36238, Boule de feu 9053, Mitrailleuse 43799
+			uint32 liste_spell_B_160[2] = { 300241, 1543 };						// Tir explosif 300241, Fusée éclairante 1543
+			uint32 liste_agro_160[2] = { 49576, 18396 };						// Résine corrosive 128425, Explosion désarçonnante 18396
+			uint32 liste_Buf_160[2] = { 5915, 18148 };							// Hystérique 5915, Champ statique (DMG proche) 18148
+
 			void InitializeAI()
 			{
 				if (ForceFamily > 0 && ForceFamily < 301) { Crfamily = ForceFamily; }
@@ -910,11 +916,17 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							break;
 						case 159:	// CUSTOM - CREATURE_FAMILY_SENTERRE_FIXE
 							Spell_A = liste_spell_A_159[urand(0, 2)];
-							Spell_B = liste_spell_B_159[urand(0, 3)];
+							Spell_B = liste_spell_B_159[urand(0, 1)];
 							Spell_agro = liste_agro_159[urand(0, 1)];
 							Buf_A = liste_Buf_159[urand(0, 1)];
 							break;
 
+						case 160:	// CREATURE_FAMILY_TOURELLE_FIXE
+							Spell_A = liste_spell_A_160[urand(0, 2)];
+							Spell_B = liste_spell_B_160[urand(0, 1)];
+							Spell_agro = liste_agro_160[urand(0, 1)];
+							Buf_A = liste_Buf_160[urand(0, 1)];
+							break;
 
 						default:
 							Spell_A = liste_spell_A_0[urand(0, 1)];
@@ -2671,6 +2683,29 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Spell_B_Non_Cumulable = 0;
 							break;
 
+						case 160:	//CREATURE_FAMILY_TOURELLE_FIXE
+							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							Spell_respawn_evade = 0;
+							Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = urand(3000, 4000);
+							Cooldown_SpellB = 2000;
+							Cooldown_SpellB_defaut = urand(5000, 6000);
+							Cooldown_SpellB_rapide = 4000;
+							Cooldown_SpellB_rapide_defaut = Cooldown_SpellB_defaut;
+							Cooldown_Spell_Heal_defaut = 15000;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = 100;
+							Cooldown_Principal_B_Defaut = 2000;
+							ResteADistance = 40;
+							Spell_Trop_Loin = 0;
+							Cooldown_Trop_Loin = urand(6000, 8000);
+							Cooldown_Trop_Loin_Defaut = urand(6000, 8000);
+							Spell_B_Non_Cumulable = 0;
+							break;
+
 						default:
 							//Spell_agro = 0;
 							//Spell_respawn_evade = 0;
@@ -3130,7 +3165,9 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 159:	//CREATURE_FAMILY_SENTERRE_FIXE
 							Mouvement_Fixe(diff);
 							break;
-
+						case 160:	//CREATURE_FAMILY_TOURELLE_FIXE
+							Mouvement_Fixe(diff);
+							break;
 
 
 						default:
@@ -3928,12 +3965,20 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				//Custom 159
 				if (Crfamily == CREATURE_FAMILY_SENTERRE_FIXE /*159*/)
 				{
+					me->GetMotionMaster()->MoveTargetedHome();										// Retour home
 					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
 					Random = urand(1, 3);
 					if (Random != 1)
 					{
 						Senterre_sans_fumee();
 					}
+				}
+
+				//Custom 160
+				if (Crfamily == CREATURE_FAMILY_TOURELLE_FIXE /*160*/)
+				{
+					me->GetMotionMaster()->MoveTargetedHome();										// Retour home
+					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
 				}
 
 			}

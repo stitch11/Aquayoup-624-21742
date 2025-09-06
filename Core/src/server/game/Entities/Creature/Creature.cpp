@@ -840,10 +840,17 @@ void Creature::Update(uint32 diff)
 			SetSpeedRate(MOVE_SWIM, 0.5f);							// en nageant
 			break;
 
-		case CREATURE_FAMILY_SENTERRE_FIXE:				//Custom 159
+		case CREATURE_FAMILY_SENTERRE_FIXE:			//Custom 159
 			SetSpeedRate(MOVE_WALK, 0.1f);							// hors combat
 			SetSpeedRate(MOVE_RUN, 0.1f);							// en combat
 			SetSpeedRate(MOVE_SWIM, 0.1f);							// en nageant
+			break;
+
+		case CREATURE_FAMILY_TOURELLE_FIXE:			//Custom 160
+			SetSpeedRate(MOVE_WALK, 0.1f);							// hors combat
+			SetSpeedRate(MOVE_RUN, 0.1f);							// en combat
+			SetSpeedRate(MOVE_SWIM, 0.1f);							// en nageant
+			SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);		// ROOT
 			break;
 
 
@@ -991,6 +998,12 @@ void Creature::Update(uint32 diff)
 			case CREATURE_FAMILY_SENTERRE_FIXE:			// CUSTOM 159
 				SetSpeedRate(MOVE_SWIM, 0.1f);			// en nageant
 				break;
+
+			case CREATURE_FAMILY_TOURELLE_FIXE:			//Custom 160
+				SetSpeedRate(MOVE_SWIM, 0.1f);							// en nageant
+				SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);		// ROOT
+				break;
+
 
 			case CREATURE_FAMILY_CRAB:					// Crabe
 			case CREATURE_FAMILY_TURTLE:				// Tortue
