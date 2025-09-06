@@ -943,6 +943,7 @@ app.modalConstants.family[156] = "CREATURE_FAMILY_SE_DETERRE_AU_CONTACT - (0.5 0
 app.modalConstants.family[157] = "Rocher (elementaire de terre si fixe)  -  CREATURE_FAMILY_MORPH_ROCHER - (0.7 1.0 0.8) : Mouvement_Contact_Basique  >>> SI PICKPOCKETLOOT <<<";
 app.modalConstants.family[158] = "CREATURE_FAMILY_CREATURE_AQUATIQUE - (0.5  1.1  2.0) : 1/4_Mouvement_Contact_Prudent, 1/4_Mouvement_Contact_Prudent_Volant, 2/4_Mouvement_Contact_Basique";
 app.modalConstants.family[159] = "CREATURE_FAMILY_SENTERRE_FIXE (ROOT) - (0.1 0.1 0.1) : Mouvement_Fixe - (Asticot 16030)  >>> SI PICKPOCKETLOOT <<<";
+app.modalConstants.family[160] = "CREATURE_FAMILY_TOURELLE_FIXE (ROOT) - (0.1 0.1 0.1) : Mouvement_Fixe)  >>> SI PICKPOCKETLOOT <<<";
 
 
 
