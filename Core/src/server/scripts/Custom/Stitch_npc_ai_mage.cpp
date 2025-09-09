@@ -138,7 +138,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 				}
 				else
 				{
-					ResteADistance = 10;
+					ResteADistance = 7;
 				}
 
 

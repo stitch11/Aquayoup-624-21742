@@ -170,7 +170,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 					}
 					else
 					{
-						ResteADistance = 10;
+						ResteADistance = 7;
 					}
 
 					break;
@@ -196,7 +196,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 					}
 					else
 					{
-						ResteADistance = 10;
+						ResteADistance = 7;
 					}
 					break;
 

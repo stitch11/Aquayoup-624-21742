@@ -280,7 +280,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				}
 				else
 				{
-					ResteADistance = 10;
+					ResteADistance = 7;
 				}
 
 				// Reste a distance faible forcé (7m) l'Intérieur
@@ -556,7 +556,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				if (Cooldown_ResteADistance <= diff && !AuraFigé())
 				{
 					// Mouvement aléatoire si cible < 6m & mana > 10%  
-					if (Dist <=5 && (Mana > MaxMana / 10) && (ForceBranche != 7 && ForceBranche <12 ))
+					if (Dist <=5 && (Mana > MaxMana / 10) && (ForceBranche != 7 && ForceBranche <12 ) )
 					{
 						
 						me->SetWalk(false);																// Ne pas marcher

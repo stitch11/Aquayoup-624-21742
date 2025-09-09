@@ -253,7 +253,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 					}
 					else
 					{
-						ResteADistance = 10;
+						ResteADistance = 7;
 					}
 
 					Cooldown_ResteADistance = 1000;

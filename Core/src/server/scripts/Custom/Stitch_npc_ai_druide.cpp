@@ -194,7 +194,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 					}
 					else
 					{
-						ResteADistance = 10;
+						ResteADistance = 7;
 					}
 					break;
 
