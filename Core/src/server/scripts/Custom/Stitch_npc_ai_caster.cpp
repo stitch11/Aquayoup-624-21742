@@ -283,7 +283,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					ResteADistance = 7;
 				}
 
-				// Reste a distance faible forcé (7m) l'Intérieur
+				// Reste a distance faible forcé 
 				if (ForceBranche == 8)
 				{
 					ResteADistance = 7;
