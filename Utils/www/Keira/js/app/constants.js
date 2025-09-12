@@ -895,7 +895,7 @@
   app.modalConstants.family[35] = "Serpent  -  CREATURE_FAMILY_SERPENT - (0.4 1.0 0.5) : Mouvement_Contact_Basique";
   app.modalConstants.family[37] = "Papillon de nuit  -  CREATURE_FAMILY_MOTH - (1.4 1.6 1.4) :  Mouvement_Caster, Bouclier_De_Terre";
   app.modalConstants.family[38] = "Chimere  -  CREATURE_FAMILY_CHIMAERA - (1.4 1.6 1.4) : Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance Non cumulable, (Epines) )";
-  app.modalConstants.family[39] = "Diablosaure  -  CREATURE_FAMILY_DEVILSAUR - AI : Mouvement_Contact_Basique";
+  app.modalConstants.family[39] = "Diablosaure  -  CREATURE_FAMILY_DEVILSAUR (1.0 1.5 1.0)- AI : Mouvement_Contact_Basique";
   app.modalConstants.family[40] = "Goule  -  CREATURE_FAMILY_GHOUL - (0.4 1.0 0.5) : Mouvement_Contact_Basique (vit 0.4-1-0.5)";
   app.modalConstants.family[41] = "Silithide  -  CREATURE_FAMILY_SILITHID - AI 1/3_Mouvement_Contact_Basique , 1/3_Mouvement_Contact_Tournant_Aleatoire , 1/3_Mouvement_Contact_Charges_Multiples";
   app.modalConstants.family[42] = "Ver  -  CREATURE_FAMILY_WORM - (0.4 1.0 0.6) : Mouvement_Caster_Puis_Contact ( spell [2]=spell a distance Cumulable - (UPDATE `creature_template_addon` SET `auras` = '58984 164339' WHERE `creature_template_addon`.`entry` = 8603)";
@@ -934,16 +934,17 @@ app.modalConstants.family[146] = "MT - Water Elemental  -  CREATURE_FAMILY_MTWAT
 app.modalConstants.family[147] = "Garde de terreur  -  CREATURE_FAMILY_TORRORGUARD - AI : ";
 app.modalConstants.family[148] = "Abyssal  -  CREATURE_FAMILY_ABYSSAL - AI : ";
 app.modalConstants.family[149] = "Rylak  -  CREATURE_FAMILY_RYLAK - - (0.5 1.2 0.5) : ";
-app.modalConstants.family[150] = "Potamodonte  -  CREATURE_FAMILY_RIVERBEAST - (0.75 1.2 1.5) : ";
+app.modalConstants.family[150] = "Potamodonte  -  CREATURE_FAMILY_RIVERBEAST - (0.75 1.2 1.25) : ";
 app.modalConstants.family[151] = "Cerf  -  CREATURE_FAMILY_STAG - - (0.5 1.2 0.5) : ";
-app.modalConstants.family[152] = "Murloc 1.2 - CREATURE_FAMILY_MURLOC - (0.5 1.0 1.2) : 1/4_Mouvement_Contact_Prudent, 1/4_Mouvement_Contact_Avance_Recule, 2/4_Mouvement_Contact_Basique";
+app.modalConstants.family[152] = "Murloc 1.2 - CREATURE_FAMILY_MURLOC - (0.5 1.0 2.0) : 1/4_Mouvement_Contact_Prudent, 1/4_Mouvement_Contact_Avance_Recule, 2/4_Mouvement_Contact_Basique";
 app.modalConstants.family[153] = "Naga 2.0 - CREATURE_FAMILY_NAGA - - (0.5 1.0 2.0) : 1/3_Mouvement_Contact_Basique, 1/3_Mouvement_Contact_Tournant_Aleatoire, 1/3_Mouvement_Contact_Prudent_Volant";
-app.modalConstants.family[155] = "CREATURE_FAMILY_SENTERRE uniquement si fixe - (0.25 1.0 1.5) : Mouvement_Contact_Basique ------   >>> SI PICKPOCKETLOOT <<< --- UPDATE `creature_template_addon` SET `auras` = '58984 164339' WHERE `creature_template_addon`.`entry` = XXXXX; ";
-app.modalConstants.family[156] = "CREATURE_FAMILY_SE_DETERRE_AU_CONTACT - (0.5 0.9 1.5) : 1/3_Mouvement_Contact_Basique, 1/3_Mouvement_Contact_Tournant_Aleatoire, 1/3_Mouvement_Contact_Avance_Recule   ->>> SI PICKPOCKETLOOT <<<- Sans fumee : UPDATE `creature_template_addon` SET `auras` = '58984 164339' WHERE `creature_template_addon`.`entry` = xxxx;) ";
-app.modalConstants.family[157] = "Rocher (elementaire de terre si fixe)  -  CREATURE_FAMILY_MORPH_ROCHER - (0.7 1.0 0.8) : Mouvement_Contact_Basique  >>> SI PICKPOCKETLOOT <<<";
-app.modalConstants.family[158] = "CREATURE_FAMILY_CREATURE_AQUATIQUE - (0.5  1.1  2.0) : 1/4_Mouvement_Contact_Prudent, 1/4_Mouvement_Contact_Prudent_Volant, 2/4_Mouvement_Contact_Basique";
+app.modalConstants.family[155] = "CREATURE_FAMILY_SENTERRE uniquement si fixe - (0.25 1.0 0.4) : Mouvement_Contact_Basique ------   >>> SI PICKPOCKETLOOT <<< --- UPDATE `creature_template_addon` SET `auras` = '58984 164339' WHERE `creature_template_addon`.`entry` = XXXXX; ";
+app.modalConstants.family[156] = "CREATURE_FAMILY_SE_DETERRE_AU_CONTACT - (0.5 0.9 0.5) : 1/3_Mouvement_Contact_Basique, 1/3_Mouvement_Contact_Tournant_Aleatoire, 1/3_Mouvement_Contact_Avance_Recule   ->>> SI PICKPOCKETLOOT <<<- Sans fumee : UPDATE `creature_template_addon` SET `auras` = '58984 164339' WHERE `creature_template_addon`.`entry` = xxxx;) ";
+app.modalConstants.family[157] = "Rocher (elementaire de terre si fixe)  -  CREATURE_FAMILY_MORPH_ROCHER - (0.7 1.0 0.6) : Mouvement_Contact_Basique  >>> SI PICKPOCKETLOOT <<<";
+app.modalConstants.family[158] = "CREATURE_FAMILY_CREATURE_AQUATIQUE - (0.5  1.1 0.5) : 1/4_Mouvement_Contact_Prudent, 1/4_Mouvement_Contact_Prudent_Volant, 2/4_Mouvement_Contact_Basique";
 app.modalConstants.family[159] = "CREATURE_FAMILY_SENTERRE_FIXE (ROOT) - (0.1 0.1 0.1) : Mouvement_Fixe - (Asticot 16030)  >>> SI PICKPOCKETLOOT <<<";
 app.modalConstants.family[160] = "CREATURE_FAMILY_TOURELLE_FIXE (ROOT) - (0.1 0.1 0.1) : Mouvement_Fixe)  >>> SI PICKPOCKETLOOT <<<";
+app.modalConstants.family[161] = "CREATURE_FAMILY_SENTERRE_REMOU_CLAIR_CONTACT - (0.5 0.9 0.5) :  >>> SI PICKPOCKETLOOT <<< : UPDATE `creature_template_addon` SET `auras` = '58984 164339' WHERE `creature_template_addon`.`entry` = xxxx; ";
 
 
 
