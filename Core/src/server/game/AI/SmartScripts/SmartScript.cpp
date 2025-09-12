@@ -1241,7 +1241,7 @@ void SmartScript::ProcessAction(SmartScriptHolder& e, Unit* unit, uint32 var0, u
 
 //Stitch SmartAI : ACTION_SUMMON_CREATURE : Attack invoker
 					//summon->AI()->AttackStart((*itr)->ToUnit());
-					me->CastSpell(summon, 50231, true);
+					me->CastSpell(summon, 50231, true); //Random Aggro (Taunt)
 
 
                 }

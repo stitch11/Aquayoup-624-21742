@@ -154,9 +154,10 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 Spell_Bondir_Guerrier = 145763;								// Bondir 8-40m
 			uint32 Spell_Invisible = 1784;										// Invisibilitée fufu
 			uint32 Spell_No_ModelID = 137358;									// ModelID non visible , arme && aura visible 
-			uint32 Spell_Senterre = 79690;										// visuel terre Forage de tunnel Passif gris percistant
-			uint32 Spell_Senterre_sans_fumee = 84863;							// visuel terre Forage de tunnel Passif gris  
-			uint32 Spell_Sedeterre_sans_fumee = 164339;							// visuel explosion de fumée   
+			uint32 Spell_Senterre = 79690;										// fumée persistante - visuel terre Forage de tunnel Passif gris percistant
+			uint32 Spell_Senterre_sans_fumee = 84863;							// fumée temporaire - visuel terre Forage de tunnel Passif gris  
+			uint32 Spell_Sedeterre_sans_fumee = 164339;							// visuel explosion de fumée au retrait 
+			uint32 Spell_Senterre_remou_clair = 29147;							// visuel terre remué claire pour Ver
 			uint32 Spell_Gaz_Corrosif = 126437;
 			uint32 Spell_Armure_De_Givre = 165743;
 			uint32 Spell_Armure_De_La_Fournaise = 79849;
@@ -517,11 +518,18 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			uint32 liste_agro_159[2] = { 49576, 128425 };						// Poigne de la mort 49576, Résine corrosive 128425 
 			uint32 liste_Buf_159[2] = { 126336, 87228 };						// Poix caustique 126336, Peau épaisse 87228
 
-			//160	CUSTOM - CREATURE_FAMILY_TOURELLE_FIXE
+			// 160	CUSTOM - CREATURE_FAMILY_TOURELLE_FIXE
 			uint32 liste_spell_A_160[3] = { 36238, 9053,43799 };				// Tir de gangrecanon 36238, Boule de feu 9053, Mitrailleuse 43799
 			uint32 liste_spell_B_160[2] = { 300241, 1543 };						// Tir explosif 300241, Fusée éclairante 1543
 			uint32 liste_agro_160[2] = { 49576, 18396 };						// Résine corrosive 128425, Explosion désarçonnante 18396
 			uint32 liste_Buf_160[2] = { 5915, 18148 };							// Hystérique 5915, Champ statique (DMG proche) 18148
+
+			// 161	CUSTOM - CREATURE_FAMILY_SENTERRE_REMOU_CLAIR_CONTACT
+			uint32 liste_spell_A_161[2] = { 113687, 113687 };					// Morsure
+			uint32 liste_spell_B_161[4] = { 84867, 79872, 84867, 79872 };		// Balayage fracassant (cum 5 fois) 84867, Onde de choc 79872
+			uint32 liste_agro_161[2] = { 113967, 35328 };						// Barbelés d'épines 113967, Sang diapré 35328 (Impossible d'utiliser Camouflage)
+			uint32 liste_Buf_161[2] = { 22863, 22863 };							// Vitesse 22863 (10s/30%)
+
 
 			void InitializeAI()
 			{
@@ -926,6 +934,13 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Spell_B = liste_spell_B_160[urand(0, 1)];
 							Spell_agro = liste_agro_160[urand(0, 1)];
 							Buf_A = liste_Buf_160[urand(0, 1)];
+							break;
+
+						case 161:		// CREATURE_FAMILY_SE_DETERRE_AU_CONTACT
+							Spell_A = liste_spell_A_161[urand(0, 1)];
+							Spell_B = liste_spell_B_161[urand(0, 3)];
+							Spell_agro = liste_agro_161[urand(0, 1)];
+							Buf_A = liste_Buf_161[urand(0, 1)];
 							break;
 
 						default:
@@ -2554,7 +2569,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Cooldown_Trop_Loin_Defaut = urand(8000, 10000);
 							break;
 						case 156:	//CREATURE_FAMILY_SE_DETERRE_AU_CONTACT - AI : 1/3_Mouvement_Contact_Basique, 1/3_Mouvement_Contact_Tournant_Aleatoire, 1/3_Mouvement_Contact_Avance_Recule
-							AI_Random = urand(1, 3);
+							AI_Random = urand(1, 5);
 							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
 							Spell_B_Non_Cumulable = 0;
 							//Spell_respawn_evade = 0;
@@ -2706,6 +2721,28 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Spell_B_Non_Cumulable = 0;
 							break;
 
+						case 161:	//CREATURE_FAMILY_SENTERRE_REMOU_CLAIR_CONTACT - AI : Mouvement_Contact_Basique
+							me->SetMeleeDamageSchool(SpellSchools(0));														// Physique=0, Sacré=1, Feu=2, Nature=3, Givre=4, Ombre=5, Arcane=6
+							Spell_B_Non_Cumulable = 0;
+							//Spell_respawn_evade = 0;
+							//Spell_Heal = 0;
+							Cooldown_SpellA = 1000;
+							Cooldown_SpellA_defaut = Base_Cooldown_Cast_A;
+							Cooldown_SpellB = 2500;
+							Cooldown_SpellB_defaut = Base_Cooldown_Cast_B + 2000;
+							Cooldown_SpellB_rapide = Base_Cooldown_Cast_B - 2000;
+							Cooldown_SpellB_rapide_defaut = Base_Cooldown_Cast_B;
+							Cooldown_Spell_Heal_defaut = 0;
+							Cooldown_Principal_A = 1000;
+							Cooldown_Principal_A_Defaut = 1000;
+							Cooldown_Principal_B = urand(3000, 5000);
+							Cooldown_Principal_B_Defaut = urand(4000, 6000);
+							ResteADistance = 5;
+							Spell_Trop_Loin = 0;																			// 	
+							Cooldown_Trop_Loin = 1000;
+							Cooldown_Trop_Loin_Defaut = urand(5000, 7000);
+							break;
+
 						default:
 							//Spell_agro = 0;
 							//Spell_respawn_evade = 0;
@@ -2771,7 +2808,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						// ########################################################################################################################################
 					if (Start_Agro2 == 0)
 					{
-						if (Dist < 3 || Spell_agro_isdistant(Spell_agro) == true)
+						if (Dist < 3 || Spell_agro_isdistant(Spell_agro) == true )
 						{
 							Random = urand(1, 5);								// 3 Chance sur 5 de lancer le sort sur la cible a d'agro
 							if (Random < 4 && Spell_agro != 0)
@@ -2784,7 +2821,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						}
 
 						if (Crfamily == CREATURE_FAMILY_SE_DETERRE_AU_CONTACT && Dist > 3 && me->HasAura(Spell_No_ModelID))
-							me->CastSpell(me, 300285, true);
+							me->CastSpell(me, 300285, true); //Sous terre (inspiré de 164339, no_model , fumé)
+
 
 
 					}
@@ -3168,7 +3206,9 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						case 160:	//CREATURE_FAMILY_TOURELLE_FIXE
 							Mouvement_Fixe(diff);
 							break;
-
+						case 161:	// CUSTOM - CREATURE_FAMILY_SE_DETERRE_AU_CONTACT
+								Mouvement_Contact_Basique(diff);
+							break;
 
 						default:
 							Mouvement_Contact_Basique(diff);
@@ -3879,7 +3919,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				me->CastSpell(me, Spell_Sedeterre_sans_fumee, true);							// Pour visuel sedeterrer
 				me->CastSpell(me, Spell_No_ModelID, true);										// Masque le ModelID
 				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Non selectionnable
-				me->RemoveAura(79690);
+				me->RemoveAura(Spell_Senterre);															// fumée
 			}
 			void Se_Deterre()
 			{
@@ -3890,9 +3930,25 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				me->RemoveAurasDueToSpell(Spell_No_ModelID);									// Retire invisible
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Selectionnable
 			}
+			void Senterre_remou_clair()
+			{
+				me->CastSpell(me, Spell_Senterre_remou_clair, true);							// Fumée et terre remuée Temporaire
+				me->CastSpell(me, Spell_Sedeterre_sans_fumee, true);							// Pour visuel sedeterrer
+				me->CastSpell(me, Spell_No_ModelID, true);										// Masque le ModelID
+				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Non selectionnable
+			}
 			void Se_DeterreSansFumee()
 			{
+				me->RemoveAurasDueToSpell(Spell_Senterre);
 				me->RemoveAurasDueToSpell(Spell_Senterre_sans_fumee);							// Retire fumée et terre remuée Temporaire
+				me->RemoveAurasDueToSpell(Spell_Sedeterre_sans_fumee);							// Visuel explosion de fumée
+				me->RemoveAurasDueToSpell(Spell_No_ModelID);									// Retire invisible
+				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Selectionnable
+			}
+			void Se_Deterre_remou_clair()
+			{
+				me->RemoveAurasDueToSpell(Spell_Senterre);
+				me->RemoveAurasDueToSpell(Spell_Senterre_remou_clair);							// Retire fumée et terre remuée Temporaire
 				me->RemoveAurasDueToSpell(Spell_Sedeterre_sans_fumee);							// Visuel explosion de fumée
 				me->RemoveAurasDueToSpell(Spell_No_ModelID);									// Retire invisible
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Selectionnable
@@ -3938,7 +3994,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				if (Crfamily == CREATURE_FAMILY_SENTERRE /*155*/ && !me->HasUnitState(UNIT_STATE_MOVE))
 				{
 					Random = urand(1, 3);
-					if (Random == 1)
+					if (Random > 1)
 					{
 						Senterre();
 					}
@@ -3954,7 +4010,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					{
 						Senterre_sans_fumee();
 					}
-
 				}
 
 				if (Crfamily == CREATURE_FAMILY_MORPH_ROCHER  /*157*/ && !me->HasUnitState(UNIT_STATE_MOVE))
@@ -3981,6 +4036,11 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
 				}
 
+				// Custom 161
+				if (Crfamily == CREATURE_FAMILY_SENTERRE_REMOU_CLAIR_CONTACT )
+				{
+					Senterre_remou_clair();
+				}
 			}
 			void Family_Special_Retire_a_l_Agro()
 			{
@@ -4004,17 +4064,23 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 				if (me->HasAura(34038))
 				{
-					me->RemoveAurasDueToSpell(34038);
+					me->RemoveAurasDueToSpell(34038); // remou de terre sombre
 				}
 				
 			}
 			void Family_Special_Retire_au_contact()
 			{
+
+
 				if (Crfamily == CREATURE_FAMILY_SE_DETERRE_AU_CONTACT /*156 && me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE*/)
 				{
 					Se_Deterre();
-					me->RemoveAurasDueToSpell(300285);									//
-
+					me->RemoveAurasDueToSpell(300285);									//Sous terre (inspiré de 164339, no_model , fumé)
+				}
+				if (Crfamily == CREATURE_FAMILY_SENTERRE_REMOU_CLAIR_CONTACT /*161*/)
+				{
+					Se_Deterre_remou_clair();
+					me->RemoveAurasDueToSpell(300285);									//Sous terre (inspiré de 164339, no_model , fumé)
 				}
 			}
 
@@ -4113,7 +4179,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 
 			bool Spell_agro_isdistant(uint32 spell_Id)
 			{
-				if (spell_Id == 0 || !UpdateVictim())
+				if (spell_Id == 0 || !UpdateVictim() || Crfamily == CREATURE_FAMILY_SENTERRE_REMOU_CLAIR_CONTACT || Crfamily == CREATURE_FAMILY_SE_DETERRE_AU_CONTACT)
 				return false;
 				
 				SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spell_Id);
