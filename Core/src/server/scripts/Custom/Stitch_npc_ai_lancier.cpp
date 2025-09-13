@@ -49,6 +49,9 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			uint32 Spell_Canalise_hc = me->m_spells[7];								// Pour spell canalisé hors combat
 			float x = 0.0f, y = 0.0f, z = 0.0f;
 			uint32 mapid = 0;
+			uint32 Demande_Assistance_effectué = 0;
+			uint32 auto_peur5s = 8225;
+			uint8 me_rank = me->GetCreatureTemplate()->rank;
 
 			// Definitions des variables Cooldown et le 1er lancement
 			uint32 Cooldown_Spell1 = 1000;
@@ -69,6 +72,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			uint32 Cooldown_Principal_C_Defaut = 1500;
 			uint32 Cooldown_Spell_Canalise_hc = 3000;
 			uint32 Cooldown_Spell_Canalise_hc_defaut = 3000;						// Sort canalisé hors combat
+			uint32 Cooldown_Demande_Assistance = 3000;
 
 			// Spells
 			uint32 Buf_1 = 0;
@@ -230,6 +234,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 			void EnterEvadeMode(EvadeReason /*why*/) override
 			{
 				Start_Agro = 0;
+				Demande_Assistance_effectué = 0;
 				RetireBugDeCombat();
 				me->AddUnitState(UNIT_STATE_EVADE);
 				me->GetMotionMaster()->MoveTargetedHome();											// Retour home
@@ -388,6 +393,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				}
 				// ################################################################################################################################################
 				Mouvement_All();
+				Demande_Assistance(diff);
 
 				if (Cooldown_Spell_Canalise_hc <= diff)
 				{
@@ -654,6 +660,28 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				}
 			}
 
+			void Demande_Assistance(uint32 diff)
+			{
+				if (Demande_Assistance_effectué == 1 || AuraLenteur() == true || !UpdateVictim() || me_rank != 0)
+					return;
+
+				if (Cooldown_Demande_Assistance <= diff)
+				{
+					if ((me->GetHealth() < (me->GetMaxHealth()*0.20)))
+					{
+						if (urand(1, 3) == 1)
+						{
+							me->CastSpell(me, auto_peur5s, true);
+							Demande_Assistance_effectué = 1;
+							Cooldown_ResteADistance = Cooldown_ResteADistance_Defaut;
+							Cooldown_Spell1 = 3000;
+							Cooldown_Spell2 = 5000;
+						}
+						Cooldown_Demande_Assistance = 3000;
+					}
+				}
+				else Cooldown_Demande_Assistance -= diff;
+			}
 		};
 
 

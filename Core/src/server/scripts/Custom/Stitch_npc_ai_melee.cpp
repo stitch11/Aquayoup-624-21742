@@ -41,6 +41,9 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 			Unit* victim = me->GetVictim();										 
 			uint32 MessageAlagro = 0;
 			uint32 Spell_ContreAttaque = 0;
+			uint32 Demande_Assistance_effectué = 0;
+			uint32 auto_peur5s = 8225;
+			uint8 me_rank = me->GetCreatureTemplate()->rank;
 
 			// Definitions des variables Cooldown et le 1er lancement
 			uint32 Cooldown_Spell1 = 500;
@@ -55,6 +58,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 			uint32 Spell_Heal = 0;
 			uint32 Cooldown_Spell_ContreAttaque = 4000;
 			uint32 Cooldown_Spell_ContreAttaque_defaut = 8000;
+			uint32 Cooldown_Demande_Assistance = 3000;
 
 			// Spells
 			uint32 Buf_1 = 12712;																			// Soldat aguerri
@@ -186,6 +190,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 			void EnterEvadeMode(EvadeReason /*why*/) override
 			{
 				Start_Agro = 0;
+				Demande_Assistance_effectué = 0;
 				RetireBugDeCombat();
 				me->AddUnitState(UNIT_STATE_EVADE);
 				//me->SetSpeedRate(MOVE_RUN, 1.5f);													// Vitesse de déplacement
@@ -322,7 +327,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 
 					ContreAttaque(diff);
 					Mouvement_Contact(diff);
-
+					Demande_Assistance(diff);
 					// ############################################################################################################################################
 				}
 				// ################################################################################################################################################
@@ -612,6 +617,29 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 					return;
 
 				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
+			}
+
+			void Demande_Assistance(uint32 diff)
+			{
+				if (Demande_Assistance_effectué == 1 || AuraLenteur() == true || !UpdateVictim() || me_rank != 0)
+					return;
+
+				if (Cooldown_Demande_Assistance <= diff)
+				{
+					if ((me->GetHealth() < (me->GetMaxHealth()*0.20)))
+					{
+						if (urand(1, 4) == 1)
+						{
+							me->CastSpell(me, auto_peur5s, true);
+							Demande_Assistance_effectué = 1;
+							Cooldown_ResteADistance = Cooldown_ResteADistance_defaut;
+							Cooldown_Spell1 = 3000;
+							Cooldown_Spell2 = 6000;
+						}
+						Cooldown_Demande_Assistance = 3000;
+					}
+				}
+				else Cooldown_Demande_Assistance -= diff;
 			}
 		};
 
