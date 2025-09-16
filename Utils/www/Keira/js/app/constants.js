@@ -944,7 +944,7 @@ app.modalConstants.family[157] = "Rocher (elementaire de terre si fixe)  -  CREA
 app.modalConstants.family[158] = "CREATURE_FAMILY_CREATURE_AQUATIQUE - (0.5  1.1 0.5) : 1/4_Mouvement_Contact_Prudent, 1/4_Mouvement_Contact_Prudent_Volant, 2/4_Mouvement_Contact_Basique";
 app.modalConstants.family[159] = "CREATURE_FAMILY_SENTERRE_FIXE (ROOT) - (0.1 0.1 0.1) : Mouvement_Fixe - (Asticot 16030)  >>> SI PICKPOCKETLOOT <<<";
 app.modalConstants.family[160] = "CREATURE_FAMILY_TOURELLE_FIXE (ROOT) - (0.1 0.1 0.1) : Mouvement_Fixe)  >>> SI PICKPOCKETLOOT <<<";
-app.modalConstants.family[161] = "CREATURE_FAMILY_SENTERRE_REMOU_CLAIR_CONTACT - (0.5 0.9 0.5) :  >>> SI PICKPOCKETLOOT <<< : UPDATE `creature_template_addon` SET `auras` = '58984 164339' WHERE `creature_template_addon`.`entry` = xxxx; ";
+app.modalConstants.family[161] = "CREATURE_FAMILY_SENTERRE_REMOU_CLAIR_CONTACT - (0.5 0.9 0.5) :  >>> SI PICKPOCKETLOOT <<< : UPDATE `creature_template_addon` SET `auras` = ''58984 164339 29147' WHERE `creature_template_addon`.`entry` = xxxx; ";
 
 
 
