@@ -32,14 +32,6 @@ bool PlayerAI::IsPlayerHealer(Player const* who)
 {
     switch (who->getClass())
     {
-        case CLASS_WARRIOR:
-        case CLASS_HUNTER:
-        case CLASS_ROGUE:
-        case CLASS_DEATH_KNIGHT:
-        case CLASS_MAGE:
-        case CLASS_WARLOCK:
-        default:
-            return false;
         case CLASS_PALADIN:
             return who->GetSpecId(who->GetActiveTalentGroup()) == TALENT_SPEC_PALADIN_HOLY;
         case CLASS_PRIEST:
@@ -48,6 +40,14 @@ bool PlayerAI::IsPlayerHealer(Player const* who)
             return who->GetSpecId(who->GetActiveTalentGroup()) == TALENT_SPEC_SHAMAN_RESTORATION;
         case CLASS_DRUID:
             return who->GetSpecId(who->GetActiveTalentGroup()) == TALENT_SPEC_DRUID_RESTORATION;
+		case CLASS_WARRIOR:
+		case CLASS_HUNTER:
+		case CLASS_ROGUE:
+		case CLASS_DEATH_KNIGHT:
+		case CLASS_MAGE:
+		case CLASS_WARLOCK:
+		default:
+			return false;
     }
 }
 
@@ -55,13 +55,7 @@ bool PlayerAI::IsPlayerRangedAttacker(Player const* who)
 {
     switch (who->getClass())
     {
-        case CLASS_WARRIOR:
-        case CLASS_PALADIN:
-        case CLASS_ROGUE:
-        case CLASS_DEATH_KNIGHT:
-        default:
-            return false;
-        case CLASS_MAGE:
+		case CLASS_MAGE:
         case CLASS_WARLOCK:
             return true;
         case CLASS_HUNTER:
@@ -79,6 +73,13 @@ bool PlayerAI::IsPlayerRangedAttacker(Player const* who)
             return who->GetSpecId(who->GetActiveTalentGroup()) == TALENT_SPEC_SHAMAN_ELEMENTAL;
         case CLASS_DRUID:
             return who->GetSpecId(who->GetActiveTalentGroup()) == TALENT_SPEC_DRUID_BALANCE;
+		case CLASS_DEATH_KNIGHT:
+			return who->GetSpecId(who->GetActiveTalentGroup()) == TALENT_SPEC_DEATHKNIGHT_CHAOS;
+		case CLASS_WARRIOR:
+		case CLASS_PALADIN:
+		case CLASS_ROGUE:
+		default:
+			return false;
     }
 }
 
