@@ -40,6 +40,8 @@ bool PlayerAI::IsPlayerHealer(Player const* who)
             return who->GetSpecId(who->GetActiveTalentGroup()) == TALENT_SPEC_SHAMAN_RESTORATION;
         case CLASS_DRUID:
             return who->GetSpecId(who->GetActiveTalentGroup()) == TALENT_SPEC_DRUID_RESTORATION;
+		case CLASS_MONK:
+			return who->GetSpecId(who->GetActiveTalentGroup()) == TALENT_SPEC_MONK_MISTWEAVER;
 		case CLASS_WARRIOR:
 		case CLASS_HUNTER:
 		case CLASS_ROGUE:
