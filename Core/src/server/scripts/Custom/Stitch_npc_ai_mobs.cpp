@@ -4173,6 +4173,15 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				if (me->HasAura(122)		// Nova de givre
 					|| me->HasAura(3600)	// Totem de lien terrestre
 					|| me->HasAura(6474)	// Totem de lien terrestre passif
+					|| me->HasAura(33844)	// Sarments 4s
+					|| me->HasAura(22127)	// Sarments 6s
+					|| me->HasAura(31409)	// Sarment multiple
+					|| me->HasAura(160402)	// Emprise terrestre (4s, 30m, comme Sarment mais avec des rocher )
+					|| me->HasAura(45524)	// Chaînes de glace
+					|| me->HasAura(853)		// Marteau de la justice
+					|| me->HasAura(339)		// Sarment du Totem de poigne de terre
+					|| me->HasAura(64695)	// Sarment du Totem de poigne de terre
+					|| me->HasAura(125467)	// Auto ROOT
 					) return true;
 				else return false;
 			}
