@@ -881,7 +881,7 @@ public:
 void AddSC_hellfire_peninsula()
 {
     new npc_aeranas();
-    new npc_ancestral_wolf();
+    //new npc_ancestral_wolf();
     new npc_wounded_blood_elf();
     new npc_fel_guard_hound();
     new npc_barada();
