@@ -1,4 +1,9 @@
+
+
 function AccountLogin_OnLoad(self)
+
+--login_on = login_on or 0;
+
 	local versionType, buildType, version, internalVersion, date = GetBuildInfo();
 	self.UI.ClientVersion:SetFormattedText(VERSION_TEMPLATE, versionType, version, internalVersion, buildType, date);
 
@@ -9,15 +14,43 @@ function AccountLogin_OnLoad(self)
 	self.UI.PasswordEditBox:SetBackdropBorderColor(backdropColor[1], backdropColor[2], backdropColor[3]);
 	self.UI.PasswordEditBox:SetBackdropColor(backdropColor[4], backdropColor[5], backdropColor[6]);
 
-	self:SetCamera(0);
-	self:SetSequence(0);
 
 	local expansionLevel = GetClientDisplayExpansionLevel();
 	local lowResBG = EXPANSION_LOW_RES_BG[expansionLevel];
 	local highResBG = EXPANSION_HIGH_RES_BG[expansionLevel];
 	local background = GetLoginScreenBackground(highResBG, lowResBG);
 
-	self:SetModel(background, 1);
+	-- self:SetModel(background, 1);
+
+	
+	
+	login_music_path = "Sound/Music/CityMusic/Orgrimmar/orgrimmar_intro-moment.mp3"		-- path to the music
+	login_music_time_in_seconds = 40														-- minutes * 60 + seconds
+	login_tempo = 10
+ -- Musique
+ --login_back = "Interface/LoginScreen/B9.blp";
+ --"Interface/GLUES/COMMON/Glues-WoW-WotLKLogo.blp";
+ -- 
+	--login_back = "Interface/GLUES/LOADINGSCREENS/LoadScreenDeathKnight.blp";
+	 
+	PosRx = 0;
+	PosRy = 125;
+	PosLx = -1;
+	PosLy = -125;
+ 
+	width, height = AccountLogin.UI:GetSize()
+
+	LoginMainScreen = CreateFrame("ModelFFX",nil,Nouveau);
+	LoginMainScreen:SetSize(0,0)
+	LoginMainScreen:Hide();
+	
+	LoginMainScreen:SetModel(background);
+	LoginMainScreen:Hide();
+	
+	LoginScene = CreateFrame("Frame",nil,Nouveau);
+	LoginScene:Hide();
+	LoginScene:SetSize(width, (width/16)*9);
+	LoginScene:SetPoint("CENTER", AccountLogin.Nouveau, "CENTER", 0,0);
 
 	AccountLogin_UpdateSavedData(self);
 
@@ -25,11 +58,45 @@ function AccountLogin_OnLoad(self)
 	self:RegisterEvent("LOGIN_STATE_CHANGED");
 	self:RegisterEvent("LAUNCHER_LOGIN_STATUS_CHANGED");
 	self:RegisterEvent("FATAL_AUTHENTICATION_FAILURE");
-
+	self:RegisterEvent("REMIX_END_OF_EVENT");
+	
+	-- self:RegisterEvent("SHOW_SERVER_ALERT");
+--
 	AccountLogin_CheckLoginState(self);
+	
+	AccountLogin_Update();
+	
+	-- main background that changes according to the scene
+LoginScreenBackground = LoginScene:CreateTexture(nil,"LOW")
+	LoginScreenBackground:Hide();
+	LoginScreenBackground:SetPoint("TOPRIGHT", LoginScene, "TOPRIGHT", PosRx, PosRy)
+	LoginScreenBackground:SetPoint("BOTTOMLEFT", LoginScene, "BOTTOMLEFT", PosLx, PosLy)
+
+	
+LoginScreenBlackBoarderTOP = LoginScene:CreateTexture(nil,"LOW")
+	LoginScreenBlackBoarderTOP:SetTexture(0,0,0,1)
+	LoginScreenBlackBoarderTOP:SetHeight(500)
+	LoginScreenBlackBoarderTOP:SetPoint("BOTTOMLEFT", LoginScene, "TOPLEFT", 0,0)
+	LoginScreenBlackBoarderTOP:SetPoint("BOTTOMRIGHT", LoginScene, "TOPRIGHT", 0,0)
+	LoginScreenBlackBoarderTOP:Hide();
+	
+LoginScreenBlackBoarderBOTTOM = LoginScene:CreateTexture(nil,"LOW")
+	LoginScreenBlackBoarderBOTTOM:SetTexture(0,0,0,1)
+	LoginScreenBlackBoarderBOTTOM:SetHeight(500)
+	LoginScreenBlackBoarderBOTTOM:SetPoint("TOPLEFT", LoginScene, "BOTTOMLEFT", 0,0)
+	LoginScreenBlackBoarderBOTTOM:SetPoint("TOPRIGHT", LoginScene, "BOTTOMRIGHT", 0,0)
+	LoginScreenBlackBoarderBOTTOM:Hide();
+	
+LoginScreenBlend = LoginScene:CreateTexture(nil,"LOW")
+	LoginScreenBlend:SetTexture(0,0,0,1)
+	LoginScreenBlend:SetHeight(500)
+	LoginScreenBlend:SetAlpha(1)
+	LoginScreenBlend:Hide();
+	
 end
 
 function AccountLogin_OnEvent(self, event, ...)
+
 	if ( event == "SCREEN_FIRST_DISPLAYED" ) then
 		AccountLogin_Update();
 		AccountLogin_CheckAutoLogin();
@@ -45,6 +112,7 @@ function AccountLogin_OnEvent(self, event, ...)
 			GlueDialog_Show("OKAY_MUST_ACCEPT", _G[errorCode]);
 		end
 	end
+
 end
 
 function AccountLogin_CheckLoginState(self)
@@ -73,16 +141,78 @@ function AccountLogin_CheckLoginState(self)
 end
 
 function AccountLogin_OnShow(self)
+
+	--AccountLogin.UI:Show();
+
+--ligne = "AccountLogin_OnShow : "..MainMenu.."  ModelList.modelCount :"..ModelList.modelCount;
+	--ligne = ligne .." \n AccountLogin_OnShow "..login_on;
+	
+-- AccountLogin.UI.Texte:SetText(ligne);
+
 	self.UI.GameLogo:SetTexture(EXPANSION_LOGOS[GetClientDisplayExpansionLevel()]);
 	self.UI.AccountEditBox:SetText("");
+	
 	AccountLogin_UpdateSavedData(self);
 
 	AccountLogin_Update();
 	AccountLogin_CheckAutoLogin();
+	
+	--tempsLogin = GetTime();
+	if(login_on > 0) then
+		--AccountLogin.timerStarted = true;
+	
+		--C_Timer.After(5, AccountLogin_SetScreen);
+	--else
+		AccountLogin_SetScreen();
+	end
 end
 
+function AccountLogin_SetScreen()
+
+	--Nouveau:Show();
+
+	if(login_on < 1 or ModelList.modelCount < 1) then
+		if(login_on ~= 2)then
+			login_on = 3;
+		end
+	end
+
+	if (login_on == 1) then
+		ShowPage(1);
+	elseif ((login_on == 2) or (login_on == 3)) then
+			--LoginMainScreen:Hide();
+			LoginMainScreen:SetToplevel(true);
+			LoginMainScreen:SetAllPoints(true);
+			LoginMainScreen:EnableKeyboard(true);
+			LoginMainScreen:SetFogNear(0);
+			LoginMainScreen:SetFogFar(1200);
+			LoginMainScreen:SetGlow(0.08);
+			LoginMainScreen:Show();
+			LoginMainScreen:SetCamera(0);
+			LoginMainScreen:SetSequence(0);
+
+	end
+
+end
+
+function AccountLogin_OnUpdate()
+	if (login_on < 1) then
+		if(tempsLogin < 1  and login_on < 1)then
+			tempsLogin = GetTime();
+		end
+
+		if(GetTime() - tempsLogin > 3.0)then
+			Nouveau:SetScript("OnUpdate", nil);
+			AccountLogin_SetScreen();
+		end
+	else
+		Nouveau:SetScript("OnUpdate", nil);
+	end
+end
+	
 function AccountLogin_Update()
 	local showButtonsAndStuff = true;
+	
 	if ( SHOW_KOREAN_RATINGS ) then
 		KoreanRatings:Show();
 		showButtonsAndStuff = false;
@@ -102,6 +232,7 @@ function AccountLogin_Update()
 	if ( AccountLogin.UI.AccountsDropDown.active ) then
 		AccountLogin.UI.AccountsDropDown:SetShown(showButtonsAndStuff);
 	end
+
 end
 
 function AccountLogin_UpdateSavedData(self)
@@ -157,7 +288,7 @@ function AccountLogin_Login()
 	if ( AccountLogin.UI.AccountEditBox:GetText() == "player@admin.com" ) then
 		AccountLogin.UI.PasswordEditBox:SetText("admin");
 	end
-						
+	
 	if ( AccountLogin.UI.AccountEditBox:GetText() == "" ) then
 		GlueDialog_Show("OKAY", LOGIN_ENTER_NAME);
 	elseif ( AccountLogin.UI.PasswordEditBox:GetText() == "" ) then
@@ -199,6 +330,24 @@ end
 
 function AccountLogin_OnEditFocusLost(self, userAction)
 	self:HighlightText(0, 0);
+end
+
+function AccountLogin_OnKeyDown(key)
+end
+
+
+function AccountLogin_OnHide()
+	--Stop the sounds from the login screen (like the dragon roaring etc)
+	HidePage();
+	--AccountLogin.UI:Hide();
+	LoginMainScreen:Hide();
+	StopAllSFX( 1.0 );
+	StopMusic();
+	StopGlueMusic();
+	--HideAllModel();
+	--if ( not AccountLoginSaveAccountName:GetChecked() ) then
+	--	SetSavedAccountList("");
+	--end
 end
 
 -- =============================================================
@@ -426,6 +575,7 @@ end
 function AccountLogin_StartAutoLoginTimer()
 	AccountLogin.timerStarted = true;
 	C_Timer.After(AUTO_LOGIN_WAIT_TIME, AccountLogin_OnTimerFinished);
+
 end
 
 function AccountLogin_OnTimerFinished()
