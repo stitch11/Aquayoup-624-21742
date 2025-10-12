@@ -1,0 +1,25 @@
+SERVERALERT:
+PAGE:
+|HMain1[Interface/Glues/MODELS/ui_mainmenu_cataclysm/ui_mainmenu_cataclysm.m2]
+|HMain[Interface/Glues/Models/ui_mainmenu_northrend/ui_mainmenu_northrend.m2]
+|HMain3[Interface/Glues/Models/ui_mainmenu_burningcrusade/ui_mainmenu_burningcrusade.m2]
+|HMain4[Interface/Glues/MODELS/UI_MAINMENU/UI_MainMenu.m2]
+|HMain5[Interface/Glues/MODELS/ui_mainmenu_pandaria/ui_mainmenu_pandaria.m2]
+|HMain6[interface\glues\models\ui_mainmenu_warlords\ui_mainmenu_warlords.m2]
+<html><body>
+<p>Here's a sample of what can be done in the server alert file.<br /><br /></p>
+<p>There's three different header styles:</p>
+<h1 align="center">This is header style 1</h1>
+<h2 align="center">This is header style 2</h2>
+<h3 align="center">This is header style 3 (like paragraph style)<br /><br /></h3>
+<p align="left">Text can be aligned left,</p>
+<p align="center">center,</p>
+<p align="right">or to the right!</p>
+<p>It is |cffff0000also|r |cffff00ffpossible|r to |cff8080ffcolorize|r |cff00ffffthe|r |cff00ff00text|r,</p>
+<p>add icons |TInterface/Icons/INV_Misc_Coin_01:16:16:0:0:64:64:4:60:4:60|t to the middle of the text,</p>
+<p>as well as add images and align them too!</p>
+<img src="Interface/Icons/Ability_Ambush" width="24" height="24" align="right"/>
+<img src="Interface/Icons/INV_Misc_Coin_02" width="24" height="24" align="left"/>
+<img src="Interface/Icons/INV_Misc_Coin_03" width="24" height="24" align="center"/>
+<p><br />We can even add click-able <a href="http://www.wowhead.com/item=105538">hyperlinks</a>!</p>
+</body></html>

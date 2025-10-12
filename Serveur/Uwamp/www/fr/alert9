@@ -1,0 +1,13 @@
+SERVERALERT:VIDE
+PAGE:
+|G[1,10,B10.blp,,,,]
+|M[w10.wav,98]
+|H1[1,.333,.6,,.007,.1,1,,1,1,1,World/Expansion02/doodads/ulduar/ul_brainparts_02,,]
+|H2[1,.7,.983,.243,.665,.007,1,,1,1,1,World/Expansion02/doodads/ulduar/ul_planet_03,,]
+|H3[1,-0.353,1.384,,.859,.01,1,,1,1,1,World/Expansion02/doodads/ulduar/ul_planet_04,,]
+|H4[1,-0.886,.588,.117,9.911,-0.022,1,,1,1,1,World/Expansion02/doodads/ulduar/ul_power_orb01,,]
+|H5[1,-0.927,.48,,16.1,.014,1,,1,1,1,World/Expansion02/doodads/ulduar/ul_swirl_orb_cloud,,]
+|H6[1,-0.906,.651,,16.1,.181,.286,,1,1,1,World/Kalimdor/silithus/passivedoodads/ahnqirajglow/quirajglow,,]
+<html><body>
+<p>alert file logging by Noc.<br /><br /></p>
+</body></html>

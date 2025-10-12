@@ -1,0 +1,21 @@
+SERVERALERT:VIDE
+PAGE:
+|G[1,10,grimmguzzler.blp,,,,]
+|M[DMF_L70ETC01.mp3,282]
+|H1[1,-1.645,.202,-4.035,.851,.749,1,,1,1,1,World/Generic/Gnome/Passive Doodads/Lights/GnomeMaintenanceLight01,,]
+|H2[1,.085,4.154,-4.035,.006,-0.737,1,,1,1,1,World/Goober/UD_DiscoBall,,]
+|H3[1,.948,.448,-4.164,4.693,.502,1,,1,1,1,World/Goober/G_BrazierOrcRed,,]
+|H4[1,1.245,.387,-3.804,5.426,.502,1,,1,1,1,World/Goober/G_BrazierOrcBlue,,]
+|H5[1,-2.878,.842,-5.064,4.601,.711,1,,1,1,1,World/Goober/G_FlareAlliance,,]
+|H6[1,2.469,.239,-5.176,,2.113,1,,1,1,1,World/Goober/G_FlareHorde,,]
+|H7[1,1.33,.237,-5.176,,.509,1,,1,1,1,World/Goober/G_ImpBottle,,]
+|H8[1,1.231,.674,-5.176,,2.113,1,,1,1,1,World/Goober/G_Promotion_Purple,,]
+|H9[1,.783,.325,-1.718,-0.50,.285,1,,1,1,1,Creature/band/bandtaurenmale,,]
+|H10[1,-0.863,-0.002,-3.004,.092,.679,.992,,69,1,1,Creature/ladySylvanaswindrunner/ladySylvanaswindrunner,,]
+|H11[1,-3.096,-0.621,-6.052,.959,1.184,1,,1,1,1,Creature/band/bandundeadmale,,]
+|H12[1,-0.231,-1.058,-6.394,,1.195,1,,1,1,1,Creature/band/bandorcmale,,]
+|H13[1,1.99,-0.585,-3.892,5.426,1.097,1,,1,1,1,Creature/band/bandbloodelfmale,,]
+|H14[1,-0.562,-1.492,1.299,2.582,-6.223,1,,1,1,1,World/Goober/UD_DiscoBall,,]
+<html><body>
+<p>alert file logging by Noc.<br /><br /></p>
+</body></html>

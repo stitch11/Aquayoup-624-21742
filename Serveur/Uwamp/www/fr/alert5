@@ -1,0 +1,13 @@
+SERVERALERT:VIDE
+PAGE:
+|G[1,10,B6.blp,,125,-1,-125]
+|M[Sound/Music/CityMusic/Orgrimmar/orgrimmar_intro-moment.mp3,40]
+|H1[1,.122,.436,1.816,2.344,.142,1,,115,1,1,Creature/Illidan/Illidan,,]
+|H2[1,.12,.797,1.766,2,.172,1,,49,1,1,world/expansion01/doodads/netherstorm/lightning/netherstormcracklighting01,,]
+|H3[1,-0.716,1.261,.044,,.021,.918,,2,1,1,world/expansion02/doodads/zuldrak/lightfx/zuldrak_fog_red,,]
+|H4[1,.076,1.038,1.285,,.014,1,,1,1,1,m,,]
+|H5[1,.265,.154,,4.237,.024,.09,,1,1,1,World/Expansion02/doodads/scholazar/waterfalls/sholazarsouthoceanwaterfall-06,,]
+|H6[1,.777,1.581,1.21,,-0.017,.675,,1,1,1,World/Kalimdor/silithus/passivedoodads/ahnqirajglow/quirajglow,,]
+<html><body>
+<p>alert file logging by Noc.<br /><br /></p>
+</body></html>

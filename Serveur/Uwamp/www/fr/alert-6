@@ -1,0 +1,11 @@
+SERVERALERT:VIDE
+PAGE:
+|G[1,10,B7.blp,,125,-1,-125]
+|M[Sound/Music/CityMusic/Orgrimmar/orgrimmar_intro-moment.mp3,40]
+|H1[1,-0.18,-0.486,.62,.427,.133,1,,193,1,1,Creature/illidan/illidan,1,]
+|H2[1,.081,.447,-0.086,1.306,.108,.325,,1,1,1,world/expansion02/doodads/ulduar/ul_brainparts_02,,]
+|H3[1,.709,-0.362,-1,1.54,.66,1,,2,1,1,Creature/illidanglaive/creature_illidansglaive,,]
+|H4[1,.166,.264,-0.646,1.618,.012,1,,5,1,1,world/expansion02/doodads/zuldrak/lightfx/zuldrak_fog_red,,]
+<html><body>
+<p>alert file logging by Noc.<br /><br /></p>
+</body></html>

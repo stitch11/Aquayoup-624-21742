@@ -1,0 +1,17 @@
+SERVERALERT:VIDE
+PAGE:
+|G[1,10,Background4.blp,0,125,-1,-125]
+|M[Sound/Music/CityMusic/Undercity/undercityintro-moment.mp3,28]
+|PGA[GlueScreenUndead,4.0]
+|H1[1,.037,-0.283,-8.861,.004,.065,1,,2,1,1,Creature/Eyeofkathune/eyeofkathune,,]
+|H2[1,-2.016,-0.304,-15.533,.535,-0.022,1,,2,1,1,Creature/Zigguratcrystal/zigguratcrystal,,]
+|H3[1,-2.488,-1.116,-15.308,.092,-0.025,1,,2,1,1,m,,]
+|H4[1,-0.507,-0.214,-3.712,.959,-0.014,1,,2,1,1,m,,]
+|H5[1,.411,-0.222,-3.683,.959,-0.014,1,,2,1,1,m,,]
+|H6[1,.925,.084,-3.683,.959,-0.009,1,,2,1,1,m,,]
+|H7[1,.773,.468,-3.68,.948,-0.009,1,,2,1,1,m,,]
+|H8[1,2.067,3.808,-0.44,,-0.145,0.475,,1,1,1,World/Expansion02/doodads/zuldrak/lightfx/zuldrak_fog_blue,,]
+|H9[1,-.024,.392,0.115,,.007,1,,1,1,1,World/Expansion02/doodads/stormpeaks/lightning/stormpeakslightning01,,]
+<html><body>
+<p>alert file logging by Noc.<br /><br /></p>
+</body></html>

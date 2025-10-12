@@ -1,0 +1,22 @@
+SERVERALERT:VIDE
+PAGE:
+|G[1,10,B8.blp,,125,-1,-125]
+|M[w7.mp3,500]
+|H1[1,-0.591,.716,1.66,.8,.058,1,,1,1,1,Creature/TuskarrMaleFisherman/TuskarrMaleFisherman,,]
+|H2[1,-0.025,.419,,1.162,.16,1,,32,1,1,Creature/Tuskarkite/ud_ts_kite,,]
+|H3[1,-0.09,.912,-3.406,3.59,.173,.796,,1,1,1,World/Expansion02/Doodads/BoreanTundra/StoneFlags/Borean_Flags_02,,]
+|H4[1,.679,.981,,1.504,.093,1,,1,1,1,Creature/Tuskarkite/ud_ts_kite,,]
+|H5[1,-0.895,.533,.103,.841,.071,.796,,1,1,1,World/Expansion02/Doodads/Generic/TUSKARR/IncenseBurner/ts_incenseburner_01,,]
+|H6[1,-0.056,.758,.376,.608,.034,1,,1,1,1,m,,]
+|H7[1,-0.706,.533,,5.504,.13,.996,,1,1,1,Creature/TuskarrMaleFisherman/TuskarrMaleFisherman,,]
+|H8[1,.03,.76,,5.238,.064,1,,1,1,1,m,,]
+|H9[1,-0.132,.794,,.876,.06,1,,1,1,1,m,,]
+|H10[1,-1.005,.392,,2.512,.139,1,,1,1,1,m,,]
+|H11[1,-0.838,.593,.146,6.242,-0.039,.486,,1,1,1,World/Kalimdor/silithus/passivedoodads/ahnqirajglow/quirajglow,,]
+|H12[1,-0.047,.782,.195,,.023,.486,,1,1,1,m,,]
+|H13[1,.05,-1.296,,,.1,1,,1,1,1,World/Expansion02/Doodads/HOWLINGFJORD/Fog/HFjord_Fog_01,,]
+|H14[1,.166,-2.765,-1.666,6.259,.1,1,,1,1,1,m,,]
+|H15[1,1,,1.482,,.08,1,,1,1,1,m,,]
+<html><body>
+<p>alert file logging by Noc.<br /><br /></p>
+</body></html>

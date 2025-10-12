@@ -1,0 +1,18 @@
+SERVERALERT:VIDE
+PAGE:
+|G[1,10,B9.blp,,125,-1,-125]
+|M[w9.wav,265]
+|H1[1,-0.595,.524,.257,6.028,.153,1,,2,1,1,Creature/Tempscarletcrusaderheavy/scarletcrusaderheavy,,]
+|H2[1,.555,.167,.506,-0.3,.212,1,,2,1,1,m,,]
+|H3[1,1.592,1.045,-15.,5.938,.5,1,,1,1,1,Creature/SpiritofRedemption/SpiritofRedemption,,]
+|H4[1,.943,1.562,-1.5,,.225,1,,1,1,1,World/Kalimdor/silithus/passivedoodads/ahnqirajglow/quirajglow,,]
+|H5[1,-0.606,1.08,.537,.187,.041,.678,,1,1,1,m,,]
+|H6[1,.196,2.337,.098,,.6,.173,,1,1,1,m,,]
+|H7[1,-0.161,1.69,.114,,.265,.4,,1,1,1,m,,]
+|H8[1,-1.09,.473,-0.032,,.15,.361,,1,1,1,m,,]
+|H9[1,-1.36,1.174,.176,,.1,.667,,1,1,1,m,,]
+|H10[1,.652,.936,.137,,.1,.667,,1,1,1,m,,]
+|H11[1,1.348,1.505,.074,,.1,.667,,1,1,1,m,,]
+<html><body>
+<p>alert file logging by Noc.<br /><br /></p>
+</body></html>

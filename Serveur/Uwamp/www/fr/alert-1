@@ -1,0 +1,12 @@
+SERVERALERT:VIDE
+PAGE:
+|G[1,1,Background1.blp,,125,-1,-125]
+|M[w0.mp3,138]
+|H1[1,.025,.7,.2,,.35,1,,15,1,1,Creature/Garrosh2/GARROSH2,,]
+|H2[1,-1.205,,,,.09,.498,,1,1,1,SPELLS/Archimonde_fire,,]
+|H3[1,1.3,,,,.09,.498,,1,1,1,m,,]
+|H4[1,-1.205,2,,,1.25,1,,1,1,1,Spells/Enchantments/executionerglow_high,,]
+|H5[1,1.3,2,,,1.25,1,,1,1,1,m,,]
+<html><body>
+<p>alert file logging by Noc.<br /><br /></p>
+</body></html>
