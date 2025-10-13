@@ -756,6 +756,7 @@ void Creature::Update(uint32 diff)
 		case CREATURE_FAMILY_STORMELEMENTAL:		// elementaire de tempete
 			SetSpeedRate(MOVE_WALK, 0.75f);							// hors combat
 			SetSpeedRate(MOVE_RUN, 1.5f);							// en combat
+			SetSpeedRate(MOVE_SWIM, 0.5f);							// en nageant:
 			break;
 
 		case CREATURE_FAMILY_IMP:					// Imp
@@ -801,7 +802,7 @@ void Creature::Update(uint32 diff)
 		case CREATURE_FAMILY_NAGA:
 			SetSpeedRate(MOVE_WALK, 0.5f);							// hors combat
 			SetSpeedRate(MOVE_RUN, 1.0f);							// en combat
-			SetSpeedRate(MOVE_SWIM, 2.0f);							// en nageant
+			SetSpeedRate(MOVE_SWIM, 1.2);							// en nageant
 			break;
 
 		case CREATURE_FAMILY_RIVERBEAST:
@@ -837,7 +838,7 @@ void Creature::Update(uint32 diff)
 		case CREATURE_FAMILY_CREATURE_AQUATIQUE:	//CUSTOM 158
 			SetSpeedRate(MOVE_WALK, 0.5f);							// hors combat
 			SetSpeedRate(MOVE_RUN, 1.1f);							// en combat
-			SetSpeedRate(MOVE_SWIM, 0.5f);							// en nageant
+			SetSpeedRate(MOVE_SWIM, 2.0f);							// en nageant
 			break;
 
 		case CREATURE_FAMILY_SENTERRE_FIXE:			//Custom 159
@@ -1018,7 +1019,6 @@ void Creature::Update(uint32 diff)
 
 			case CREATURE_FAMILY_HYDRA:					// Hydre
 			case CREATURE_FAMILY_NAGA:					// Naga
-				SetSpeedRate(MOVE_RUN, 1.1f);			// en combat
 				SetSpeedRate(MOVE_SWIM, 2.0f);
 				break;
 			case CREATURE_FAMILY_CREATURE_AQUATIQUE:
