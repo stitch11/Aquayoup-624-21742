@@ -291,7 +291,11 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				// Reste a distance faible forcé 
 				if (ForceBranche == 8)
 				{
-					ResteADistance = 7;
+					if (Interieur())
+						ResteADistance =4;
+					else
+						ResteADistance = 7;
+
 				}
 
 				Cooldown_Spell_Canalise_hc_defaut = me->GetCurrentSpellCastTime(Spell_Canalise_hc)+urand(500,1500);
