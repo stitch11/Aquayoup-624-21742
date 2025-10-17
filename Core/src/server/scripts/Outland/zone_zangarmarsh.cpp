@@ -365,7 +365,7 @@ public:
                     break;
                 case 5:
                     Talk(SAY_PROGRESS, player);
-                    SetRun();
+					SetRun(true);
                     break;
                 case 16:
                     Talk(SAY_AMBUSH2, player);
@@ -373,11 +373,12 @@ public:
                     DoSpawnCreature(NPC_SLAVEBINDER, -8.0f, 5.0f, 0.0f, 0.0f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 30000);
                     break;
                 case 17:
-                    SetRun(false);
+                    SetRun(true);
                     break;
                 case 25:
                     Talk(SAY_END, player);
                     player->GroupEventHappens(QUEST_ESCAPE_FROM, me);
+					player->KilledMonsterCredit(17969, player->GetGUID());//Stitch credit quete
                     break;
             }
         }
