@@ -656,6 +656,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 					|| me->HasAura(339)		// Sarment du Totem de poigne de terre
 					|| me->HasAura(64695)	// Sarment du Totem de poigne de terre
 					|| me->HasAura(125467)	// Auto ROOT
+					|| me->HasAura(31736)	// Quete 9720
 					) return true;
 				else return false;
 			}
