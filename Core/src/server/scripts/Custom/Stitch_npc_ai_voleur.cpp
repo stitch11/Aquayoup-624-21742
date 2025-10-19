@@ -691,6 +691,7 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 					|| me->HasAura(20170)	// Sceau de justice 20170
 					|| me->HasAura(6343)	// Coup de tonnerre
 					|| me->HasAura(8147)	// Coup de tonnerre
+					|| me->HasAura(3600)	// Totem de Lien à la terre
 					) return true;
 				else return false;
 			}
