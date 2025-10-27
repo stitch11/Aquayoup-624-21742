@@ -144,6 +144,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 					me->CastSpell(me, Tmp, true);
 				}
 				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
+				VisuelPowerRunic();
 			}
 
 			void Init_AI()
