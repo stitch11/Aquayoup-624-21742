@@ -421,7 +421,7 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 
 
 
-	//Stitch vitesse de deplacement des civils
+	//Stitch vitesse de deplacement de divers PNJ, hors combat
 	uint32 Crtype = GetCreatureTemplate()->type;
 	uint32 Crfamily = GetCreatureTemplate()->family;
 	float Crspeed = GetCreatureTemplate()->speed_walk;
@@ -431,10 +431,8 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 	// Civils
 	if (Crentry >= 1000100 && Crentry <= 1001000)
 	{
-		SetSpeedRate(MOVE_WALK, frand(0.5f, 1.2f));							// hors combat
+		SetSpeedRate(MOVE_WALK, frand(0.5f, 1.2f));
 	}
-	
-	
 
 
 
@@ -562,6 +560,7 @@ void Creature::Update(uint32 diff)
 	uint32 Crtype = GetCreatureTemplate()->type;
 	uint32 Crfamily = GetCreatureTemplate()->family;
 	float Crspeed = GetCreatureTemplate()->speed_walk;
+	uint32 Crentry = GetCreatureTemplate()->Entry;
 
 	if (Crspeed == 1.0f  && !this->IsInWater() )
 	{
@@ -1031,6 +1030,15 @@ void Creature::Update(uint32 diff)
 			}
 		}
 
+	}
+
+
+	// Pnj divers
+	switch (Crentry)
+	{
+	case 19155: // Sporelin réfugié
+		SetSpeedRate(MOVE_WALK, frand(0.5f, 1.2f));
+		break;
 	}
 
 	//Stitch Les mobs font des bulles sous l'eau , si si c'est vrais
