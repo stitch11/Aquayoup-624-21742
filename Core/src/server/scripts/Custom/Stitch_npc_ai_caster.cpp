@@ -538,7 +538,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				Dist = me->GetDistance(victim);
 				ForceBranche = me->GetCreatureTemplate()->pickpocketLootId;
 
-					// Bond aléatoire si cible < 6m & mana > 10%  ---------------------------------------------------------------------------------------------
+				// Bond aléatoire si cible < 6m & mana > 10%  ---------------------------------------------------------------------------------------------
 					if (Cooldown_bond_aleatoire_25m <= diff && !AuraFigé())
 					{
 						if (Dist <6 && (Mana > MaxMana / 10) && (ForceBranche == 10))
@@ -546,6 +546,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 							DoCast(me, Bond_aleatoire_25m);
 							Cooldown_bond_aleatoire_25m = Cooldown_bond_aleatoire_25m_Defaut;
 							Cooldown_ResteADistance = Cooldown_ResteADistance_Defaut;
+							me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);		// ROOT
 						}
 					}
 					else Cooldown_bond_aleatoire_25m -= diff;
@@ -559,6 +560,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 						Teleport_Au_Tour_Aleatoire();
 						Cooldown_ResteADistance_Teleportation = Cooldown_ResteADistance_Defaut_Teleportation;
 						Cooldown_ResteADistance = Cooldown_ResteADistance_Defaut;
+						me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);		// ROOT
 					}
 				}
 				else Cooldown_ResteADistance_Teleportation -= diff;
