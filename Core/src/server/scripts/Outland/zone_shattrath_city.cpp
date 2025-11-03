@@ -28,7 +28,7 @@ npc_raliq_the_drunk
 npc_salsalabim
 npc_shattrathflaskvendors
 npc_zephyr
-npc_kservant
+//npc_kservant
 EndContentData */
 
 #include "ScriptMgr.h"
@@ -488,5 +488,5 @@ void AddSC_shattrath_city()
     new npc_salsalabim();
     new npc_shattrathflaskvendors();
     new npc_zephyr();
-    new npc_kservant();
+    //new npc_kservant();
 }
