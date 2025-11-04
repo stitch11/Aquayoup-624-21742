@@ -132,5 +132,5 @@ public:
 
 void AddSC_stranglethorn_vale()
 {
-    new npc_yenniku();
+   // new npc_yenniku();
 }

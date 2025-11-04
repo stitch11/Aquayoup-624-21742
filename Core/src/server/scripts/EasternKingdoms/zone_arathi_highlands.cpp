@@ -158,5 +158,5 @@ class npc_professor_phizzlethorpe : public CreatureScript
 
 void AddSC_arathi_highlands()
 {
-    new npc_professor_phizzlethorpe();
+    //new npc_professor_phizzlethorpe();
 }
