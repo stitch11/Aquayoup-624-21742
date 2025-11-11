@@ -457,15 +457,23 @@ public:
                     break;
                 case 2:
                     Talk(SAY_PROGRESS_1, player);
-                    break;
+					me->SetWalk(false);
+					if (GameObject* Cage = me->FindNearestGameObject(GO_CAGE, GO_DISTANCE))
+						Cage->SetGoState(GO_STATE_READY);
+					break;
                 case 5:
                     Talk(SAY_PROGRESS_2, player);
-                    break;
+					me->SetWalk(true);
+					break;
                 case 6:
                     Talk(SAY_PROGRESS_3, player);
                     break;
+				case 28:
+					me->SetWalk(false);
+					break;
                 case 29:
                     Talk(SAY_PROGRESS_4, player);
+					me->SetUInt32Value(UNIT_NPC_FLAGS, 3);
                     if (player->GetTeam() == ALLIANCE)
                         player->GroupEventHappens(ESCAPE_FROM_FIREWING_POINT_A, me);
                     else if (player->GetTeam() == HORDE)
