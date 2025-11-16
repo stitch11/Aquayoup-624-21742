@@ -24,14 +24,9 @@ function AccountLogin_OnLoad(self)
 
 	
 	
-	login_music_path = "Sound/Music/CityMusic/Orgrimmar/orgrimmar_intro-moment.mp3"		-- path to the music
-	login_music_time_in_seconds = 40														-- minutes * 60 + seconds
+	login_music_path = "Sound/Music/CityMusic/Orgrimmar/orgrimmar_intro-moment.mp3"	-- path to the music
+	login_music_time_in_seconds = 40	-- minutes * 60 + seconds
 	login_tempo = 10
- -- Musique
- --login_back = "Interface/LoginScreen/B9.blp";
- --"Interface/GLUES/COMMON/Glues-WoW-WotLKLogo.blp";
- -- 
-	--login_back = "Interface/GLUES/LOADINGSCREENS/LoadScreenDeathKnight.blp";
 	 
 	PosRx = 0;
 	PosRy = 125;
@@ -60,8 +55,6 @@ function AccountLogin_OnLoad(self)
 	self:RegisterEvent("FATAL_AUTHENTICATION_FAILURE");
 	self:RegisterEvent("REMIX_END_OF_EVENT");
 	
-	-- self:RegisterEvent("SHOW_SERVER_ALERT");
---
 	AccountLogin_CheckLoginState(self);
 	
 	AccountLogin_Update();
@@ -142,13 +135,6 @@ end
 
 function AccountLogin_OnShow(self)
 
-	--AccountLogin.UI:Show();
-
---ligne = "AccountLogin_OnShow : "..MainMenu.."  ModelList.modelCount :"..ModelList.modelCount;
-	--ligne = ligne .." \n AccountLogin_OnShow "..login_on;
-	
--- AccountLogin.UI.Texte:SetText(ligne);
-
 	self.UI.GameLogo:SetTexture(EXPANSION_LOGOS[GetClientDisplayExpansionLevel()]);
 	self.UI.AccountEditBox:SetText("");
 	
@@ -156,20 +142,13 @@ function AccountLogin_OnShow(self)
 
 	AccountLogin_Update();
 	AccountLogin_CheckAutoLogin();
-	
-	--tempsLogin = GetTime();
+
 	if(login_on > 0) then
-		--AccountLogin.timerStarted = true;
-	
-		--C_Timer.After(5, AccountLogin_SetScreen);
-	--else
 		AccountLogin_SetScreen();
 	end
 end
 
 function AccountLogin_SetScreen()
-
-	--Nouveau:Show();
 
 	if(login_on < 1 or ModelList.modelCount < 1) then
 		if(login_on ~= 2)then
@@ -180,7 +159,6 @@ function AccountLogin_SetScreen()
 	if (login_on == 1) then
 		ShowPage(1);
 	elseif ((login_on == 2) or (login_on == 3)) then
-			--LoginMainScreen:Hide();
 			LoginMainScreen:SetToplevel(true);
 			LoginMainScreen:SetAllPoints(true);
 			LoginMainScreen:EnableKeyboard(true);
@@ -190,7 +168,6 @@ function AccountLogin_SetScreen()
 			LoginMainScreen:Show();
 			LoginMainScreen:SetCamera(0);
 			LoginMainScreen:SetSequence(0);
-
 	end
 
 end
@@ -289,6 +266,14 @@ function AccountLogin_Login()
 		AccountLogin.UI.PasswordEditBox:SetText("admin");
 	end
 	
+	if ( AccountLogin.UI.AccountEditBox:GetText() == "noc@noc.com" ) then
+		AccountLogin.UI.PasswordEditBox:SetText("noc");
+	end
+	
+	if ( AccountLogin.UI.AccountEditBox:GetText() == "bob@bob.com" ) then
+		AccountLogin.UI.PasswordEditBox:SetText("bob");
+	end
+	
 	if ( AccountLogin.UI.AccountEditBox:GetText() == "" ) then
 		GlueDialog_Show("OKAY", LOGIN_ENTER_NAME);
 	elseif ( AccountLogin.UI.PasswordEditBox:GetText() == "" ) then
@@ -339,15 +324,12 @@ end
 function AccountLogin_OnHide()
 	--Stop the sounds from the login screen (like the dragon roaring etc)
 	HidePage();
-	--AccountLogin.UI:Hide();
+
 	LoginMainScreen:Hide();
 	StopAllSFX( 1.0 );
 	StopMusic();
 	StopGlueMusic();
-	--HideAllModel();
-	--if ( not AccountLoginSaveAccountName:GetChecked() ) then
-	--	SetSavedAccountList("");
-	--end
+
 end
 
 -- =============================================================

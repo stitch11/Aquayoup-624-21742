@@ -98,8 +98,7 @@
 			<Frame name="Nouveau" toplevel="true" setAllPoints="true" frameStrata="LOW">
 				<Scripts>
 					<OnUpdate>
-					--LoginScreen_OnUpdate(elapsed);
-					AccountLogin_OnUpdate();
+						AccountLogin_OnUpdate();
 					</OnUpdate>
 				</Scripts>
 			</Frame>
@@ -834,11 +833,7 @@
 			<OnHide function="AccountLogin_OnHide"/>
 			<OnUpdate>
 				LoginScreen_OnUpdate(elapsed);
-				-- AccountLogin_OnUpdate();
 			</OnUpdate>
-
 		</Scripts>
 	</Frame>
-	
-	
 </Ui>

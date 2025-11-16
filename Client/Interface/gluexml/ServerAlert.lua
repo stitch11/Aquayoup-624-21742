@@ -1,7 +1,7 @@
 SERVER_ALERT_PTR_URL = "http://127.0.0.1/fr/alert";
 SERVER_ALERT_URL = "http://127.0.0.1/fr/alert";
 
-MainMenu = MainMenu or "Vide"; --"Interface/Glues/Models/UI_MainMenu_BurningCrusade/UI_MainMenu_BurningCrusade.m2";
+MainMenu = MainMenu or "Vide";
 MainScreen = MainScreen or nil;
 LoginMainScreen = LoginMainScreen or nil;
 MainLogin = false;
@@ -63,9 +63,7 @@ function ServerAlert_OnEvent(self, event, ...)
 		
 		local AlertText = "";
 		if (text > "" and login_on == 0) then
-			
 			if (ModelList.modelCount == 0) then
-
 				AlertText = PageLogin(text) or "";
 				text = AlertText;
 			end

@@ -7,10 +7,7 @@ function PageLogin(Objs)
 	
 	ZoneAlert = strfind(Objs,'PAGE:');
 	ZoneAlert = ZoneAlert or 0;
-	
-	--pligne = pligne + 1;
-	--ligne=ligne .. pligne .. " : Objs "..Objs;
-	
+
 	if(ZoneAlert > 0) then
 		PageAlert = strsub(Objs,1,ZoneAlert-1);
 		ZoneLogin = strfind(Objs,'<html><body>');
@@ -74,10 +71,7 @@ function PageLogin(Objs)
 					if (Test[14] == "m") then
 						Test[14] = Test[12];
 					end
-					
-					--local lig = Test[14] or "vide";
-							--ligne = ligne .. " Test[14] = "..lig.."\n";
-							
+
 					local ii = 0;
 					for ii=8,15,1 do
 						if (Test[ii] == "") then
@@ -93,9 +87,7 @@ function PageLogin(Objs)
 					Bcl = 0;
 				end
 			end
-			
-			
-			
+
 			if(nbrObjet > 0) then
 				local _,_, ObjTest = strfind(Objs, "|G%[(.-)%]");
 				ObjTest = ObjTest or "Vide";
@@ -165,7 +157,6 @@ function PageLogin(Objs)
 	
 	ModelList.modelCount = nbrObjet;
 	if(nbrObjet > 0)then
-					--HidePage();
 				Generate_MScene();
 
 				StopAllSFX( 1.0 );
@@ -176,9 +167,6 @@ function PageLogin(Objs)
 
 				login_on = 1;
 	end
-	
-	pligne = pligne + 1;
-	ligne=ligne .. "\n ".. pligne .. "  nbrObjet :" .. nbrObjet .. " login_on :" .. login_on .." ";
 	
 	return PageAlert;
 end
@@ -323,7 +311,7 @@ function LoginScreen_OnUpdate(dt)
 				timed_update = false;
 			
 				MScene[current_scene].parent:Show();
-				--Scene_OnStart(current_scene);
+
 			elseif (timed_update) then
 				timed_update = timed_update + 1;
 			end
@@ -369,27 +357,18 @@ function LoginScreen_OnUpdate(dt)
 					end
 				else
 					blend_timer = 0;
-				--Scene_OnEnd(current_scene);
-				--Scene_OnStart(current_scene);
 				end
-		
-				---blend_timer = 0;
+
 			else
 				blend_timer = blend_timer + dt;
 			end
 		
 			SceneUpdate(dt, current_scene, blend_timer, ModelList.sceneData[current_scene][1]);
 		end
-	--else
-		--ligne=ligne .. "\n ".. pligne .. " : LoginScreen_OnUpdate pas d'update " .. ModelList.modelCount .. " ";
 	end
 end
 
 function SetScene(sceneID)
-
-	--pligne = pligne + 1;
-	--ligne=ligne .. "\n ".. pligne .. " : SetScene " .. sceneID .. " "..ModelList.modelCount .. " ";
-	
 	if ( ModelList.modelCount > 0 and login_on == 1) then
 	
 		MScene[current_scene].parent:Hide();
@@ -399,8 +378,7 @@ function SetScene(sceneID)
 		if(MScene[sceneID].background > "")then
 			LoginScreenBackground:SetTexture(MScene[sceneID].background);
 		end
-		--Scene_OnEnd(current_scene);
-		--Scene_OnStart(sceneID);
+
 		current_scene = sceneID;
 	end
 end
@@ -484,24 +462,17 @@ function HidePage()
 end
 
 function ShowPage(SPage)
-
-	--pligne = pligne + 1;
-	--ligne=ligne .. "\n " .. pligne .. " : ShowPage " .. SPage .. " " .. ModelList.modelCount .. " ";
-
-	--if(LoginScene ~= nil)then
-		if (ModelList.modelCount > 0) then
-			HidePage()
-			SetScene(SPage);
-			MScene[SPage].parent:Show();
-		end
-			LoginScene:Show();
-			LoginScreenBackground:Show();
-			LoginScreenBlackBoarderTOP:Show();
-			LoginScreenBlackBoarderBOTTOM:Show();
-			LoginScreenBlend:Show();
-
-		--end
-	--end
+	if (ModelList.modelCount > 0) then
+		HidePage()
+		SetScene(SPage);
+		MScene[SPage].parent:Show();
+	end
+	
+	LoginScene:Show();
+	LoginScreenBackground:Show();
+	LoginScreenBlackBoarderTOP:Show();
+	LoginScreenBlackBoarderBOTTOM:Show();
+	LoginScreenBlend:Show();
 end
 ------------------------------------------------------------------------------------------------------
 ------									SCENE SCRIPTING PART									------
@@ -525,6 +496,9 @@ end
 
 -- ***************************************************************
 -- ***************************************************************
+---------------------------
+-- Random plus aleatoire --
+---------------------------
 function InitRandom()
 local x, y = GetCursorPosition();
 local z = 0;

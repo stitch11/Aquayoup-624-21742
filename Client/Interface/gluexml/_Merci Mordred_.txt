@@ -1,0 +1,3 @@
+Merci Mordred pour ce magnifique programme de creation de page de login que vous avez cree.
+Je me suis permis de le faire "evoluer" un peu, pour plus de portabilite.
+Encore merci.
