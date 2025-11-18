@@ -3962,7 +3962,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				//Custom 159
 				if (Crfamily == CREATURE_FAMILY_SENTERRE_FIXE /*159*/)
 				{
-					me->GetMotionMaster()->MoveTargetedHome();										// Retour home
+					//me->GetMotionMaster()->MoveTargetedHome();										// Retour home
 					me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);							// ROOT
 					Random = urand(1, 3);
 					if (Random != 1)
