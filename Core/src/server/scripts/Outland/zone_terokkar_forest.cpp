@@ -698,7 +698,7 @@ void AddSC_terokkar_forest()
 {
 //    new npc_unkor_the_ruthless();
 //    new npc_infested_root_walker();
-    new npc_rotting_forest_rager();
+//    new npc_rotting_forest_rager();
     new npc_floon();
     new npc_isla_starmane();
     new go_skull_pile();
