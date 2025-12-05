@@ -787,7 +787,7 @@ void Creature::Update(uint32 diff)
 		case CREATURE_FAMILY_WATER_ELEMENTAL:		//Elementaire d'eau
 		case CREATURE_FAMILY_MTWATERELEMENTAL:		//Elementaire d'eau
 			SetSpeedRate(MOVE_WALK, 0.8f);							// hors combat
-			SetSpeedRate(MOVE_RUN, 1.0);							// en combat
+			SetSpeedRate(MOVE_RUN, 1.0f);							// en combat
 			SetSpeedRate(MOVE_SWIM, 0.7f);							// en nageant
 			break;
 
@@ -801,7 +801,7 @@ void Creature::Update(uint32 diff)
 		case CREATURE_FAMILY_NAGA:
 			SetSpeedRate(MOVE_WALK, 0.5f);							// hors combat
 			SetSpeedRate(MOVE_RUN, 1.0f);							// en combat
-			SetSpeedRate(MOVE_SWIM, 1.2);							// en nageant
+			SetSpeedRate(MOVE_SWIM, 1.2f);							// en nageant
 			break;
 
 		case CREATURE_FAMILY_RIVERBEAST:
