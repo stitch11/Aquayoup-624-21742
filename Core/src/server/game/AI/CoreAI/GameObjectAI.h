@@ -21,10 +21,10 @@
 
 #include "Define.h"
 #include <list>
-#include "Object.h"
 #include "QuestDef.h"
-#include "GameObject.h"
-#include "CreatureAI.h"
+
+class GameObject;
+class Unit;
 
 class TC_GAME_API GameObjectAI
 {
@@ -70,6 +70,6 @@ class TC_GAME_API NullGameObjectAI : public GameObjectAI
 
         void UpdateAI(uint32 /*diff*/) override { }
 
-        static int Permissible(GameObject const* /*go*/) { return PERMIT_BASE_IDLE; }
+		static int Permissible(GameObject const* /*go*/);
 };
 #endif

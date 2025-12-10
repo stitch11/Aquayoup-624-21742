@@ -39,9 +39,9 @@
 
 SmartScript::SmartScript()
 {
-    go = NULL;
-    me = NULL;
-    trigger = NULL;
+    go = nullptr;
+    me = nullptr;
+    trigger = nullptr;
     mEventPhase = 0;
     mPathId = 0;
     mTargetStorage = new ObjectListMap();
@@ -63,6 +63,113 @@ SmartScript::~SmartScript()
     mCounterList.clear();
 }
 
+bool SmartScript::IsSmart(Creature* c /*= NULL*/)
+{
+	bool smart = true;
+	if (c && c->GetAIName() != "SmartAI")
+		smart = false;
+
+	if (!me || me->GetAIName() != "SmartAI")
+		smart = false;
+
+	if (!smart)
+		TC_LOG_ERROR("sql.sql", "SmartScript: Action target Creature (GUID: " UI64FMTD " Entry: %u) is not using SmartAI, action called by Creature (GUID: " UI64FMTD " Entry: %u) skipped to prevent crash.", uint64(c ? c->GetSpawnId() : UI64LIT(0)), c ? c->GetEntry() : 0, uint64(me ? me->GetSpawnId() : UI64LIT(0)), me ? me->GetEntry() : 0);
+
+	return smart;
+}
+
+bool SmartScript::IsSmartGO(GameObject* g /*= NULL*/)
+{
+	bool smart = true;
+	if (g && g->GetAIName() != "SmartGameObjectAI")
+		smart = false;
+
+	if (!go || go->GetAIName() != "SmartGameObjectAI")
+		smart = false;
+	if (!smart)
+		TC_LOG_ERROR("sql.sql", "SmartScript: Action target GameObject (GUID: " UI64FMTD " Entry: %u) is not using SmartGameObjectAI, action called by GameObject (GUID: " UI64FMTD " Entry: %u) skipped to prevent crash.", uint64(g ? g->GetSpawnId() : UI64LIT(0)), g ? g->GetEntry() : 0, uint64(go ? go->GetSpawnId() : UI64LIT(0)), go ? go->GetEntry() : 0);
+
+	return smart;
+}
+
+void SmartScript::StoreTargetList(ObjectList* targets, uint32 id)
+{
+	if (!targets)
+		return;
+
+	if (mTargetStorage->find(id) != mTargetStorage->end())
+	{
+		// check if already stored
+		if ((*mTargetStorage)[id]->Equals(targets))
+			return;
+
+		delete (*mTargetStorage)[id];
+	}
+
+	(*mTargetStorage)[id] = new ObjectGuidList(targets, GetBaseObject());
+}
+
+ObjectList* SmartScript::GetTargetList(uint32 id)
+{
+	ObjectListMap::iterator itr = mTargetStorage->find(id);
+	if (itr != mTargetStorage->end())
+		return (*itr).second->GetObjectList();
+	return nullptr;
+}
+
+void SmartScript::StoreCounter(uint32 id, uint32 value, uint32 reset)
+{
+	CounterMap::const_iterator itr = mCounterList.find(id);
+	if (itr != mCounterList.end())
+	{
+		if (reset == 0)
+			value += GetCounterValue(id);
+		mCounterList.erase(id);
+	}
+
+	mCounterList.insert(std::make_pair(id, value));
+	ProcessEventsFor(SMART_EVENT_COUNTER_SET);
+}
+
+uint32 SmartScript::GetCounterId(uint32 id)
+{
+	CounterMap::iterator itr = mCounterList.find(id);
+	if (itr != mCounterList.end())
+		return itr->first;
+	return 0;
+}
+
+uint32 SmartScript::GetCounterValue(uint32 id)
+{
+	CounterMap::iterator itr = mCounterList.find(id);
+	if (itr != mCounterList.end())
+		return itr->second;
+	return 0;
+}
+
+GameObject* SmartScript::FindGameObjectNear(WorldObject* searchObject, ObjectGuid::LowType guid) const
+{
+	auto bounds = searchObject->GetMap()->GetGameObjectBySpawnIdStore().equal_range(guid);
+	if (bounds.first == bounds.second)
+		return nullptr;
+
+	return bounds.first->second;
+}
+
+Creature* SmartScript::FindCreatureNear(WorldObject* searchObject, ObjectGuid::LowType guid) const
+{
+	auto bounds = searchObject->GetMap()->GetCreatureBySpawnIdStore().equal_range(guid);
+	if (bounds.first == bounds.second)
+		return nullptr;
+
+	auto creatureItr = std::find_if(bounds.first, bounds.second, [](Map::CreatureBySpawnIdContainer::value_type const& pair)
+	{
+		return pair.second->IsAlive();
+	});
+
+	return creatureItr != bounds.second ? creatureItr->second : bounds.first->second;
+}
+
 void SmartScript::OnReset()
 {
     SetPhase(0);
@@ -78,6 +185,35 @@ void SmartScript::OnReset()
     ProcessEventsFor(SMART_EVENT_RESET);
     mLastInvoker.Clear();
     mCounterList.clear();
+}
+
+void SmartScript::ResetBaseObject()
+{
+	WorldObject* lookupRoot = me;
+	if (!lookupRoot)
+		lookupRoot = go;
+
+	if (lookupRoot)
+	{
+		if (!meOrigGUID.IsEmpty())
+		{
+			if (Creature* m = ObjectAccessor::GetCreature(*lookupRoot, meOrigGUID))
+			{
+				me = m;
+				go = nullptr;
+			}
+		}
+		if (!goOrigGUID.IsEmpty())
+		{
+			if (GameObject* o = ObjectAccessor::GetGameObject(*lookupRoot, goOrigGUID))
+			{
+				me = nullptr;
+				go = o;
+			}
+		}
+	}
+	goOrigGUID.Clear();
+	meOrigGUID.Clear();
 }
 
 void SmartScript::ProcessEventsFor(SMART_EVENT e, Unit* unit, uint32 var0, uint32 var1, bool bvar, const SpellInfo* spell, GameObject* gob)
@@ -117,8 +253,8 @@ void SmartScript::ProcessAction(SmartScriptHolder& e, Unit* unit, uint32 var0, u
         {
             ObjectList* targets = GetTargets(e, unit);
             Creature* talker = me;
-            Player* targetPlayer = NULL;
-            Unit* talkTarget = NULL;
+            Player* targetPlayer = nullptr;
+            Unit* talkTarget = nullptr;
 
             if (targets)
             {
@@ -1669,7 +1805,7 @@ void SmartScript::ProcessAction(SmartScriptHolder& e, Unit* unit, uint32 var0, u
                         meOrigGUID = me->GetGUID();
                     if (!goOrigGUID && go)
                         goOrigGUID = go->GetGUID();
-                    go = NULL;
+                    go = nullptr;
                     me = (*itr)->ToCreature();
                     break;
                 }
@@ -1680,7 +1816,7 @@ void SmartScript::ProcessAction(SmartScriptHolder& e, Unit* unit, uint32 var0, u
                     if (!goOrigGUID && go)
                         goOrigGUID = go->GetGUID();
                     go = (*itr)->ToGameObject();
-                    me = NULL;
+                    me = nullptr;
                     break;
                 }
             }
@@ -2314,7 +2450,7 @@ void SmartScript::ProcessAction(SmartScriptHolder& e, Unit* unit, uint32 var0, u
             waypoints[4] = e.action.closestWaypointFromList.wp5;
             waypoints[5] = e.action.closestWaypointFromList.wp6;
             float distanceToClosest = std::numeric_limits<float>::max();
-            WayPoint* closestWp = NULL;
+            WayPoint* closestWp = nullptr;
 
             ObjectList* targets = GetTargets(e, unit);
             if (targets)

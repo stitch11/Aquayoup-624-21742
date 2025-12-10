@@ -81,7 +81,7 @@ class TC_GAME_API CreatureAI : public UnitAI
         Creature* DoSummonFlyer(uint32 entry, WorldObject* obj, float flightZ, float radius = 5.0f, uint32 despawnTime = 30000, TempSummonType summonType = TEMPSUMMON_CORPSE_TIMED_DESPAWN);
 
         bool CheckBoundary(Position const* who = nullptr) const;
-        void SetBoundary(CreatureBoundary const* boundary) { _boundary = boundary; me->DoImmediateBoundaryCheck(); }
+		void SetBoundary(CreatureBoundary const* boundary);
     public:
         enum EvadeReason
         {
@@ -92,10 +92,9 @@ class TC_GAME_API CreatureAI : public UnitAI
         };
 
         void Talk(uint8 id, WorldObject const* whisperTarget = nullptr);
+		explicit CreatureAI(Creature* creature);
 
-        explicit CreatureAI(Creature* creature) : UnitAI(creature), me(creature), _boundary(nullptr), m_MoveInLineOfSight_locked(false) { }
-
-        virtual ~CreatureAI() { }
+		virtual ~CreatureAI();
 
         /// == Reactions At =================================
 

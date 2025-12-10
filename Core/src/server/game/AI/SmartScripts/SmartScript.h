@@ -24,9 +24,7 @@
 #include "Unit.h"
 #include "Spell.h"
 #include "GridNotifiers.h"
-
 #include "SmartScriptMgr.h"
-//#include "SmartAI.h"
 
 class TC_GAME_API SmartScript
 {
@@ -91,144 +89,21 @@ class TC_GAME_API SmartScript
         void DoFindFriendlyMissingBuff(std::list<Creature*>& list, float range, uint32 spellid);
         Unit* DoFindClosestFriendlyInRange(float range, bool playerOnly);
 
-        void StoreTargetList(ObjectList* targets, uint32 id)
-        {
-            if (!targets)
-                return;
+		void StoreTargetList(ObjectList* targets, uint32 id);
+		bool IsSmart(Creature* c = nullptr);
+		bool IsSmartGO(GameObject* g = nullptr);
+		ObjectList* GetTargetList(uint32 id);
 
-            if (mTargetStorage->find(id) != mTargetStorage->end())
-            {
-                // check if already stored
-                if ((*mTargetStorage)[id]->Equals(targets))
-                    return;
+		void StoreCounter(uint32 id, uint32 value, uint32 reset);
+		uint32 GetCounterId(uint32 id);
+		uint32 GetCounterValue(uint32 id);
 
-                delete (*mTargetStorage)[id];
-            }
-
-            (*mTargetStorage)[id] = new ObjectGuidList(targets, GetBaseObject());
-        }
-
-        bool IsSmart(Creature* c = NULL)
-        {
-            bool smart = true;
-            if (c && c->GetAIName() != "SmartAI")
-                smart = false;
-
-            if (!me || me->GetAIName() != "SmartAI")
-                smart = false;
-
-            if (!smart)
-                TC_LOG_ERROR("sql.sql", "SmartScript: Action target Creature (GUID: " UI64FMTD " Entry: %u) is not using SmartAI, action called by Creature (GUID: " UI64FMTD " Entry: %u) skipped to prevent crash.", uint64(c ? c->GetSpawnId() : UI64LIT(0)), c ? c->GetEntry() : 0, uint64(me ? me->GetSpawnId() : UI64LIT(0)), me ? me->GetEntry() : 0);
-
-            return smart;
-        }
-
-        bool IsSmartGO(GameObject* g = NULL)
-        {
-            bool smart = true;
-            if (g && g->GetAIName() != "SmartGameObjectAI")
-                smart = false;
-
-            if (!go || go->GetAIName() != "SmartGameObjectAI")
-                smart = false;
-            if (!smart)
-                TC_LOG_ERROR("sql.sql", "SmartScript: Action target GameObject (GUID: " UI64FMTD " Entry: %u) is not using SmartGameObjectAI, action called by GameObject (GUID: " UI64FMTD " Entry: %u) skipped to prevent crash.", uint64(g ? g->GetSpawnId() : UI64LIT(0)), g ? g->GetEntry() : 0, uint64(go ? go->GetSpawnId() : UI64LIT(0)), go ? go->GetEntry() : 0);
-
-            return smart;
-        }
-
-        ObjectList* GetTargetList(uint32 id)
-        {
-            ObjectListMap::iterator itr = mTargetStorage->find(id);
-            if (itr != mTargetStorage->end())
-                return (*itr).second->GetObjectList();
-            return NULL;
-        }
-
-        void StoreCounter(uint32 id, uint32 value, uint32 reset)
-        {
-            CounterMap::const_iterator itr = mCounterList.find(id);
-            if (itr != mCounterList.end())
-            {
-                if (reset == 0)
-                    value += GetCounterValue(id);
-                mCounterList.erase(id);
-            }
-
-            mCounterList.insert(std::make_pair(id, value));
-            ProcessEventsFor(SMART_EVENT_COUNTER_SET);
-        }
-
-        uint32 GetCounterId(uint32 id)
-        {
-            CounterMap::iterator itr = mCounterList.find(id);
-            if (itr != mCounterList.end())
-                return itr->first;
-            return 0;
-        }
-
-        uint32 GetCounterValue(uint32 id)
-        {
-            CounterMap::iterator itr = mCounterList.find(id);
-            if (itr != mCounterList.end())
-                return itr->second;
-            return 0;
-        }
-
-        GameObject* FindGameObjectNear(WorldObject* searchObject, ObjectGuid::LowType guid) const
-        {
-            auto bounds = searchObject->GetMap()->GetGameObjectBySpawnIdStore().equal_range(guid);
-            if (bounds.first == bounds.second)
-                return nullptr;
-
-            return bounds.first->second;
-        }
-
-        Creature* FindCreatureNear(WorldObject* searchObject, ObjectGuid::LowType guid) const
-        {
-            auto bounds = searchObject->GetMap()->GetCreatureBySpawnIdStore().equal_range(guid);
-            if (bounds.first == bounds.second)
-                return nullptr;
-
-            auto creatureItr = std::find_if(bounds.first, bounds.second, [](Map::CreatureBySpawnIdContainer::value_type const& pair)
-            {
-                return pair.second->IsAlive();
-            });
-
-            return creatureItr != bounds.second ? creatureItr->second : bounds.first->second;
-        }
-
+		GameObject* FindGameObjectNear(WorldObject* searchObject, ObjectGuid::LowType guid) const;
+		Creature* FindCreatureNear(WorldObject* searchObject, ObjectGuid::LowType guid) const;
         ObjectListMap* mTargetStorage;
 
         void OnReset();
-        void ResetBaseObject()
-        {
-            WorldObject* lookupRoot = me;
-            if (!lookupRoot)
-                lookupRoot = go;
-
-            if (lookupRoot)
-            {
-                if (!meOrigGUID.IsEmpty())
-                {
-                    if (Creature* m = ObjectAccessor::GetCreature(*lookupRoot, meOrigGUID))
-                    {
-                        me = m;
-                        go = NULL;
-                    }
-                }
-                if (!goOrigGUID.IsEmpty())
-                {
-                    if (GameObject* o = ObjectAccessor::GetGameObject(*lookupRoot, goOrigGUID))
-                    {
-                        me = NULL;
-                        go = o;
-                    }
-                }
-            }
-            goOrigGUID.Clear();
-            meOrigGUID.Clear();
-        }
+		void ResetBaseObject();
 
         //TIMED_ACTIONLIST (script type 9 aka script9)
         void SetScript9(SmartScriptHolder& e, uint32 entry);

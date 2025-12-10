@@ -45,7 +45,7 @@
 #define DEFAULT_COMBAT_REACH        1.5f
 #define MIN_MELEE_REACH             2.0f
 #define NOMINAL_MELEE_RANGE         5.0f
-#define MELEE_RANGE                 (NOMINAL_MELEE_RANGE - MIN_MELEE_REACH * 2) //center to center for players
+#define MELEE_RANGE                 (NOMINAL_MELEE_RANGE - MIN_MELEE_REACH * 2.0f) //center to center for players
 
 #define DEFAULT_PHASE               169
 

@@ -22,7 +22,7 @@
 #include "Common.h"
 #include "Unit.h"
 #include "ItemTemplate.h"
-#include "LootMgr.h"
+#include "Loot.h"
 #include "DatabaseEnv.h"
 #include "Cell.h"
 
@@ -611,9 +611,9 @@ class TC_GAME_API Creature : public Unit, public GridObject<Creature>, public Ma
 
         void SendAIReaction(AiReaction reactionType);
 
-        Unit* SelectNearestTarget(float dist = 0, bool playerOnly = false) const;
-        Unit* SelectNearestTargetInAttackDistance(float dist = 0) const;
-        Player* SelectNearestPlayer(float distance = 0) const;
+        Unit* SelectNearestTarget(float dist = 0.0f, bool playerOnly = false) const;
+        Unit* SelectNearestTargetInAttackDistance(float dist = 0.0f) const;
+        Player* SelectNearestPlayer(float distance = 0.0f) const;
         Unit* SelectNearestHostileUnitInAggroRange(bool useLOS = false) const;
 
         void DoFleeToGetAssistance();

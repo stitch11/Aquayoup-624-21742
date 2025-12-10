@@ -21,7 +21,7 @@
 
 #include "Common.h"
 #include "Object.h"
-#include "LootMgr.h"
+#include "Loot.h"
 #include "ItemTemplate.h"
 #include "DatabaseEnv.h"
 

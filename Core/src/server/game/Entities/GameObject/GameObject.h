@@ -23,7 +23,7 @@
 #include "SharedDefines.h"
 #include "Unit.h"
 #include "Object.h"
-#include "LootMgr.h"
+#include "Loot.h"
 #include "DatabaseEnv.h"
 
 class GameObjectAI;
@@ -1004,7 +1004,7 @@ class TC_GAME_API GameObject : public WorldObject, public GridObject<GameObject>
 
         void SaveRespawnTime() override;
 
-        Loot        loot;
+        Loot loot;
 
         Player* GetLootRecipient() const;
         Group* GetLootRecipientGroup() const;

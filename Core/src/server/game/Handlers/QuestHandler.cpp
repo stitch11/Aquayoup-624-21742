@@ -31,6 +31,8 @@
 #include "ScriptMgr.h"
 #include "GameObjectAI.h"
 #include "QuestPackets.h"
+#include "CreatureAI.h"
+#include "CreatureAIImpl.h"
 
 void WorldSession::HandleQuestgiverStatusQueryOpcode(WorldPackets::Quest::QuestGiverStatusQuery& packet)
 {
