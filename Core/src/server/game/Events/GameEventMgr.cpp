@@ -28,6 +28,7 @@
 #include "UnitAI.h"
 #include "GameObjectAI.h"
 #include "WorldStatePackets.h"
+#include "CreatureAI.h"
 
 GameEventMgr* GameEventMgr::instance()
 {

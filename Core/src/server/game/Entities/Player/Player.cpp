@@ -11250,70 +11250,70 @@ InventoryResult Player::CanUseItem(ItemTemplate const* proto) const
 
 InventoryResult Player::CanRollForItemInLFG(ItemTemplate const* proto, WorldObject const* lootedObject) const
 {
-    if (!GetGroup() || !GetGroup()->isLFGGroup())
-        return EQUIP_ERR_OK;    // not in LFG group
+	if (!GetGroup() || !GetGroup()->isLFGGroup())
+		return EQUIP_ERR_OK;    // not in LFG group
 
-    // check if looted object is inside the lfg dungeon
-    Map const* map = lootedObject->GetMap();
-    if (!sLFGMgr->inLfgDungeonMap(GetGroup()->GetGUID(), map->GetId(), map->GetDifficultyID()))
-        return EQUIP_ERR_OK;
+								// check if looted object is inside the lfg dungeon
+	Map const* map = lootedObject->GetMap();
+	if (!sLFGMgr->inLfgDungeonMap(GetGroup()->GetGUID(), map->GetId(), map->GetDifficultyID()))
+		return EQUIP_ERR_OK;
 
-    if (!proto)
-        return EQUIP_ERR_ITEM_NOT_FOUND;
+	if (!proto)
+		return EQUIP_ERR_ITEM_NOT_FOUND;
 
-   // Used by group, function GroupLoot, to know if a prototype can be used by a player
-    if ((proto->GetAllowableClass() & getClassMask()) == 0 || (proto->GetAllowableRace() & getRaceMask()) == 0)
-        return EQUIP_ERR_CANT_EQUIP_EVER;
+	// Used by group, function GroupLoot, to know if a prototype can be used by a player
+	if ((proto->GetAllowableClass() & getClassMask()) == 0 || (proto->GetAllowableRace() & getRaceMask()) == 0)
+		return EQUIP_ERR_CANT_EQUIP_EVER;
 
-    if (proto->GetRequiredSpell() != 0 && !HasSpell(proto->GetRequiredSpell()))
-        return EQUIP_ERR_PROFICIENCY_NEEDED;
+	if (proto->GetRequiredSpell() != 0 && !HasSpell(proto->GetRequiredSpell()))
+		return EQUIP_ERR_PROFICIENCY_NEEDED;
 
-    if (proto->GetRequiredSkill() != 0)
-    {
-        if (!GetSkillValue(proto->GetRequiredSkill()))
-            return EQUIP_ERR_PROFICIENCY_NEEDED;
-        else if (GetSkillValue(proto->GetRequiredSkill()) < proto->GetRequiredSkillRank())
-            return EQUIP_ERR_CANT_EQUIP_SKILL;
-    }
+	if (proto->GetRequiredSkill() != 0)
+	{
+		if (!GetSkillValue(proto->GetRequiredSkill()))
+			return EQUIP_ERR_PROFICIENCY_NEEDED;
+		else if (GetSkillValue(proto->GetRequiredSkill()) < proto->GetRequiredSkillRank())
+			return EQUIP_ERR_CANT_EQUIP_SKILL;
+	}
 
-    uint8 _class = getClass();
+	uint8 _class = getClass();
 
-    if (proto->GetClass() == ITEM_CLASS_WEAPON && GetSkillValue(item_weapon_skills[proto->GetSubClass()]) == 0)
-        return EQUIP_ERR_PROFICIENCY_NEEDED;
+	if (proto->GetClass() == ITEM_CLASS_WEAPON && GetSkillValue(proto->GetSkill()) == 0)
+		return EQUIP_ERR_PROFICIENCY_NEEDED;
 
-    if (proto->GetClass() == ITEM_CLASS_ARMOR && proto->GetSubClass() > ITEM_SUBCLASS_ARMOR_MISCELLANEOUS && proto->GetSubClass() < ITEM_SUBCLASS_ARMOR_BUCKLER && proto->GetInventoryType() != INVTYPE_CLOAK)
-    {
-        if (_class == CLASS_WARRIOR || _class == CLASS_PALADIN || _class == CLASS_DEATH_KNIGHT)
-        {
-            if (getLevel() < 40)
-            {
-                if (proto->GetSubClass() != ITEM_SUBCLASS_ARMOR_MAIL)
-                    return EQUIP_ERR_CLIENT_LOCKED_OUT;
-            }
-            else if (proto->GetSubClass() != ITEM_SUBCLASS_ARMOR_PLATE)
-                return EQUIP_ERR_CLIENT_LOCKED_OUT;
-        }
-        else if (_class == CLASS_HUNTER || _class == CLASS_SHAMAN)
-        {
-            if (getLevel() < 40)
-            {
-                if (proto->GetSubClass() != ITEM_SUBCLASS_ARMOR_LEATHER)
-                    return EQUIP_ERR_CLIENT_LOCKED_OUT;
-            }
-            else if (proto->GetSubClass() != ITEM_SUBCLASS_ARMOR_MAIL)
-                return EQUIP_ERR_CLIENT_LOCKED_OUT;
-        }
+	if (proto->GetClass() == ITEM_CLASS_ARMOR && proto->GetSubClass() > ITEM_SUBCLASS_ARMOR_MISCELLANEOUS && proto->GetSubClass() < ITEM_SUBCLASS_ARMOR_BUCKLER && proto->GetInventoryType() != INVTYPE_CLOAK)
+	{
+		if (_class == CLASS_WARRIOR || _class == CLASS_PALADIN || _class == CLASS_DEATH_KNIGHT)
+		{
+			if (getLevel() < 40)
+			{
+				if (proto->GetSubClass() != ITEM_SUBCLASS_ARMOR_MAIL)
+					return EQUIP_ERR_CLIENT_LOCKED_OUT;
+			}
+			else if (proto->GetSubClass() != ITEM_SUBCLASS_ARMOR_PLATE)
+				return EQUIP_ERR_CLIENT_LOCKED_OUT;
+		}
+		else if (_class == CLASS_HUNTER || _class == CLASS_SHAMAN)
+		{
+			if (getLevel() < 40)
+			{
+				if (proto->GetSubClass() != ITEM_SUBCLASS_ARMOR_LEATHER)
+					return EQUIP_ERR_CLIENT_LOCKED_OUT;
+			}
+			else if (proto->GetSubClass() != ITEM_SUBCLASS_ARMOR_MAIL)
+				return EQUIP_ERR_CLIENT_LOCKED_OUT;
+		}
 
-        if (_class == CLASS_ROGUE || _class == CLASS_DRUID)
-            if (proto->GetSubClass() != ITEM_SUBCLASS_ARMOR_LEATHER)
-                return EQUIP_ERR_CLIENT_LOCKED_OUT;
+		if (_class == CLASS_ROGUE || _class == CLASS_DRUID)
+			if (proto->GetSubClass() != ITEM_SUBCLASS_ARMOR_LEATHER)
+				return EQUIP_ERR_CLIENT_LOCKED_OUT;
 
-        if (_class == CLASS_MAGE || _class == CLASS_PRIEST || _class == CLASS_WARLOCK)
-            if (proto->GetSubClass() != ITEM_SUBCLASS_ARMOR_CLOTH)
-                return EQUIP_ERR_CLIENT_LOCKED_OUT;
-    }
+		if (_class == CLASS_MAGE || _class == CLASS_PRIEST || _class == CLASS_WARLOCK)
+			if (proto->GetSubClass() != ITEM_SUBCLASS_ARMOR_CLOTH)
+				return EQUIP_ERR_CLIENT_LOCKED_OUT;
+	}
 
-    return EQUIP_ERR_OK;
+	return EQUIP_ERR_OK;
 }
 
 // Return stored item (if stored to stack, it can diff. from pItem). And pItem ca be deleted in this case.
@@ -24715,11 +24715,11 @@ void Player::StoreLootItem(uint8 lootSlot, Loot* loot)
 
 //Stitch bug loot item de quete
 	// dont allow protected item to be looted by someone else
-	if (!item->rollWinnerGUID.IsEmpty() && item->rollWinnerGUID != GetGUID())
-	{
-		SendLootRelease(GetLootGUID());
-		return;
-	}
+	//if (!item->rollWinnerGUID.IsEmpty() && item->rollWinnerGUID != GetGUID())
+	//{
+	//	SendLootRelease(GetLootGUID());
+	//	return;
+	//}
 
     ItemPosCountVec dest;
     InventoryResult msg = CanStoreNewItem(NULL_BAG, NULL_SLOT, dest, item->itemid, item->count);

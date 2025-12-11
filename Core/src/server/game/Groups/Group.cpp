@@ -1283,7 +1283,7 @@ void Group::CountTheRoll(Rolls::iterator rollI)
 
 //Stitch bug loot item de quete
                     //player->SendEquipError(msg, NULL, NULL, roll->itemid);
-					item->rollWinnerGUID = player->GetGUID();
+					//item->rollWinnerGUID = player->GetGUID();
 					player->SendEquipError(msg, nullptr, nullptr, roll->itemid);
 
 
@@ -1341,7 +1341,7 @@ void Group::CountTheRoll(Rolls::iterator rollI)
 
 //Stitch bug loot item de quete
 						//player->SendEquipError(msg, NULL, NULL, roll->itemid);
-						item->rollWinnerGUID = player->GetGUID();
+						//item->rollWinnerGUID = player->GetGUID();
 						player->SendEquipError(msg, nullptr, nullptr, roll->itemid);
                     }
                 }
