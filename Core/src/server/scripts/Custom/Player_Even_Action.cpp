@@ -209,6 +209,11 @@ case CLASS_WARRIOR:
 	else player->RemoveSpell(6343, false); 
     break;
 case CLASS_PALADIN:
+	if (_level >= 3)
+	{
+		player->LearnSpell(105361, true);      //  Sceau de méditation/ex Sceau d’autorité
+	}
+	
     break;
 case CLASS_HUNTER:
 	player->setPowerType(POWER_FOCUS);
