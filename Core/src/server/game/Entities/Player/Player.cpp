@@ -2051,7 +2051,7 @@ void Player::Regenerate(Powers power)
 			//addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER) *  ManaIncreaseRate /* * ((0.001f * m_regenTimer) + CalculatePct(0.001f, spellHaste))*/;
 		{
 			addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER) *  ManaIncreaseRate;
-			addvalue = (addvalue - Level) *1.2f ; 
+			//addvalue = (addvalue - Level) *1.2f ; 
 		}
 		else
 			//addvalue += GetFloatValue(UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER) *  ManaIncreaseRate * ((0.001f * m_regenTimer) + CalculatePct(0.001f, spellHaste));
