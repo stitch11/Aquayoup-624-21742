@@ -26222,7 +26222,7 @@ void Player::OnCombatExit()
 
     UpdatePotionCooldown();
     if (getClass() == CLASS_PALADIN)
-        m_holyPowerRegenTimerCount = 20000; // first charge of holy power decays 20 seconds after leaving combat
+        m_holyPowerRegenTimerCount = 2000; // first charge of holy power decays 20 seconds after leaving combat
 }
 
 void Player::CreateGarrison(uint32 garrSiteId)
