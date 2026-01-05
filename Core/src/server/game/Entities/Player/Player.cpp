@@ -24713,7 +24713,7 @@ void Player::StoreLootItem(uint8 lootSlot, Loot* loot)
         return;
     }
 
-//Stitch bug loot item de quete
+//Stitch item de quete : bug loot
 	// dont allow protected item to be looted by someone else
 	//if (!item->rollWinnerGUID.IsEmpty() && item->rollWinnerGUID != GetGUID())
 	//{

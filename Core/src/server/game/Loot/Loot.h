@@ -139,8 +139,9 @@ struct TC_GAME_API LootItem
     int32   upgradeId;
     std::vector<int32> BonusListIDs;
     uint8   context;
-    ConditionContainer conditions;                               // additional loot condition
+    ConditionContainer conditions;                          // additional loot condition
     GuidSet allowedGUIDs;
+	//ObjectGuid rollWinnerGUID;								//Stitch item de quete : bug loot
     uint8   count             : 8;
     bool    is_looted         : 1;
     bool    is_blocked        : 1;
