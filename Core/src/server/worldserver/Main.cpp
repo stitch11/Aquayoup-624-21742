@@ -136,7 +136,7 @@ extern int main(int argc, char** argv)
     TC_LOG_INFO("server.worldserver", "%s (worldserver-daemon)", GitRevision::GetFullVersion());
     TC_LOG_INFO("server.worldserver", "<Ctrl-C> to stop.\n");
     TC_LOG_INFO("server.worldserver", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-    TC_LOG_INFO("server.worldserver", "xx                             Core Aquayoup 2025                                 xx");
+    TC_LOG_INFO("server.worldserver", "xx                             Core Aquayoup 2026                                 xx");
 	TC_LOG_INFO("server.worldserver", "xx                                                                                xx");
 	TC_LOG_INFO("server.worldserver", "xx   basé sur le core Trinity 2017-06-16 , Commit ff6aa40                         xx");
 	TC_LOG_INFO("server.worldserver", "xx                                                                                xx");
