@@ -157,7 +157,7 @@ public:
 ## npc_cooshcoosh
 ######*/
 
-#define GOSSIP_COOSH            "You owe Sim'salabim money. Hand them over or die!"
+#define GOSSIP_COOSH            "J'ai ete envoye par Sal'salabim pour recouvrir une dette envers lui ... Payez ou je vais devoir vous faire du mal."
 
 enum Cooshhooosh
 {
@@ -242,9 +242,9 @@ public:
 ## npc_elder_kuruti
 ######*/
 
-#define GOSSIP_ITEM_KUR1 "Greetings, elder. It is time for your people to end their hostility towards the draenei and their allies."
-#define GOSSIP_ITEM_KUR2 "I did not mean to deceive you, elder. The draenei of Telredor thought to approach you in a way that would seem familiar to you."
-#define GOSSIP_ITEM_KUR3 "I will tell them. Farewell, elder."
+#define GOSSIP_ITEM_KUR1 "Salutations, aîné. Il est temps pour votre peuple de mettre fin à son hostilité envers les draeneï et leurs alliés."
+#define GOSSIP_ITEM_KUR2 "Je ne voulais pas te tromper, aîné. Les draenei de Telredor pensaient s'approcher de vous d'une manière qui vous semblerait familière."
+#define GOSSIP_ITEM_KUR3 "Je leur dirai. Adieu, aîné"
 
 class npc_elder_kuruti : public CreatureScript
 {
