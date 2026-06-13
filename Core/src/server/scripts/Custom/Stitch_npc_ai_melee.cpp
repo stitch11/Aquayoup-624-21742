@@ -594,6 +594,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 					|| me->HasAura(64695)	// Sarment du Totem de poigne de terre
 					|| me->HasAura(125467)	// Auto ROOT
 					|| me->HasAura(31736)	// Quete 9720
+					|| me->HasAura(111340)	// Garde glaciale
 					) return true;
 				else return false;
 			}
