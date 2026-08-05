@@ -528,6 +528,12 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					me->AddUnitState(UNIT_STATE_EVADE);
 					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);						
 				}
+
+
+				if (!me->IsAlive() && me->IsInCombat())	// contre le bug de combat
+				{
+					RetireBugDeCombat();
+				}
 			}
 			void Mouvement_Caster(uint32 diff)
 			{

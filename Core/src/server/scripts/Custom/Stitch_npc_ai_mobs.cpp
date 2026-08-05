@@ -1080,6 +1080,12 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					me->AddUnitState(UNIT_STATE_EVADE);
 					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);						// Quite le combat si la cible > 30m (Caster & Mélée) ou > 40m de home
 				}
+
+
+				if (!me->IsAlive() && me->IsInCombat())	// contre le bug de combat
+				{
+					RetireBugDeCombat();
+				}
 			}
 
 			void UpdateAI(uint32 diff) override
