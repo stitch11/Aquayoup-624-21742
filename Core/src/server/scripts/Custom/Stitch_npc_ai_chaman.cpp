@@ -49,7 +49,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 			uint32 Cooldown_Spell3 = 3500;
 			uint32 Cooldown_Spell_Heal = 3000;
 			uint32 Cooldown_RegenMana = 3000;
-			uint32 Cooldown_ResteADistance = 4000;									// Test si en contact pour  Restauration, Elementaire et s'eloigner
+			uint32 Cooldown_ResteADistance = 2000;									// Test si en contact pour  Restauration, Elementaire et s'eloigner
 			uint32 Cooldown_ResteAuContact;
 			uint32 Cooldown_Anti_Bug_Figer = 2000;
 			uint32 Cooldown_Charge = 8000;

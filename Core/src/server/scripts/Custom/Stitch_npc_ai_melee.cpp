@@ -367,7 +367,10 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 					}
 				}
 
-
+				if (!me->IsAlive())
+				{
+					RetireBugDeCombat();
+				}
 
 
 				if (!UpdateVictim())
@@ -381,10 +384,6 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);						// Quite le combat si la cible > 30m (Caster & Mélée) ou > 40m de home
 				}
 
-				if (!me->IsAlive() && me->IsInCombat())	// contre le bug de combat
-				{
-					RetireBugDeCombat();
-				}
 			}
 			void Mouvement_Contact(uint32 diff)
 			{

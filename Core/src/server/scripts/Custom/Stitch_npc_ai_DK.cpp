@@ -51,7 +51,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 			uint32 Cooldown_Spell_Heal_1 = 4000;
 			uint32 Cooldown_Spell_Heal_2 = 6000;
 			uint32 Cooldown_RegenMana = 3000;
-			uint32 Cooldown_ResteADistance = 4000;									// Test si en contact
+			uint32 Cooldown_ResteADistance = 2000;									// Test si en contact
 			uint32 Cooldown_Cible_trop_loin = 2000;
 			uint32 Cooldown_ResteAuContact;
 			uint32 Cooldown_Anti_Bug_Figer = 1000;

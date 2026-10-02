@@ -69,7 +69,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			uint32 Cooldown_Spell1_defaut = urand(3000, 3750);
 			uint32 Cooldown_Spell2 = 4000;
 			uint32 Cooldown_Spell2_defaut = urand(7000,10000);
-			uint32 Cooldown_ResteADistance = 3000;									// Test si en contact
+			uint32 Cooldown_ResteADistance = 1500;									// Test si en contact
 			uint32 Cooldown_ResteADistance_Defaut = 3000;
 			uint32 Cooldown_ResteADistance_Teleportation = 3000;
 			uint32 Cooldown_ResteADistance_Defaut_Teleportation = urand(5000, 7000);
@@ -512,6 +512,11 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				}
 
 
+				if (!me->IsAlive())
+				{
+					RetireBugDeCombat();
+				}
+
 				// Si la cible est trop loin >DistanceDeCast
 				if (!UpdateVictim())
 					return;
@@ -529,11 +534,6 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);						
 				}
 
-
-				if (!me->IsAlive() && me->IsInCombat())	// contre le bug de combat
-				{
-					RetireBugDeCombat();
-				}
 			}
 			void Mouvement_Caster(uint32 diff)
 			{
