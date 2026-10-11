@@ -132,6 +132,20 @@ public:
 	}
 
 
+	void OnPlayerEnter(Map* map, Player* player, Pet* pet)
+	{
+		uint8 _class = player->getClass();
+
+		switch (_class)
+		{
+		case CLASS_HUNTER:
+			break;
+			
+		}
+	}
+
+
+
 
 
     // Sans action pour le moment
@@ -173,6 +187,8 @@ public:
     // void Player::OnCombatExit()
     // void OnPlayerSpellCast(Player* player, Spell* spell, bool skipCheck) {}
     // void OnAccountLogin(uint32 /*accountId*/) {}
+	// void OnLogin(Player* player, bool /*firstLogin*/) override {}
+	//  void OnCreate(Player* player) override {}
 	// void OnCombatExit();
 	// void OnPlayerReputationChange(Player* player, uint32 factionID, int32& standing, bool incremental);
 	// void OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg);
@@ -218,9 +234,9 @@ case CLASS_PALADIN:
 case CLASS_HUNTER:
 	player->setPowerType(POWER_FOCUS);
 	player->SetPower(POWER_FOCUS, 100);
+	player->LearnSpell(883, true);      // Appel du familier 1
     if (_level >= 5)
     {
-        player->LearnSpell(883, true);      // Appel du familier 1
         player->LearnSpell(2641, true);     // Renvoyer le familier
         player->LearnSpell(9321, true);     // Contrôle du familier
         player->LearnSpell(6991, true);     // Nourrir le familier
@@ -229,7 +245,6 @@ case CLASS_HUNTER:
         player->LearnSpell(982, true);      // Ressusciter le familier
         player->LearnSpell(1515, true);     // Apprivoiser une bête
         player->LearnSpell(1462, true);     // Connaissance des bêtes
-        player->GetSession()->SendNotification("|cffffffff[Vous avez appris de nouvelles competances]:|r");
     }
 	else
 	{
@@ -244,29 +259,6 @@ case CLASS_HUNTER:
 		player->RemoveSpell(1462, false);
 	}
 
-    if (_level >= 10)
-    {
-        player->LearnSpell(83242, true);      // Appel du familier 2
-    }
-	else player->RemoveSpell(83242, false);
-
-    if (_level >= 42)
-    {
-        player->LearnSpell(83243, true);      // Appel du familier 3
-    }
-	else player->RemoveSpell(83243, false);
-
-    if (_level >= 62)
-    {
-        player->LearnSpell(83244, true);      // Appel du familier 4
-    }
-	else player->RemoveSpell(83244, false);
-
-    if (_level >= 82)
-    {
-        player->LearnSpell(83245, true);      // Appel du familier 5
-    }
-	else player->RemoveSpell(83245, false);
 
     break;
 case CLASS_ROGUE:
