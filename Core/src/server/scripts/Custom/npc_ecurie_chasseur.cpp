@@ -10,11 +10,10 @@ REPLACE INTO `npc_text` (`ID`, `Probability0`, `Probability1`, `Probability2`, `
 REPLACE INTO `broadcast_text` (`ID`, `Language`, `MaleText`, `FemaleText`, `EmoteID1`, `EmoteID2`, `EmoteID3`, `EmoteDelay1`, `EmoteDelay2`, `EmoteDelay3`, `SoundID`, `UnkEmoteID`, `Type`, `VerifiedBuild`) VALUES ('15066007', '1', 'Information sur l\'écurie du chasseur :
 --------------------------------------
 
-L\'écurie du chasseur permet de stocker son familier actif dans l\'un des 4 emplacements d\'écurie.
+L'écurie du chasseur permet de stocker son familier actif dans l'un des 10 emplacements d'écurie.
 
-Si l\'emplacement choisi n\'est pas vide, le familier dans c\'est emplacement sera perdu.
-
-Celui ci pourra ensuite appelé par le sort \'Appel du familier 1 a 4\'', NULL, '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+Le nombre d'emplacements dépend de votre level :
+2 d'emplacements au level 5 puis 1 de plus chaque 5 levels.
 
 */
 //##############################################################################################
@@ -42,17 +41,16 @@ public:
 
 		if (_class == CLASS_HUNTER)
 		{
-
-			player->ADD_GOSSIP_ITEM(1, InfoSlot(player, 1), GOSSIP_SENDER_MAIN, 1);
-			player->ADD_GOSSIP_ITEM(1, InfoSlot(player, 2), GOSSIP_SENDER_MAIN, 2);
-			player->ADD_GOSSIP_ITEM(1, InfoSlot(player, 3), GOSSIP_SENDER_MAIN, 3);
-			player->ADD_GOSSIP_ITEM(1, InfoSlot(player, 4), GOSSIP_SENDER_MAIN, 4);
-			player->ADD_GOSSIP_ITEM(1, InfoSlot(player, 5), GOSSIP_SENDER_MAIN, 5);
-			player->ADD_GOSSIP_ITEM(1, InfoSlot(player, 6), GOSSIP_SENDER_MAIN, 6);
-			player->ADD_GOSSIP_ITEM(1, InfoSlot(player, 7), GOSSIP_SENDER_MAIN, 7);
-			player->ADD_GOSSIP_ITEM(1, InfoSlot(player, 8), GOSSIP_SENDER_MAIN, 8);
-			player->ADD_GOSSIP_ITEM(1, InfoSlot(player, 9), GOSSIP_SENDER_MAIN, 9);
-			player->ADD_GOSSIP_ITEM(1, InfoSlot(player, 10), GOSSIP_SENDER_MAIN, 10);
+			if (_level >= 5) {player->ADD_GOSSIP_ITEM(1, InfoSlot(player, 1), GOSSIP_SENDER_MAIN, 1);}
+			if (_level >= 5) { player->ADD_GOSSIP_ITEM(1, InfoSlot(player, 2), GOSSIP_SENDER_MAIN, 2);}
+			if (_level >= 10) { player->ADD_GOSSIP_ITEM(1, InfoSlot(player, 3), GOSSIP_SENDER_MAIN, 3);}
+			if (_level >= 15) { player->ADD_GOSSIP_ITEM(1, InfoSlot(player, 4), GOSSIP_SENDER_MAIN, 4);}
+			if (_level >= 20) { player->ADD_GOSSIP_ITEM(1, InfoSlot(player, 5), GOSSIP_SENDER_MAIN, 5);}
+			if (_level >= 25) { player->ADD_GOSSIP_ITEM(1, InfoSlot(player, 6), GOSSIP_SENDER_MAIN, 6);}
+			if (_level >= 30) { player->ADD_GOSSIP_ITEM(1, InfoSlot(player, 7), GOSSIP_SENDER_MAIN, 7);}
+			if (_level >= 35) { player->ADD_GOSSIP_ITEM(1, InfoSlot(player, 8), GOSSIP_SENDER_MAIN, 8);}
+			if (_level >= 40) { player->ADD_GOSSIP_ITEM(1, InfoSlot(player, 9), GOSSIP_SENDER_MAIN, 9);}
+			if (_level >= 45) { player->ADD_GOSSIP_ITEM(1, InfoSlot(player, 10), GOSSIP_SENDER_MAIN, 10);}
 		}
 		player->PlayerTalkClass->SendGossipMenu(66007, creature->GetGUID());	//gossip_menu comprenant le npc_text
 		return true;
