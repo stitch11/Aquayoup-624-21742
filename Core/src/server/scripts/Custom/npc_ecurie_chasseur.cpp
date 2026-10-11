@@ -1058,232 +1058,207 @@ std::string InfoSlot(Player* player, uint8 slot)
 	case 1:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_Wolf:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Loup Wolf
 	}
 	case 2:
 	{
-		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_Cat:48 : 48|t  %s - Lvl %u";
-		break;
+		texticon = "|TInterface\\Icons\\ability_druid_skinteeth:48 : 48|t  %s - Lvl %u";
+		break;//Felin cat
 	}
 	case 3:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_Spider:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Araignée Spider
 	}
 	case 4:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_Bear:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Ours Bear
 	}
 	case 5:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_Boar:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Sanglier Boar
 	}
 	case 6:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_Crocolisk:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Crocodile Crocolisk
 	}
 	case 7:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_Vulture:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Oiseau charogniar   Carrion Bird
 	}
 	case 8:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_Crab:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Crabe Crab
+	}
+	case 9:
+	{
+		texticon = "|TInterface\\Icons\\ability_hunter_pet_gorilla:48 : 48|t  %s - Lvl %u";
+		break;//Gorille Gorilla
 	}
 	case 10:
 	{
-		texticon = "|TInterface\\Icons\\ability_mount_ironchimera:48 : 48|t  %s - Lvl %u";
-		break;
+		texticon = "|TInterface\\Icons\\ability_physical_taunt:48 : 48|t  %s - Lvl %u";
+		break;//Custom
 	}
 	case 11:
 	{
-		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_Raptor:48 : 48|t  %s - Lvl %u";
-		break;
+		texticon = "|TInterface\\Icons\\ability_hunter_pet_raptor:48 : 48|t  %s - Lvl %u";
+		break;//Raptor Raptor
 	}
 	case 12:
 	{
-		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_TallStrider:48 : 48|t  %s - Lvl %u";
-		break;
+		texticon = "|TInterface\\Icons\\ability_hunter_pet_tallstrider:48 : 48|t  %s - Lvl %u";
+		break;// Grand trotteur   Tallstrider
 	}
 	case 20:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_Scorpid:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Scorpion  Scorpid
 	}
 	case 21:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_Turtle:48 : 48|t  %s - Lvl %u";
-		break;
+		break;// Tortue Turtle
 	}
 	case 24:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_Bat:48 : 48|t  %s - Lvl %u";
-		break;
+		break;// Chauve souris  Bat
 	}
 	case 25:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_Hyena:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Hyene  Hyena
 	}
 	case 26:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_Owl:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Oiseau de proie   Bird of Prey
 	}
 	case 27:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_WindSerpent:48 : 48|t  %s - Lvl %u";
-		break;
+		break;// Serpent des vents  Wind Serpent
 	}
 	case 30:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_DragonHawk:48 : 48|t  %s - Lvl %u";
-		break;
+		break;// Faucon dragon  Dragonhawk
 	}
 	case 31:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_Ravager:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Ravageur  Ravager
 	}
 	case 32:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_WarpStalker:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Traqueur de chaine    WarpStalker
 	}
 	case 33:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_Sporebat:48 : 48|t  %s - Lvl %u";
-		break;
+		break;// Sporebat  
 	}
 	case 34:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_NetherRay:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Raie du neant   Nether Ray
 	}
 	case 35:
 	{
 		texticon = "|TInterface\\Icons\\Spell_Nature_GuardianWard:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Serpent
 	}
 	case 37:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_Moth:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Papillon de nuit   Moth
 	}
 	case 38:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_Chimera:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Chimere  Chimaera
 	}
 	case 39:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_Devilsaur:48 : 48|t  %s - Lvl %u";
-		break;
-	}
-	case 40:
-	{
-		texticon = "|TInterface\\Icons\\Ability_Creature_Cursed_05:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Diablosaure  Devilsaur
 	}
 	case 41:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_Silithid:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Silithide  Silithid
 	}
 	case 42:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_Worm:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Ver  Worm
 	}
 	case 43:
 	{
-		texticon = "|TInterface\\Icons\\inv_clefthoofdraenormount_blue:48 : 48|t  %s - Lvl %u";
-		break;
+		texticon = "|TInterface\\Icons\\ability_hunter_pet_rhino:48 : 48|t  %s - Lvl %u";
+		break;// Rhinoceros/Kodo Rhino
 	}
 	case 44:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_Wasp:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Guepe  Wasp
 	}
 	case 45:
 	{
 		texticon = "|TInterface\\Icons\\Ability_Hunter_Pet_CoreHound:48 : 48|t  %s - Lvl %u";
-		break;
-	}
-	case 46:
-	{
-		texticon = "|TInterface\\Icons\\Ability_Druid_PrimalPrecision:48 : 48|t  %s - Lvl %u";
-		break;
+		break;// Chien du magma   Core Hound
 	}
 	case 50:
 	{
 		texticon = "|TInterface\\Icons\\ability_hunter_aspectofthefox:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Renard Fox
 	}
 	case 51:
 	{
 		texticon = "|TInterface\\Icons\\inv_pet_monkey:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Singe  Monkey
 	}
 	case 52:
 	{
 		texticon = "|TInterface\\Icons\\inv_pet_mastiff:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Chien  Dog
 	}
 	case 53:
 	{
 		texticon = "|TInterface\\Icons\\inv_misc_ahnqirajtrinket_01:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Hanneton   
 	}
 	case 55:
 	{
 		texticon = "|TInterface\\Icons\\inv_pet_ shalespider:48 : 48|t  %s - Lvl %u";
-		break;
-	}
-	case 56:
-	{
-		texticon = "|TInterface\\Icons\\achievement_boss_patchwerk:48 : 48|t  %s - Lvl %u";
-		break;
-	}
-	case 57:
-	{
-		texticon = "|TInterface\\Icons\\inv_scarab_stone:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Araignee de schiste  Shale Spider
 	}
 	case 68:
 	{
-		texticon = "|TInterface\\Icons\\	rade_archaeology_whitehydrafigurine:48 : 48|t  %s - Lvl %u";
-		break;
-	}
-	case 116:
-	{
-		texticon = "|TInterface\\Icons\\spell_fire_elemental_totem:48 : 48|t  %s - Lvl %u";
-		break;
-	}
-	case 117:
-	{
-		texticon = "|TInterface\\Icons\\spell_nature_earthelemental_totem:48 : 48|t  %s - Lvl %u";
-		break;
+		texticon = "|TInterface\\Icons\\rade_archaeology_whitehydrafigurine:48 : 48|t  %s - Lvl %u";
+		break;//Hydre  Hydra
 	}
 	case 125:
 	{
-		texticon = "|TInterface\\Icons\\inv_pet_crane:48 : 48|t  %s - Lvl %u";
-		break;
+		texticon = "|TInterface\\Icons\\inv_pet_cranegod:48 : 48|t  %s - Lvl %u";
+		break;//Grue  Crane
 	}
 	case 126:
 	{
 		texticon = "|TInterface\\Icons\\inv_pet_waterstrider:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Trotteur aquatique  Water Strider
 	}
 	case 127:
 	{
 		texticon = "|TInterface\\Icons\\inv_pet_porcupine:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Porc epic  Porcupine
 	}
 	case 128:
 	{
@@ -1293,33 +1268,34 @@ std::string InfoSlot(Player* player, uint8 slot)
 	case 129:
 	{
 		texticon = "|TInterface\\Icons\\inv_pet_ goat:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Chevre/Bouc   Goat
 	}
 	case 130:
 	{
 		texticon = "|TInterface\\Icons\\inv_pet_ basilisk:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Basolic  Basilisk
 	}
 	case 138:
 	{
 		texticon = "|TInterface\\Icons\\inv_pet_direhorn:48 : 48|t  %s - Lvl %u";
-		break;
-	}
-	case 145:
-	{
-		texticon = "|TInterface\\Icons\\ability_druid_galewinds:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//navrecorne   direhorn
 	}
 	case 149:
 	{
 		texticon = "|TInterface\\Icons\\ability_mount_ironchimera:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Rylak 
 	}
 	case 150:
 	{
 		texticon = "|TInterface\\Icons\\inv_hippo_green:48 : 48|t  %s - Lvl %u";
-		break;
+		break;//Hippopotame  Potamodonte 
 	}
+	case 151:
+	{
+		texticon = "|TInterface\\Icons\\inv_misc_herb_goldthorn_bramble:48 : 48|t  %s - Lvl %u";
+		break;//Cerf Stag
+	}
+
 
 	default:
 		texticon = "|TInterface\\Icons\\achievement_guildperk_fasttrack:48 : 48|t  %s - Lvl %u";
