@@ -26875,3 +26875,26 @@ void Player::SetPandaFactionHorde()
 	SaveToDB();
 	GetSession()->LogoutPlayer(false);
 }
+
+//Stitch ecurie chasseur
+void Player::RemovePetFromWorld(Pet* pet)
+{
+	if (!pet || pet->GetOwnerGUID() != GetGUID() || pet->m_removed)
+		return;
+
+	pet->CombatStop();
+
+	SetMinion(pet, false);
+
+	pet->AddObjectToRemoveList();
+	pet->m_removed = true;
+
+	if (pet->isControlled())
+	{
+		WorldPackets::Pet::PetSpells petSpellsPacket;
+		GetSession()->SendPacket(petSpellsPacket.Write());
+
+		if (GetGroup())
+			SetGroupUpdateFlag(GROUP_UPDATE_FLAG_PET);
+	}
+}

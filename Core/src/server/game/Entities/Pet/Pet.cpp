@@ -103,14 +103,18 @@ void Pet::RemoveFromWorld()
     }
 }
 
-bool Pet::LoadPetFromDB(Player* owner, uint32 petEntry, uint32 petnumber, bool current)
+//Stitch ecurie chasseur +
+//bool Pet::LoadPetFromDB(Player* owner, uint32 petEntry, uint32 petnumber, bool current)
+bool Pet::LoadPetFromDB(Player* owner, uint32 petEntry, uint32 petnumber, bool current, uint8 saveSlot)
 {
     m_loading = true;
 
     ObjectGuid::LowType ownerid = owner->GetGUID().GetCounter();
 
+
     PreparedStatement* stmt;
     PreparedQueryResult result;
+
 
     if (petnumber)
     {
@@ -124,7 +128,11 @@ bool Pet::LoadPetFromDB(Player* owner, uint32 petEntry, uint32 petnumber, bool c
         // Current pet (slot 0)
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHAR_PET_BY_ENTRY_AND_SLOT);
         stmt->setUInt64(0, ownerid);
-        stmt->setUInt8(1, uint8(PET_SAVE_AS_CURRENT));
+		
+		//Stitch ecurie chasseur
+		//stmt->setUInt8(1, uint8(PET_SAVE_AS_CURRENT));
+		////stmt->setUInt8(1, saveSlot);
+		stmt->setUInt8(1, uint8(PET_SAVE_AS_CURRENT));
     }
     else if (petEntry)
     {
@@ -132,46 +140,81 @@ bool Pet::LoadPetFromDB(Player* owner, uint32 petEntry, uint32 petnumber, bool c
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHAR_PET_BY_ENTRY_AND_SLOT_2);
         stmt->setUInt64(0, ownerid);
         stmt->setUInt32(1, petEntry);
-        stmt->setUInt8(2, uint8(PET_SAVE_AS_CURRENT));
+        
+		//Stitch ecurie chasseur
+		//stmt->setUInt8(2, uint8(PET_SAVE_AS_CURRENT));
+		////stmt->setUInt8(2, saveSlot);
+		stmt->setUInt8(2, uint8(PET_SAVE_AS_CURRENT));
+
         stmt->setUInt8(3, uint8(PET_SAVE_LAST_STABLE_SLOT));
     }
+
     else
     {
         // Any current or other non-stabled pet (for hunter "call pet")
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_CHAR_PET_BY_SLOT);
         stmt->setUInt64(0, ownerid);
-        stmt->setUInt8(1, uint8(PET_SAVE_AS_CURRENT));
-        stmt->setUInt8(2, uint8(PET_SAVE_LAST_STABLE_SLOT));
-    }
+
+		//Stitch ecurie chasseur
+        //stmt->setUInt8(1, uint8(PET_SAVE_AS_CURRENT));
+        //stmt->setUInt8(2, uint8(PET_SAVE_LAST_STABLE_SLOT));
+		//stmt->setUInt8(2, uint8(saveSlot));
+		if (owner->getClass() == CLASS_HUNTER && saveSlot == 0)
+		{
+			stmt->setUInt8(1, uint8(100));
+		}
+		else
+			stmt->setUInt8(1, uint8(saveSlot));
+			//stmt->setUInt8(1, uint8(PET_SAVE_LAST_STABLE_SLOT));
+	}
 
     result = CharacterDatabase.Query(stmt);
-
-    if (!result)
-    {
-        m_loading = false;
-        return false;
-    }
+	if (!result)
+	{
+		m_loading = false;
+		return false;
+	}
 
     Field* fields = result->Fetch();
 
     // update for case of current pet "slot = 0"
     petEntry = fields[1].GetUInt32();
     if (!petEntry)
-        return false;
+
+		//Stitch ecurie chasseur
+        //return false;
+	{
+		m_loading = false;
+		return false;
+	}
 
     uint32 summonSpellId = fields[14].GetUInt32();
     SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(summonSpellId);
 
     bool isTemporarySummon = spellInfo && spellInfo->GetDuration() > 0;
     if (current && isTemporarySummon)
-        return false;
+
+		//Stitch ecurie chasseur
+        //return false;
+		if (current && isTemporarySummon)
+		{
+			m_loading = false;
+			return false;
+		}
+
 
     PetType petType = PetType(fields[15].GetUInt8());
     if (petType == HUNTER_PET)
     {
         CreatureTemplate const* creatureInfo = sObjectMgr->GetCreatureTemplate(petEntry);
         if (!creatureInfo || !creatureInfo->IsTameable(owner->CanTameExoticPets()))
-            return false;
+
+           //Stitch ecurie chasseur
+			//return false;
+		{
+			m_loading = false;
+			return false;
+		}
     }
 
     uint32 petId = fields[0].GetUInt32();
@@ -285,7 +328,12 @@ bool Pet::LoadPetFromDB(Player* owner, uint32 petEntry, uint32 petnumber, bool c
     // 0=current
     // 1..MAX_PET_STABLES in stable slot
     // PET_SAVE_NOT_IN_SLOT(100) = not stable slot (summoning))
-    if (fields[7].GetUInt8())
+    
+	//Stitch ecurie chasseur
+	//if (fields[7].GetUInt8())
+	if (fields[7].GetUInt8() >= PET_SAVE_FIRST_STABLE_SLOT && fields[7].GetUInt8() <= PET_SAVE_LAST_STABLE_SLOT)
+
+
     {
         SQLTransaction trans = CharacterDatabase.BeginTransaction();
 
@@ -293,6 +341,7 @@ bool Pet::LoadPetFromDB(Player* owner, uint32 petEntry, uint32 petnumber, bool c
         stmt->setUInt8(0, uint8(PET_SAVE_NOT_IN_SLOT));
         stmt->setUInt64(1, ownerid);
         stmt->setUInt8(2, uint8(PET_SAVE_AS_CURRENT));
+
         stmt->setUInt32(3, m_charmInfo->GetPetNumber());
         trans->Append(stmt);
 
