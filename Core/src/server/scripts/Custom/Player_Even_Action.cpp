@@ -245,6 +245,7 @@ case CLASS_HUNTER:
         player->LearnSpell(982, true);      // Ressusciter le familier
         player->LearnSpell(1515, true);     // Apprivoiser une bête
         player->LearnSpell(1462, true);     // Connaissance des bêtes
+		player->LearnSpell(300289, true);     // Ecurie chasseur mobile
     }
 	else
 	{
@@ -257,6 +258,7 @@ case CLASS_HUNTER:
 		player->RemoveSpell(982, false);
 		player->RemoveSpell(1515, false);
 		player->RemoveSpell(1462, false);
+		player->RemoveSpell(300289, false);
 	}
 
 

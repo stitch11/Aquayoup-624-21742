@@ -3,18 +3,11 @@
 /*
 -- FULL `creature_template` of entry 15100055
 REPLACE INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `modelid1`, `modelid2`, `modelid3`, `modelid4`, `name`, `femaleName`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `exp_unk`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `scale`, `rank`, `dmgschool`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `trainer_type`, `trainer_class`, `trainer_race`, `type`, `type_flags`, `type_flags2`, `lootid`, `pickpocketloot`, `skinloot`, `resistance1`, `resistance2`, `resistance3`, `resistance4`, `resistance5`, `resistance6`, `spell1`, `spell2`, `spell3`, `spell4`, `spell5`, `spell6`, `spell7`, `spell8`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `InhabitType`, `HoverHeight`, `HealthModifier`, `HealthModifierExtra`, `ManaModifier`, `ManaModifierExtra`, `ArmorModifier`, `DamageModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `flags_extra`, `ScriptName`, `VerifiedBuild`) VALUES
-(15100055, 0, 0, 0, 0, 0, 32085, 0, 0, 0, 'Ecurie portable', '', '', '', 66007, 1, 1, 0, 0, 35, 1, 1, 1, 0.5, 0, 0, 2000, 2000, 1, 1, 1, 131074, 34816, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 3, 1, 1.5, 1, 1, 1, 1.5, 1.5, 1, 0, 0, 1, 0, 0, 'npc_ecurie_chasseur', 20173);
+(15100055, 0, 0, 0, 0, 0, 32085, 0, 0, 0, 'Ecurie portable', '', '', '', 66007, 1, 1, 0, 0, 35, 1, 1, 1, 0.5, 0, 0, 2000, 2000, 1, 1, 1, 393222, 34816, 0, 0, 0, 0, 0, 10, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 3, 1, 1.5, 1, 1, 1, 1.5, 1.5, 1, 0, 0, 1, 0, 0, 'npc_ecurie_chasseur', 20173);
 
 REPLACE INTO `gossip_menu` (`entry`, `text_id`) VALUES (66007, 66007);
 REPLACE INTO `npc_text` (`ID`, `Probability0`, `Probability1`, `Probability2`, `Probability3`, `Probability4`, `Probability5`, `Probability6`, `Probability7`, `BroadcastTextID0`, `BroadcastTextID1`, `BroadcastTextID2`, `BroadcastTextID3`, `BroadcastTextID4`, `BroadcastTextID5`, `BroadcastTextID6`, `BroadcastTextID7`, `VerifiedBuild`) VALUES ('66007', '1', '0', '0', '0', '0', '0', '0', '0', '15066007', '0', '0', '0', '0', '0', '0', '0', '0');
-REPLACE INTO `broadcast_text` (`ID`, `Language`, `MaleText`, `FemaleText`, `EmoteID1`, `EmoteID2`, `EmoteID3`, `EmoteDelay1`, `EmoteDelay2`, `EmoteDelay3`, `SoundID`, `UnkEmoteID`, `Type`, `VerifiedBuild`) VALUES ('15066007', '1', 'Information sur l\'écurie du chasseur :
---------------------------------------
-
-L'écurie du chasseur permet de stocker son familier actif dans l'un des 10 emplacements d'écurie.
-
-Le nombre d'emplacements dépend de votre level :
-2 d'emplacements au level 5 puis 1 de plus chaque 5 levels.
-
+`broadcast_text` ID 15066007
 */
 //##############################################################################################
 
@@ -38,6 +31,7 @@ public:
 	{
 		uint8 _level = player->getLevel();
 		uint8 _class = player->getClass();
+
 
 		if (_class == CLASS_HUNTER)
 		{
