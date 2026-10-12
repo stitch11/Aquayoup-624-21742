@@ -901,7 +901,7 @@
   app.modalConstants.family[42] = "Ver  -  CREATURE_FAMILY_WORM - 0.4 1.0 0.5 : Mouvement_Caster_Puis_Contact ( spell [2]=spell a distance Cumulable - UPDATE `creature_template_addon` SET `auras` = '58984 164339' WHERE `creature_template_addon`.`entry` = 8603)";
   app.modalConstants.family[43] = "Rhinoceros/Kodo  -  CREATURE_FAMILY_RHINO - 0.6 1.3 0.5(0.6) - AI : 1/3_Mouvement_Contact_Basique , 2/3_Mouvement_Contact_Charges_Multiples, %Charge_Repousse";
   app.modalConstants.family[44] = "Guepe  -  CREATURE_FAMILY_WASP - 0.75 1.0 0.8(0.5) : Mouvement_Contact_Prudent_Volant";
-  app.modalConstants.family[45] = "Chien de base  -  CREATURE_FAMILY_CORE_HOUND - AI : 1/3_Mouvement_Contact_Prudent , 2/3_Mouvement_Contact_Charges_Multiples";
+  app.modalConstants.family[45] = "Chien du magma -  CREATURE_FAMILY_CORE_HOUND - AI : 1/3_Mouvement_Contact_Prudent , 2/3_Mouvement_Contact_Charges_Multiples";
   app.modalConstants.family[46] = "Esprit de bete  -  CREATURE_FAMILY_SPIRIT_BEAST - AI ";
   app.modalConstants.family[49] = "Elementaire d'eau  -  CREATURE_FAMILY_WATER_ELEMENTAL - 0.8 1.0 0.7(1.5) : 1/3_Mouvement_Caster_Puis_Contact ( spell [2] = spell a distance RAPIDE Cumulable) , 1/3_Mouvement_Caster , 1/3_Mouvement_Contact_Basique";
   app.modalConstants.family[50] = "Renard  -  CREATURE_FAMILY_FOX - 0.5 1.0 0.5(0.6) : 1/3_Mouvement_Contact_Basique , 2/3_Mouvement_Contact_Prudent";
@@ -934,7 +934,7 @@ app.modalConstants.family[146] = "MT - Water Elemental  -  CREATURE_FAMILY_MTWAT
 app.modalConstants.family[147] = "Garde de terreur  -  CREATURE_FAMILY_TORRORGUARD - AI ";
 app.modalConstants.family[148] = "Abyssal  -  CREATURE_FAMILY_ABYSSAL - AI ";
 app.modalConstants.family[149] = "Rylak  -  CREATURE_FAMILY_RYLAK - 0.5 1.2 0.5(0.5)";
-app.modalConstants.family[150] = "Potamodonte  -  CREATURE_FAMILY_RIVERBEAST - 0.75 1.5 1.0(1.5)";
+app.modalConstants.family[150] = "Hippopotame -  CREATURE_FAMILY_RIVERBEAST - 0.75 1.5 1.0(1.5)";
 app.modalConstants.family[151] = "Cerf  -  CREATURE_FAMILY_STAG - 0.5 1.2 0.5(0.5)";
 app.modalConstants.family[152] = "Murloc 1.2 - CREATURE_FAMILY_MURLOC - 0.5 1.0 1.2(1.2) : 1/4_Mouvement_Contact_Prudent, 1/4_Mouvement_Contact_Avance_Recule, 2/4_Mouvement_Contact_Basique";
 app.modalConstants.family[153] = "Naga 2.0 - CREATURE_FAMILY_NAGA - 0.5 1.0 2.0(2.0) : 1/3_Mouvement_Contact_Basique, 1/3_Mouvement_Contact_Tournant_Aleatoire, 1/3_Mouvement_Contact_Prudent_Volant";
