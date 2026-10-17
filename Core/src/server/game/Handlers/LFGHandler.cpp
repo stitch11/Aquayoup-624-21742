@@ -132,11 +132,37 @@ void WorldSession::HandleLfgJoinOpcode(WorldPacket& recvData)
 	//Stitch donjon : recherche de groupe
 	if (!GetPlayer()->IsAlive())
 		return;
-
+/*
 	GetPlayer()->SetDungeonDifficultyID(Difficulty(dungeon->difficulty));
 	if (!GetPlayer()->GetMap()->IsDungeon())
 		GetPlayer()->SetBattlegroundEntryPoint();
 	GetPlayer()->TeleportTo(dungeon->map, dungeon->x, dungeon->y, dungeon->z, dungeon->o);
+	*/
+	Player* me = GetPlayer();
+	Group* group = me->GetGroup();
+
+	auto enter = [dungeon](Player* p)
+	{
+		if (!p->IsAlive() || p->InBattleground() || p->InArena())
+			return;
+
+		p->SetDungeonDifficultyID(Difficulty(dungeon->difficulty));
+		if (!p->GetMap()->IsDungeon())
+			p->SetBattlegroundEntryPoint();
+		p->TeleportTo(dungeon->map, dungeon->x, dungeon->y, dungeon->z, dungeon->o);
+	};
+
+	if (group && group->GetLeaderGUID() == me->GetGUID())
+	{
+		// Chef de groupe : tout le groupe entre
+		group->SetDungeonDifficultyID(Difficulty(dungeon->difficulty));
+		for (GroupReference* itr = group->GetFirstMember(); itr != NULL; itr = itr->next())
+			if (Player* member = itr->GetSource())
+				enter(member);
+	}
+	else
+		enter(me);   // pas de groupe, ou membre simple : seul
+
 }
 
 /*	
