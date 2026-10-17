@@ -81,9 +81,91 @@ void BuildQuestReward(WorldPacket& data, Quest const* quest, Player* player)
         }
     }
 }
-
+	//Stitch donjon : recherche de groupe
 void WorldSession::HandleLfgJoinOpcode(WorldPacket& recvData)
 {
+	recvData.ReadBit();                          // bit inconnu (vu à 1)
+	uint32 commentLen = recvData.ReadBits(8);    // 0 dans notre test
+	(void)commentLen;
+
+	uint8 unk8;
+	recvData >> unk8;                            // 0x7F observé
+
+	uint32 roles;
+	recvData >> roles;                           // 8 = dégâts
+
+	uint32 numDungeons;
+	recvData >> numDungeons;
+	if (!numDungeons || numDungeons > 64)
+	{
+		recvData.rfinish();
+		return;
+	}
+
+	for (int i = 0; i < 3; ++i)
+		recvData.read_skip<uint32>();            // "needs"
+
+	lfg::LfgDungeonSet newDungeons;
+	for (uint32 i = 0; i < numDungeons; ++i)
+	{
+		uint32 dungeon;
+		recvData >> dungeon;
+		dungeon &= 0x00FFFFFF;                   // retire le type
+		if (dungeon)
+			newDungeons.insert(dungeon);
+	}
+
+	TC_LOG_ERROR("lfg", "DF_JOIN lu : roles=%u donjons=%u premier=%u",
+		roles, uint32(newDungeons.size()), newDungeons.empty() ? 0 : *newDungeons.begin());
+
+	if (newDungeons.empty())
+		return;
+
+	// Téléportation directe, sans passer par la file : voir explications ci-dessous
+	lfg::LFGDungeonData const* dungeon = sLFGMgr->GetLFGDungeon(*newDungeons.begin());
+	if (!dungeon || (dungeon->x == 0.0f && dungeon->y == 0.0f && dungeon->z == 0.0f))
+	{
+		TC_LOG_ERROR("lfg", "Donjon %u inconnu ou sans coordonnées", *newDungeons.begin());
+		return;
+	}
+
+	//Stitch donjon : recherche de groupe
+	if (!GetPlayer()->IsAlive())
+		return;
+
+	GetPlayer()->SetDungeonDifficultyID(Difficulty(dungeon->difficulty));
+	if (!GetPlayer()->GetMap()->IsDungeon())
+		GetPlayer()->SetBattlegroundEntryPoint();
+	GetPlayer()->TeleportTo(dungeon->map, dungeon->x, dungeon->y, dungeon->z, dungeon->o);
+}
+
+/*	
+	{
+		std::ostringstream hex;
+		for (size_t i = 0; i < recvData.size(); ++i)
+		{
+			char buf[4];
+			snprintf(buf, sizeof(buf), "%02X ", recvData[i]);
+			hex << buf;
+		}
+		TC_LOG_ERROR("lfg", "DF_JOIN size=%u data=%s", uint32(recvData.size()), hex.str().c_str());
+		recvData.rfinish();
+		return;
+	}
+
+
+	{
+		std::ostringstream hex;
+		for (size_t i = 0; i < recvData.size(); ++i)
+		{
+			char buf[4];
+			snprintf(buf, sizeof(buf), "%02X ", recvData[i]);
+			hex << buf;
+		}
+		TC_LOG_ERROR("lfg", "DF_JOIN size=%u data=%s", uint32(recvData.size()), hex.str().c_str());
+	}
+
+
     if (!sLFGMgr->isOptionEnabled(lfg::LFG_OPTION_ENABLE_DUNGEON_FINDER | lfg::LFG_OPTION_ENABLE_RAID_BROWSER) ||
         (GetPlayer()->GetGroup() && GetPlayer()->GetGroup()->GetLeaderGUID() != GetPlayer()->GetGUID() &&
         (GetPlayer()->GetGroup()->GetMembersCount() == MAX_GROUP_SIZE || !GetPlayer()->GetGroup()->isLFGGroup())))
@@ -125,6 +207,9 @@ void WorldSession::HandleLfgJoinOpcode(WorldPacket& recvData)
 
     sLFGMgr->JoinLfg(GetPlayer(), uint8(roles), newDungeons, comment);
 }
+
+	*/
+
 
 void WorldSession::HandleLfgLeaveOpcode(WorldPacket& recvData)
 {

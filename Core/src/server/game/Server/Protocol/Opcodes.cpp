@@ -312,8 +312,12 @@ void OpcodeTable::Initialize()
     DEFINE_OPCODE_HANDLER_OLD(CMSG_DF_BOOT_PLAYER_VOTE,                     STATUS_UNHANDLED, PROCESS_THREADUNSAFE, &WorldSession::HandleLfgSetBootVoteOpcode      );
     DEFINE_OPCODE_HANDLER_OLD(CMSG_DF_GET_JOIN_STATUS,                      STATUS_UNHANDLED, PROCESS_THREADSAFE,   &WorldSession::HandleDFGetJoinStatus           );
     DEFINE_OPCODE_HANDLER_OLD(CMSG_DF_GET_SYSTEM_INFO,                      STATUS_UNHANDLED, PROCESS_THREADSAFE,   &WorldSession::HandleDFGetSystemInfo           );
-    DEFINE_OPCODE_HANDLER_OLD(CMSG_DF_JOIN,                                 STATUS_UNHANDLED, PROCESS_INPLACE,      &WorldSession::HandleLfgJoinOpcode             );
-    DEFINE_OPCODE_HANDLER_OLD(CMSG_DF_LEAVE,                                STATUS_UNHANDLED, PROCESS_INPLACE,      &WorldSession::HandleLfgLeaveOpcode            );
+    
+	//Stitch donjon : recherche de groupe
+	//DEFINE_OPCODE_HANDLER_OLD(CMSG_DF_JOIN,                                 STATUS_UNHANDLED, PROCESS_INPLACE,      &WorldSession::HandleLfgJoinOpcode             );
+	DEFINE_OPCODE_HANDLER_OLD(CMSG_DF_JOIN,									STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleLfgJoinOpcode);
+	
+	DEFINE_OPCODE_HANDLER_OLD(CMSG_DF_LEAVE,                                STATUS_UNHANDLED, PROCESS_INPLACE,      &WorldSession::HandleLfgLeaveOpcode            );
     DEFINE_OPCODE_HANDLER_OLD(CMSG_DF_PROPOSAL_RESPONSE,                    STATUS_UNHANDLED, PROCESS_THREADUNSAFE, &WorldSession::HandleLfgProposalResultOpcode   );
     DEFINE_HANDLER(CMSG_DF_READY_CHECK_RESPONSE,                            STATUS_UNHANDLED, PROCESS_INPLACE,      WorldPackets::Null, &WorldSession::Handle_NULL);
     DEFINE_HANDLER(CMSG_DF_SEARCH_JOIN,                                     STATUS_UNHANDLED, PROCESS_INPLACE,      WorldPackets::Null, &WorldSession::Handle_NULL);

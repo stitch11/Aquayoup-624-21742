@@ -437,7 +437,12 @@ class TC_GAME_API LFGMgr
         void RemovePlayerData(ObjectGuid guid);
         void GetCompatibleDungeons(LfgDungeonSet& dungeons, GuidSet const& players, LfgLockPartyMap& lockMap, bool isContinue);
         void _SaveToDB(ObjectGuid guid, uint32 db_guid);
-        LFGDungeonData const* GetLFGDungeon(uint32 id);
+        
+		//Stitch donjon : recherche de groupe
+		//LFGDungeonData const* GetLFGDungeon(uint32 id);
+		public:
+			LFGDungeonData const* GetLFGDungeon(uint32 id);
+private:
 
         // Proposals
         void RemoveProposal(LfgProposalContainer::iterator itProposal, LfgUpdateType type);

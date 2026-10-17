@@ -416,6 +416,9 @@ LfgCompatibility LFGQueue::CheckCompatibility(GuidList check)
         }
     }
 
+
+	/*
+	//Stitch donjon solo
     // Group with less that MAX_GROUP_SIZE members always compatible
     if (check.size() == 1 && numPlayers != MAX_GROUP_SIZE)
     {
@@ -430,6 +433,8 @@ LfgCompatibility LFGQueue::CheckCompatibility(GuidList check)
         SetCompatibilityData(strGuids, data);
         return LFG_COMPATIBLES_WITH_LESS_PLAYERS;
     }
+	*/
+
 
     if (numLfgGroups > 1)
     {
@@ -514,8 +519,12 @@ LfgCompatibility LFGQueue::CheckCompatibility(GuidList check)
         LFGMgr::CheckGroupRoles(proposalRoles);          // assing new roles
     }
 
+	//Stitch donjon solo
     // Enough players?
-    if (numPlayers != MAX_GROUP_SIZE)
+    //if (numPlayers != MAX_GROUP_SIZE)
+	if (numPlayers < 1)
+
+
     {
         TC_LOG_DEBUG("lfg.queue.match.compatibility.check", "Guids: (%s) Compatibles but not enough players(%u)", GetDetailedMatchRoles(check).c_str(), numPlayers);
         LfgCompatibilityData data(LFG_COMPATIBLES_WITH_LESS_PLAYERS);
