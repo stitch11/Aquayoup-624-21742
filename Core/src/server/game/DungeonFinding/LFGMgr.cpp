@@ -1343,6 +1343,45 @@ void LFGMgr::TeleportPlayer(Player* player, bool out, bool fromOpcode /*= false*
         dungeon->x, dungeon->y, dungeon->z, error);
 }
 
+//Stitch Donjon : ajouter les recompense en utilisant l'identifiant de la rencontre finale
+void LFGMgr::GiveSoloReward(Player* player, uint32 dungeonId)
+{
+	LFGDungeonData const* dungeon = GetLFGDungeon(dungeonId);
+	if (!dungeon)
+		return;
+
+	// Donjon aléatoire de même groupe : c'est lui qui porte les récompenses
+	uint32 randomId = 0;
+	for (LFGDungeonContainer::const_iterator itr = LfgDungeonStore.begin(); itr != LfgDungeonStore.end(); ++itr)
+		if (itr->second.type == LFG_TYPE_RANDOM && itr->second.group == dungeon->group)
+		{
+			randomId = itr->second.id;
+			break;
+		}
+
+	if (!randomId)
+		return;
+
+	LfgReward const* reward = GetRandomDungeonReward(randomId, player->getLevel());
+	if (!reward)
+		return;
+
+	Quest const* quest = sObjectMgr->GetQuestTemplate(reward->firstQuest);
+	if (!quest)
+		return;
+
+	// Première fois (quotidienne) : quête principale, sinon quête de répétition
+	if (player->CanRewardQuest(quest, false))
+		player->RewardQuest(quest, 0, NULL, false);
+	else
+	{
+		quest = sObjectMgr->GetQuestTemplate(reward->otherQuest);
+		if (!quest)
+			return;
+		player->RewardQuest(quest, 0, NULL, false);
+	}
+}
+
 /**
    Finish a dungeon and give reward, if any.
 

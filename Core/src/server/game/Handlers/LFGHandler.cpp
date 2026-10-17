@@ -141,12 +141,29 @@ void WorldSession::HandleLfgJoinOpcode(WorldPacket& recvData)
 	Player* me = GetPlayer();
 	Group* group = me->GetGroup();
 
-	auto enter = [dungeon](Player* p)
+	//Stitch Donjon : Mode Mythique forcée
+	// Difficulté forcée : mythique si la carte le permet, sinon héroïque, sinon celle de l'entrée choisie
+	Difficulty diff = Difficulty(dungeon->difficulty);
+	if (GetMapDifficultyData(dungeon->map, DIFFICULTY_MYTHIC))
+		diff = DIFFICULTY_MYTHIC;
+	else if (GetMapDifficultyData(dungeon->map, DIFFICULTY_HEROIC))
+		diff = DIFFICULTY_HEROIC;
+
+
+	//Stitch Donjon : Mode Mythique forcée
+	//auto enter = [dungeon](Player* p)
+	auto enter = [dungeon, diff](Player* p)
+
+
 	{
 		if (!p->IsAlive() || p->InBattleground() || p->InArena())
 			return;
 
-		p->SetDungeonDifficultyID(Difficulty(dungeon->difficulty));
+		//Stitch Donjon : Mode Mythique forcée
+		//p->SetDungeonDifficultyID(Difficulty(dungeon->difficulty));
+		p->SetDungeonDifficultyID(diff);
+
+
 		if (!p->GetMap()->IsDungeon())
 			p->SetBattlegroundEntryPoint();
 		p->TeleportTo(dungeon->map, dungeon->x, dungeon->y, dungeon->z, dungeon->o);
@@ -155,7 +172,12 @@ void WorldSession::HandleLfgJoinOpcode(WorldPacket& recvData)
 	if (group && group->GetLeaderGUID() == me->GetGUID())
 	{
 		// Chef de groupe : tout le groupe entre
-		group->SetDungeonDifficultyID(Difficulty(dungeon->difficulty));
+
+		//Stitch Donjon : Mode Mythique forcée
+		//group->SetDungeonDifficultyID(Difficulty(dungeon->difficulty));
+		group->SetDungeonDifficultyID(diff); 
+
+
 		for (GroupReference* itr = group->GetFirstMember(); itr != NULL; itr = itr->next())
 			if (Player* member = itr->GetSource())
 				enter(member);
