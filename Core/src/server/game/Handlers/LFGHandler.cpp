@@ -169,10 +169,12 @@ void WorldSession::HandleLfgJoinOpcode(WorldPacket& recvData)
 
 		if (!p->GetMap()->IsDungeon())
 			p->SetBattlegroundEntryPoint();
-		p->TeleportTo(dungeon->map, dungeon->x, dungeon->y, dungeon->z, dungeon->o);
 
 		//Stitch Donjon : commande exitdj pour quiter le donjon
-		ChatHandler(p->GetSession()).SendSysMessage(u8"|cff000000 Pour quitter le donjon, tapez .exitdj |r");
+		ChatHandler(p->GetSession()).SendSysMessage(u8"|cfff00000 >>>>>> POUR QUITER LE DONJON, TAPEZ .exitdj <<<<<< |r");
+
+		p->TeleportTo(dungeon->map, dungeon->x, dungeon->y, dungeon->z, dungeon->o);
+
 	};
 
 	if (group && group->GetLeaderGUID() == me->GetGUID())
