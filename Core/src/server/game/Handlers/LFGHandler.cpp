@@ -23,6 +23,9 @@
 #include "WorldPacket.h"
 #include "WorldSession.h"
 
+ //Stitch Donjon : commande exitdj pour quiter le donjon
+#include "Chat.h"
+
 void BuildPlayerLockDungeonBlock(WorldPacket& data, lfg::LfgLockMap const& lock)
 {
     data << uint32(lock.size());                           // Size of lock dungeons
@@ -141,7 +144,7 @@ void WorldSession::HandleLfgJoinOpcode(WorldPacket& recvData)
 	Player* me = GetPlayer();
 	Group* group = me->GetGroup();
 
-	//Stitch Donjon : Mode Mythique forcée
+	//Stitch Donjon : Mode Mythique forcée, sinon héroïque...
 	// Difficulté forcée : mythique si la carte le permet, sinon héroïque, sinon celle de l'entrée choisie
 	Difficulty diff = Difficulty(dungeon->difficulty);
 	if (GetMapDifficultyData(dungeon->map, DIFFICULTY_MYTHIC))
@@ -150,7 +153,7 @@ void WorldSession::HandleLfgJoinOpcode(WorldPacket& recvData)
 		diff = DIFFICULTY_HEROIC;
 
 
-	//Stitch Donjon : Mode Mythique forcée
+	//Stitch Donjon : Mode Mythique forcée, sinon héroïque...
 	//auto enter = [dungeon](Player* p)
 	auto enter = [dungeon, diff](Player* p)
 
@@ -159,7 +162,7 @@ void WorldSession::HandleLfgJoinOpcode(WorldPacket& recvData)
 		if (!p->IsAlive() || p->InBattleground() || p->InArena())
 			return;
 
-		//Stitch Donjon : Mode Mythique forcée
+		//Stitch Donjon : Mode Mythique forcée, sinon héroïque...
 		//p->SetDungeonDifficultyID(Difficulty(dungeon->difficulty));
 		p->SetDungeonDifficultyID(diff);
 
@@ -167,13 +170,16 @@ void WorldSession::HandleLfgJoinOpcode(WorldPacket& recvData)
 		if (!p->GetMap()->IsDungeon())
 			p->SetBattlegroundEntryPoint();
 		p->TeleportTo(dungeon->map, dungeon->x, dungeon->y, dungeon->z, dungeon->o);
+
+		//Stitch Donjon : commande exitdj pour quiter le donjon
+		ChatHandler(p->GetSession()).SendSysMessage(u8"|cff000000 Pour quitter le donjon, tapez .exitdj |r");
 	};
 
 	if (group && group->GetLeaderGUID() == me->GetGUID())
 	{
 		// Chef de groupe : tout le groupe entre
 
-		//Stitch Donjon : Mode Mythique forcée
+		//Stitch Donjon : Mode Mythique forcée, sinon héroïque...
 		//group->SetDungeonDifficultyID(Difficulty(dungeon->difficulty));
 		group->SetDungeonDifficultyID(diff); 
 

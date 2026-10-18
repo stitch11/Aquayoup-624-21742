@@ -47,6 +47,7 @@ public:
 
     std::vector<ChatCommand> GetCommands() const override
     {
+		//Stitch Donjon : commande exitdj pour quiter le donjon
         static std::vector<ChatCommand> commandTable =
         {
             { "additem",          rbac::RBAC_PERM_COMMAND_ADDITEM,          false, &HandleAddItemCommand,          "" },
@@ -63,6 +64,8 @@ public:
             { "dev",              rbac::RBAC_PERM_COMMAND_DEV,              false, &HandleDevCommand,              "" },
             { "die",              rbac::RBAC_PERM_COMMAND_DIE,              false, &HandleDieCommand,              "" },
             { "dismount",         rbac::RBAC_PERM_COMMAND_DISMOUNT,         false, &HandleDismountCommand,         "" },
+
+			{ "exitdj", rbac::RBAC_PERM_COMMAND_DISMOUNT, false, &HandleexitdjCommand, "" },
             { "distance",         rbac::RBAC_PERM_COMMAND_DISTANCE,         false, &HandleGetDistanceCommand,      "" },
             { "freeze",           rbac::RBAC_PERM_COMMAND_FREEZE,           false, &HandleFreezeCommand,           "" },
             { "gps",              rbac::RBAC_PERM_COMMAND_GPS,              false, &HandleGPSCommand,              "" },
@@ -655,6 +658,27 @@ public:
         player->RemoveAurasByType(SPELL_AURA_MOUNTED);
         return true;
     }
+
+	//Stitch Donjon : commande exitdj pour quiter le donjon
+	static bool HandleexitdjCommand(ChatHandler* handler, char const* /*args*/)
+	{
+		Player* player = handler->GetSession()->GetPlayer();
+
+		if (!player->GetMap()->IsDungeon())
+		{
+			handler->SendSysMessage("Vous n'etes pas dans un donjon.");
+			return true;
+		}
+
+		if (player->IsInCombat())
+		{
+			handler->SendSysMessage("Vous ne pouvez pas sortir en combat.");
+			return true;
+		}
+
+		player->TeleportToBGEntryPoint();
+		return true;
+	}
 
     static bool HandleGUIDCommand(ChatHandler* handler, char const* /*args*/)
     {

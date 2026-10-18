@@ -703,6 +703,28 @@ void InstanceScript::UpdateEncounterState(EncounterCreditType type, uint32 credi
         }
     }
 
+	//Stitch Donjon : ajouter les recompense en utilisant l'identifiant de la rencontre finale
+	if (dungeonId)
+	{
+		Map::PlayerList const& players = instance->GetPlayers();
+
+		// Vrai groupe LFG : comportement normal
+		for (Map::PlayerList::const_iterator i = players.begin(); i != players.end(); ++i)
+			if (Player* player = i->GetSource())
+				if (Group* grp = player->GetGroup())
+					if (grp->isLFGGroup())
+					{
+						sLFGMgr->FinishDungeon(grp->GetGUID(), dungeonId);
+						return;
+					}
+
+		// Sinon : récompense directe pour chaque joueur vivant de l'instance
+		for (Map::PlayerList::const_iterator i = players.begin(); i != players.end(); ++i)
+			if (Player* player = i->GetSource())
+				if (player->IsAlive())
+					sLFGMgr->GiveSoloReward(player, dungeonId);
+	}
+	/*
     if (dungeonId)
     {
         Map::PlayerList const& players = instance->GetPlayers();
@@ -717,6 +739,7 @@ void InstanceScript::UpdateEncounterState(EncounterCreditType type, uint32 credi
                     }
         }
     }
+	*/
 }
 
 void InstanceScript::UpdatePhasing()
