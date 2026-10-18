@@ -529,6 +529,14 @@ void World::LoadConfigSettings(bool reload)
     rate_values[RATE_DROP_ITEM_ARTIFACT]   = sConfigMgr->GetFloatDefault("Rate.Drop.Item.Artifact", 1.0f);
     rate_values[RATE_DROP_ITEM_REFERENCED] = sConfigMgr->GetFloatDefault("Rate.Drop.Item.Referenced", 1.0f);
     rate_values[RATE_DROP_ITEM_REFERENCED_AMOUNT] = sConfigMgr->GetFloatDefault("Rate.Drop.Item.ReferencedAmount", 1.0f);
+	
+	//Stitch Rate drop elite
+	rate_values[RATE_DROP_ITEM_RANK_0] = sConfigMgr->GetFloatDefault("Rate.Drop.Item.Rank0", 1.0f);
+	rate_values[RATE_DROP_ITEM_RANK_1] = sConfigMgr->GetFloatDefault("Rate.Drop.Item.Rank1", 1.0f);
+	rate_values[RATE_DROP_ITEM_RANK_2] = sConfigMgr->GetFloatDefault("Rate.Drop.Item.Rank2", 1.0f);
+	rate_values[RATE_DROP_ITEM_RANK_3] = sConfigMgr->GetFloatDefault("Rate.Drop.Item.Rank3", 1.0f);
+	rate_values[RATE_DROP_ITEM_RANK_4] = sConfigMgr->GetFloatDefault("Rate.Drop.Item.Rank4", 1.0f);
+
     rate_values[RATE_DROP_MONEY]  = sConfigMgr->GetFloatDefault("Rate.Drop.Money", 1.0f);
     rate_values[RATE_XP_KILL]     = sConfigMgr->GetFloatDefault("Rate.XP.Kill", 1.0f);
     rate_values[RATE_XP_BG_KILL]  = sConfigMgr->GetFloatDefault("Rate.XP.BattlegroundKill", 1.0f);

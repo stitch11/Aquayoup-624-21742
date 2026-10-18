@@ -13211,8 +13211,19 @@ void Unit::Kill(Unit* victim, bool durabilityLoss)
             Loot* loot = &creature->loot;
 
             loot->clear();
-            if (uint32 lootid = creature->GetCreatureTemplate()->lootid)
-                loot->FillLoot(lootid, LootTemplates_Creature, looter, false, false, creature->GetLootMode());
+
+			//Stitch Rate drop elite
+			//creature->loot.eliteRateMod = sWorld->getRate(RATE_DROP_ITEM_ELITE);
+			uint32 creatureRank = creature->GetCreatureTemplate()->rank;
+			if (creatureRank > 4)
+				creatureRank = 0;
+			creature->loot.eliteRateMod = sWorld->getRate(Rates(RATE_DROP_ITEM_RANK_0 + creatureRank));
+
+	
+
+			if (uint32 lootid = creature->GetCreatureTemplate()->lootid)
+				loot->FillLoot(lootid, LootTemplates_Creature, looter, false, false, creature->GetLootMode());
+
 
             loot->generateMoneyLoot(creature->GetCreatureTemplate()->mingold, creature->GetCreatureTemplate()->maxgold);
 

@@ -1,5 +1,8 @@
+
 ################################################
 # Trinity Core World Server configuration file #
+#
+# Calculate.Creature.Zone.Area.Data
 ################################################
 [worldserver]
 
@@ -15,12 +18,13 @@ Guild.UndeletableLevel = 4
 Aquayoup.Solocraft = 1
 
 # FunRate ###  
-# FunAllStat 				- Defaut/Arcade : 2	- Coefficient des stats joueur (1=50% | 2=normal | 3=150% | 4=200% etc)
-# FunDamageDefaut 	- Defaut/Arcade : 1	- Coefficient de degat des armes fait par un joueur (1=normal | 2=150% | 3=200% etc)
-# FunDamageSpell		- Defaut/Arcade : 2	- Coefficient de degat des sorts fait par un joueur (1=50% | 2=normal | 3=150% | 4=200% etc)
-# FunHealSpell			- Defaut/Arcade : 2	- Coefficient de heal & Leech des sorts  fait par un joueur (1=50% | 2=normal | 3=150% | 4=200% etc)
-# FunSpeedCast			- Defaut/Arcade : 1	- Coefficient de temps pour lancer un sort (affichage non modifié) (1=Normal | 2=200% | 3=300% : tres lent)
-# FunArmor					- Defaut/Arcade : 1	- Coefficient d'armure (1=normal | 2=200% | 3=300% etc)
+# FunAllStat 						- Defaut/Arcade : 2		- Coefficient des stats joueur (1=50% | 2=normal | 3=150% | 4=200% etc)
+# FunDamageDefaut 			- Defaut/Arcade : 1		- Coefficient de degat des armes fait par un joueur (1=normal | 2=150% | 3=200% etc)
+# FunDamageSpell				- Defaut/Arcade : 2		- Coefficient de degat des sorts fait par un joueur (1=50% | 2=normal | 3=150% | 4=200% etc)
+# FunHealSpell						- Defaut/Arcade : 2		- Coefficient de heal & Leech des sorts  fait par un joueur (1=50% | 2=normal | 3=150% | 4=200% etc)
+# FunSpeedCast					- Defaut/Arcade : 1		- Coefficient de temps pour lancer un sort (affichage non modifié) (1=Normal | 2=200% | 3=300% : tres lent)
+# FunArmor							- Defaut/Arcade : 1		- Coefficient d'armure (1=normal | 2=200% | 3=300% etc)
+# FunPowerRegen 				- Defaut/Arcade : 2	- Coefficient du regen (de 1:lent a 5:rapide) de mana , energie , focus , Fureur démoniaque , runes
 # Rate.Mana  (mettre Rate.Mana = 0.75)
 
 FunAllStat = 2
@@ -29,8 +33,24 @@ FunDamageSpell = 2
 FunHealSpell = 2
 FunSpeedCast = 1
 FunArmor	= 1
+#FunPowerRegen = 2 
 
+#    Rate.Drop.Item.Rank0
+#    Rate.Drop.Item.Rank1
+#    Rate.Drop.Item.Rank2
+#    Rate.Drop.Item.Rank3
+#    Rate.Drop.Item.Rank4
+#        Description: Multiplicateur de chance de drop selon le rang de la créature  (creature_template.rank) :
+#                       Rank0 = Normal, Rank1 = Elite, Rank2 = Rare Elite,
+#                       Rank3 = World Boss, Rank4 = Rare.
+#                     Ne s'applique pas aux drops à 100 % ni aux objets dans un groupe (GroupId > 0). Se cumule avec les rates par qualité.
+#        Default:     1 - (pas de changement)
 
+Rate.Drop.Item.Rank0 = 1
+Rate.Drop.Item.Rank1 = 2
+Rate.Drop.Item.Rank2 = 3
+Rate.Drop.Item.Rank3 = 4
+Rate.Drop.Item.Rank4 = 4
 
 # Guilde ###########################################
 # 5 rangs de base comme suit :

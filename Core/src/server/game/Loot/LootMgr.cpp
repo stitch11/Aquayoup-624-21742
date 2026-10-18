@@ -291,6 +291,23 @@ void LootStore::ReportNonExistingId(uint32 lootId, const char* ownerType, uint32
 
 // Checks if the entry (quest, non-quest, reference) takes it's chance (at loot generation)
 // RATE_DROP_ITEMS is no longer used for all types of entries
+
+//Stitch Rate drop elite
+bool LootStoreItem::Roll(bool rate, float extraMod) const
+{
+	if (chance >= 100.0f)
+		return true;
+
+	if (reference > 0)                                   // reference case
+		return roll_chance_f(chance* (rate ? sWorld->getRate(RATE_DROP_ITEM_REFERENCED) : 1.0f));
+
+	ItemTemplate const* pProto = sObjectMgr->GetItemTemplate(itemid);
+
+	float qualityModifier = pProto && rate ? sWorld->getRate(qualityToRate[pProto->GetQuality()]) : 1.0f;
+
+	return roll_chance_f(chance * qualityModifier * (rate ? extraMod : 1.0f));
+}
+/*
 bool LootStoreItem::Roll(bool rate) const
 {
     if (chance >= 100.0f)
@@ -304,7 +321,7 @@ bool LootStoreItem::Roll(bool rate) const
     float qualityModifier = pProto && rate ? sWorld->getRate(qualityToRate[pProto->GetQuality()]) : 1.0f;
 
     return roll_chance_f(chance * qualityModifier);
-}
+}*/
 
 // Checks correctness of values
 bool LootStoreItem::IsValid(LootStore const& store, uint32 entry) const
@@ -598,7 +615,9 @@ void LootTemplate::Process(Loot& loot, bool rate, uint16 lootMode, uint8 groupId
         if (!(item->lootmode & lootMode))                       // Do not add if mode mismatch
             continue;
 
-        if (!item->Roll(rate))
+		//Stitch Rate drop elite
+		if (!item->Roll(rate, loot.eliteRateMod))
+        //if (!item->Roll(rate))
             continue;                                           // Bad luck for the entry
 
         if (item->reference > 0)                            // References processing
