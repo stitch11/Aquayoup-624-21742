@@ -616,6 +616,7 @@ bool Transport::TeleportTransport(uint32 newMapid, float x, float y, float z, fl
         return true;
     }
 
+	//Stitch transport bug : synchro client-serveur, exemple Fossoyeuse <-> Grom'gol
 	else
 	{
 		// Move the transport first so that the offset sent to players
