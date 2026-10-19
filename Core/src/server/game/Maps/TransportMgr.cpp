@@ -345,6 +345,10 @@ void TransportMgr::GeneratePath(GameObjectTemplate const* goInfo, TransportTempl
     keyFrames.back().NextArriveTime = keyFrames.back().DepartureTime;
 
     transport->pathTime = keyFrames.back().DepartureTime;
+
+	TC_LOG_ERROR("server.loading", "Transport entry %u path %u: keyFrames=%u pathTime=%u ms",
+		goInfo->entry, pathId, uint32(keyFrames.size()), transport->pathTime);
+
 }
 
 void TransportMgr::AddPathNodeToTransport(uint32 transportEntry, uint32 timeSeg, TransportAnimationEntry const* node)

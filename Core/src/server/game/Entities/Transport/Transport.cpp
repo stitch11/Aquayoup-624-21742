@@ -615,6 +615,29 @@ bool Transport::TeleportTransport(uint32 newMapid, float x, float y, float z, fl
         UnloadStaticPassengers();
         return true;
     }
+
+	else
+	{
+		// Move the transport first so that the offset sent to players
+		// is computed against the new transport position
+		UpdatePosition(x, y, z, o);
+
+		// Teleport players, they need to know it
+		for (PassengerSet::iterator itr = _passengers.begin(); itr != _passengers.end(); ++itr)
+		{
+			if ((*itr)->GetTypeId() == TYPEID_PLAYER)
+			{
+				float destX, destY, destZ, destO;
+				(*itr)->m_movementInfo.transport.pos.GetPosition(destX, destY, destZ, destO);
+				TransportBase::CalculatePassengerPosition(destX, destY, destZ, &destO, x, y, z, o);
+
+				(*itr)->ToUnit()->NearTeleportTo(destX, destY, destZ, destO);
+			}
+		}
+
+		return false;
+	}
+	/*
     else
     {
         // Teleport players, they need to know it
@@ -633,6 +656,8 @@ bool Transport::TeleportTransport(uint32 newMapid, float x, float y, float z, fl
         UpdatePosition(x, y, z, o);
         return false;
     }
+	*/
+
 }
 
 void Transport::DelayedTeleportTransport()
