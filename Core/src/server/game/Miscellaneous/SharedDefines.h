@@ -162,7 +162,7 @@ enum Races
 };
 
 // max+1 for player race
-#define MAX_RACES         29 			//Stitch new race par defaut 27
+#define MAX_RACES         27 			//Stitch new race par defaut 27
 
 #define RACEMASK_ALL_PLAYABLE      \
     ((1<<(RACE_HUMAN-1))         | \

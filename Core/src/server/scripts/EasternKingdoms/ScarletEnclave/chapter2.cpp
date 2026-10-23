@@ -1044,6 +1044,38 @@ public:
                                     return;
                             }
                             break;
+						case RACE_PANDAREN_ALLIANCE :
+						case RACE_PANDAREN_HORDE :
+							switch (ExecuteSpeech_Counter)
+							{
+							case 0: Talk(SAY_EXEC_START_1, player); break;
+							case 1: me->SetStandState(UNIT_STAND_STATE_STAND); break;
+							case 2: Talk(SAY_EXEC_PROG_1, player); break;
+							case 3: Talk(SAY_EXEC_NAME_1, player); break;
+							case 4: Talk(SAY_EXEC_RECOG_2, player); break;
+							case 5: Talk(SAY_EXEC_NOREM_1, player); break;
+							case 6: Talk(SAY_EXEC_THINK_4, player); break;
+							case 7: Talk(SAY_EXEC_LISTEN_1, player); break;
+							case 8:
+								if (Creature* Plaguefist = GetClosestCreatureWithEntry(me, NPC_PLAGUEFIST, 85.0f))
+									Plaguefist->AI()->Talk(SAY_PLAGUEFIST, player);
+								break;
+							case 9:
+								Talk(SAY_EXEC_TIME_2, player);
+								me->SetStandState(UNIT_STAND_STATE_KNEEL);
+								me->SetImmuneToPC(false);
+								break;
+							case 10:
+								Talk(SAY_EXEC_WAITING, player);
+								break;
+							case 11:
+								Talk(EMOTE_DIES);
+								me->setDeathState(JUST_DIED);
+								me->SetHealth(0);
+								player->RewardPlayerAndGroupAtEvent(29061, me);
+								return;
+							}
+							break;
                     }
 
                     if (ExecuteSpeech_Counter >= 9)
