@@ -155,6 +155,9 @@ extern int main(int argc, char** argv)
 	TC_LOG_INFO("server.worldserver", "xx * DressNPC (creature_template_outfits , modelid1 a modelid4 en négatif)        xx");
 	TC_LOG_INFO("server.worldserver", "xx * NPC_AI_xxx Script de classes et autres pour mobs classiques                  xx");
 	TC_LOG_INFO("server.worldserver", "xx * Action suite a un événement Joueur(Apprentissage, connexion, levelup, zone...xx");
+	TC_LOG_INFO("server.worldserver", "xx * Entrer en Donjon en solo et mode Mytique et commande pour quiter .exitdj     xx");
+	TC_LOG_INFO("server.worldserver", "xx * Rate loot par rang de creature 0 a 4		                                 xx");
+	TC_LOG_INFO("server.worldserver", "xx * Ecurie chasseur portable 10 slots. NPC 15100055  		                     xx");
 	TC_LOG_INFO("server.worldserver", "xx                                                                                xx");
 	TC_LOG_INFO("server.worldserver", "xx * Diverses autres majs,debugs,custom, etc ... voir forum                       xx");
 	TC_LOG_INFO("server.worldserver", "xx * Un grand Merci a Noc & Scade pour leurs aides                                xx");
