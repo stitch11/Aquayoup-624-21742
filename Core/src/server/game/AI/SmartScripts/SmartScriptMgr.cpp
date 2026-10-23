@@ -276,6 +276,8 @@ void SmartAIMgr::LoadSmartAIFromDB()
         {
             for (SmartScriptHolder const& e : itr->second)
             {
+				//Stitch bug faut log SMART_EVENT_LINK 9 neutralisé
+				/*
                 if (e.link)
                 {
                     if (!FindLinkedEvent(itr->second, e.link))
@@ -293,6 +295,7 @@ void SmartAIMgr::LoadSmartAIFromDB()
                             e.entryOrGuid, e.GetScriptType(), e.event_id);
                     }
                 }
+				*/
             }
         }
     }
