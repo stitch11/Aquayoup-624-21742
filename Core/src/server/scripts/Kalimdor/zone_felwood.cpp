@@ -262,7 +262,7 @@ public: spell_ruumbos_silly_dance() : SpellScriptLoader("spell_ruumbos_silly_dan
 
 void AddSC_felwood()
 {
-    new npc_whisperwind_lasher();
+    //new npc_whisperwind_lasher();
     new spell_swipe_honey();
     new spell_beesbees();
     new spell_ruumbos_silly_dance();
