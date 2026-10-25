@@ -259,8 +259,20 @@ struct QuestOfferRewardLocale
 	StringVector RewardText;
 };
 
+
+//Stitch quest_Request_Items_locale
+struct QuestRequestItemsLocale
+{
+	StringVector CompletionText;
+};
+
 typedef std::unordered_map<uint32, QuestOfferRewardLocale>
 QuestOfferRewardLocaleContainer;
+
+
+//Stitch quest_Request_Items_locale
+typedef std::unordered_map<uint32, QuestRequestItemsLocale>
+QuestRequestItemsLocaleContainer;
 
 struct QuestObjectivesLocale
 {

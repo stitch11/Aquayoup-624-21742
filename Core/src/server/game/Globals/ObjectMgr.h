@@ -1040,6 +1040,9 @@ class TC_GAME_API ObjectMgr
 		//Stitch quest_offer_reward_locale
 		void LoadQuestOfferRewardLocale();
 
+		//Stitch quest_Request_Items_locale
+		void LoadQuestRequestItemsLocale();
+
         void LoadQuestObjectivesLocale();
         void LoadPageTextLocales();
         void LoadGossipMenuItemsLocales();
@@ -1223,6 +1226,17 @@ class TC_GAME_API ObjectMgr
 			return &itr->second;
 		}
 
+		//Stitch quest_Request_Items_locale
+		QuestRequestItemsLocale const* GetQuestRequestItemsLocale(uint32 entry) const
+		{
+			QuestRequestItemsLocaleContainer::const_iterator itr =
+				_questRequestItemsLocaleStore.find(entry);
+
+			if (itr == _questRequestItemsLocaleStore.end())
+				return nullptr;
+
+			return &itr->second;
+		}
 
         QuestObjectivesLocale const* GetQuestObjectivesLocale(uint32 entry) const
         {
@@ -1584,6 +1598,9 @@ class TC_GAME_API ObjectMgr
 
 		//Stitch quest_offer_reward_locale
 		QuestOfferRewardLocaleContainer _questOfferRewardLocaleStore;
+
+		//Stitch quest_Request_Items_locale
+		QuestRequestItemsLocaleContainer _questRequestItemsLocaleStore;
 
         QuestObjectivesLocaleContainer _questObjectivesLocaleStore;
         PageTextLocaleContainer _pageTextLocaleStore;

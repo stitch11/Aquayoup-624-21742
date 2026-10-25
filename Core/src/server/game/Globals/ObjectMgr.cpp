@@ -4608,6 +4608,46 @@ void ObjectMgr::LoadQuestOfferRewardLocale()
 		GetMSTimeDiffToNow(oldMSTime));
 }
 
+//Stitch quest_Request_Items_locale
+void ObjectMgr::LoadQuestRequestItemsLocale()
+{
+	uint32 oldMSTime = getMSTime();
+
+	_questRequestItemsLocaleStore.clear();
+
+	QueryResult result = WorldDatabase.Query(
+		"SELECT ID, locale, CompletionText "
+		"FROM quest_request_items_locale");
+
+	if (!result)
+		return;
+
+	do
+	{
+		Field* fields = result->Fetch();
+
+		uint32 id = fields[0].GetUInt32();
+		std::string localeName = fields[1].GetString();
+		std::string completionText = fields[2].GetString();
+
+		LocaleConstant locale = GetLocaleByName(localeName);
+
+		if (locale == LOCALE_enUS)
+			continue;
+
+		QuestRequestItemsLocale& data =
+			_questRequestItemsLocaleStore[id];
+
+		AddLocaleString(completionText, locale, data.CompletionText);
+
+	} while (result->NextRow());
+
+	TC_LOG_INFO("server.loading",
+		">> Loaded %u Quest Request Items locale strings in %u ms",
+		uint32(_questRequestItemsLocaleStore.size()),
+		GetMSTimeDiffToNow(oldMSTime));
+}
+
 
 void ObjectMgr::LoadQuestObjectivesLocale()
 {

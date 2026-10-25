@@ -725,6 +725,23 @@ void PlayerMenu::SendQuestGiverRequestItems(Quest const* quest, ObjectGuid npcGU
         }
     }
 
+
+	// Stitch quest_request_items_locale
+	// Stitch quest_request_items_locale
+	if (locale != LOCALE_enUS)
+	{
+		QuestRequestItemsLocale const* requestLocale =
+			sObjectMgr->GetQuestRequestItemsLocale(quest->GetQuestId());
+
+		if (requestLocale)
+		{
+			ObjectMgr::GetLocaleString(
+				requestLocale->CompletionText,
+				locale,
+				requestItemsText);
+		}
+	}
+
     if (!quest->HasSpecialFlag(QUEST_SPECIAL_FLAGS_DELIVER) && canComplete)
     {
         SendQuestGiverOfferReward(quest, npcGUID, true);
@@ -737,6 +754,22 @@ void PlayerMenu::SendQuestGiverRequestItems(Quest const* quest, ObjectGuid npcGU
         AddQuestLevelToTitle(questTitle, quest->GetQuestLevel());
 	else if (sWorld->getIntConfig(CONFIG_UI_QUESTLEVELS_IN_DIALOGS) == 2)
 		AddQuestLevelToTitle(questTitle, quest->GetQuestId());
+
+	//Stitch quest_Request_Items_locale
+	if (locale != LOCALE_enUS)
+	{
+		QuestRequestItemsLocale const* requestLocale =
+			sObjectMgr->GetQuestRequestItemsLocale(quest->GetQuestId());
+
+		if (requestLocale)
+		{
+			ObjectMgr::GetLocaleString(
+				requestLocale->CompletionText,
+				locale,
+				requestItemsText);
+		}
+	}
+
 
     WorldPackets::Quest::QuestGiverRequestItems packet;
     packet.QuestGiverGUID = npcGUID;

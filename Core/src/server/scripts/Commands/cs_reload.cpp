@@ -1065,6 +1065,9 @@ public:
         TC_LOG_INFO("misc", "Re-Loading Quest Locale ... ");
         sObjectMgr->LoadQuestTemplateLocale();
 
+		//Stitch quest_Request_Items_locale
+		sObjectMgr->LoadQuestRequestItemsLocale();
+
 		//Stitch quest_offer_reward_locale
 		sObjectMgr->LoadQuestOfferRewardLocale();
 
