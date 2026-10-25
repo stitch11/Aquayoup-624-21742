@@ -1064,6 +1064,10 @@ public:
     {
         TC_LOG_INFO("misc", "Re-Loading Quest Locale ... ");
         sObjectMgr->LoadQuestTemplateLocale();
+
+		//Stitch quest_offer_reward_locale
+		sObjectMgr->LoadQuestOfferRewardLocale();
+
         sObjectMgr->LoadQuestObjectivesLocale();
         handler->SendGlobalGMSysMessage("DB table `quest_template_locale` reloaded.");
         handler->SendGlobalGMSysMessage("DB table `quest_objectives_locale` reloaded.");

@@ -449,6 +449,10 @@ typedef std::map<TempSummonGroupKey, std::vector<TempSummonData> > TempSummonDat
 typedef std::unordered_map<uint32, CreatureLocale> CreatureLocaleContainer;
 typedef std::unordered_map<uint32, GameObjectLocale> GameObjectLocaleContainer;
 typedef std::unordered_map<uint32, QuestTemplateLocale> QuestTemplateLocaleContainer;
+
+//Stitch quest_offer_reward_locale
+typedef std::unordered_map<uint32, QuestOfferRewardLocale>QuestOfferRewardLocaleContainer;
+
 typedef std::unordered_map<uint32, QuestObjectivesLocale> QuestObjectivesLocaleContainer;
 typedef std::unordered_map<uint32, PageTextLocale> PageTextLocaleContainer;
 typedef std::unordered_map<uint64, GossipMenuItemsLocale> GossipMenuItemsLocaleContainer;
@@ -1032,6 +1036,10 @@ class TC_GAME_API ObjectMgr
         void LoadItemTemplateAddon();
         void LoadItemScriptNames();
         void LoadQuestTemplateLocale();
+
+		//Stitch quest_offer_reward_locale
+		void LoadQuestOfferRewardLocale();
+
         void LoadQuestObjectivesLocale();
         void LoadPageTextLocales();
         void LoadGossipMenuItemsLocales();
@@ -1202,6 +1210,20 @@ class TC_GAME_API ObjectMgr
             if (itr == _questTemplateLocaleStore.end()) return NULL;
             return &itr->second;
         }
+
+		//Stitch quest_offer_reward_locale
+		QuestOfferRewardLocale const* GetQuestOfferRewardLocale(uint32 entry) const
+		{
+			QuestOfferRewardLocaleContainer::const_iterator itr =
+				_questOfferRewardLocaleStore.find(entry);
+
+			if (itr == _questOfferRewardLocaleStore.end())
+				return NULL;
+
+			return &itr->second;
+		}
+
+
         QuestObjectivesLocale const* GetQuestObjectivesLocale(uint32 entry) const
         {
             QuestObjectivesLocaleContainer::const_iterator itr = _questObjectivesLocaleStore.find(entry);
@@ -1559,6 +1581,10 @@ class TC_GAME_API ObjectMgr
 
         ItemTemplateContainer _itemTemplateStore;
         QuestTemplateLocaleContainer _questTemplateLocaleStore;
+
+		//Stitch quest_offer_reward_locale
+		QuestOfferRewardLocaleContainer _questOfferRewardLocaleStore;
+
         QuestObjectivesLocaleContainer _questObjectivesLocaleStore;
         PageTextLocaleContainer _pageTextLocaleStore;
         GossipMenuItemsLocaleContainer _gossipMenuItemsLocaleStore;

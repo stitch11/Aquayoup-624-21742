@@ -688,6 +688,21 @@ void PlayerMenu::SendQuestGiverOfferReward(Quest const* quest, ObjectGuid npcGUI
     packet.PortraitTurnInName = portraitTurnInName;
     packet.QuestPackageID = quest->GetQuestPackageID();
 
+	//Stitch quest_offer_reward_locale
+	LocaleConstant rewardLocaleIndex = _session->GetSessionDbLocaleIndex();
+
+	if (locale != LOCALE_enUS)
+	{
+		if (QuestOfferRewardLocale const* questOfferRewardLocale =
+			sObjectMgr->GetQuestOfferRewardLocale(quest->GetQuestId()))
+		{
+			ObjectMgr::GetLocaleString(
+				questOfferRewardLocale->RewardText,
+				locale,
+				packet.RewardText);
+		}
+	}
+
     _session->SendPacket(packet.Write());
     TC_LOG_DEBUG("network", "WORLD: Sent SMSG_QUESTGIVER_OFFER_REWARD NPC=%s, questid=%u", npcGUID.ToString().c_str(), quest->GetQuestId());
 }

@@ -253,6 +253,15 @@ struct QuestTemplateLocale
     StringVector RequestItemsText;
 };
 
+//Stitch quest_offer_reward_locale
+struct QuestOfferRewardLocale
+{
+	StringVector RewardText;
+};
+
+typedef std::unordered_map<uint32, QuestOfferRewardLocale>
+QuestOfferRewardLocaleContainer;
+
 struct QuestObjectivesLocale
 {
     StringVector Description;

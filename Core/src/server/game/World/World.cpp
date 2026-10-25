@@ -1615,6 +1615,10 @@ void World::SetInitialWorldSettings()
     sObjectMgr->LoadCreatureLocales();
     sObjectMgr->LoadGameObjectLocales();
     sObjectMgr->LoadQuestTemplateLocale();
+
+	//Stitch quest_offer_reward_locale
+	sObjectMgr->LoadQuestOfferRewardLocale();
+
     sObjectMgr->LoadQuestObjectivesLocale();
     sObjectMgr->LoadPageTextLocales();
     sObjectMgr->LoadGossipMenuItemsLocales();
