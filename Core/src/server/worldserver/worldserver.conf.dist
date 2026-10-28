@@ -141,7 +141,21 @@ Stitch.Guild.Obj2 = 500
 Stitch.Guild.Obj3 = 100
 Stitch.Guild.Obj4 = 0
 ########################
+# Force la langue utilisée par les clients , option destinée au dev , parce que pour lancer le jeu dans une autre langue il faut avoir ce lient dans cette autre langue.
+# auto = langue du client ; autres exemples : 
+#                     2  - (United States - extended-Latin) enUS
+#                     3  - (Oceanic       - extended-Latin)
+#                     4  - (Latin America - extended-Latin)
+#                     5  - (Tournament    - basic-Latin at create, any at login)
+#                     6  - (Korea         - East-Asian) koKR
+#                     7  - (Tournament    - basic-Latin at create, any at login)
+#                     8  - (English       - extended-Latin) enGB
+#                     9  - (German        - extended-Latin) deDE
+#                     10 - (French        - extended-Latin) frFR
+#                     11 - (Spanish       - extended-Latin) esES
+#                     12 - (Russian       - Cyrillic) ruRU
 
+ForceClientLangue = auto
 
 
 

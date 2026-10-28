@@ -125,8 +125,23 @@ WorldSession::WorldSession(uint32 id, std::string&& name, uint32 battlenetAccoun
     m_playerLogout(false),
     m_playerRecentlyLogout(false),
     m_playerSave(false),
-    m_sessionDbcLocale(sWorld->GetAvailableDbcLocale(locale)),
-    m_sessionDbLocaleIndex(locale),
+
+	//Stitch langue client forcé : ForceClientLangue
+    //m_sessionDbcLocale(sWorld->GetAvailableDbcLocale(locale)),
+	//m_sessionDbLocaleIndex(locale),
+
+	m_sessionDbcLocale(
+		sWorld->GetForcedClientLocale() == LOCALE_none
+		? sWorld->GetAvailableDbcLocale(locale)
+		: sWorld->GetAvailableDbcLocale(
+			sWorld->GetForcedClientLocale())),
+
+	m_sessionDbLocaleIndex(
+		sWorld->GetForcedClientLocale() == LOCALE_none
+		? locale
+		: sWorld->GetForcedClientLocale()),
+
+
     m_latency(0),
     m_clientTimeDelay(0),
     _tutorialsChanged(false),

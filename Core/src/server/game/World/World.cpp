@@ -451,6 +451,50 @@ void World::LoadConfigSettings(bool reload)
 
     TC_LOG_INFO("server.loading", "Using %s DBC Locale", localeNames[m_defaultDbcLocale]);
 
+
+
+	// ForceClientLangue
+	std::string forcedLang =
+		sConfigMgr->GetStringDefault("ForceClientLangue", "auto");
+
+	m_forcedClientLocale = LOCALE_none;
+
+	if (forcedLang != "auto")
+	{
+		bool found = false;
+
+		for (uint32 i = LOCALE_enUS; i < TOTAL_LOCALES; ++i)
+		{
+			if (forcedLang == localeNames[i])
+			{
+				m_forcedClientLocale = LocaleConstant(i);
+				found = true;
+				break;
+			}
+		}
+
+		if (!found)
+		{
+			TC_LOG_ERROR("server.loading",
+				"ForceClientLangue invalide : '%s'. Utilisation de auto.",
+				forcedLang.c_str());
+
+			m_forcedClientLocale = LOCALE_none;
+		}
+	}
+
+	if (m_forcedClientLocale != LOCALE_none)
+	{
+		TC_LOG_INFO("server.loading",
+			"ForceClientLangue : %s",
+			localeNames[m_forcedClientLocale]);
+	}
+	else
+	{
+		TC_LOG_INFO("server.loading", "ForceClientLangue : auto");
+	}
+
+
     ///- Read the player limit and the Message of the day from the config file
     SetPlayerAmountLimit(sConfigMgr->GetIntDefault("PlayerLimit", 100));
     SetMotd(sConfigMgr->GetStringDefault("Motd", "Welcome to a Trinity Core Server."));
