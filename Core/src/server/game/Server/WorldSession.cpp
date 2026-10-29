@@ -131,10 +131,19 @@ WorldSession::WorldSession(uint32 id, std::string&& name, uint32 battlenetAccoun
 	//m_sessionDbLocaleIndex(locale),
 
 	m_sessionDbcLocale(
+
+		//Stitch langue client forcé : ForceClientLangue : hotfixes->item_sparse_locale
+/*
 		sWorld->GetForcedClientLocale() == LOCALE_none
 		? sWorld->GetAvailableDbcLocale(locale)
 		: sWorld->GetAvailableDbcLocale(
 			sWorld->GetForcedClientLocale())),
+*/
+sWorld->GetForcedClientLocale() == LOCALE_none
+? sWorld->GetAvailableDbcLocale(locale)
+	: sWorld->GetForcedClientLocale()),
+
+
 
 	m_sessionDbLocaleIndex(
 		sWorld->GetForcedClientLocale() == LOCALE_none
