@@ -189,6 +189,11 @@ inline void LoadDB2(uint32& availableDb2Locales, DB2StoreProblemList& errlist, D
     }
 
     stores[storage->GetHash()] = storage;
+
+	//Stitch iinfo pour conaitre le TableHash dans hotfix_data
+	// BroadcastText.db2 hash=35137211 | Item-sparse.db2 hash=2442913102
+	//TC_LOG_ERROR("misc", "------DEBUG DB2 %s hash=%u (0x%X)", storage->GetFileName().c_str(), storage->GetHash(), storage->GetHash());
+
 }
 
 DB2Manager& DB2Manager::Instance()
