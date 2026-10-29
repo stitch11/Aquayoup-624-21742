@@ -24,6 +24,9 @@
 #include <boost/regex.hpp>
 #include <array>
 
+ //Stitch Optimisation GetHotfixDate : recherche indexée par (TableHash, RecordID) au lieu du parcours complet.
+#include <unordered_map>
+
 TC_GAME_API extern DB2Storage<AchievementEntry>                     sAchievementStore;
 TC_GAME_API extern DB2Storage<AuctionHouseEntry>                    sAuctionHouseStore;
 TC_GAME_API extern DB2Storage<BarberShopStyleEntry>                 sBarberShopStyleStore;
@@ -203,6 +206,9 @@ public:
 private:
     StorageMap _stores;
     HotfixData _hotfixData;
+
+	//Stitch Optimisation GetHotfixDate : recherche indexée par (TableHash, RecordID) au lieu du parcours complet.
+	std::unordered_map<uint64, uint32> _hotfixDates;
 
     AreaGroupMemberContainer _areaGroupMembers;
     CharStartOutfitContainer _charStartOutfits;

@@ -604,9 +604,26 @@ void DB2Manager::LoadHotfixData()
         ++count;
     } while (result->NextRow());
 
+
+	//Stitch Optimisation GetHotfixDate : recherche indexée par (TableHash, RecordID) au lieu du parcours complet.
+	_hotfixDates.clear();
+	for (HotfixNotify const& hotfix : _hotfixData)
+	{
+		uint64 key = (uint64(hotfix.TableHash) << 32) | hotfix.Entry;
+		uint32& date = _hotfixDates[key];
+		if (hotfix.Timestamp > date)
+			date = hotfix.Timestamp;
+	}
+
+
+
     TC_LOG_INFO("misc", ">> Loaded %u hotfix info entries in %u ms", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
+
+
+//Stitch Optimisation GetHotfixDate : recherche indexé par (TableHash, RecordID) au lieu du parcours complet.
+/*
 time_t DB2Manager::GetHotfixDate(uint32 entry, uint32 type) const
 {
     time_t ret = 0;
@@ -617,6 +634,18 @@ time_t DB2Manager::GetHotfixDate(uint32 entry, uint32 type) const
 
     return ret ? ret : time(NULL);
 }
+*/
+time_t DB2Manager::GetHotfixDate(uint32 entry, uint32 type) const
+{
+	auto itr = _hotfixDates.find((uint64(type) << 32) | entry);
+	if (itr != _hotfixDates.end() && itr->second)
+		return time_t(itr->second);
+
+	return time(NULL);
+}
+
+
+
 
 std::vector<uint32> DB2Manager::GetAreasForGroup(uint32 areaGroupId) const
 {
