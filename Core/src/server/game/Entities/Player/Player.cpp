@@ -22636,16 +22636,19 @@ void Player::SendInitialPacketsBeforeAddToMap()
 
     m_achievementMgr->SendAllData(this);
 
-    /// SMSG_LOGIN_SETTIMESPEED
-    static float const TimeSpeed = 0.01666667f;
-    WorldPackets::Misc::LoginSetTimeSpeed loginSetTimeSpeed;
-    loginSetTimeSpeed.NewSpeed = TimeSpeed;
-    loginSetTimeSpeed.GameTime = sWorld->GetGameTime();
-    loginSetTimeSpeed.ServerTime = sWorld->GetGameTime();
-    loginSetTimeSpeed.GameTimeHolidayOffset = 0; /// @todo
-    loginSetTimeSpeed.ServerTimeHolidayOffset = 0; /// @todo
-    SendDirectMessage(loginSetTimeSpeed.Write());
 
+	/// SMSG_LOGIN_SETTIMESPEED
+	static float const TimeSpeed = 0.01666667f;
+	WorldPackets::Misc::LoginSetTimeSpeed loginSetTimeSpeed;
+	loginSetTimeSpeed.NewSpeed = TimeSpeed;
+	loginSetTimeSpeed.GameTime = sWorld->GetGameTime();
+	loginSetTimeSpeed.ServerTime = sWorld->GetGameTime();
+	loginSetTimeSpeed.GameTimeHolidayOffset = 0; /// @todo
+	loginSetTimeSpeed.ServerTimeHolidayOffset = 0; /// @todo
+
+	/// SMSG_LOGIN_SETTIMESPEED
+	SendLoginTimeSpeed();
+	
     /// SMSG_WORLD_SERVER_INFO
     WorldPackets::Misc::WorldServerInfo worldServerInfo;
     // worldServerInfo.IneligibleForLootMask; /// @todo
@@ -22677,6 +22680,76 @@ void Player::SendInitialPacketsBeforeAddToMap()
 
     SetMover(this);
 }
+
+
+
+
+void Player::SendLoginTimeSpeed()
+{
+	static float const TimeSpeed = 0.01666667f;
+	WorldPackets::Misc::LoginSetTimeSpeed loginSetTimeSpeed;
+	loginSetTimeSpeed.NewSpeed = TimeSpeed;
+	loginSetTimeSpeed.GameTime = sWorld->GetGameTime();
+	loginSetTimeSpeed.ServerTime = sWorld->GetGameTime();
+	loginSetTimeSpeed.GameTimeHolidayOffset = 0; /// @todo
+	loginSetTimeSpeed.ServerTimeHolidayOffset = 0; /// @todo
+
+												   //Stitch JourPermanent
+	uint32 mode = sWorld->getIntConfig(CONFIG_JOUR_PERMANENT);
+	time_t now = sWorld->GetGameTime();
+
+	if (mode == 1 || mode == 2)
+	{
+		tm t;
+		localtime_r(&now, &t);
+		t.tm_hour = 12;
+		t.tm_min = 0;
+		t.tm_sec = 0;
+
+		uint32 midi = uint32(mktime(&t));
+		loginSetTimeSpeed.GameTime = midi;
+		loginSetTimeSpeed.ServerTime = midi;   // c'est lui qui pilote l'eclairage
+
+		if (mode == 2)
+			loginSetTimeSpeed.NewSpeed = 0.0f; // jour permanent
+	}
+	else if (mode == 3)
+	{
+		uint32 dj = sWorld->getIntConfig(CONFIG_JOUR_DUREE_JOUR) * 60;   // secondes reelles
+		uint32 dn = sWorld->getIntConfig(CONFIG_JOUR_DUREE_NUIT) * 60;
+		uint32 pos = uint32(now % (dj + dn));
+
+		uint32 secJeu;      // secondes depuis minuit, heure du jeu
+		float rapport;      // secondes de jeu par seconde reelle
+		if (pos < dj)       // jour : de 6h a 18h
+		{
+			secJeu = 6 * HOUR + uint32(uint64(pos) * 12 * HOUR / dj);
+			rapport = float(12 * HOUR) / float(dj);
+		}
+		else                // nuit : de 18h a 6h
+		{
+			secJeu = (18 * HOUR + uint32(uint64(pos - dj) * 12 * HOUR / dn)) % DAY;
+			rapport = float(12 * HOUR) / float(dn);
+		}
+
+		tm t;
+		localtime_r(&now, &t);
+		t.tm_hour = 0;
+		t.tm_min = 0;
+		t.tm_sec = 0;
+		uint32 temps = uint32(mktime(&t)) + secJeu;
+
+		loginSetTimeSpeed.GameTime = temps;
+		loginSetTimeSpeed.ServerTime = temps;
+		loginSetTimeSpeed.NewSpeed = TimeSpeed * rapport;
+	}
+
+	SendDirectMessage(loginSetTimeSpeed.Write());
+}
+
+
+
+
 
 void Player::SendInitialPacketsAfterAddToMap()
 {

@@ -400,8 +400,13 @@ enum WorldIntConfigs
     CONFIG_TALENTS_INSPECTING,
     CONFIG_BLACKMARKET_MAXAUCTIONS,
     CONFIG_BLACKMARKET_UPDATE_PERIOD,
-	CONFIG_UI_QUESTLEVELS_IN_DIALOGS, //Stitch id quete : affichage avant le nom de quete 
-    INT_CONFIG_VALUE_COUNT
+	CONFIG_UI_QUESTLEVELS_IN_DIALOGS,	//Stitch id quete : affichage avant le nom de quete 
+	
+	CONFIG_JOUR_PERMANENT,				//Stitch JourPermanent
+	CONFIG_JOUR_DUREE_JOUR,
+	CONFIG_JOUR_DUREE_NUIT,
+
+	INT_CONFIG_VALUE_COUNT
 };
 
 /// Server rates
@@ -748,6 +753,10 @@ class TC_GAME_API World
             return index < INT_CONFIG_VALUE_COUNT ? m_int_configs[index] : 0;
         }
 
+
+		int64 GetSegmentJourNuit() const;   //Stitch JourPermanent
+
+
         void setWorldState(uint32 index, uint64 value);
         uint64 getWorldState(uint32 index) const;
         void LoadWorldStates();
@@ -856,6 +865,10 @@ class TC_GAME_API World
         uint32 m_currentTime;
 
         SessionMap m_sessions;
+
+		uint32 m_jourTimer = 0;       //Stitch JourPermanent
+		int64 m_jourSegment = -1;
+
         typedef std::unordered_map<uint32, time_t> DisconnectMap;
         DisconnectMap m_disconnects;
         uint32 m_maxActiveSessionCount;

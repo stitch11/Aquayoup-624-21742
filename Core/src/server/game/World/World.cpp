@@ -453,6 +453,36 @@ void World::LoadConfigSettings(bool reload)
 
 
 
+	//Stitch JourPermanent
+	m_int_configs[CONFIG_JOUR_PERMANENT] = sConfigMgr->GetIntDefault("JourPermanent", 0);
+	if (m_int_configs[CONFIG_JOUR_PERMANENT] > 3)
+	{
+		TC_LOG_ERROR("server.loading", "JourPermanent (%u) invalide, valeur 0 utilisee.", m_int_configs[CONFIG_JOUR_PERMANENT]);
+		m_int_configs[CONFIG_JOUR_PERMANENT] = 0;
+	}
+	m_int_configs[CONFIG_JOUR_DUREE_JOUR] = sConfigMgr->GetIntDefault("JourPermanent.DureeJour", 50);
+	m_int_configs[CONFIG_JOUR_DUREE_NUIT] = sConfigMgr->GetIntDefault("JourPermanent.DureeNuit", 10);
+	if (m_int_configs[CONFIG_JOUR_DUREE_JOUR] < 1)
+		m_int_configs[CONFIG_JOUR_DUREE_JOUR] = 1;
+	if (m_int_configs[CONFIG_JOUR_DUREE_NUIT] < 1)
+		m_int_configs[CONFIG_JOUR_DUREE_NUIT] = 1;
+	// Au rechargement, renvoie l'heure aux joueurs deja connectes
+	if (reload)
+	{
+		for (SessionMap::const_iterator itr = m_sessions.begin(); itr != m_sessions.end(); ++itr)
+			if (Player* player = itr->second->GetPlayer())
+				if (player->IsInWorld())
+					player->SendLoginTimeSpeed();
+	}
+
+
+
+
+	// call ScriptMgr if we're reloading the configuration
+	if (reload)
+		sScriptMgr->OnConfigLoad(reload);
+
+
 	// ForceClientLangue
 	std::string forcedLang =
 		sConfigMgr->GetStringDefault("ForceClientLangue", "auto");
@@ -1534,6 +1564,18 @@ void World::LoadConfigSettings(bool reload)
         sScriptMgr->OnConfigLoad(reload);
 }
 
+
+//Stitch JourPermanent : numero de la phase courante (pair = jour, impair = nuit)
+int64 World::GetSegmentJourNuit() const
+{
+	uint32 dj = m_int_configs[CONFIG_JOUR_DUREE_JOUR] * 60;
+	uint32 dn = m_int_configs[CONFIG_JOUR_DUREE_NUIT] * 60;
+	uint32 cycle = dj + dn;
+	int64 now = GetGameTime();
+	return (now / cycle) * 2 + ((now % cycle) >= dj ? 1 : 0);
+}
+
+
 /// Initialize the World
 void World::SetInitialWorldSettings()
 {
@@ -2284,6 +2326,29 @@ void World::LoadAutobroadcasts()
 /// Update the World !
 void World::Update(uint32 diff)
 {
+
+
+	//Stitch JourPermanent : renvoie l'heure a tous les joueurs a chaque changement de phase
+	if (m_int_configs[CONFIG_JOUR_PERMANENT] == 3)
+	{
+		m_jourTimer += diff;
+		if (m_jourTimer >= 1000)
+		{
+			m_jourTimer = 0;
+			int64 seg = GetSegmentJourNuit();
+			if (seg != m_jourSegment)
+			{
+				m_jourSegment = seg;
+				for (SessionMap::const_iterator itr = m_sessions.begin(); itr != m_sessions.end(); ++itr)
+					if (Player* player = itr->second->GetPlayer())
+						if (player->IsInWorld())
+							player->SendLoginTimeSpeed();
+			}
+		}
+	}
+
+
+
     m_updateTime = diff;
 
     if (m_int_configs[CONFIG_INTERVAL_LOG_UPDATE] && diff > m_int_configs[CONFIG_MIN_LOG_UPDATE])

@@ -1230,6 +1230,10 @@ class TC_GAME_API Player : public Unit, public GridObject<Player>
         bool IsInAreaTriggerRadius(const AreaTriggerEntry* trigger) const;
 
         void SendInitialPacketsBeforeAddToMap();
+
+
+		void SendLoginTimeSpeed();   //Stitch JourPermanent
+
         void SendInitialPacketsAfterAddToMap();
         void SendSupercededSpell(uint32 oldSpell, uint32 newSpell) const;
         void SendTransferAborted(uint32 mapid, TransferAbortReason reason, uint8 arg = 0) const;

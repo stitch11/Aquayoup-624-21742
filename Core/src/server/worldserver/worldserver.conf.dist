@@ -158,6 +158,15 @@ Stitch.Guild.Obj4 = 0
 ForceClientLangue = auto
 
 
+########################
+#        Description: Eclairage de jour pour les clients.
+#        Default:     	0 - Normal (cycle jour/nuit habituel)
+#                     		1 - Jour a partir de midi, puis la nuit arrive normalement
+#                     		2 - Jour permanent (heure figee a midi)
+
+JourPermanent = 0
+
+
 
 
 
