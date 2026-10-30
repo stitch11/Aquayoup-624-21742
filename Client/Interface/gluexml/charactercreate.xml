@@ -1445,7 +1445,7 @@
 								<Frames>
 									<CheckButton name="$parentAllianceButton" inherits="CharCreateRaceButtonTemplate" parentKey="AllianceButton">
 										<Anchors>
-											<Anchor point="TOPLEFT" relativeTo="CharCreateRaceButton6" relativePoint="BOTTOMLEFT" x="0" y="-42"/>
+											<Anchor point="TOPLEFT" relativeTo="CharCreateRaceButton3" relativePoint="BOTTOMLEFT" x="100" y="50"/>
 										</Anchors>
 										<Scripts>
 											<OnClick function="PandarenFactionButton_OnClick"/>
@@ -1453,7 +1453,7 @@
 									</CheckButton>
 									<CheckButton name="$parentHordeButton" inherits="CharCreateRaceButtonTemplate" parentKey="HordeButton">
 										<Anchors>
-											<Anchor point="TOPLEFT" relativeTo="CharCreateRaceButton11" relativePoint="BOTTOMLEFT" x="0" y="-42"/>
+											<Anchor point="TOPLEFT" relativeTo="CharCreateRaceButton9" relativePoint="BOTTOMLEFT" x="100" y="50"/>
 										</Anchors>
 										<Scripts>
 											<OnClick function="PandarenFactionButton_OnClick"/>
