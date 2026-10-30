@@ -159,12 +159,24 @@ ForceClientLangue = auto
 
 
 ########################
+#    JourPermanent
 #        Description: Eclairage de jour pour les clients.
 #        Default:     	0 - Normal (cycle jour/nuit habituel)
 #                     		1 - Jour a partir de midi, puis la nuit arrive normalement
-#                     		2 - Jour permanent (heure figee a midi)
+#                    		2 - Jour permanent (heure figee a midi)
+#                     		3 - Cycle personnalise (voir les deux options ci-dessous)
+#
+#    JourPermanent.DureeJour
+#        Description: Duree du jour en minutes reelles (mode 3).
+#        Default:     50
+#
+#    JourPermanent.DureeNuit
+#        Description: Duree de la nuit en minutes reelles (mode 3).
+#        Default:     10
 
-JourPermanent = 0
+JourPermanent = 3
+JourPermanent.DureeJour = 50
+JourPermanent.DureeNuit = 10
 
 
 
