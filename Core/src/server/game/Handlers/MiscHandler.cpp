@@ -49,6 +49,12 @@
 #include "InstancePackets.h"
 #include "InstanceScript.h"
 
+ //Stitch IDTip correction de l'id affiché par la popup (modid addon client nécéssaire)
+#include "ChatPackets.h"
+#include "ObjectAccessor.h"
+#include "Creature.h"
+
+
 void WorldSession::HandleRepopRequest(WorldPackets::Misc::RepopRequest& /*packet*/)
 {
     if (GetPlayer()->IsAlive() || GetPlayer()->HasFlag(PLAYER_FLAGS, PLAYER_FLAGS_GHOST))
@@ -398,6 +404,21 @@ void WorldSession::HandleRequestCemeteryList(WorldPackets::Misc::RequestCemetery
 void WorldSession::HandleSetSelectionOpcode(WorldPackets::Misc::SetSelection& packet)
 {
     _player->SetSelection(packet.Selection);
+
+	//Stitch IDTip correction de l'id affiché par la popup
+	if (Creature* creature = ObjectAccessor::GetCreature(*_player, packet.Selection))
+	{
+		std::string msg = std::to_string(creature->GetEntry()) + ";"
+			+ creature->GetAIName() + ";"
+			+ creature->GetScriptName();
+
+		WorldPackets::Chat::Chat chat;
+		chat.Initialize(CHAT_MSG_WHISPER, LANG_ADDON, _player, _player,
+			msg, 0, "", DEFAULT_LOCALE, "IDTIP");
+		SendPacket(chat.Write());
+	}
+
+
 }
 
 void WorldSession::HandleStandStateChangeOpcode(WorldPackets::Misc::StandStateChange& packet)
