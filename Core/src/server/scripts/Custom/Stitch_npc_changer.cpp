@@ -2,6 +2,9 @@
 //Stitch npc_changer - PNJ 15000142 : change race , faction , apparence gratuitement
 //##############################################################################################
 
+#include "world.h"
+#include "Config.h"
+
 enum  defines
 {
 	faction_token = 100,	// Faction Change Token
@@ -17,33 +20,84 @@ public:
 
 	bool OnGossipHello(Player* player, Creature* creature)
 	{
-
 		TeamId team = player->GetTeamId();
 		uint8 _level = player->getLevel();
 		uint8 _race = player->getRace();
 
-		player->ADD_GOSSIP_ITEM(2, "Changer de Faction (Avec TP)", GOSSIP_SENDER_MAIN, 1);
-		player->ADD_GOSSIP_ITEM(8, "Changer de Race", GOSSIP_SENDER_MAIN, 0);
+		// Textes
+		std::string factionText;
+		std::string raceText;
+		std::string pandaAllianceText;
+		std::string pandaHordeText;
+		std::string appearanceText;
+		std::string talentsText;
 
-		//		if (_race != RACE_PANDAREN_ALLIANCE && team != TEAM_HORDE)	{player->ADD_GOSSIP_ITEM(8, "Changer de Race en Panda de l'Alliance", GOSSIP_SENDER_MAIN, 4);}
-		//		if (_race != RACE_PANDAREN_HORDE && team != TEAM_ALLIANCE)		{player->ADD_GOSSIP_ITEM(8, "Changer de Race en Panda de la Horde", GOSSIP_SENDER_MAIN, 5);}
+		// Lecture de worldserver.conf
+		std::string ForceClientLangue = sConfigMgr->GetStringDefault("ForceClientLangue", "auto");
+
+		// Anglais
+		if (ForceClientLangue == "enUS")
+		{
+			factionText = "Change Faction (With Teleport)";
+			raceText = "Change Race";
+			pandaAllianceText = "Change to Alliance Pandaren (TP)";
+			pandaHordeText = "Change to Horde Pandaren (TP)";
+			appearanceText = "Change My Appearance";
+			talentsText = "Reset My Talents";
+		}
+		// Espagnol
+		else if (ForceClientLangue == "esES")
+		{
+			factionText = u8"Cambiar de facción (Con TP)";
+			raceText = u8"Cambiar de raza";
+			pandaAllianceText = u8"Convertirse en Pandaren Alianza (TP)";
+			pandaHordeText = u8"Convertirse en Pandaren Horda (TP)";
+			appearanceText = u8"Cambiar mi apariencia";
+			talentsText = u8"Reiniciar mis talentos";
+		}
+		// Allemand
+		else if (ForceClientLangue == "deDE")
+		{
+			factionText = u8"Fraktion wechseln (Mit Teleport)";
+			raceText = u8"Volk wechseln";
+			pandaAllianceText = u8"Zu Allianz-Pandaren wechseln (TP)";
+			pandaHordeText = u8"Zu Horde-Pandaren wechseln (TP)";
+			appearanceText = u8"Mein Aussehen ändern";
+			talentsText = u8"Meine Talente zurücksetzen";
+		}
+		// Français par défaut (frFR, auto ou autre)
+		else
+		{
+			factionText = u8"Changer de faction (Avec TP)";
+			raceText = u8"Changer de race";
+			pandaAllianceText = u8"Devenir Pandaren Alliance (TP)";
+			pandaHordeText = u8"Devenir Pandaren Horde (TP)";
+			appearanceText = u8"Changer mon apparence";
+			talentsText = u8"Effacer mes talents";
+		}
+
+		// Menu Gossip
+		player->ADD_GOSSIP_ITEM(2, factionText.c_str(), GOSSIP_SENDER_MAIN, 1);
+		player->ADD_GOSSIP_ITEM(8, raceText.c_str(), GOSSIP_SENDER_MAIN, 0);
+
 		if (_race == RACE_PANDAREN_NEUTRAL || team == TEAM_ALLIANCE)
 		{
-			player->ADD_GOSSIP_ITEM(8, "Changer en race Panda Alliance (TP)", GOSSIP_SENDER_MAIN, 4);
+			player->ADD_GOSSIP_ITEM(8, pandaAllianceText.c_str(), GOSSIP_SENDER_MAIN, 4);
 		}
 
 		if (_race == RACE_PANDAREN_NEUTRAL || team == TEAM_HORDE)
 		{
-			player->ADD_GOSSIP_ITEM(8, "Changer en race Panda Horde (TP)", GOSSIP_SENDER_MAIN, 5);
+			player->ADD_GOSSIP_ITEM(8, pandaHordeText.c_str(), GOSSIP_SENDER_MAIN, 5);
 		}
 
-		player->ADD_GOSSIP_ITEM(3, "Changer mon Apparence", GOSSIP_SENDER_MAIN, 9);	//sinon crash
-		player->ADD_GOSSIP_ITEM(3, "Effacer mes talents", GOSSIP_SENDER_MAIN, 10);
-
+		player->ADD_GOSSIP_ITEM(3, appearanceText.c_str(), GOSSIP_SENDER_MAIN, 9);
+		player->ADD_GOSSIP_ITEM(3, talentsText.c_str(), GOSSIP_SENDER_MAIN, 10);
 
 		player->PlayerTalkClass->SendGossipMenu(9425, creature->GetGUID());
+
 		return true;
 	}
+
 
 
 	bool OnGossipSelect(Player* player, Creature* creature, uint32 /*uiSender*/, uint32 uiAction)
