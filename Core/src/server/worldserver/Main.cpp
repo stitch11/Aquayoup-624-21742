@@ -158,9 +158,12 @@ extern int main(int argc, char** argv)
 	TC_LOG_INFO("server.worldserver", "xx * Entrer en Donjon en solo et mode Mytique et commande pour quiter .exitdj     xx");
 	TC_LOG_INFO("server.worldserver", "xx * Rate loot par rang de creature 0 a 4		                                 xx");
 	TC_LOG_INFO("server.worldserver", "xx * Ecurie chasseur portable 10 slots. NPC 15100055  		                     xx");
+	TC_LOG_INFO("server.worldserver", "xx * Langue français, Anglais, espagnol(sauf hotfixes, worldserver.conf)          xx");
+	TC_LOG_INFO("server.worldserver", "xx * Langue client forcé(pour dev, worldserver.conf)								 xx");
+	TC_LOG_INFO("server.worldserver", "xx * Eclairage de jour/nuit : Normal, Jour au lancement, permanent, Cycle		 xx");
 	TC_LOG_INFO("server.worldserver", "xx                                                                                xx");
 	TC_LOG_INFO("server.worldserver", "xx * Diverses autres majs,debugs,custom, etc ... voir forum                       xx");
-	TC_LOG_INFO("server.worldserver", "xx * Un grand Merci a Noc & Scade pour leurs aides                                xx");
+	TC_LOG_INFO("server.worldserver", "xx * Un grand Merci a Noc, Scade, Claude et Chatgpt pour leurs aides              xx");
     TC_LOG_INFO("server.worldserver", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     TC_LOG_INFO("server.worldserver", " ");
     TC_LOG_INFO("server.worldserver", "Using configuration file %s.", sConfigMgr->GetFilename().c_str());
