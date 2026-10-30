@@ -2,84 +2,191 @@
 //Stitch npc_level - PNJ 15000386 : Level et Lieux de depart avec réputation & equipements
 //##############################################################################################
 
+#include "world.h"
+#include "Config.h"
 
 class npc_level : public CreatureScript
 {
 public:
 	npc_level() : CreatureScript("npc_level") {}
 
+
 	bool OnGossipHello(Player* player, Creature* creature)
 	{
-
 		TeamId team = player->GetTeamId();
 		uint8 _level = player->getLevel();
 		uint8 _race = player->getRace();
 		uint8 _class = player->getClass();
 
-		if (_level == 1 && _race != RACE_PANDAREN_NEUTRAL)
+		// Langue forcée depuis worldserver.conf
+		std::string ForceClientLangue = sConfigMgr->GetStringDefault("ForceClientLangue", "auto");
+
+		// Textes français par défaut
+		std::string level30 = u8"Commencer level 30 (Avec TP Capitale)";
+		std::string level58 = u8"Commencer level 58 (Avec TP Capitale)";
+		std::string level68 = u8"Commencer level 68 (Avec TP Capitale)";
+		std::string level80 = u8"Commencer level 80 (Avec TP Capitale)";
+		std::string level85 = u8"Commencer level 85 (Avec TP Capitale)";
+		std::string level90 = u8"Commencer level 90 (Avec TP Capitale)";
+
+		std::string human = u8"Commencer chez les Humains";
+		std::string dwarf = u8"Commencer chez les Nains";
+		std::string nightElf = u8"Commencer chez les Elfes de la nuit";
+		std::string gnome = u8"Commencer chez les Gnomes";
+		std::string draenei = u8"Commencer chez les Draeneis";
+
+		std::string orc = u8"Commencer chez les Orcs";
+		std::string undead = u8"Commencer chez les Morts-vivants";
+		std::string tauren = u8"Commencer chez les Taurens";
+		std::string troll = u8"Commencer chez les Trolls";
+		std::string bloodElf = u8"Commencer chez les Elfes de sang";
+		std::string goblin = u8"Commencer chez les Gobelins";
+
+		// ANGLAIS
+		if (ForceClientLangue == "enUS")
 		{
-			player->ADD_GOSSIP_ITEM(3, "Commencer level 30 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 1);
-			player->ADD_GOSSIP_ITEM(3, "Commencer level 58 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 2);
+			level30 = "Start level 30 (Teleport to Capital)";
+			level58 = "Start level 58 (Teleport to Capital)";
+			level68 = "Start level 68 (Teleport to Capital)";
+			level80 = "Start level 80 (Teleport to Capital)";
+			level85 = "Start level 85 (Teleport to Capital)";
+			level90 = "Start level 90 (Teleport to Capital)";
+
+			human = "Start as Human";
+			dwarf = "Start as Dwarf";
+			nightElf = "Start as Night Elf";
+			gnome = "Start as Gnome";
+			draenei = "Start as Draenei";
+
+			orc = "Start as Orc";
+			undead = "Start as Undead";
+			tauren = "Start as Tauren";
+			troll = "Start as Troll";
+			bloodElf = "Start as Blood Elf";
+			goblin = "Start as Goblin";
+		}
+		// ESPAGNOL
+		else if (ForceClientLangue == "esES")
+		{
+			level30 = u8"Comenzar nivel 30 (Teletransporte a la capital)";
+			level58 = u8"Comenzar nivel 58 (Teletransporte a la capital)";
+			level68 = u8"Comenzar nivel 68 (Teletransporte a la capital)";
+			level80 = u8"Comenzar nivel 80 (Teletransporte a la capital)";
+			level85 = u8"Comenzar nivel 85 (Teletransporte a la capital)";
+			level90 = u8"Comenzar nivel 90 (Teletransporte a la capital)";
+
+			human = u8"Comenzar como Humano";
+			dwarf = u8"Comenzar como Enano";
+			nightElf = u8"Comenzar como Elfo de la noche";
+			gnome = u8"Comenzar como Gnomo";
+			draenei = u8"Comenzar como Draenei";
+
+			orc = u8"Comenzar como Orco";
+			undead = u8"Comenzar como No-muerto";
+			tauren = u8"Comenzar como Tauren";
+			troll = u8"Comenzar como Trol";
+			bloodElf = u8"Comenzar como Elfo de sangre";
+			goblin = u8"Comenzar como Goblin";
+		}
+		// ALLEMAND
+		else if (ForceClientLangue == "deDE")
+		{
+			level30 = "Mit Level 30 beginnen (Teleport zur Hauptstadt)";
+			level58 = "Mit Level 58 beginnen (Teleport zur Hauptstadt)";
+			level68 = "Mit Level 68 beginnen (Teleport zur Hauptstadt)";
+			level80 = "Mit Level 80 beginnen (Teleport zur Hauptstadt)";
+			level85 = "Mit Level 85 beginnen (Teleport zur Hauptstadt)";
+			level90 = "Mit Level 90 beginnen (Teleport zur Hauptstadt)";
+
+			human = "Als Mensch beginnen";
+			dwarf = "Als Zwerg beginnen";
+			nightElf = "Als Nachtelf beginnen";
+			gnome = "Als Gnom beginnen";
+			draenei = "Als Draenei beginnen";
+
+			orc = "Als Orc beginnen";
+			undead = "Als Untoter beginnen";
+			tauren = "Als Tauren beginnen";
+			troll = "Als Troll beginnen";
+			bloodElf = "Als Blutelf beginnen";
+			goblin = "Als Goblin beginnen";
 		}
 
-		if (_level == 1 || (_class == CLASS_DEATH_KNIGHT && _race != RACE_PANDAREN_NEUTRAL))
+		// CHOIX DES NIVEAUX
+		if (_level == 1 && _race != RACE_PANDAREN_NEUTRAL)
 		{
+			if (_level < 30)
+			player->ADD_GOSSIP_ITEM(3, level30.c_str(), GOSSIP_SENDER_MAIN, 1);
+
+			if (_level < 58)
+				player->ADD_GOSSIP_ITEM(3, level58.c_str(), GOSSIP_SENDER_MAIN, 2);
+
 			if (_level < 68)
-				player->ADD_GOSSIP_ITEM(3, "Commencer level 68 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 3);
+				player->ADD_GOSSIP_ITEM(3, level68.c_str(), GOSSIP_SENDER_MAIN, 3);
 
 			if (_level < 80)
-				player->ADD_GOSSIP_ITEM(3, "Commencer level 80 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 4);
+				player->ADD_GOSSIP_ITEM(3, level80.c_str(), GOSSIP_SENDER_MAIN, 4);
 
 			if (_level < 85)
-				player->ADD_GOSSIP_ITEM(3, "Commencer level 85 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 5);
+				player->ADD_GOSSIP_ITEM(3, level85.c_str(), GOSSIP_SENDER_MAIN, 5);
 
 			if (_level < 90)
-				player->ADD_GOSSIP_ITEM(3, "Commencer level 90 (Avec TP Capitale)", GOSSIP_SENDER_MAIN, 6);
-			// a voir
+				player->ADD_GOSSIP_ITEM(3, level90.c_str(), GOSSIP_SENDER_MAIN, 6);
+
 			player->ADD_GOSSIP_ITEM(9, " ", GOSSIP_SENDER_MAIN, -1);
 		}
 
+		// CHOIX DU LIEU DE DEPART
 		if (_level == 1 && _race != RACE_PANDAREN_NEUTRAL)
 		{
 			if (team == TEAM_ALLIANCE)
 			{
 				if (_race != RACE_HUMAN)
-					player->ADD_GOSSIP_ITEM(2, "Commencer chez les Humains", GOSSIP_SENDER_MAIN, 7);			// Humain
+					player->ADD_GOSSIP_ITEM(2, human.c_str(), GOSSIP_SENDER_MAIN, 7);
+
 				if (_race != RACE_DWARF)
-					player->ADD_GOSSIP_ITEM(2, "Commencer chez les Nains", GOSSIP_SENDER_MAIN, 8);				// Nain
+					player->ADD_GOSSIP_ITEM(2, dwarf.c_str(), GOSSIP_SENDER_MAIN, 8);
+
 				if (_race != RACE_NIGHTELF)
-					player->ADD_GOSSIP_ITEM(2, "Commencer chez les Elfes de la nuit", GOSSIP_SENDER_MAIN, 9);	// Elfe de la nuit
+					player->ADD_GOSSIP_ITEM(2, nightElf.c_str(), GOSSIP_SENDER_MAIN, 9);
+
 				if (_race != RACE_GNOME)
-					player->ADD_GOSSIP_ITEM(2, "Commencer chez les Gnomes", GOSSIP_SENDER_MAIN, 10);			// Gnome
+					player->ADD_GOSSIP_ITEM(2, gnome.c_str(), GOSSIP_SENDER_MAIN, 10);
+
 				if (_race != RACE_DRAENEI)
-					player->ADD_GOSSIP_ITEM(2, "Commencer chez les Draeneis", GOSSIP_SENDER_MAIN, 11);			// Draenei
+					player->ADD_GOSSIP_ITEM(2, draenei.c_str(), GOSSIP_SENDER_MAIN, 11);
 			}
 
 			if (team == TEAM_HORDE)
 			{
 				if (_race != RACE_ORC)
-					player->ADD_GOSSIP_ITEM(2, "Commencer chez les Orcs", GOSSIP_SENDER_MAIN, 7);			// Orc
+					player->ADD_GOSSIP_ITEM(2, orc.c_str(), GOSSIP_SENDER_MAIN, 7);
+
 				if (_race != RACE_UNDEAD_PLAYER)
-					player->ADD_GOSSIP_ITEM(2, "Commencer chez les Mort Vivant", GOSSIP_SENDER_MAIN, 8);	// Mort Vivant
+					player->ADD_GOSSIP_ITEM(2, undead.c_str(), GOSSIP_SENDER_MAIN, 8);
+
 				if (_race != RACE_TAUREN)
-					player->ADD_GOSSIP_ITEM(2, "Commencer chez les Taurens", GOSSIP_SENDER_MAIN, 9);		// Tauren
+					player->ADD_GOSSIP_ITEM(2, tauren.c_str(), GOSSIP_SENDER_MAIN, 9);
+
 				if (_race != RACE_TROLL)
-					player->ADD_GOSSIP_ITEM(2, "Commencer chez les Trolls", GOSSIP_SENDER_MAIN, 10);		// Troll
+					player->ADD_GOSSIP_ITEM(2, troll.c_str(), GOSSIP_SENDER_MAIN, 10);
+
 				if (_race != RACE_BLOODELF)
-					player->ADD_GOSSIP_ITEM(2, "Commencer chez les Elfes de sang", GOSSIP_SENDER_MAIN, 11);	// Elfe de Sang
+					player->ADD_GOSSIP_ITEM(2, bloodElf.c_str(), GOSSIP_SENDER_MAIN, 11);
+
 				if (_race != RACE_GOBLIN)
-					player->ADD_GOSSIP_ITEM(2, "Commencer chez les Goblins", GOSSIP_SENDER_MAIN, 12);		// Goblin
+					player->ADD_GOSSIP_ITEM(2, goblin.c_str(), GOSSIP_SENDER_MAIN, 12);
 			}
 
 			player->ADD_GOSSIP_ITEM(9, " ", GOSSIP_SENDER_MAIN, -1);
-
 		}
 
-
-		player->PlayerTalkClass->SendGossipMenu(65503, creature->GetGUID());	// NPC_txt pointant sur BroadcastText
+		player->PlayerTalkClass->SendGossipMenu(65503, creature->GetGUID());
 
 		return true;
 	}
+
+
 	bool OnGossipSelect(Player* player, Creature* creature, uint32 /*uiSender*/, uint32 uiAction)
 	{
 		if (!player)
