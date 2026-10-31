@@ -14,10 +14,11 @@ GuarderSight = 50.000000
 Guild.SaveInterval = 15
 Guild.UndeletableLevel = 4
 
+##### Solocraft ########################
 # Solocraft actif pour les instances (0 ou 1)
 Aquayoup.Solocraft = 1
 
-# FunRate ###  
+##### FunRate ########################  
 # FunAllStat 						- Defaut/Arcade : 2		- Coefficient des stats joueur (1=50% | 2=normal | 3=150% | 4=200% etc)
 # FunDamageDefaut 			- Defaut/Arcade : 1		- Coefficient de degat des armes fait par un joueur (1=normal | 2=150% | 3=200% etc)
 # FunDamageSpell				- Defaut/Arcade : 2		- Coefficient de degat des sorts fait par un joueur (1=50% | 2=normal | 3=150% | 4=200% etc)
@@ -52,7 +53,47 @@ Rate.Drop.Item.Rank2 = 3
 Rate.Drop.Item.Rank3 = 4
 Rate.Drop.Item.Rank4 = 4
 
-# Guilde ###########################################
+########################
+# Force la langue utilisée par les clients , option destinée au dev , parce que pour lancer le jeu dans une autre langue il faut avoir ce lient dans cette autre langue.
+# auto = langue du client ; autres exemples : 
+#                       - (United States - extended-Latin) enUS
+#                       - (Oceanic       - extended-Latin)
+#                       - (Latin America - extended-Latin) esMX		loc7
+#                       - (Tournament    - basic-Latin at create, any at login) 
+#                       - (Korea         - East-Asian) koKR				loc1
+#                       - (Tournament    - basic-Latin at create, any at login)
+#                       - (English       - extended-Latin) enGB		default
+#                       - (German        - extended-Latin) deDE	loc3
+#                       - (French        - extended-Latin) frFR		loc2
+#                       - (Spanish       - extended-Latin) esES		loc6
+#                       - (Russian       - Cyrillic) ruRU					loc8
+#					    - Chinois simplifié	zhCN						loc4
+#					    - Chinois traditionnel (Taïwan)	zhTW	loc5
+
+ForceClientLangue = auto
+
+########################
+#    JourPermanent
+#        Description: Eclairage de jour pour les clients.
+#        Default:     	0 - Normal (cycle jour/nuit habituel)
+#                     		1 - Jour a partir de midi, puis la nuit arrive normalement
+#                    		2 - Jour permanent (heure figee a midi)
+#                     		3 - Cycle personnalise (voir les deux options ci-dessous)
+#
+#    JourPermanent.DureeJour
+#        Description: Duree du jour en minutes reelles (mode 3).
+#        Default:     50
+#
+#    JourPermanent.DureeNuit
+#        Description: Duree de la nuit en minutes reelles (mode 3).
+#        Default:     10
+
+JourPermanent = 3
+JourPermanent.DureeJour = 50
+JourPermanent.DureeNuit = 10
+
+
+########### Guilde ###########################################
 # 5 rangs de base comme suit :
 # - 0 : Chef de guilde
 # - 1 : Officiers
@@ -141,22 +182,6 @@ Stitch.Guild.Obj2 = 500
 Stitch.Guild.Obj3 = 100
 Stitch.Guild.Obj4 = 0
 ########################
-# Force la langue utilisée par les clients , option destinée au dev , parce que pour lancer le jeu dans une autre langue il faut avoir ce lient dans cette autre langue.
-# auto = langue du client ; autres exemples : 
-#                     2  - (United States - extended-Latin) enUS
-#                     3  - (Oceanic       - extended-Latin)
-#                     4  - (Latin America - extended-Latin)
-#                     5  - (Tournament    - basic-Latin at create, any at login)
-#                     6  - (Korea         - East-Asian) koKR
-#                     7  - (Tournament    - basic-Latin at create, any at login)
-#                     8  - (English       - extended-Latin) enGB
-#                     9  - (German        - extended-Latin) deDE
-#                     10 - (French        - extended-Latin) frFR
-#                     11 - (Spanish       - extended-Latin) esES
-#                     12 - (Russian       - Cyrillic) ruRU
-
-ForceClientLangue = auto
-
 
 ########################
 #    JourPermanent
@@ -837,7 +862,7 @@ StrictPetNames = 0
 #                     10  - (ptBR)
 #                     11  - (itIT)
 
-DBC.Locale = 0
+DBC.Locale = 2
 
 #
 #    DeclinedNames
