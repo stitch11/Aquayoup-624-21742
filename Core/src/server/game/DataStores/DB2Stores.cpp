@@ -160,6 +160,13 @@ inline void LoadDB2(uint32& availableDb2Locales, DB2StoreProblemList& errlist, D
     {
         storage->LoadFromDB();
 
+
+
+		//Stitch langue client forcé : broadcast_text_locale -  charger aussi les *_locale de la langue par défaut (DBC.Locale)
+		if (defaultLocale != LOCALE_enUS)
+			storage->LoadStringsFromDB(defaultLocale);
+
+
         for (uint32 i = 0; i < TOTAL_LOCALES; ++i)
         {
             if (defaultLocale == i || i == LOCALE_none)

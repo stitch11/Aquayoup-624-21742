@@ -449,9 +449,14 @@ std::string CreatureTextMgr::GetLocalizedChatString(uint32 entry, uint8 gender, 
 
     std::string baseText = "";
 
-	//Stitch BroadcastTextID utilisé par frFR, les autres utilisent creature_text/creature_text_locale
-	    BroadcastTextEntry const* bct = sBroadcastTextStore.LookupEntry(groupItr->BroadcastTextId);
 
+	//Stitch BroadcastTextID utilisé par frFR, les autres utilisent creature_text/creature_text_locale
+	//    
+	//BroadcastTextEntry const* bct = nullptr;
+	//if (locale == LOCALE_frFR)
+	//	bct = sBroadcastTextStore.LookupEntry(groupItr->BroadcastTextId);
+
+	BroadcastTextEntry const* bct = sBroadcastTextStore.LookupEntry(groupItr->BroadcastTextId);
 
     if (bct)
         baseText = DB2Manager::GetBroadcastTextValue(bct, locale, gender);
