@@ -1,3 +1,9 @@
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// Stitch Octobre 2026
+// Commande telez : 
+// Téléporte le GM au meme X,Y mais avec un +-Z en paramètre. Par exemple pour le placement de gob
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 #include "Chat.h"
 #include "Player.h"
@@ -13,7 +19,17 @@ public:
 	{
 		static std::vector<ChatCommand> commandTable =
 		{
-			{ "telez", rbac::RBAC_PERM_COMMAND_GM, false, &HandleTeleZCommand, "" },
+			{
+				"telez",
+				rbac::RBAC_PERM_COMMAND_GM,
+				false,
+				&HandleTeleZCommand,
+				"-----------------------------------------------------------------\n"
+				"|cff00ff00Syntax: .telez valeurZ|r\n"
+				"Deplace un GM verticalement uniquement.\n"
+				"Exemple: .telez +10\n"
+				"Exemple: .telez -10"
+			},
 		};
 
 		return commandTable;
