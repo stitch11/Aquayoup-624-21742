@@ -74,11 +74,22 @@ char const* ChatHandler::GetTrinityString(uint32 entry) const
 {
     return m_session->GetTrinityString(entry);
 }
-
+//Stitch commande debloc
+/*
 bool ChatHandler::isAvailable(ChatCommand const& cmd) const
 {
     return HasPermission(cmd.Permission);
 }
+*/
+bool ChatHandler::isAvailable(ChatCommand const& cmd) const
+{
+	if (strcmp(cmd.Name, "debloc") == 0)
+		return true;
+
+	return HasPermission(cmd.Permission);
+}
+
+
 
 bool ChatHandler::HasLowerSecurity(Player* target, ObjectGuid guid, bool strong)
 {

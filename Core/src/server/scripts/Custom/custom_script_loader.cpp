@@ -38,11 +38,12 @@ void AddSC_npc_ai_lancier();
 void AddSC_npc_ai_mobs();
 void AddSC_Player_Even_Action();
 void AddSC_npc_ecurie_chasseur();
-void AddSC_telez_commandscript();	//commande telez
+void AddSC_telez_commandscript();	// Commande telez : Téléporte le GM au meme X,Y mais avec un +-Z en parametre. Par exemple pour le placement de gob
+void AddSC_debloc_commandscript();	// Commande de deblocage : teleporte le joueur a Hurlevent ou Orgrimmar suivant sa faction
 
 // The name of this function should match:
 // void Add${NameOfDirectory}Scripts()
-void AddCustomScripts()					//commande telez
+void AddCustomScripts()					
 {
 		AddSC_solocraft();
 		AddSC_Stitch_npc_ai_level_scale();
@@ -66,5 +67,6 @@ void AddCustomScripts()					//commande telez
 		AddSC_npc_ai_mobs();
 		AddSC_Player_Even_Action();
 		AddSC_npc_ecurie_chasseur();
-		AddSC_telez_commandscript();	//commande telez
+		AddSC_telez_commandscript();	// Commande .telez
+		AddSC_debloc_commandscript();	// Commande .debloc
 }
