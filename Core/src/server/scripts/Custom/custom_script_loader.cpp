@@ -38,10 +38,11 @@ void AddSC_npc_ai_lancier();
 void AddSC_npc_ai_mobs();
 void AddSC_Player_Even_Action();
 void AddSC_npc_ecurie_chasseur();
+void AddSC_telez_commandscript();	//commande telez
 
 // The name of this function should match:
 // void Add${NameOfDirectory}Scripts()
-void AddCustomScripts()
+void AddCustomScripts()					//commande telez
 {
 		AddSC_solocraft();
 		AddSC_Stitch_npc_ai_level_scale();
@@ -65,4 +66,5 @@ void AddCustomScripts()
 		AddSC_npc_ai_mobs();
 		AddSC_Player_Even_Action();
 		AddSC_npc_ecurie_chasseur();
+		AddSC_telez_commandscript();	//commande telez
 }
