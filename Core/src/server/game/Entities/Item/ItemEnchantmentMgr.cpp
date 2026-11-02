@@ -124,8 +124,14 @@ uint32 GenerateEnchSuffixFactor(uint32 item_id)
 
     if (!itemProto)
         return 0;
-    if (!itemProto->GetRandomSuffix())
-        return 0;
+
+
+	//Stitch item stat random: les proprietes aleatoires sont converties en suffixes (voir Item::GenerateItemRandomPropertyId)
+	if (!itemProto->GetRandomSuffix() && !itemProto->GetRandomProperty())
+		return 0;
+    //if (!itemProto->GetRandomSuffix())
+    //    return 0;
+
 
     return GetRandomPropertyPoints(itemProto->GetBaseItemLevel(), itemProto->GetQuality(), itemProto->GetInventoryType(), itemProto->GetSubClass());
 }

@@ -726,8 +726,7 @@ void PlayerMenu::SendQuestGiverRequestItems(Quest const* quest, ObjectGuid npcGU
     }
 
 
-	// Stitch quest_request_items_locale
-	// Stitch quest_request_items_locale
+	//Stitch quest_request_items_locale
 	if (locale != LOCALE_enUS)
 	{
 		QuestRequestItemsLocale const* requestLocale =

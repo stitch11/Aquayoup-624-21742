@@ -31,6 +31,7 @@
 #include "WorldSession.h"
 #include "ItemPackets.h"
 #include "TradeData.h"
+#include "ItemRandomSuffixMap.h"	//Stitch item stat random
 
 void AddItemsSetItem(Player* player, Item* item)
 {
@@ -600,8 +601,8 @@ int32 Item::GenerateItemRandomPropertyId(uint32 item_id)
 
 
 //Stitch item stat : suppression des stats sur item stat aleatoires RandomProperty >0 pour cause de bug toujour 1 affiché
-	if ((itemProto->GetRandomProperty()>0) && (!itemProto->GetRandomSuffix()))
-		return 0;
+	//if ((itemProto->GetRandomProperty()>0) && (!itemProto->GetRandomSuffix()))
+	//	return 0;
 
 
 
@@ -623,7 +624,16 @@ int32 Item::GenerateItemRandomPropertyId(uint32 item_id)
             return 0;
         }
 
-        return random_id->ID;
+		//Stitch item stat random
+		//return random_id->ID;
+		//Stitch : le client 6.2.4 affiche +1 pour les proprietes aleatoires, on donne le suffixe equivalent
+		if (uint32 suffixId = GetSuffixForRandomProperty(random_id->ID))
+			if (sItemRandomSuffixStore.LookupEntry(suffixId))
+				return -int32(suffixId);
+
+		return random_id->ID;
+
+
     }
     // RandomSuffix case
     else
@@ -656,10 +666,20 @@ void Item::SetItemRandomProperties(int32 randomPropId)
                 SetInt32Value(ITEM_FIELD_RANDOM_PROPERTIES_ID, item_rand->ID);
                 SetState(ITEM_CHANGED, GetOwner());
             }
-            for (uint32 i = PROP_ENCHANTMENT_SLOT_1; i < PROP_ENCHANTMENT_SLOT_1 + 3; ++i)
-                SetEnchantment(EnchantmentSlot(i), item_rand->Enchantment[i - PROP_ENCHANTMENT_SLOT_1], 0, 0); 
+
+			//Stitch Item stat random
+			//for (uint32 i = PROP_ENCHANTMENT_SLOT_1; i < PROP_ENCHANTMENT_SLOT_1 + 3; ++i)
+            //    SetEnchantment(EnchantmentSlot(i), item_rand->Enchantment[i - PROP_ENCHANTMENT_SLOT_1], 0, 0); 
+			for (uint32 i = PROP_ENCHANTMENT_SLOT_2; i < PROP_ENCHANTMENT_SLOT_2 + 3; ++i)
+				SetEnchantment(EnchantmentSlot(i), item_rand->Enchantment[i - PROP_ENCHANTMENT_SLOT_2], 0, 0);
+
+
+
         }
     }
+
+	//Stitch item stat random
+	/*
     else
     {
         ItemRandomSuffixEntry const* item_rand = sItemRandomSuffixStore.LookupEntry(-randomPropId);
@@ -673,11 +693,65 @@ void Item::SetItemRandomProperties(int32 randomPropId)
                 SetState(ITEM_CHANGED, GetOwner());
             }
 
-            for (uint32 i = PROP_ENCHANTMENT_SLOT_0; i <= PROP_ENCHANTMENT_SLOT_4; ++i)
-                SetEnchantment(EnchantmentSlot(i), item_rand->Enchantment[i - PROP_ENCHANTMENT_SLOT_0], 0, 0);
-		
+			//Stitch TMP
+           // for (uint32 i = PROP_ENCHANTMENT_SLOT_0; i <= PROP_ENCHANTMENT_SLOT_4; ++i)
+           //     SetEnchantment(EnchantmentSlot(i), item_rand->Enchantment[i - PROP_ENCHANTMENT_SLOT_0], 0, 0);
+			for (uint32 i = PROP_ENCHANTMENT_SLOT_1; i < PROP_ENCHANTMENT_SLOT_1 + 3; ++i)
+			{
+				uint32 enchantId = item_rand->Enchantment[i - PROP_ENCHANTMENT_SLOT_1];
+
+				SetEnchantment(EnchantmentSlot(i), enchantId, 0, 0);
+
+				if (!enchantId)
+					continue;
+
+				SpellItemEnchantmentEntry const* enchant =
+					sSpellItemEnchantmentStore.LookupEntry(enchantId);
+
+				if (!enchant)
+				{
+					TC_LOG_INFO("misc", "[RAND PROP] Item=%u RandomProp=%d Enchant=%u : DBC INTROUVABLE",
+						GetEntry(), randomPropId, enchantId);
+					continue;
+				}
+
+				for (uint32 effect = 0; effect < MAX_ITEM_ENCHANTMENT_EFFECTS; ++effect)
+				{
+					TC_LOG_INFO("misc",
+						"[RAND PROP] Item=%u RandomProp=%d Enchant=%u Effect[%u]=%u PointsMin=%u Spell=%u",
+						GetEntry(), randomPropId, enchantId,
+						effect,
+						enchant->Effect[effect],
+						enchant->EffectPointsMin[effect],
+						enchant->EffectSpellID[effect]);
+				}
+			}
+
+
+
         }
     }
+	*/
+	else
+	{
+		ItemRandomSuffixEntry const* item_rand = sItemRandomSuffixStore.LookupEntry(-randomPropId);
+		if (item_rand)
+		{
+			if (GetInt32Value(ITEM_FIELD_RANDOM_PROPERTIES_ID) != -int32(item_rand->ID) ||
+				!GetItemSuffixFactor())
+			{
+				SetInt32Value(ITEM_FIELD_RANDOM_PROPERTIES_ID, -int32(item_rand->ID));
+				UpdateItemSuffixFactor();
+				SetState(ITEM_CHANGED, GetOwner());
+			}
+
+			for (uint32 i = PROP_ENCHANTMENT_SLOT_0; i <= PROP_ENCHANTMENT_SLOT_4; ++i)
+				SetEnchantment(EnchantmentSlot(i), item_rand->Enchantment[i - PROP_ENCHANTMENT_SLOT_0], 0, 0);
+		}
+	}
+
+
+
 
 }
 
