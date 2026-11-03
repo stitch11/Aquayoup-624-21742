@@ -948,7 +948,12 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
     else                                            // not exist in DB, use some default fake data
     {
         // remove elite bonuses included in DB values
-        CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(petlevel, cinfo->unit_class);
+        
+		//Stitch : unit_class custom 16 / 32 / 64
+		CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(petlevel, cinfo->GetStatsClass());
+		//CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(petlevel, cinfo->unit_class);
+
+
         SetCreateHealth(stats->BaseHealth[cinfo->expansion]);
         SetCreateMana(stats->BaseMana);
 

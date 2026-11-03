@@ -348,7 +348,10 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
     SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_RACE, 0);
 
     // known valid are: CLASS_WARRIOR, CLASS_PALADIN, CLASS_ROGUE, CLASS_MAGE
-    SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_CLASS, uint8(cinfo->unit_class));
+	//Stitch : unit_class custom 16 / 32 / 64
+	//SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_CLASS, uint8(cinfo->unit_class));
+	SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_CLASS, cinfo->GetClientClass());
+
 
     // Cancel load if no model defined
     if (!(cinfo->GetFirstValidModelId()))
@@ -493,7 +496,12 @@ bool Creature::UpdateEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
     SelectLevel();
 
     SetMeleeDamageSchool(SpellSchools(cInfo->dmgschool));
-    CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(getLevel(), cInfo->unit_class);
+    
+	//Stitch : unit_class custom 16 / 32 / 64
+	//CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(getLevel(), cInfo->unit_class);
+	CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(getLevel(), cInfo->GetStatsClass());
+
+
     float armor = (float)stats->GenerateArmor(cInfo); /// @todo Why is this treated as uint32 when it's a float?
     SetModifierValue(UNIT_MOD_ARMOR,             BASE_VALUE, armor);
     SetModifierValue(UNIT_MOD_RESISTANCE_HOLY,   BASE_VALUE, float(cInfo->resistance[SPELL_SCHOOL_HOLY]));
@@ -505,6 +513,25 @@ bool Creature::UpdateEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 
     SetCanModifyStats(true);
     UpdateAllStats();
+
+	//Stitch : unit_class custom : UpdateAllStats ecrase les maximums, on les reapplique (unit_class custom 16 / 32 / 64)
+	switch (cInfo->unit_class)
+	{
+	case 16:
+		SetMaxPower(POWER_FOCUS, 100);
+		SetPower(POWER_FOCUS, 100);
+		break;
+	case 32:
+		SetMaxPower(POWER_DEMONIC_FURY, 1000);
+		SetPower(POWER_DEMONIC_FURY, 1000);
+		break;
+	case 64:
+		SetMaxPower(POWER_RUNIC_POWER, 1000);
+		SetPower(POWER_RUNIC_POWER, 1000);
+		break;
+	default:
+		break;
+	}
 
     // checked and error show at loading templates
     if (FactionTemplateEntry const* factionTemplate = sFactionTemplateStore.LookupEntry(cInfo->faction))
@@ -1789,7 +1816,9 @@ void Creature::SelectLevel()
     uint8 level = minlevel == maxlevel ? minlevel : urand(minlevel, maxlevel);
     SetLevel(level);
 
-    CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(level, cInfo->unit_class);
+	//Stitch : unit_class custom 16 / 32 / 64
+    //CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(level, cInfo->unit_class);
+	CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(level, cInfo->GetStatsClass());
 
     // health
     float healthmod = _GetHealthMod(rank);
@@ -1806,6 +1835,7 @@ void Creature::SelectLevel()
     uint32 mana = stats->GenerateMana(cInfo);
     SetCreateMana(mana);
 
+	/*
     switch (getClass())
     {
         case CLASS_WARRIOR:
@@ -1815,6 +1845,47 @@ void Creature::SelectLevel()
             setPowerType(POWER_ENERGY);
             break;
         default:
+		*/
+	switch (getClass())
+	{
+	case CLASS_WARRIOR:
+		setPowerType(POWER_RAGE);
+		break;
+	case CLASS_ROGUE:
+		setPowerType(POWER_ENERGY);
+		break;
+		// Stitch : unit_class custom 16 / 32 / 64, visuel uniquement
+	case CLASS_HUNTER:          // unit_class 16
+		setPowerType(POWER_FOCUS);
+		SetMaxPower(POWER_FOCUS, 100);
+		SetPower(POWER_FOCUS, 100);
+		break;
+	case CLASS_WARLOCK:         // unit_class 32
+		setPowerType(POWER_DEMONIC_FURY);
+		SetMaxPower(POWER_DEMONIC_FURY, 1000);
+		SetPower(POWER_DEMONIC_FURY, 1000);
+		break;
+
+		//Stitch : unit_class custom 16 / 32 / 64
+		/*
+		case CLASS_DEATH_KNIGHT:  
+		setPowerType(POWER_RUNIC_POWER);
+		SetMaxPower(POWER_RUNIC_POWER, 1000);
+		SetPower(POWER_RUNIC_POWER, 1000);
+		break;
+		*/
+	case CLASS_DEATH_KNIGHT:    // unit_class 64
+		setPowerType(POWER_RUNIC_POWER);
+		SetModifierValue(UnitMods(UNIT_MOD_POWER_START + POWER_RUNIC_POWER), BASE_VALUE, 1000.0f);
+		SetMaxPower(POWER_RUNIC_POWER, 1000);
+		SetPower(POWER_RUNIC_POWER, 1000);
+
+		break;
+
+
+	default:
+
+
             SetMaxPower(POWER_MANA, mana); // MAX Mana
             SetPower(POWER_MANA, mana);
             break;

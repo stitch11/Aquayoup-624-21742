@@ -11215,6 +11215,11 @@ uint32 Unit::GetPowerIndex(uint32 powerType) const
     if (ToPet() && ToPet()->getPetType() == HUNTER_PET)
         classId = CLASS_HUNTER;
 
+
+	//Stitch : unit_class custom 16 / 32 / 64 : le client lit POWER_RUNIC_POWER a l'index 0 pour la classe 6 (creatures custom)
+	if (GetTypeId() == TYPEID_UNIT && !IsPet() && classId == CLASS_DEATH_KNIGHT && powerType == POWER_RUNIC_POWER)
+		return 0;
+
     return sDB2Manager.GetPowerIndexByClass(powerType, classId);
 }
 
@@ -13911,7 +13916,12 @@ void Unit::RemoveCharmedBy(Unit* charmer)
                     CreatureTemplate const* cinfo = ToCreature()->GetCreatureTemplate();
                     if (cinfo && cinfo->type == CREATURE_TYPE_DEMON)
                     {
-                        SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_CLASS, uint8(cinfo->unit_class));
+
+						//Stitch : unit_class custom 16 / 32 / 64
+						SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_CLASS, cinfo->GetClientClass());
+                        //SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_CLASS, uint8(cinfo->unit_class));
+
+
                         if (GetCharmInfo())
                             GetCharmInfo()->SetPetNumber(0, true);
                         else

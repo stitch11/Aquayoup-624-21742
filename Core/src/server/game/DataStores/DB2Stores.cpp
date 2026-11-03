@@ -339,11 +339,23 @@ void DB2Manager::LoadStores(std::string const& dataPath, uint32 defaultLocale)
     for (CharStartOutfitEntry const* outfit : sCharStartOutfitStore)
         _charStartOutfits[outfit->RaceID | (outfit->ClassID << 8) | (outfit->GenderID << 16)] = outfit;
 
-    sChrClassesXPowerTypesStore.Sort(&ChrClassesXPowerTypesEntryComparator::Compare);
-    for (uint32 i = 0; i < MAX_CLASSES; ++i)
-        for (uint32 j = 0; j < MAX_POWERS; ++j)
-            _powersByClass[i][j] = MAX_POWERS;
 
+	//Stitch : unit_class custom 16 / 32 / 64
+	sChrClassesXPowerTypesStore.Sort(&ChrClassesXPowerTypesEntryComparator::Compare);
+	for (uint32 i = 0; i < MAX_CLASSES; ++i)
+		for (uint32 j = 0; j < MAX_POWERS; ++j)
+			_powersByClass[i][j] = MAX_POWERS;
+
+	for (ChrClassesXPowerTypesEntry const* power : sChrClassesXPowerTypesStore)
+	{
+		uint32 index = 0;
+		for (uint32 j = 0; j < MAX_POWERS; ++j)
+			if (_powersByClass[power->ClassID][j] != MAX_POWERS)
+				++index;
+
+		_powersByClass[power->ClassID][power->PowerType] = index;
+	}
+	/*
     for (ChrClassesXPowerTypesEntry const* power : sChrClassesXPowerTypesStore)
     {
         uint32 index = 0;
@@ -353,6 +365,8 @@ void DB2Manager::LoadStores(std::string const& dataPath, uint32 defaultLocale)
 
         _powersByClass[power->ClassID][power->PowerType] = index;
     }
+	*/
+
 
     for (GlyphSlotEntry const* glyphSlot : sGlyphSlotStore)
         if (glyphSlot->Type == GLYPH_SLOT_MAJOR || glyphSlot->Type == GLYPH_SLOT_MINOR)

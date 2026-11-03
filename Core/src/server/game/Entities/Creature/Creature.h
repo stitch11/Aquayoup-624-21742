@@ -145,6 +145,33 @@ struct TC_GAME_API CreatureTemplate
     uint32  GetFirstInvisibleModel() const;
     uint32  GetFirstVisibleModel() const;
 
+	//
+	// Stitch : unit_class custom 16 (Focus), 32 (Fureur demoniaque), 64 (Puissance runique)
+	// Classe creature valide (1/2/4/8) utilisee pour creature_classlevelstats
+	uint8 GetStatsClass() const
+	{
+		switch (unit_class)
+		{
+		case 16: return CLASS_ROGUE;
+		case 32:
+		case 64: return CLASS_MAGE;
+		default: return uint8(unit_class);
+		}
+	}
+
+	//Stitch : unit_class custom 16 / 32 / 64 - Classe envoyee au client (determine la barre de ressource affichee)
+	uint8 GetClientClass() const
+	{
+		switch (unit_class)
+		{
+		case 16: return CLASS_HUNTER;
+		case 32: return CLASS_WARLOCK;
+		case 64: return CLASS_DEATH_KNIGHT;
+		default: return uint8(unit_class);
+		}
+	}
+
+
     // helpers
     SkillType GetRequiredLootSkill() const
     {
