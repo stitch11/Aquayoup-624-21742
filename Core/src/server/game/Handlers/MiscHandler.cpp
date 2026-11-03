@@ -405,7 +405,7 @@ void WorldSession::HandleSetSelectionOpcode(WorldPackets::Misc::SetSelection& pa
 {
     _player->SetSelection(packet.Selection);
 
-	//Stitch IDTip correction de l'id affiché par la popup
+	// Stitch IDTip correction de l'id affiche par la popup
 	if (Creature* creature = ObjectAccessor::GetCreature(*_player, packet.Selection))
 	{
 		std::string msg = std::to_string(creature->GetEntry());
@@ -418,6 +418,9 @@ void WorldSession::HandleSetSelectionOpcode(WorldPackets::Misc::SetSelection& pa
 
 		msg += ";";
 		msg += std::to_string(static_cast<uint32>(creature->GetCreatureTemplate()->unit_class));
+
+		msg += ";";
+		msg += std::to_string(creature->GetCreatureTemplate()->spells[0]);
 
 		WorldPackets::Chat::Chat chat;
 		chat.Initialize(CHAT_MSG_WHISPER, LANG_ADDON, _player, _player,
