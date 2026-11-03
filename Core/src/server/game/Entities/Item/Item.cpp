@@ -532,7 +532,10 @@ bool Item::LoadFromDB(ObjectGuid::LowType guid, ObjectGuid ownerGuid, Field* fie
 		stmt->setUInt32(1, GetUInt32Value(ITEM_FIELD_FLAGS));
 		stmt->setUInt32(2, GetUInt32Value(ITEM_FIELD_DURABILITY));
 		stmt->setUInt32(3, GetModifier(ITEM_MODIFIER_UPGRADE_ID));
-		stmt->setUInt64(3, guid);
+		
+		//Stitch worldserver-debug
+		//stmt->setUInt64(3, guid);
+		stmt->setUInt64(4, guid);
 
         CharacterDatabase.Execute(stmt);
     }

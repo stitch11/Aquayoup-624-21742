@@ -528,8 +528,27 @@ void WorldSession::HandleMirrorImageDataRequest(WorldPackets::Spells::GetMirrorI
 //    if (!unit->HasAuraType(SPELL_AURA_CLONE_CASTER))					
 //        return;
 
+
     // Get creator of the unit (SPELL_AURA_CLONE_CASTER does not stack)
-    Unit* creator = unit->GetAuraEffectsByType(SPELL_AURA_CLONE_CASTER).front()->GetCaster();
+    //Stitch crash  msvcp140d.dl  image miroir 
+	//Unit* creator = unit->GetAuraEffectsByType(SPELL_AURA_CLONE_CASTER).front()->GetCaster();
+	Unit::AuraEffectList const& cloneAuras = unit->GetAuraEffectsByType(SPELL_AURA_CLONE_CASTER);
+	
+
+	if (cloneAuras.empty())
+		//Stitch crash  image miroir 
+	{
+		TC_LOG_ERROR("network", "--- MirrorImage: unit %s (entry %u) has no clone aura", unit->GetGUID().ToString().c_str(), unit->GetEntry());
+		return;
+	}
+	//return;
+
+
+
+	Unit* creator = cloneAuras.front()->GetCaster();
+	if (!creator)
+		return;
+
 
 //Stitch image miroir : taille
 	unit->SetObjectScale(1.0f);											
