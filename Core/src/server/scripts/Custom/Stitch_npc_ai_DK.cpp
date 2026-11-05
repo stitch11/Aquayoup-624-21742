@@ -475,7 +475,8 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 								// Spell1 sur la cible
 								if (Cooldown_Spell1 <= diff)
 								{
-									me->CastSpell(victim, Spell_branche1_1, true);
+									DoCast(victim, Spell_branche1_1);
+									//me->CastSpell(victim, Spell_branche1_1, true);  	ne fait pas baisser le power
 									Cooldown_Spell1 = 6000;
 								}
 								else Cooldown_Spell1 -= diff;

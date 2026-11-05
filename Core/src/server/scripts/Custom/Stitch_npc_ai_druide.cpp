@@ -455,7 +455,8 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 						{
 							if (!me->HasUnitState(UNIT_STATE_MOVE))
 							{
-								DoCastVictim(Spell_branche1_1);
+								DoCast(victim, Spell_branche1_1);
+								//DoCastVictim(Spell_branche1_1);	ne fait pas baisser le power
 								Cooldown_Spell1 = 3500;
 							}
 						}

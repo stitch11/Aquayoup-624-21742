@@ -1304,7 +1304,7 @@ enum SpellEffectName
     TOTAL_SPELL_EFFECTS                             = 252,
 };
 
-enum SpellCastResult // 21355
+enum SpellCastResult // 21355  //Stitch info : SPELL_FAILED_ = id
 {
     SPELL_FAILED_SUCCESS                                        = 0,
     SPELL_FAILED_AFFECTING_COMBAT                               = 1,

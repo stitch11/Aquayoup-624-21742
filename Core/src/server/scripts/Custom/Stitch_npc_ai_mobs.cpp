@@ -2785,7 +2785,8 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							if (Dist <= 6 || ResteADistance >5 )
 							{
 								DoMeleeAttackIfReady();																	// Combat en mélée
-								me->CastSpell(victim, Spell_A, true);
+								//me->CastSpell(victim, Spell_A, true);  ne fait pas baisser le power
+								DoCast(victim, Spell_A);
 
 								Cooldown_SpellA = Cooldown_SpellA_defaut + urand(0,1000) -500;
 							}

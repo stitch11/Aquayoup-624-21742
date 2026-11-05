@@ -358,7 +358,8 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 					// Spell1 sur la cible chaque (Sort Régulié) : Tir des arcanes
 					if (Cooldown_Spell1 <= diff)
 					{
-						me->CastSpell(victim, Spell_branche1_1, true);
+						DoCast(victim, Spell_branche1_1);
+						//me->CastSpell(victim, Spell_branche1_1, true); 	ne fait pas baisser le power
 						Cooldown_Spell1 = 2000;
 					}
 					else Cooldown_Spell1 -= diff;

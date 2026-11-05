@@ -307,7 +307,8 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 						// Spell1 sur la cible
 						if (Cooldown_Spell1 <= diff && Spell_1 !=0)
 						{
-							me->CastSpell(victim, Spell_1, true);
+							DoCast(victim, Spell_1);
+							//me->CastSpell(victim, Spell_1, true);	ne fait pas baisser le power
 							DoMeleeAttackIfReady();																// Combat en mélée
 							Cooldown_Spell1 = 3000;
 						}

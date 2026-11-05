@@ -445,9 +445,8 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 						// Spell1 sur la cible  -------------------------------------------------------------------------------------------------------------------
 						if (Cooldown_Spell1 <= diff && Spell_1 !=0 )
 						{
-							me->CastSpell(victim, Spell_1, true);
-							//DoCast(victim, Spell_1);
-							//DoMeleeAttackIfReady();
+							DoCast(victim, Spell_1); 
+							//me->CastSpell(victim, Spell_1, true);	ne fait pas baisser le power
 							Cooldown_Spell1 = Cooldown_Spell1_defaut; 
 
 						}
@@ -458,7 +457,8 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 						{
 							if (!victim->HasAura(Spell_2))
 							{
-								me->CastSpell(victim, Spell_2, true);
+								DoCast(victim, Spell_2);
+								//me->CastSpell(victim, Spell_2, true); ne fait pas baisser le mana
 								Cooldown_Spell2 = Cooldown_Spell2_defaut;
 							}
 						}

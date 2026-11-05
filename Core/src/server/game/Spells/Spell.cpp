@@ -2879,6 +2879,9 @@ bool Spell::UpdateChanneledTargetList()
 
 void Spell::prepare(SpellCastTargets const* targets, AuraEffect const* triggeredByAura)
 {
+	//StitchTMP
+	TC_LOG_ERROR("server", "STITCH prepare caster=%u spell=%u flags=%u", m_caster->GetEntry(), m_spellInfo->Id, (uint32)_triggeredCastFlags);
+
     if (m_CastItem)
     {
         m_castItemGUID = m_CastItem->GetGUID();
@@ -2960,7 +2963,17 @@ void Spell::prepare(SpellCastTargets const* targets, AuraEffect const* triggered
         m_needComboPoints = false;
 
     SpellCastResult result = CheckCast(true);
-    // target is checked in too many locations and with different results to handle each of them
+   
+	//StitchTMP
+	TC_LOG_ERROR("server", "STITCH checkcast spell=%u result=%u", m_spellInfo->Id, (uint32)result);
+	TC_LOG_ERROR("server", "STITCH energy=%d max=%d type=%u", m_caster->GetPower(POWER_ENERGY), m_caster->GetMaxPower(POWER_ENERGY), (uint32)m_caster->getPowerType());
+	for (size_t i = 0; i < m_powerCost.size(); ++i)
+	{
+		TC_LOG_ERROR("server", "STITCH cost spell=%u power=%u amount=%d", m_spellInfo->Id, (uint32)m_powerCost[i].Power, (int32)m_powerCost[i].Amount);
+	}
+
+
+	// target is checked in too many locations and with different results to handle each of them
     // handle just the general SPELL_FAILED_BAD_TARGETS result which is the default result for most DBC target checks
     if (_triggeredCastFlags & TRIGGERED_IGNORE_TARGET_CHECK && result == SPELL_FAILED_BAD_TARGETS)
         result = SPELL_CAST_OK;
@@ -3139,7 +3152,10 @@ void Spell::cancel()
 
 void Spell::cast(bool skipCheck)
 {
-    // update pointers base at GUIDs to prevent access to non-existed already object
+	//StitchTMP
+	TC_LOG_ERROR("server", "STITCH cast caster=%u spell=%u costs=%u", m_caster->GetEntry(), m_spellInfo->Id, (uint32)m_powerCost.size());
+
+	// update pointers base at GUIDs to prevent access to non-existed already object
     if (!UpdatePointers())
     {
         // cancel the spell if UpdatePointers() returned false, something wrong happened there
@@ -4461,72 +4477,94 @@ void Spell::TakeCastItem()
 
 void Spell::TakePower()
 {
-    if (m_CastItem || m_triggeredByAuraSpell)
-        return;
 
-    //Don't take power if the spell is cast while .cheat power is enabled.
-    if (m_caster->GetTypeId() == TYPEID_PLAYER)
-    {
-        if (m_caster->ToPlayer()->GetCommandStatus(CHEAT_POWER))
-            return;
-    }
+	//StitchTMP
+	TC_LOG_ERROR("server", "STITCH TakePower caster=%u triggered=%d", m_caster->GetEntry(), (int)(m_CastItem != nullptr || m_triggeredByAuraSpell != nullptr));
+	TC_LOG_ERROR("server", "STITCH take start energy=%d", m_caster->GetPower(POWER_ENERGY));
 
-    for (SpellInfo::CostData& cost : m_powerCost)
-    {
-        Powers powerType = Powers(cost.Power);
-        bool hit = true;
-        if (m_caster->GetTypeId() == TYPEID_PLAYER)
-        {
-            if (powerType == POWER_RAGE || powerType == POWER_ENERGY || powerType == POWER_RUNES)
-            {
-                ObjectGuid targetGUID = m_targets.GetUnitTargetGUID();
-                if (!targetGUID.IsEmpty())
-                {
-                    for (std::vector<TargetInfo>::iterator ihit = m_UniqueTargetInfo.begin(); ihit != m_UniqueTargetInfo.end(); ++ihit)
-                    {
-                        if (ihit->targetGUID == targetGUID)
-                        {
-                            if (ihit->missCondition != SPELL_MISS_NONE)
-                            {
-                                hit = false;
-                                //lower spell cost on fail (by talent aura)
-                                if (Player* modOwner = m_caster->ToPlayer()->GetSpellModOwner())
-                                    modOwner->ApplySpellMod(m_spellInfo->Id, SPELLMOD_SPELL_COST_REFUND_ON_FAIL, cost.Amount);
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-        }
 
-        if (powerType == POWER_RUNES)
-        {
-            TakeRunePower(hit);
-            continue;
-        }
+	if (m_CastItem || m_triggeredByAuraSpell)
+		return;
 
-        if (!cost.Amount)
-            continue;
+	//Don't take power if the spell is cast while .cheat power is enabled.
+	if (m_caster->GetTypeId() == TYPEID_PLAYER)
+	{
+		if (m_caster->ToPlayer()->GetCommandStatus(CHEAT_POWER))
+			return;
+	}
 
-        // health as power used
-        if (powerType == POWER_HEALTH)
-        {
-            m_caster->ModifyHealth(-cost.Amount);
-            continue;
-        }
+	for (SpellInfo::CostData& cost : m_powerCost)
+	{
+		Powers powerType = Powers(cost.Power);
+		bool hit = true;
+		if (m_caster->GetTypeId() == TYPEID_PLAYER)
+		{
+			if (powerType == POWER_RAGE || powerType == POWER_ENERGY || powerType == POWER_RUNES)
+			{
+				ObjectGuid targetGUID = m_targets.GetUnitTargetGUID();
+				if (!targetGUID.IsEmpty())
+				{
+					for (std::vector<TargetInfo>::iterator ihit = m_UniqueTargetInfo.begin(); ihit != m_UniqueTargetInfo.end(); ++ihit)
+					{
+						if (ihit->targetGUID == targetGUID)
+						{
+							if (ihit->missCondition != SPELL_MISS_NONE)
+							{
+								hit = false;
+								//lower spell cost on fail (by talent aura)
+								if (Player* modOwner = m_caster->ToPlayer()->GetSpellModOwner())
+									modOwner->ApplySpellMod(m_spellInfo->Id, SPELLMOD_SPELL_COST_REFUND_ON_FAIL, cost.Amount);
+							}
+							break;
+						}
+					}
+				}
+			}
+		}
 
-        if (powerType >= MAX_POWERS)
-        {
-            TC_LOG_ERROR("spells", "Spell::TakePower: Unknown power type '%d'", powerType);
-            continue;
-        }
+		if (powerType == POWER_RUNES)
+		{
+			TakeRunePower(hit);
+			continue;
+		}
 
-        if (hit)
-            m_caster->ModifyPower(powerType, -cost.Amount);
-        else
-            m_caster->ModifyPower(powerType, -irand(0, cost.Amount / 4));
-    }
+		if (!cost.Amount)
+			continue;
+
+		// health as power used
+		if (powerType == POWER_HEALTH)
+		{
+			m_caster->ModifyHealth(-cost.Amount);
+			continue;
+		}
+
+		if (powerType >= MAX_POWERS)
+		{
+			TC_LOG_ERROR("spells", "Spell::TakePower: Unknown power type '%d'", powerType);
+			continue;
+		}
+
+		//Stitch : classe 16, Focus en plus de l'énergie
+		if (m_caster->GetTypeId() == TYPEID_UNIT && !m_caster->ToCreature()->IsPet()
+			&& m_caster->ToCreature()->GetCreatureTemplate()->unit_class == 16
+			&& powerType == POWER_ENERGY)
+			m_caster->ModifyPower(POWER_FOCUS, -cost.Amount);
+
+
+
+		//Stitch TMP
+		if (m_caster->GetTypeId() == TYPEID_UNIT && m_caster->ToCreature()->GetCreatureTemplate()->unit_class == 16 && m_spellInfo->Id == 1752)
+			TC_LOG_ERROR("spells", "DBG spell=%u power=%u amount=%d cur=%u", m_spellInfo->Id, uint32(powerType), cost.Amount, m_caster->GetPower(powerType));
+
+		if (hit)
+			m_caster->ModifyPower(powerType, -cost.Amount);
+		else
+			m_caster->ModifyPower(powerType, -irand(0, cost.Amount / 4));
+	}
+
+	//StitchTMP
+	TC_LOG_ERROR("server", "STITCH take end energy=%d", m_caster->GetPower(POWER_ENERGY));
+
 }
 
 SpellCastResult Spell::CheckRuneCost(uint32 runeCostID)
@@ -6057,10 +6095,19 @@ SpellCastResult Spell::CheckPower()
                 return failReason;
         }
 
-        // Check power amount
-        if (int32(m_caster->GetPower(cost.Power)) < cost.Amount)
-            return SPELL_FAILED_NO_POWER;
-    }
+		if (m_caster->GetTypeId() == TYPEID_UNIT && !m_caster->ToCreature()->IsPet()
+			&& m_caster->ToCreature()->GetCreatureTemplate()->unit_class == 16
+			&& cost.Power == POWER_ENERGY)
+		{
+			if (m_caster->GetPower(POWER_FOCUS) < cost.Amount)
+				return SPELL_FAILED_NO_POWER;
+			continue;
+		}
+
+		// Check power amount
+		if (int32(m_caster->GetPower(cost.Power)) < cost.Amount)
+			return SPELL_FAILED_NO_POWER;
+	}
 
     return SPELL_CAST_OK;
 }

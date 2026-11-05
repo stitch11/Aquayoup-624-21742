@@ -371,7 +371,8 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 						if (Cooldown_Spell1 <= diff)
 						{
 							//Bonus_Degat_Arme_Done(-40);											// Reduction des degats infligés
-							me->CastSpell(victim, Spell_branche1_1, true);
+							//me->CastSpell(victim, Spell_branche1_1, true);	ne fait pas baisser le power
+							DoCast(victim, Spell_branche1_1);
 							//Bonus_Degat_Arme_Done(40);
 							DoMeleeAttackIfReady();													// Combat en mélée
 							Cooldown_Spell1 = 3500;
@@ -423,7 +424,8 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 						if (Cooldown_Spell1 <= diff)
 						{
 							//Bonus_Degat_Arme_Done(-35);												// Reduction des degats infligés
-							me->CastSpell(victim, Spell_branche2_1, true);
+							//me->CastSpell(victim, Spell_branche2_1, true);	ne fait pas baisser le power
+							DoCast(victim, Spell_branche2_1);
 							//Bonus_Degat_Arme_Done(35);	
 							DoMeleeAttackIfReady();													// Combat en mélée
 							Cooldown_Spell1 = 3500;
@@ -478,7 +480,8 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 						if (Cooldown_Spell1 <= diff)
 						{
 							//Bonus_Degat_Arme_Done(-40);											// Reduction des degats infligés
-							me->CastSpell(victim, Spell_branche3_1, true);
+							//me->CastSpell(victim, Spell_branche3_1, true);	ne fait pas baisser le power
+							DoCast(victim, Spell_branche3_1);
 							//Bonus_Degat_Arme_Done(40);
 							DoMeleeAttackIfReady();													// Combat en mélée
 							Cooldown_Spell1 = 2500;

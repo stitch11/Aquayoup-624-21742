@@ -687,7 +687,15 @@ uint32 Unit::DealDamage(Unit* victim, uint32 damage, CleanDamage const* cleanDam
         uint32 rage = uint32(GetAttackTime(cleanDamage->attackType) / 1000.f * 1.75f);
         if (cleanDamage->attackType == OFF_ATTACK)
             rage /= 2;
-        RewardRage(rage);
+
+        //Stitch regen rage mob
+		//RewardRage(rage);
+		if (GetTypeId() != TYPEID_PLAYER)
+			RewardRage(rage / 2);
+		else
+			RewardRage(rage);
+
+
     }
 
     if (!damage)
@@ -11146,9 +11154,21 @@ int32 Unit::GetMaxPower(Powers power) const
     return GetInt32Value(UNIT_FIELD_MAXPOWER + powerIndex);
 }
 
+
+/*//StitchTMP
 void Unit::SetPower(Powers power, int32 val)
 {
     uint32 powerIndex = GetPowerIndex(power);
+	*/
+void Unit::SetPower(Powers power, int32 val)
+{
+	if (power == POWER_ENERGY && GetTypeId() == TYPEID_UNIT)
+		TC_LOG_ERROR("server", "STITCH SetPower energy old=%d new=%d", GetPower(POWER_ENERGY), val);
+
+	uint32 powerIndex = GetPowerIndex(power);
+
+
+
     if (powerIndex == MAX_POWERS || powerIndex >= MAX_POWERS_PER_CLASS)
         return;
 
@@ -11205,23 +11225,58 @@ void Unit::SetMaxPower(Powers power, int32 val)
         SetPower(power, val);
 }
 
-uint32 Unit::GetPowerIndex(uint32 powerType) const
-{
-    /// This is here because hunter pets are of the warrior class.
-    /// With the current implementation, the core only gives them
-    /// POWER_RAGE, so we enforce the class to hunter so that they
-    /// effectively get focus power.
-    uint32 classId = getClass();
-    if (ToPet() && ToPet()->getPetType() == HUNTER_PET)
-        classId = CLASS_HUNTER;
 
+//Stitch : unit_class custom 16 / 32 / 64
+/*uint32 Unit::GetPowerIndex(uint32 powerType) const
+{
+	/// This is here because hunter pets are of the warrior class.
+	/// With the current implementation, the core only gives them
+	/// POWER_RAGE, so we enforce the class to hunter so that they
+	/// effectively get focus power.
+	uint32 classId = getClass();
+	if (ToPet() && ToPet()->getPetType() == HUNTER_PET)
+		classId = CLASS_HUNTER;
 
 	//Stitch : unit_class custom 16 / 32 / 64 : le client lit POWER_RUNIC_POWER a l'index 0 pour la classe 6 (creatures custom)
 	if (GetTypeId() == TYPEID_UNIT && !IsPet() && classId == CLASS_DEATH_KNIGHT && powerType == POWER_RUNIC_POWER)
 		return 0;
 
-    return sDB2Manager.GetPowerIndexByClass(powerType, classId);
+	return sDB2Manager.GetPowerIndexByClass(powerType, classId);
+}*/
+uint32 Unit::GetPowerIndex(uint32 powerType) const
+{
+	/// This is here because hunter pets are of the warrior class.
+	/// With the current implementation, the core only gives them
+	/// POWER_RAGE, so we enforce the class to hunter so that they
+	/// effectively get focus power.
+	uint32 classId = getClass();
+	if (ToPet() && ToPet()->getPetType() == HUNTER_PET)
+		classId = CLASS_HUNTER;
+
+	//Stitch : unit_class custom 16 / 32 / 64 : le client lit POWER_RUNIC_POWER a l'index 0 pour la classe 6 (creatures custom)
+	//Stitch : unit_class 16, energie reelle lue a l'index 0 (affichee en Focus par le client)
+	if (GetTypeId() == TYPEID_UNIT && !IsPet() && powerType == POWER_ENERGY
+		&& ToCreature()->GetCreatureTemplate()->unit_class == 16)
+		return 0;
+
+	//Stitch : unit_class 16, energie reelle lue a l'index 0 (affichee en Focus par le client)
+	if (GetTypeId() == TYPEID_UNIT && !IsPet() && classId == 16 && powerType == POWER_ENERGY)
+		return 0;
+
+	//Stitch : unit_class 4, energie reelle lue a l'index 0
+	if (GetTypeId() == TYPEID_UNIT && !IsPet() && powerType == POWER_ENERGY
+		&& ToCreature()->GetCreatureTemplate()->unit_class == 4)
+		return 0;
+
+	//Stitch : unit_class 64, puissance runique lue a l'index 0
+	if (GetTypeId() == TYPEID_UNIT && !IsPet() && powerType == POWER_RUNIC_POWER
+		&& ToCreature()->GetCreatureTemplate()->unit_class == 64)
+		return 0;
+
+	return sDB2Manager.GetPowerIndexByClass(powerType, classId);
 }
+
+
 
 int32 Unit::GetCreatePowers(Powers power) const
 {
@@ -15540,8 +15595,9 @@ void Unit::RewardRage(uint32 baseRage)
 
 
 	//Stitch Regen rage ours ------------------------------------------------------------------------------------------------------------
-//    ModifyPower(POWER_RAGE, uint32(addRage * 10));
-	ModifyPower(POWER_RAGE, uint32(addRage * 35));
+	//    ModifyPower(POWER_RAGE, uint32(addRage * 10));
+	if (GetTypeId() != TYPEID_PLAYER)
+		ModifyPower(POWER_RAGE, uint32(addRage * 30));
 
 
 }

@@ -707,15 +707,28 @@ void Creature::Regenerate(Powers power)
             addvalue = 24 * sWorld->getRate(RATE_POWER_FOCUS);
             break;
         }
-        case POWER_ENERGY:
-        {
-            // For deathknight's ghoul.
-            addvalue = 50 ;
-            break;
-        }
+		case POWER_ENERGY:
+		{
+			//Stitch : unit_class custom 16
+			/*
+			case POWER_ENERGY:
+			{
+			// For deathknight's ghoul.
+			addvalue = 50;
+			break;
+			}
+			*/
+			if (GetCreatureTemplate()->unit_class == 16)
+				if (curValue < 15)
+					addvalue = 15;
+				else
+					addvalue = 5;
+
+			break;
+		}
 		case POWER_RAGE:
 		{
-			addvalue = 30;
+			addvalue = 20;
 			break;
 		}
 		case POWER_MANA:
@@ -733,9 +746,15 @@ void Creature::Regenerate(Powers power)
         if (Powers((*i)->GetMiscValue()) == power)
             AddPct(addvalue, (*i)->GetAmount());
 
-    addvalue += GetTotalAuraModifierByMiscValue(SPELL_AURA_MOD_POWER_REGEN, power) * (IsHunterPet()? PET_FOCUS_REGEN_INTERVAL : CREATURE_REGEN_INTERVAL) / (5 * IN_MILLISECONDS);
+   addvalue += GetTotalAuraModifierByMiscValue(SPELL_AURA_MOD_POWER_REGEN, power) * (IsHunterPet()? PET_FOCUS_REGEN_INTERVAL : CREATURE_REGEN_INTERVAL) / (5 * IN_MILLISECONDS);
+
+   //StitchTMP
+   if (power == POWER_ENERGY)
+	   TC_LOG_ERROR("server", "STITCH regen energy add=%d", (int32)addvalue);
+
 
     ModifyPower(power, int32(addvalue));
+
 }
 
 void Pet::Remove(PetSaveMode mode, bool returnreagent)
