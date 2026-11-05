@@ -13,12 +13,6 @@
 // spell6 : Heal(tir sur cible)
 //
 // Si spell1 = 0 : tirage aléatoire des spells
-
-// Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
-// Necessite dans Creature_Template :
-// UPDATE `creature_template` SET `spell1` = ATTAQUE, `spell2` = DOT, `spell3` = AGRO, `spell4` = EVADE, `spell5` = BUF, `ScriptName` = ' Stitch_npc_ai_lancier', `AIName` = '' WHERE(entry = 2237);
-// REPLACE INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`, `VerifiedBuild`) VALUES
-// (15100014, 1, 44654, 0,116459, 0);	## Lance + arc
 //###########################################################################################################################################################################################################################################
 
 #include "CreatureTextMgr.h"

@@ -709,15 +709,6 @@ void Creature::Regenerate(Powers power)
         }
 		case POWER_ENERGY:
 		{
-			//Stitch : unit_class custom 16
-			/*
-			case POWER_ENERGY:
-			{
-			// For deathknight's ghoul.
-			addvalue = 50;
-			break;
-			}
-			*/
 			if (GetCreatureTemplate()->unit_class == 16)
 				if (curValue < 15)
 					addvalue = 15;
@@ -747,11 +738,6 @@ void Creature::Regenerate(Powers power)
             AddPct(addvalue, (*i)->GetAmount());
 
    addvalue += GetTotalAuraModifierByMiscValue(SPELL_AURA_MOD_POWER_REGEN, power) * (IsHunterPet()? PET_FOCUS_REGEN_INTERVAL : CREATURE_REGEN_INTERVAL) / (5 * IN_MILLISECONDS);
-
-   //StitchTMP
-   if (power == POWER_ENERGY)
-	   TC_LOG_ERROR("server", "STITCH regen energy add=%d", (int32)addvalue);
-
 
     ModifyPower(power, int32(addvalue));
 
@@ -968,7 +954,7 @@ bool Guardian::InitStatsForLevel(uint8 petlevel)
     {
         // remove elite bonuses included in DB values
         
-		//Stitch : unit_class custom 16 / 32 / 64
+		//Stitch : unit_class custom 16/32/64
 		CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(petlevel, cinfo->GetStatsClass());
 		//CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(petlevel, cinfo->unit_class);
 

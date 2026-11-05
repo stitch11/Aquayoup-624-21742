@@ -3,7 +3,7 @@
 // AI generique npc par famille : Mobs Ver 2025-10
 //
 // Si spell[1] = 0 : alors affectation aléatoire de tous les spells(prédéfini dans le core), sinon utilisera les spells définis dans creature_template spell[1 a 5]
-
+//
 // spell1 : Attaque principale
 // spell2 : Dot
 // spell3 : spell lancé a l'agro

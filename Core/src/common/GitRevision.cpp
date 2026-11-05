@@ -68,7 +68,7 @@ char const* GitRevision::GetHotfixesDatabase()
 
 char const* GitRevision::GetFullVersion()
 {
-	return "Core Aquayoup 6.2.4 21742 - rev. Juillet 2025 " "(" TRINITY_PLATFORM_STR ", "", " TRINITY_LINKAGE_TYPE_STR ")";
+	return "Core Aquayoup 6.2.4 21742 - rev. Novembre 2026 " "(" TRINITY_PLATFORM_STR ", "", " TRINITY_LINKAGE_TYPE_STR ")";
 }
 
 

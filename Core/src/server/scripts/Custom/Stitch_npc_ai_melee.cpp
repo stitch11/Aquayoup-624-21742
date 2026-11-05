@@ -10,11 +10,6 @@
 // spell5 : Buf
 //
 // Si spell1 = 0 : tirage aléatoire des spells
-//
-// Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
-// UPDATE `creature_template` SET `spell1` = ATTAQUE , `spell2` =  DOT , `spell3` =  AGRO, `spell4` = EVADE , `spell5` = BUF , `ScriptName` = 'Stitch_npc_ai_melee',`AIName` = '' WHERE (entry = 2237);
-// REPLACE INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`, `VerifiedBuild`) VALUES
-// (15100012, 1, 88857, 0, 0, 0);	## Lance
 //###########################################################################################################################################################################################################################################
 
 #include "CreatureTextMgr.h"

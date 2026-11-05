@@ -2,6 +2,7 @@
 // Stitch Octobre 2026
 // Commande telez : 
 // Téléporte le GM au meme X,Y mais avec un +-Z en paramètre. Par exemple pour le placement de gob
+// Cette commande applique le Mal de resurrection et ressuscite le joueur s'il est mort
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 

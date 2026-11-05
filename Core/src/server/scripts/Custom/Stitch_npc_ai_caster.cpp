@@ -23,13 +23,7 @@
 // pickpocketloot = 5 : Pretre
 // pickpocketloot = 6 : DK Chaos
 // pickpocketloot = 7 : Le mob ne cherchera plus a garder une certaine distance de sa cible et restera a sa place
-
-// Il est possible d'influencer le temp entre 2 cast avec `BaseAttackTime` & `RangeAttackTime` 
-// Necessite dans Creature_Template :
-// UPDATE `creature_template` SET `spell1` = ATTAQUE , `spell2` =  DOT , `spell3` =  AGRO, `spell4` = EVADE , `spell5` = BUF , `spell6` =  HEAL , `ScriptName` = ' Stitch_npc_ai_caster',`AIName` = '' WHERE (entry = 2237);
-// REPLACE INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`, `VerifiedBuild`) VALUES
-// (15100013, 1, 854, 0, 0, 0);	## Baton
-//###########################################################################################################################################################################################################################################
+///###########################################################################################################################################################################################################################################
 
 #include "CreatureTextMgr.h"
 

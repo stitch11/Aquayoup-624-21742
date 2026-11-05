@@ -2879,8 +2879,6 @@ bool Spell::UpdateChanneledTargetList()
 
 void Spell::prepare(SpellCastTargets const* targets, AuraEffect const* triggeredByAura)
 {
-	//StitchTMP
-	TC_LOG_ERROR("server", "STITCH prepare caster=%u spell=%u flags=%u", m_caster->GetEntry(), m_spellInfo->Id, (uint32)_triggeredCastFlags);
 
     if (m_CastItem)
     {
@@ -2964,14 +2962,6 @@ void Spell::prepare(SpellCastTargets const* targets, AuraEffect const* triggered
 
     SpellCastResult result = CheckCast(true);
    
-	//StitchTMP
-	TC_LOG_ERROR("server", "STITCH checkcast spell=%u result=%u", m_spellInfo->Id, (uint32)result);
-	TC_LOG_ERROR("server", "STITCH energy=%d max=%d type=%u", m_caster->GetPower(POWER_ENERGY), m_caster->GetMaxPower(POWER_ENERGY), (uint32)m_caster->getPowerType());
-	for (size_t i = 0; i < m_powerCost.size(); ++i)
-	{
-		TC_LOG_ERROR("server", "STITCH cost spell=%u power=%u amount=%d", m_spellInfo->Id, (uint32)m_powerCost[i].Power, (int32)m_powerCost[i].Amount);
-	}
-
 
 	// target is checked in too many locations and with different results to handle each of them
     // handle just the general SPELL_FAILED_BAD_TARGETS result which is the default result for most DBC target checks
@@ -3152,9 +3142,6 @@ void Spell::cancel()
 
 void Spell::cast(bool skipCheck)
 {
-	//StitchTMP
-	TC_LOG_ERROR("server", "STITCH cast caster=%u spell=%u costs=%u", m_caster->GetEntry(), m_spellInfo->Id, (uint32)m_powerCost.size());
-
 	// update pointers base at GUIDs to prevent access to non-existed already object
     if (!UpdatePointers())
     {
@@ -4478,11 +4465,6 @@ void Spell::TakeCastItem()
 void Spell::TakePower()
 {
 
-	//StitchTMP
-	TC_LOG_ERROR("server", "STITCH TakePower caster=%u triggered=%d", m_caster->GetEntry(), (int)(m_CastItem != nullptr || m_triggeredByAuraSpell != nullptr));
-	TC_LOG_ERROR("server", "STITCH take start energy=%d", m_caster->GetPower(POWER_ENERGY));
-
-
 	if (m_CastItem || m_triggeredByAuraSpell)
 		return;
 
@@ -4544,26 +4526,18 @@ void Spell::TakePower()
 			continue;
 		}
 
-		//Stitch : classe 16, Focus en plus de l'énergie
+		//Stitch : unit_class 16, Focus en plus de l'énergie
 		if (m_caster->GetTypeId() == TYPEID_UNIT && !m_caster->ToCreature()->IsPet()
 			&& m_caster->ToCreature()->GetCreatureTemplate()->unit_class == 16
 			&& powerType == POWER_ENERGY)
 			m_caster->ModifyPower(POWER_FOCUS, -cost.Amount);
 
 
-
-		//Stitch TMP
-		if (m_caster->GetTypeId() == TYPEID_UNIT && m_caster->ToCreature()->GetCreatureTemplate()->unit_class == 16 && m_spellInfo->Id == 1752)
-			TC_LOG_ERROR("spells", "DBG spell=%u power=%u amount=%d cur=%u", m_spellInfo->Id, uint32(powerType), cost.Amount, m_caster->GetPower(powerType));
-
 		if (hit)
 			m_caster->ModifyPower(powerType, -cost.Amount);
 		else
 			m_caster->ModifyPower(powerType, -irand(0, cost.Amount / 4));
 	}
-
-	//StitchTMP
-	TC_LOG_ERROR("server", "STITCH take end energy=%d", m_caster->GetPower(POWER_ENERGY));
 
 }
 

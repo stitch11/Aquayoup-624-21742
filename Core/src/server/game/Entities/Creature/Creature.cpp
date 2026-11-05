@@ -220,7 +220,7 @@ void Creature::AddToWorld()
     ///- Register the creature for guid lookup
     if (!IsInWorld())
     {
-		//Stitch : unit_class 16, energie reelle (reappliquee apres le chargement DB)
+		//Stitch : unit_class 16, energie reelle (reaplique apres le chargement DB)
 		if (!IsPet() && GetCreatureTemplate()->unit_class == 16)
 		{
 			SetMaxPower(POWER_ENERGY, 100);
@@ -239,16 +239,6 @@ void Creature::AddToWorld()
 			SetMaxPower(POWER_RAGE, 1000);
 			SetPower(POWER_RAGE, 0);
 		}
-		//Stitch : unit_class 4, regen energie en combat
-		//if (!IsPet() && GetCreatureTemplate()->unit_class == 4 && getPowerType() == POWER_ENERGY && IsInCombat())
-		//{
-		//	if (GetPower(POWER_ENERGY) < 30)
-		//		ModifyPower(POWER_ENERGY, 15);
-		//	else
-		//		ModifyPower(POWER_ENERGY, 10);
-		//}
-
-
 
 
         if (GetZoneScript())
@@ -379,7 +369,8 @@ bool Creature::InitEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
     SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_RACE, 0);
 
     // known valid are: CLASS_WARRIOR, CLASS_PALADIN, CLASS_ROGUE, CLASS_MAGE
-	//Stitch : unit_class custom 16 / 32 / 64
+
+	//Stitch : unit_class custom 16/32/64
 	//SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_CLASS, uint8(cinfo->unit_class));
 	SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_CLASS, cinfo->GetClientClass());
 
@@ -528,7 +519,7 @@ bool Creature::UpdateEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
 
     SetMeleeDamageSchool(SpellSchools(cInfo->dmgschool));
     
-	//Stitch : unit_class custom 16 / 32 / 64
+	//Stitch : unit_class custom 16/32/64
 	//CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(getLevel(), cInfo->unit_class);
 	CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(getLevel(), cInfo->GetStatsClass());
 
@@ -545,7 +536,7 @@ bool Creature::UpdateEntry(uint32 entry, CreatureData const* data /*= nullptr*/)
     SetCanModifyStats(true);
     UpdateAllStats();
 
-	//Stitch : unit_class custom : UpdateAllStats ecrase les maximums, on les reapplique (unit_class custom 16 / 32 / 64)
+	//Stitch : unit_class custom : UpdateAllStats ecrase les maximums, on les reaplique (unit_class custom 16/32/64)
 	switch (cInfo->unit_class)
 	{
 	case 16:
@@ -1309,17 +1300,6 @@ void Creature::Update(uint32 diff)
                              !EnsureVictim()->GetCharmerOrOwnerPlayerOrPlayerItself() ||                // or the victim/owner/charmer is not a player
                              !EnsureVictim()->GetCharmerOrOwnerPlayerOrPlayerItself()->IsGameMaster()); // or the victim/owner/charmer is not a GameMaster
 
-
-			//StitchTMP
-			//Stitch Rage des Mobs toujours a 100 plutot que 0 en combat (pour le visuel)
-				if (IsInCombat() && GetVictim() && getPowerType() == POWER_RAGE) // regeneration rage si hors combat & non métamorphosé 
-				{
-					//SetMaxPower(POWER_RAGE, 1000);
-					//SetPower(POWER_RAGE,1000);
-				}
-
-            /*if (m_regenTimer <= diff)
-            {*/
             if (!IsInEvadeMode() && (!bInCombat || IsPolymorphed())) // regenerate health if not in combat or if polymorphed
                 RegenerateHealth();
 
@@ -1329,7 +1309,7 @@ void Creature::Update(uint32 diff)
 
 					// Le reste de ton code...
 
-				//Stitch : unit_class custom 16 / 32 / 64
+					//Stitch : unit_class custom 16/32/64
 				if (getPowerType() == POWER_ENERGY ||
 					getPowerType() == POWER_FOCUS ||
 					getPowerType() == POWER_RAGE)
@@ -1358,7 +1338,7 @@ void Creature::Update(uint32 diff)
 					else
 						ModifyPower(POWER_RAGE, 75);
 				}
-				//Stitch : classe 4, regen energie
+				//Stitch : unit_class 4, regen energie
 				if (!IsPet() && GetCreatureTemplate()->unit_class == 4 && getPowerType() == POWER_ENERGY)
 				{
 					if (!IsInCombat())
@@ -1368,12 +1348,6 @@ void Creature::Update(uint32 diff)
 					else
 						ModifyPower(POWER_ENERGY, 5);
 				}
-				/*
-                if (getPowerType() == POWER_ENERGY)
-                    Regenerate(POWER_ENERGY);
-                else
-                    RegenerateMana();
-					*/
             }
 
             /*if (!bIsPolymorphed) // only increase the timer if not polymorphed
@@ -1895,7 +1869,7 @@ void Creature::SelectLevel()
     uint8 level = minlevel == maxlevel ? minlevel : urand(minlevel, maxlevel);
     SetLevel(level);
 
-	//Stitch : unit_class custom 16 / 32 / 64
+	//Stitch : unit_class custom 16/32/64
     //CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(level, cInfo->unit_class);
 	CreatureBaseStats const* stats = sObjectMgr->GetCreatureBaseStats(level, cInfo->GetStatsClass());
 
@@ -1938,10 +1912,7 @@ void Creature::SelectLevel()
 		SetPower(POWER_ENERGY, 100);
 		break;
 	case CLASS_HUNTER: 
-		//Stitch : unit_class custom 16 / 32 / 64
-		//setPowerType(POWER_FOCUS);
-		//SetMaxPower(POWER_FOCUS, 100);
-		//SetPower(POWER_FOCUS, 100);
+		//Stitch : unit_class custom 16/32/64
 		setPowerType(POWER_FOCUS);
 		SetMaxPower(POWER_FOCUS, 100);
 		SetPower(POWER_FOCUS, 100);
@@ -1953,14 +1924,6 @@ void Creature::SelectLevel()
 		SetPower(POWER_DEMONIC_FURY, 1000);
 		break;
 
-		//Stitch : unit_class custom 16 / 32 / 64
-		/*
-		case CLASS_DEATH_KNIGHT:  
-		setPowerType(POWER_RUNIC_POWER);
-		SetMaxPower(POWER_RUNIC_POWER, 1000);
-		SetPower(POWER_RUNIC_POWER, 1000);
-		break;
-		*/
 	case CLASS_DEATH_KNIGHT:    // unit_class 64
 		setPowerType(POWER_RUNIC_POWER);
 		SetModifierValue(UnitMods(UNIT_MOD_POWER_START + POWER_RUNIC_POWER), BASE_VALUE, 1000.0f);
@@ -1976,7 +1939,7 @@ void Creature::SelectLevel()
             SetMaxPower(POWER_MANA, mana); // MAX Mana
             SetPower(POWER_MANA, mana);
 
-			//Stitch : unit_class custom 16 / 32 / 64
+			//Stitch : unit_class custom 16/32/64
 			if (GetCreatureTemplate()->GetClientClass() == CLASS_WARLOCK)	// CLASS_WARLOCK : Parce que le client ne connaît que les vraies classes.
 			{
 				setPowerType(POWER_DEMONIC_FURY);
@@ -2010,18 +1973,12 @@ void Creature::SelectLevel()
     SetModifierValue(UNIT_MOD_ATTACK_POWER, BASE_VALUE, stats->AttackPower);
     SetModifierValue(UNIT_MOD_ATTACK_POWER_RANGED, BASE_VALUE, stats->RangedAttackPower);
 
-	//StitchTMP
-		//Stitch : unit_class 16, energie reelle (affichee en Focus, index 0)
+		//Stitch : unit_class 16, energie reelle (affiche en Focus, index 0)
 		if (!IsPet() && GetCreatureTemplate()->unit_class == 16)
 		{
 			SetMaxPower(POWER_ENERGY, 100);
 			SetPower(POWER_ENERGY, 100);
 		}
-
-		//StitchTMP
-		if (!IsPet() && GetCreatureTemplate()->unit_class == 16)
-			TC_LOG_ERROR("spells", "DBG SelectLevel entry=%u max=%u cur=%u", GetEntry(), GetMaxPower(POWER_ENERGY), GetPower(POWER_ENERGY));
-
 }
 
 float Creature::_GetHealthMod(int32 Rank)

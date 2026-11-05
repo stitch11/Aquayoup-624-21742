@@ -159,7 +159,7 @@ struct TC_GAME_API CreatureTemplate
 		}
 	}
 
-	//Stitch : unit_class custom 16 / 32 / 64 - Classe envoyee au client (determine la barre de ressource affichee)
+	//Stitch : unit_class custom 16/32/64 - Classe envoyee au client (determine la barre de ressource affichee)
 	uint8 GetClientClass() const
 	{
 		switch (unit_class)

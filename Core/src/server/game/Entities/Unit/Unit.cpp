@@ -11155,11 +11155,6 @@ int32 Unit::GetMaxPower(Powers power) const
 }
 
 
-/*//StitchTMP
-void Unit::SetPower(Powers power, int32 val)
-{
-    uint32 powerIndex = GetPowerIndex(power);
-	*/
 void Unit::SetPower(Powers power, int32 val)
 {
 	if (power == POWER_ENERGY && GetTypeId() == TYPEID_UNIT)
@@ -11226,7 +11221,7 @@ void Unit::SetMaxPower(Powers power, int32 val)
 }
 
 
-//Stitch : unit_class custom 16 / 32 / 64
+//Stitch : unit_class custom 16/32/64
 /*uint32 Unit::GetPowerIndex(uint32 powerType) const
 {
 	/// This is here because hunter pets are of the warrior class.
@@ -11237,7 +11232,7 @@ void Unit::SetMaxPower(Powers power, int32 val)
 	if (ToPet() && ToPet()->getPetType() == HUNTER_PET)
 		classId = CLASS_HUNTER;
 
-	//Stitch : unit_class custom 16 / 32 / 64 : le client lit POWER_RUNIC_POWER a l'index 0 pour la classe 6 (creatures custom)
+		//Stitch : unit_class custom 16/32/64 : le client lit POWER_RUNIC_POWER a l'index 0 pour la classe 6 (creatures custom)
 	if (GetTypeId() == TYPEID_UNIT && !IsPet() && classId == CLASS_DEATH_KNIGHT && powerType == POWER_RUNIC_POWER)
 		return 0;
 
@@ -11253,7 +11248,7 @@ uint32 Unit::GetPowerIndex(uint32 powerType) const
 	if (ToPet() && ToPet()->getPetType() == HUNTER_PET)
 		classId = CLASS_HUNTER;
 
-	//Stitch : unit_class custom 16 / 32 / 64 : le client lit POWER_RUNIC_POWER a l'index 0 pour la classe 6 (creatures custom)
+	//Stitch : unit_class custom 16/32/64 : le client lit POWER_RUNIC_POWER a l'index 0 pour la classe 6 (creatures custom)
 	//Stitch : unit_class 16, energie reelle lue a l'index 0 (affichee en Focus par le client)
 	if (GetTypeId() == TYPEID_UNIT && !IsPet() && powerType == POWER_ENERGY
 		&& ToCreature()->GetCreatureTemplate()->unit_class == 16)
@@ -13972,7 +13967,7 @@ void Unit::RemoveCharmedBy(Unit* charmer)
                     if (cinfo && cinfo->type == CREATURE_TYPE_DEMON)
                     {
 
-						//Stitch : unit_class custom 16 / 32 / 64
+						//Stitch : unit_class custom 16/32/64
 						SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_CLASS, cinfo->GetClientClass());
                         //SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_CLASS, uint8(cinfo->unit_class));
 

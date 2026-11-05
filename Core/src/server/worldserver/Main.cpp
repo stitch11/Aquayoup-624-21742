@@ -161,6 +161,8 @@ extern int main(int argc, char** argv)
 	TC_LOG_INFO("server.worldserver", "xx * Langue français, Anglais, espagnol(sauf hotfixes, worldserver.conf)          xx");
 	TC_LOG_INFO("server.worldserver", "xx * Langue client forcé(pour dev, worldserver.conf)								 xx");
 	TC_LOG_INFO("server.worldserver", "xx * Eclairage de jour/nuit : Normal, Jour au lancement, permanent, Cycle		 xx");
+	TC_LOG_INFO("server.worldserver", "xx * Commande .telez: Teleporte le GM au meme X,Y mais avec un +-Z.				 xx");
+	TC_LOG_INFO("server.worldserver", "xx * Commande .debloc: teleporte a Hurlevent ou Orgrimmar suivant sa faction 	 xx");
 	TC_LOG_INFO("server.worldserver", "xx                                                                                xx");
 	TC_LOG_INFO("server.worldserver", "xx * Diverses autres majs,debugs,custom, etc ... voir forum                       xx");
 	TC_LOG_INFO("server.worldserver", "xx * Un grand Merci a Noc, Scade, Claude et Chatgpt pour leurs aides              xx");

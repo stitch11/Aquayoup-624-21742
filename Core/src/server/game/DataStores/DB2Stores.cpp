@@ -340,7 +340,7 @@ void DB2Manager::LoadStores(std::string const& dataPath, uint32 defaultLocale)
         _charStartOutfits[outfit->RaceID | (outfit->ClassID << 8) | (outfit->GenderID << 16)] = outfit;
 
 
-	//Stitch : unit_class custom 16 / 32 / 64
+	//Stitch : unit_class custom 16/32/64
 	sChrClassesXPowerTypesStore.Sort(&ChrClassesXPowerTypesEntryComparator::Compare);
 	for (uint32 i = 0; i < MAX_CLASSES; ++i)
 		for (uint32 j = 0; j < MAX_POWERS; ++j)

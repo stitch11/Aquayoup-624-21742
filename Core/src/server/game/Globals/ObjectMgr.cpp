@@ -872,7 +872,7 @@ void ObjectMgr::CheckCreatureTemplate(CreatureTemplate const* cInfo)
         }
     }
 
-	//Stitch : unit_class custom 16 / 32 / 64 autorises (visuel ressource)
+	//Stitch : unit_class custom 16/32/64 autorises (visuel ressource)
 	if (!cInfo->unit_class || (cInfo->unit_class != 16 && cInfo->unit_class != 32 && cInfo->unit_class != 64 && ((1 << (cInfo->unit_class - 1)) & CLASSMASK_ALL_CREATURES) == 0))
     //if (!cInfo->unit_class || ((1 << (cInfo->unit_class-1)) & CLASSMASK_ALL_CREATURES) == 0)
     {
@@ -2008,7 +2008,7 @@ ObjectGuid::LowType ObjectMgr::AddCreatureData(uint32 entry, uint32 mapId, float
 
     uint32 level = cInfo->minlevel == cInfo->maxlevel ? cInfo->minlevel : urand(cInfo->minlevel, cInfo->maxlevel); // Only used for extracting creature base stats
     
-	//Stitch : unit_class custom 16 / 32 / 64
+	//Stitch : unit_class custom 16/32/64
 	CreatureBaseStats const* stats = GetCreatureBaseStats(level, cInfo->GetStatsClass());
 	//CreatureBaseStats const* stats = GetCreatureBaseStats(level, cInfo->unit_class);
     
@@ -8939,11 +8939,11 @@ void ObjectMgr::LoadCreatureClassLevelStats()
     {
         for (uint16 lvl = itr->second.minlevel; lvl <= itr->second.maxlevel; ++lvl)
         {
-			//Stitch : unit_class custom 16 / 32 / 64
+			//Stitch : unit_class custom 16/32/64
 			//if (_creatureBaseStatsStore.find(MAKE_PAIR16(lvl, itr->second.unit_class)) == _creatureBaseStatsStore.end())
 			if (_creatureBaseStatsStore.find(MAKE_PAIR16(lvl, itr->second.GetStatsClass())) == _creatureBaseStatsStore.end())
 
-				//Stitch : unit_class custom 16 / 32 / 64
+				//Stitch : unit_class custom 16/32/64
                 //TC_LOG_ERROR("sql.sql", "Missing base stats for creature class %u level %u", itr->second.unit_class, lvl);
 				TC_LOG_ERROR("sql.sql", "Missing base stats for creature class %u level %u", itr->second.GetStatsClass(), lvl);
         }
