@@ -1,6 +1,8 @@
 local REALM_BUTTON_HEIGHT = 16;
 local MAX_REALMS_DISPLAYED = 20;
 local MAX_REALM_CATEGORY_TABS = 8;
+local RealmListAutoConnectAttempted = true;
+local RealmListAutoConnectFrame = CreateFrame("Frame");
 
 function RealmList_OnLoad(self)
 	self.selectedRealm = nil;
@@ -276,6 +278,9 @@ end
 
 
 function RealmList_OnShow(self)
+	RealmListAutoConnectAttempted = false;
+	RealmListAutoConnectFrame:SetScript("OnUpdate", nil);
+
 	local name = GetServerName();
 	local categories = C_RealmList.GetAvailableCategories();
 	local onlyRealm = nil;
@@ -308,14 +313,46 @@ function RealmList_OnShow(self)
 
 	RealmList_Update();
 
-	-- Connect automatically only after the realm list is complete.
-	if ( C_RealmList.IsRealmListComplete() ) then
-		if ( realmCount == 1 ) then
-			RealmList_OnOk();
-		end
-	else
-		GlueDialog_Show("OKAY_MUST_ACCEPT", REALM_LIST_PARTIAL_RESULTS);
-	end
+	-- Wait for the complete realm list; the polling frame will connect
+	-- automatically when exactly one realm is available.
+	RealmListAutoConnectFrame.elapsed = 0;
+	RealmListAutoConnectFrame:SetScript("OnUpdate", function(self, elapsed)
+			self.elapsed = (self.elapsed or 0) + elapsed;
+			if ( self.elapsed < 0.25 ) then
+				return;
+			end
+			self.elapsed = 0;
+
+			if ( not RealmList:IsShown() ) then
+				self:SetScript("OnUpdate", nil);
+				return;
+			end
+
+			if ( C_RealmList.IsRealmListComplete() ) then
+				self:SetScript("OnUpdate", nil);
+				local currentCategories = C_RealmList.GetAvailableCategories();
+				local currentRealm = nil;
+				local currentCategory = nil;
+				local currentCount = 0;
+
+				for i = 1, #currentCategories do
+					local currentRealms = C_RealmList.GetRealmsInCategory(currentCategories[i]);
+					for j = 1, #currentRealms do
+						currentCount = currentCount + 1;
+						currentRealm = currentRealms[j];
+						currentCategory = currentCategories[i];
+					end
+				end
+
+				if ( currentCount == 1 and not RealmListAutoConnectAttempted ) then
+					RealmListAutoConnectAttempted = true;
+					RealmList.selectedRealm = currentRealm;
+					RealmList.selectedCategory = currentCategory;
+					RealmList_Update();
+					RealmList_OnOk();
+				end
+			end
+	end);
 end
 
 function RealmList_GetInfoFromName(name)
