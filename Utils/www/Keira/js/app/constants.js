@@ -1963,10 +1963,14 @@ app.modalConstants.faction[1850]    = "Les Traquesabres";
           
   /* creature classes constants */
   app.modalConstants.classes = [];
-  app.modalConstants.classes[1]  = "Guerrier - CLASS_WARRIOR";
-  app.modalConstants.classes[2]  = "Paladin - CLASS_PALADIN";
-  app.modalConstants.classes[4]  = "Voleur - CLASS_ROGUE";
-  app.modalConstants.classes[8]  = "Mage/Moine - CLASS_MAGE/CLASS_MONK";
+  app.modalConstants.classes[1]  = "  1 Guerrier - CLASS_WARRIOR";
+  app.modalConstants.classes[2]  = "  2 Paladin - CLASS_PALADIN";
+  app.modalConstants.classes[4]  = "  4 Voleur - CLASS_ROGUE";
+  app.modalConstants.classes[8]  = "  8 Mage/Moine - CLASS_MAGE/CLASS_MONK";
+  app.modalConstants.classes[16]  = " 16 Focus (Energie)";
+  app.modalConstants.classes[32]  = " 32 Fureur demoniaque (Mana)";
+  app.modalConstants.classes[64]  = " 64 Puissance runique (Mana)";
+
 /*    app.modalConstants.classes[9]  = "Unk";*/ 
 
   app.modalConstants.trainer = [];

@@ -57,6 +57,7 @@ Rate.Drop.Item.Rank4 = 4
 # Force la langue utilisée par les clients , option destinée au dev , parce que pour lancer le jeu dans une autre langue il faut avoir ce lient dans cette autre langue.
 # Pour ce qui est géré par la db hotfixes (certains gossip et texte au dessus des gossip), la commande .reload.config ne marchera pas (cache client). il faut vider le cache client et relancer le serveur.
 # Le parametre DBC.Locale doit toujour etre a = 2, quelque doit la langue forcé ou originale du client.
+#
 # auto = langue du client ; autres exemples : 
 #                       - (United States - extended-Latin) enUS
 #                       - (Oceanic       - extended-Latin)
@@ -71,7 +72,8 @@ Rate.Drop.Item.Rank4 = 4
 #                       - (Russian       - Cyrillic) ruRU					loc8
 #					    - Chinois simplifié	zhCN						loc4
 #					    - Chinois traditionnel (Taïwan)	zhTW	loc5
-
+#
+#						ATTENTION DE RESPECTER LES  MINUSCULES/MAJUSCULES
 ForceClientLangue = auto
 
 ########################
