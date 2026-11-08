@@ -337,7 +337,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 						// Spell2 sur la cible  
 						if (Cooldown_Spell2 <= diff && Spell_2 != 0)
 						{
-							me->CastSpell(victim, Spell_2, true);
+							me->CastSpell(victim, Spell_2, false);
 							Cooldown_Spell2 = urand(5000, 7000);
 
 						}
@@ -361,7 +361,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 							me->StopMoving();
 							if (Spell_2 != 0)
 							{
-								me->CastSpell(victim, Spell_2, true);
+								me->CastSpell(victim, Spell_2, false);
 							}
 							else
 								DoCast(victim, Tir_1);

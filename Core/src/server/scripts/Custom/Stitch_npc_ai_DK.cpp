@@ -278,11 +278,10 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 				if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() == WAYPOINT_MOTION_TYPE)
 				{
 					me->StopMoving();
-					//me->GetMotionMaster()->MoveIdle();
 				}
 				me->SetSheath(SHEATH_STATE_MELEE);									//Arme sortie
 
-																					//Retire certaines Aura, emotes & Bytes a l'agro
+				//Retire certaines Aura, emotes & Bytes a l'agro
 				me->RemoveAura(80264);	// Retire Marche a pas de loup
 				me->RemoveAura(152891);	// Retire Avance a pas de loup invisible
 				me->RemoveAura(104015);	// Retire afaissé / Stun
@@ -302,7 +301,6 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 				Start_Agro = 0;
 				RetireBugDeCombat();
 				me->AddUnitState(UNIT_STATE_EVADE);
-				//me->SetSpeedRate(MOVE_RUN, 1.5f);										// Vitesse de déplacement
 				me->GetMotionMaster()->MoveTargetedHome();								// Retour home
 				me->RemoveAllControlled();												// renvois pet
 
@@ -354,7 +352,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 				// ################################################################################################################################################
 				// En Combat ######################################################################################################################################
 				// ################################################################################################################################################
-				if (UpdateVictim() /*&& !me->HasUnitState(UNIT_STATE_MOVE) || me->HasUnitState(UNIT_STATE_CASTING)*/)
+				if (UpdateVictim())
 				{
 					Unit* victim = me->GetVictim();
 					Dist = me->GetDistance(victim);
@@ -379,32 +377,32 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 						switch (BrancheSpe)
 						{
 						case 1: // Si Sang ------------------------------------------------------------------------------------------------------------------------
-							me->CastSpell(me, Buf_branche1, true);										// Buf3 sur lui meme
-							me->CastSpell(me, Buf_branche1a, true); 
-
+							DoCastAOE(Buf_branche1);
+							DoCastAOE(Buf_branche1a);
+							
 							Random = urand(1, 3);
 							if (Random != 3 && UpdateVictim()) { DoCastVictim(Spell_branche1_agro); }	// 2/3 Chance de lancer le sort d'agro
 							else
-								me->CastSpell(victim, Pet_Dk, true);
+								me->CastSpell(victim, Pet_Dk, false);
 							break;
 
 						case 2: // Si Givre -----------------------------------------------------------------------------------------------------------------------
-							me->CastSpell(me, Buf_branche2, true);										// Buf3 sur lui meme
-							me->CastSpell(me, Buf_branche2a, true); 
-							
+							DoCastAOE(Buf_branche2);
+							DoCastAOE(Buf_branche2a);
+
 							me->CastSpell(victim, Robustesse_glaciale, true);							// Pour visuel
 							me->CastSpell(victim, Passage_de_givre, true);								// Pour visuel
 
 							Random = urand(1, 3);
 							if (Random != 1 && UpdateVictim()) { DoCastVictim(Spell_branche2_agro); }	// 2/3 Chance de lancer le sort d'agro
 							else
-								me->CastSpell(victim, Pet_Dk, true);
+								me->CastSpell(victim, Pet_Dk, false);
 							break;
 
 						case 3: // Si Impie -----------------------------------------------------------------------------------------------------------------------
-							me->CastSpell(me, Buf_branche3, true);										// Buf3 sur lui meme
-							me->CastSpell(me, Buf_branche3a, true); 
-							
+							DoCastAOE(Buf_branche3);
+							DoCastAOE(Buf_branche3a);
+
 							Random = urand(1, 3);
 							if (Random != 3 && UpdateVictim()) { DoCastVictim(Spell_branche3_agro); }	// 2/3 Chance de lancer le sort d'agro
 							else
@@ -412,8 +410,8 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 							break;
 
 						case 4: // Si Chaos -----------------------------------------------------------------------------------------------------------------------
-							me->CastSpell(me, Buf_branche4, true);										// Buf4 sur lui meme
-							me->CastSpell(me, Buf_branche4a, true);
+							DoCastAOE(Buf_branche4);
+							DoCastAOE(Buf_branche4a);
 
 							Random = urand(1, 3);
 							if (Random != 3 && UpdateVictim()) { DoCastVictim(Spell_branche4_agro); }	// 2/3 Chance de lancer le sort d'agro
@@ -466,32 +464,31 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 								if (Cooldown_Spell1 <= diff)
 								{
 									DoCast(victim, Spell_branche1_1);
-									//me->CastSpell(victim, Spell_branche1_1, true);  	ne fait pas baisser le power
-									Cooldown_Spell1 = 6000;
+									Cooldown_Spell1 = 5000;
 								}
 								else Cooldown_Spell1 -= diff;
 
 								// Spell2 sur la cible
 								if (Cooldown_Spell2 <= diff)
 								{
-									me->CastSpell(victim, Spell_branche1_2, true);
-									Cooldown_Spell2 = 6000;
+									DoCast(victim, Spell_branche1_2);
+									Cooldown_Spell2 = 5000;
 								}
 								else Cooldown_Spell2 -= diff;
 
 								// Spell3 sur la cible 
 								if (Cooldown_Spell3 <= diff)
 								{
-									me->CastSpell(victim, Spell_branche1_3, true);
-									Cooldown_Spell3 = 6000;
+									DoCast(victim, Spell_branche1_3);
+									Cooldown_Spell3 = 5000;
 								}
 								else Cooldown_Spell3 -= diff;
 
 								// Spell4 sur la cible 
 								if (Cooldown_Spell4 <= diff)
 								{
-									me->CastSpell(victim, Spell_branche1_4, true);
-									Cooldown_Spell4 = 25000;
+									DoCast(victim, Spell_branche1_4);
+									Cooldown_Spell4 = 20000;
 								}
 								else Cooldown_Spell4 -= diff;
 							}
@@ -527,31 +524,31 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 								// Spell1 sur la cible
 								if (Cooldown_Spell1 <= diff)
 								{
-									me->CastSpell(victim, Spell_branche2_1, true);
-									Cooldown_Spell1 = 6000;
+									DoCast(victim, Spell_branche2_1);
+									Cooldown_Spell1 = 5000;
 								}
 								else Cooldown_Spell1 -= diff;
 
 								// Spell2 sur la cible
 								if (Cooldown_Spell2 <= diff)
 								{
-									me->CastSpell(victim, Spell_branche2_2, true);
-									Cooldown_Spell2 = 6000;
+									DoCast(victim, Spell_branche2_2);
+									Cooldown_Spell2 = 5000;
 								}
 								else Cooldown_Spell2 -= diff;
 
 								// Spell3 sur la cible
 								if (Cooldown_Spell3 <= diff)
 								{
-									me->CastSpell(victim, Spell_branche2_3, true);
-									Cooldown_Spell3 = 6000;
+									DoCast(victim, Spell_branche2_3);
+									Cooldown_Spell3 = 5000;
 								}
 								else Cooldown_Spell3 -= diff;
 
 								// Spell4 sur la cible
 								if (Cooldown_Spell4 <= diff)
 								{
-									me->CastSpell(victim, Spell_branche2_4, true);
+									DoCast(victim, Spell_branche2_4);
 									Cooldown_Spell4 = 10000;
 								}
 								else Cooldown_Spell4 -= diff;
@@ -570,7 +567,6 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 								// Applique Peste_de_sang, fievre_de_givre ou Peste_necrotique sur la cible
 								if (Cooldown_Peste_et_Fievre <= diff)
 								{
-									//me->CastSpell(victim, Peste_necrotique, true);
 									Cooldown_Peste_et_Fievre = 30000;
 								}
 								else Cooldown_Peste_et_Fievre -= diff;
@@ -588,8 +584,8 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 								// Spell1 sur la cible chaque (Sort Régulié)
 								if (Cooldown_Spell1 <= diff)
 								{
-									me->CastSpell(victim, Spell_branche3_1, true);
-									Cooldown_Spell1 = 6000;
+									DoCast(victim, Spell_branche3_1);
+									Cooldown_Spell1 = 4000;
 									DoMeleeAttackIfReady();						// Combat en mélée
 								}
 								else Cooldown_Spell1 -= diff;
@@ -597,24 +593,24 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 								// Spell2 sur la cible chaque (Sort secondaire plus lent)
 								if (Cooldown_Spell2 <= diff)
 								{
-									me->CastSpell(victim, Spell_branche3_2, true);
-									Cooldown_Spell2 = 6000;
+									DoCast(victim, Spell_branche3_2);
+									Cooldown_Spell2 = 4000;
 								}
 								else Cooldown_Spell2 -= diff;
 
 								// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot)
 								if (Cooldown_Spell3 <= diff)
 								{
-									me->CastSpell(victim, Spell_branche3_3, true);
-									Cooldown_Spell3 = 6000;
+									DoCast(victim, Spell_branche3_3);
+									Cooldown_Spell3 = 4000;
 								}
 								else Cooldown_Spell3 -= diff;
 
 								// Spell4 sur la cible
 								if (Cooldown_Spell4 <= diff)
 								{
-									DoCastVictim(Spell_branche3_4);
-									Cooldown_Spell4 = 10000;
+									DoCast(victim, Spell_branche3_4);
+									Cooldown_Spell4 = 12000;
 								}
 								else Cooldown_Spell4 -= diff;
 							}
@@ -651,10 +647,9 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 							{
 								if (!me->HasUnitState(UNIT_STATE_MOVE))
 								{
-									//DoCast(victim, Spell_branche4_1);
 									me->StopMoving();
-									DoCastVictim(Spell_branche4_1);
-									Cooldown_Spell1 = 7500;
+									DoCast(victim, Spell_branche4_1);
+									Cooldown_Spell1 = 4000;
 									DoMeleeAttackIfReady();						// Combat en mélée
 								}
 							}
@@ -664,7 +659,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 							if (Cooldown_Spell2 <= diff)
 							{
 								DoCast(victim, Spell_branche4_2);
-								Cooldown_Spell2 = 7500;
+								Cooldown_Spell2 = 4250;
 							}
 							else Cooldown_Spell2 -= diff;
 
@@ -672,15 +667,16 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 							if (Cooldown_Spell3 <= diff)
 							{
 								DoCast(victim, Spell_branche4_3);
-								Cooldown_Spell3 = 7500;
+								Cooldown_Spell3 = 4500;
 							}
 							else Cooldown_Spell3 -= diff;
 
 							// Spell4 sur la cible
 							if (Cooldown_Spell4 <= diff)
 							{
-								me->CastSpell(victim, Spell_branche4_4, true);
-								Cooldown_Spell4 = urand(10000,14000);
+								me->StopMoving();
+								DoCast(victim, Spell_branche4_4);
+								Cooldown_Spell4 = urand(12000,16000);
 							}
 							else Cooldown_Spell4 -= diff;
 
@@ -778,7 +774,7 @@ public: Stitch_npc_ai_dk() : CreatureScript("Stitch_npc_ai_dk") { }
 						mapid = victim->GetMapId();
 						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
 					}
-					Cooldown_Anti_Bug_Figer = 1000;
+					Cooldown_Anti_Bug_Figer = urand(4000,6000);
 				}
 				else Cooldown_Anti_Bug_Figer -= diff;
 

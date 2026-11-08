@@ -53,10 +53,10 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 			uint32 Buf_branche2_liste[2] = { 104773, 104773 };							// Résolution interminable 104773 degat -40% 8s , Rune de puissance 116011 PS +40% 10s
 			uint32 Buf_branche3 = 0;
 			uint32 Buf_branche3_liste[2] = { 104773, 104773 };							// Résolution interminable 104773 degat -40% 8s , Rune de puissance 116011 PS +40% 10s 
-			uint32 Spell_Heal_Caster = 46155;  											// Drain de vie 46155
+			uint32 Spell_Heal_Caster = 689;  											// Drain de vie 46155
 			uint32 Armure_Demoniaque = 79934;											// Armure_Demoniaque
 			uint32 Gangrarmure = 79954;													// Gangrarmure
-			uint32 Spell_Agonie = 300230;
+			uint32 Spell_Agonie = 980;
 
 			// Spells Affliction
 			uint32 Spell_branche1_agro = 0;
@@ -64,33 +64,33 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 			uint32 Spell_branche1_2 = 0;
 			uint32 Spell_branche1_3 = 0;
 			uint32 Spell_branche1_4 = 0;
-			uint32 branche1_agro[2] = { 35183, 35183 };									// Affliction instable 35183
-			uint32 branche1_1[2] = { 9613, 9613 };										// Trait de l'ombre 9613
-			uint32 branche1_2[2] = { 300230, 300230 };									// Agonie 300230 
-			uint32 branche1_3[2] = { 39621, 39621 };									// corruption 39621
-			uint32 branche1_4[2] = { 171788, 171788 };									// Hanter 171788
+			uint32 branche1_agro[2] = { 30108, 30108 };									// Affliction instable 35183
+			uint32 branche1_1[2] = { 686, 686 };										// Trait de l'ombre 9613
+			uint32 branche1_2[2] = { 980, 980 };										// Agonie 300230 
+			uint32 branche1_3[2] = { 172, 172 };										// corruption 39621
+			uint32 branche1_4[2] = { 48181, 48181 };									// Hanter 171788
 
 			// Spells Demonologie
 			uint32 Spell_branche2_agro = 0;	//    
 			uint32 Spell_branche2_1 = 0;
 			uint32 Spell_branche2_2 = 0;
 			uint32 Spell_branche2_3 = 0;
-			uint32 branche2_agro[2] = { 131381, 105174 };								// Feu de l'âme 131381, Main de Gul’dan 176725
-			uint32 branche2_1[2] = { 9613, 9613 };										// Trait de l'ombre 9613
-			uint32 branche2_2[2] = { 300230, 300230 };									// Agonie 300230 , corruption 39621
-			uint32 branche2_3[2] = { 39367, 39367 };									// Graine de Corruption 39367
+			uint32 branche2_agro[2] = { 6353, 105174 };									// Feu de l'âme 131381, Main de Gul’dan 176725
+			uint32 branche2_1[2] = { 686, 686 };										// Trait de l'ombre 9613
+			uint32 branche2_2[2] = { 980, 980 };										// Agonie 300230 , corruption 39621
+			uint32 branche2_3[2] = { 70388, 70388 };									// Graine de Corruption 39367
 			uint32 Pet_Demo;
-			uint32 Pet_Demo_Liste[5] = { 30146, 30146, 30146, 30146, 30146 };			// Gangregarde 30146, Succube 712, Chasseur corrompu 691, Marcheur du Vide 697, Diablotin 688
+			uint32 Pet_Demo_Liste[5] = { 30146, 30146, 712, 691, 688 };			// Gangregarde 30146, Succube 712, Chasseur corrompu 691, Marcheur du Vide 697, Diablotin 688
 
 			// Spells Destruction
 			uint32 Spell_branche3_agro = 0;
 			uint32 Spell_branche3_1 = 0;
 			uint32 Spell_branche3_2 = 0;
 			uint32 Spell_branche3_3 = 0;
-			uint32 branche3_agro[2] = { 77069, 77069 };									// Trait du chaos 77069
-			uint32 branche3_1[2] = { 44519, 44519 };									// Incinérer 44519
-			uint32 branche3_2[2] = { 154083, 154083 };									// Conflagration 154083
-			uint32 branche3_3[2] = { 44267, 44267 };									// Immolation 44267   
+			uint32 branche3_agro[2] = { 116858, 116858 };						// Trait du chaos 77069
+			uint32 branche3_1[2] = { 29722, 29722 };							// Incinérer 44519
+			uint32 branche3_2[2] = { 17962, 17962 };							// Conflagration 154083
+			uint32 branche3_3[2] = { 348, 348 };								// Immolation 44267   
 			
 			// Emotes
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
@@ -308,15 +308,15 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 						switch (BrancheSpe)
 						{
 						case 1: // Si Affliction --------------------------------------------------------------------------------------------------------------------------
-							me->CastSpell(me, Armure_Demoniaque, true);														// Buf sur lui meme
+							me->CastSpell(me, Armure_Demoniaque, false);														// Buf sur lui meme
 							Random = urand(1, 2);
-							if (Random == 1) { me->CastSpell(victim, Spell_branche1_agro, true); }		// 1/2 Chance de lancer le sort d'agro
+							if (Random == 1) { me->CastSpell(victim, Spell_branche1_agro, false); }		// 1/2 Chance de lancer le sort d'agro
 							break;
 
 						case 2: // Si Demonologie -------------------------------------------------------------------------------------------------------------------------
-							me->CastSpell(me, Armure_Demoniaque, true);														// Buf sur lui meme
+							me->CastSpell(me, Armure_Demoniaque, false);														// Buf sur lui meme
 							Random = urand(1, 2);
-							if (Random == 1) { me->CastSpell(victim, Spell_branche2_agro, true); }		// 1/2 Chance de lancer le sort d'agro
+							if (Random == 1) { me->CastSpell(victim, Spell_branche2_agro, false); }		// 1/2 Chance de lancer le sort d'agro
 
 							// Tirages aléatoires du pet
 							Pet_Demo = Pet_Demo_Liste[urand(0, 4)];
@@ -326,7 +326,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 						case 3: // Si Destruction -------------------------------------------------------------------------------------------------------------------------
 							me->CastSpell(me, Gangrarmure, true);															// Buf sur lui meme
 							Random = urand(1, 2);
-							if (Random == 1) { me->CastSpell(victim, Spell_branche3_agro, true); }		// 1/2 Chance de lancer le sort d'agro
+							if (Random == 1) { me->CastSpell(victim, Spell_branche3_agro, false); }		// 1/2 Chance de lancer le sort d'agro
 							break;
 
 							// ################################################################################################################################################
@@ -342,7 +342,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 						// Regen mana en combat -------------------------------------------------------------------------------------------------------------------
 					if (Cooldown_RegenMana <= diff)
 					{
-						me->SetPower(POWER_MANA, Mana + (MaxMana / 12));
+						me->SetPower(POWER_MANA, Mana + (MaxMana / 18));
 						if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
 						Cooldown_RegenMana = urand(2500, 3000);
 					}
@@ -352,7 +352,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 					// Spell4 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot)
 					if (Cooldown_Spell4 <= diff && !victim->HasAura(Spell_branche1_4))
 					{
-						DoCastAOE(Spell_branche1_4, true);
+						DoCastAOE(Spell_branche1_4, false);
 						Cooldown_Spell4 = urand(8000, 10000);
 					}
 					else Cooldown_Spell4 -= diff;
@@ -386,7 +386,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 						// Regen mana en combat -------------------------------------------------------------------------------------------------------------------
 					if (Cooldown_RegenMana <= diff)
 					{
-						me->SetPower(POWER_MANA, Mana + (MaxMana / 12));
+						me->SetPower(POWER_MANA, Mana + (MaxMana / 18));
 						if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
 						Cooldown_RegenMana = urand(2500, 3000);
 					}
@@ -425,7 +425,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 						// Regen mana en combat ------------------------------------------------------------------------------------------------------------------------
 					if (Cooldown_RegenMana <= diff)
 					{
-						me->SetPower(POWER_MANA, Mana + (MaxMana / 20));
+						me->SetPower(POWER_MANA, Mana + (MaxMana / 30));
 						if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
 						Cooldown_RegenMana = urand(2000, 2500);
 					}
@@ -443,7 +443,7 @@ public: Stitch_npc_ai_demo() : CreatureScript("Stitch_npc_ai_demo") { }
 					// Spell2 sur la cible chaque (Sort secondaire plus lent)
 					if (Cooldown_Spell2 <= diff && !victim->HasAura(Spell_branche3_2))
 					{
-						DoCastVictim(Spell_branche3_2, true);
+						DoCastVictim(Spell_branche3_2, false);
 						Cooldown_Spell2 = 6500;
 					}
 					else Cooldown_Spell2 -= diff;

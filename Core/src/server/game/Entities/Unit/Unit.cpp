@@ -11157,8 +11157,6 @@ int32 Unit::GetMaxPower(Powers power) const
 
 void Unit::SetPower(Powers power, int32 val)
 {
-	if (power == POWER_ENERGY && GetTypeId() == TYPEID_UNIT)
-		TC_LOG_ERROR("server", "STITCH SetPower energy old=%d new=%d", GetPower(POWER_ENERGY), val);
 
 	uint32 powerIndex = GetPowerIndex(power);
 

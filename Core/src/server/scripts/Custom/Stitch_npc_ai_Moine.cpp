@@ -29,7 +29,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 			uint32 Dist;															// Distance entre le npc et sa cible
 			uint32 Mana = 0;
 			uint32 MaxMana = me->GetMaxPower(POWER_ENERGY);
-			Unit* victim = me->GetVictim();										 
+			Unit* victim = me->GetVictim();
 			uint32 MessageAlagro = 0;
 			uint32 Spell_ContreAttaque = 0;
 
@@ -52,7 +52,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 			uint32 Buf_branche1 = 115069;											// Posture du buffle vigoureux 115069, Posture du tigre féroce 103985
 			uint32 Buf_branche1a = 0;
 			uint32 Liste_Buf_branche1a[2] = { 116781, 115203 };						// Héritage du tigre blanc 116781 (F,AG,Int +10%), Boisson fortifiante 115203 (pv +20%), 
-			
+
 			uint32 Buf_branche2 = 115070;											// Posture du serpent avisé 115070
 			uint32 Buf_branche2a = 0;													// 
 			uint32 Liste_Buf_branche2a[2] = { 115203, 115203 };						// Boisson fortifiante 115203 (pv +20%), Cocon de vie 116849
@@ -62,11 +62,11 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 			uint32 Liste_Buf_branche3a[3] = { 115176, 115203, 115203 };				// Méditation zen 115176 (degat -90%/8s), Boisson fortifiante 115203 (pv +20%)
 
 			uint32 Spell_Heal1 = 116694;  											// Déferlante de brume 116694
-			uint32 Spell_Heal2 = 115151;  											// Brume de rénovation 115151
+			uint32 Spell_Heal2 = 116694;  											// Brume de rénovation 115151
 			uint32 Spell_Heal3 = 116694;  											// Déferlante de brume 116694
 			uint32 Spell_Trop_Loin = 109132;										// Roulade 109132
 
-			// Spells Maitre-Brasseur
+																					// Spells Maitre-Brasseur
 			uint32 Spell_branche1_agro = 0;												// 
 			uint32 Liste_branche1_agro[3] = { 172780, 109132, 109132 };				// Fracasse-tonneau 172780, Roulade 109132
 			uint32 Spell_branche1_1 = 119004;										// Violent coup direct 119004
@@ -74,16 +74,16 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 			uint32 Spell_branche1_3 = 164394;										// Frappe du voile noir 164394
 			uint32 Spell_branche1_4 = 0;
 			uint32 Liste_branche1_4[3] = { 138710, 147416, 300245 };				// Coup tournoyant de la grue 138710, Souffle de feu 147416, Toucher mortel 300245
-						
-			// SpellsTisse-Brume
+
+																					// SpellsTisse-Brume
 			uint32 Spell_branche2_agro = 0;											// Paralysie 115078, Pique de main 116705 
-			uint32 Liste_branche2_agro[2] = { 172780, 109132};						// Fracasse-tonneau 172780, Roulade 109132
+			uint32 Liste_branche2_agro[2] = { 172780, 109132 };						// Fracasse-tonneau 172780, Roulade 109132
 			uint32 Spell_branche2_1 = 119004;										// Violent coup direct 119004
 			uint32 Spell_branche2_2 = 119004;										// Violent coup direct 119004
 			uint32 Spell_branche2_3 = 300245;										// Toucher mortel 300245 (stun 2s)
 			uint32 Spell_branche2_4 = 115072;										// Extraction du mal 115072 (damage+heal)
-			
-			// Spells Marche-vent
+
+																					// Spells Marche-vent
 			uint32 Spell_branche3_agro = 0;
 			uint32 Liste_branche3_agro[3] = { 116095, 101545, 138710 };				// Handicap 116095, Coup du serpent volant 101545, Pique de main 116705, Coup tournoyant de la grue 138710
 			uint32 Spell_branche3_1 = 119004;										// Violent coup direct 119004
@@ -92,7 +92,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 			uint32 Liste_branche3_3[2] = { 130784, 116095 };						// Coup de pied du soleil levant 130784 8s, Handicap 116095 15s
 			uint32 Spell_branche3_4 = 165144;										// Poings de fureur 165144
 
-			// Emotes
+																					// Emotes
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
 
 
@@ -144,7 +144,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 					me->LoadEquipment(1, true);													// creature_equip_template 1
 
 					me->CastSpell(me, Buf_branche1, true);
-					Buf_branche1a = Liste_Buf_branche1a[urand(0, 1)];							
+					Buf_branche1a = Liste_Buf_branche1a[urand(0, 1)];
 					me->CastSpell(me, Buf_branche1a, true);
 					Spell_branche1_4 = Liste_branche1_4[urand(0, 2)];
 
@@ -155,8 +155,8 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 				case 2: // Si Tisse-Brume -------------------------------------------------------------------------------------------------------------------------
 					me->LoadEquipment(2, true);													// creature_equip_template 2
 
-					me->CastSpell(me, Buf_branche2, true);										
-					Buf_branche2a = Liste_Buf_branche2a[urand(0, 1)];							
+					me->CastSpell(me, Buf_branche2, true);
+					Buf_branche2a = Liste_Buf_branche2a[urand(0, 1)];
 					me->CastSpell(me, Buf_branche2a, true);
 
 					Bonus_Armure(150);															// Bonus d'armure +50%
@@ -166,8 +166,8 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 				case 3: // Si Marche-vent -------------------------------------------------------------------------------------------------------------------------
 					me->LoadEquipment(3, true);													// creature_equip_template 2
 
-					me->CastSpell(me, Buf_branche3, true);										
-					Buf_branche3a = Liste_Buf_branche3a[urand(0, 2)];							
+					me->CastSpell(me, Buf_branche3, true);
+					Buf_branche3a = Liste_Buf_branche3a[urand(0, 2)];
 					me->CastSpell(me, Buf_branche3a, true);
 					Spell_branche3_3 = Liste_branche3_3[urand(0, 1)];
 
@@ -186,7 +186,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 			void JustRespawned() override
 			{
 				me->GetMotionMaster()->MoveTargetedHome();								// Retour home pour rafraichir client
-				//me->SetSpeedRate(MOVE_RUN, 1.01f);
+																						//me->SetSpeedRate(MOVE_RUN, 1.01f);
 				me->SetReactState(REACT_AGGRESSIVE);
 
 				Init_AI();
@@ -295,43 +295,46 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 						// ########################################################################################################################################
 						switch (BrancheSpe)
 						{
-						case 1: // Si Maitre-Brasseur -------------------------------------------------------------------------------------------------------------
+						case 1: // Si Maitre-Brasseur 1 -------------------------------------------------------------------------------------------------------------
 							Mana = me->GetPower(POWER_ENERGY);
 
 							Random = urand(1, 2);																			// 1/2 Chance de lancer le sort d'agro
-							if (Random == 1 && UpdateVictim()) 
-							{ 
+							if (Random == 1 && UpdateVictim())
+							{
 								Spell_branche1_agro = Liste_branche1_agro[urand(0, 2)];
-								me->CastSpell(victim, Spell_branche1_agro, true); 
-							}		
+								me->CastSpell(victim, Spell_branche1_agro, true);
+							}
 
-							Bonus_Armure(200);																			// Bonus d'armure +100%
+							Bonus_Armure(200);	// Bonus d'armure +100%
+							VisuelPowerEnergy();
 							break;
 
-						case 2: // Si Tisse-Brume -----------------------------------------------------------------------------------------------------------------
+						case 2: // Si Tisse-Brume 2 -----------------------------------------------------------------------------------------------------------------
 							Mana = me->GetPower(POWER_ENERGY);
 
 							Random = urand(1, 2);																			// 1/2 Chance de lancer le sort d'agro
-							if (Random == 1 && UpdateVictim()) 
-							{ 
-								Spell_branche2_agro = Liste_branche2_agro[urand(0, 1)]; 
-								DoCastVictim(Spell_branche2_agro); 
-							}						
+							if (Random == 1 && UpdateVictim())
+							{
+								Spell_branche2_agro = Liste_branche2_agro[urand(0, 1)];
+								DoCastVictim(Spell_branche2_agro);
+							}
 
-							Bonus_Armure(175);																			// Bonus d'armure +75%
+							Bonus_Armure(175);	// Bonus d'armure +75%
+							VisuelPowerMana();
 							break;
 
-						case 3: // Si Marche-vent  ----------------------------------------------------------------------------------------------------------------
+						case 3: // Si Marche-vent 3 ----------------------------------------------------------------------------------------------------------------
 							Mana = me->GetPower(POWER_ENERGY);
 
 							Random = urand(1, 2);																			// 1/2 Chance de lancer le sort d'agro
-							if (Random == 1 && UpdateVictim()) 
-							{ 
+							if (Random == 1 && UpdateVictim())
+							{
 								Spell_branche3_agro = Liste_branche3_agro[urand(0, 2)];
-								me->CastSpell(victim, Spell_branche3_agro, true); 
-							}		
+								me->CastSpell(victim, Spell_branche3_agro, true);
+							}
 
-							Bonus_Armure(175);																			// Bonus d'armure +75%
+							Bonus_Armure(175);	// Bonus d'armure +75%
+							VisuelPowerEnergy();
 							break;
 							// ####################################################################################################################################
 						}
@@ -344,26 +347,16 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 
 					switch (BrancheSpe)
 					{
-					case 1: // Spécialisation Maitre-Brasseur  ####################################################################################################
+					case 1: // Spécialisation Maitre-Brasseur 1 ####################################################################################################
 							// Regen en combat --------------------------------------------------------------------------------------------------------------------
-						Mana = me->GetPower(POWER_ENERGY);
-						if (Cooldown_RegenMana <= diff)
-						{
-							me->SetPower(POWER_ENERGY, Mana + (MaxMana / 20));
-							if (Mana > MaxMana) { me->SetPower(POWER_ENERGY, MaxMana); }
-							Cooldown_RegenMana = 2000;
-						}
-						else Cooldown_RegenMana -= diff;
 
-						me->SetPower(POWER_CHI, 4);
 
 						// Combat ---------------------------------------------------------------------------------------------------------------------------------
 						// Spell1 sur la cible
 						if (Cooldown_Spell1 <= diff)
 						{
 							//Bonus_Degat_Arme_Done(-40);											// Reduction des degats infligés
-							//me->CastSpell(victim, Spell_branche1_1, true);	ne fait pas baisser le power
-							DoCast(victim, Spell_branche1_1);
+							me->CastSpell(victim, Spell_branche1_1, true); 
 							//Bonus_Degat_Arme_Done(40);
 							DoMeleeAttackIfReady();													// Combat en mélée
 							Cooldown_Spell1 = 3500;
@@ -373,51 +366,45 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 						// Spell2 sur la cible
 						if (Cooldown_Spell2 <= diff)
 						{
-							me->CastSpell(victim, Spell_branche1_2, true);
-							Cooldown_Spell2 = 3500;
+							Bonus_Degat_Arme_Done(10);
+							me->CastSpell(victim, Spell_branche1_2, false);
+							Bonus_Degat_Arme_Done(-10);
+							Cooldown_Spell2 = 4500;
 						}
 						else Cooldown_Spell2 -= diff;
 
 						// Spell3 sur la cible 
 						if (Cooldown_Spell3 <= diff)
 						{
-							me->CastSpell(victim, Spell_branche1_3, true);
-							Cooldown_Spell3 = 4500;
+							Bonus_Degat_Arme_Done(10);
+							me->CastSpell(victim, Spell_branche1_3, false);
+							Bonus_Degat_Arme_Done(-10);
+							Cooldown_Spell3 = 5000;
 						}
 						else Cooldown_Spell3 -= diff;
 
 						// Spell4 sur la cible 
 						if (Cooldown_Spell4 <= diff)
 						{
-							me->CastSpell(victim, Spell_branche1_4, true);
-							Cooldown_Spell4 = urand(12000, 15000);
+							me->CastSpell(victim, Spell_branche1_4, false);
+							Cooldown_Spell4 = urand(8000, 10000);
 						}
 						else Cooldown_Spell4 -= diff;
 
 						Heal_En_Combat_Melee(diff);
 						break;
 
-					case 2: // Spécialisation Tisse-Brume #########################################################################################################
+					case 2: // Spécialisation Tisse-Brume 2 #########################################################################################################
 							// Regen en combat --------------------------------------------------------------------------------------------------------------------
-						Mana = me->GetPower(POWER_DEMONIC_FURY);
-						if (Cooldown_RegenMana <= diff)
-						{
-							me->SetPower(POWER_DEMONIC_FURY, Mana + (MaxMana / 10));
-							if (Mana > MaxMana) { me->SetPower(POWER_DEMONIC_FURY, MaxMana); }
-							Cooldown_RegenMana = 2000;
-						}
-						else Cooldown_RegenMana -= diff;
-
-						me->SetPower(POWER_CHI, 4);
 
 						// Combat ---------------------------------------------------------------------------------------------------------------------------------
 						// Spell1 sur la cible
 						if (Cooldown_Spell1 <= diff)
 						{
-							//Bonus_Degat_Arme_Done(-35);												// Reduction des degats infligés
-							//me->CastSpell(victim, Spell_branche2_1, true);	ne fait pas baisser le power
-							DoCast(victim, Spell_branche2_1);
-							//Bonus_Degat_Arme_Done(35);	
+							Bonus_Degat_Arme_Done(-25);												// Reduction des degats infligés
+							me->CastSpell(victim, Spell_branche2_1, true);
+							//DoCast(victim, Spell_branche2_1);
+							Bonus_Degat_Arme_Done(-25);	
 							DoMeleeAttackIfReady();													// Combat en mélée
 							Cooldown_Spell1 = 3500;
 						}
@@ -426,80 +413,80 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 						// Spell2 sur la cible
 						if (Cooldown_Spell2 <= diff)
 						{
-							//Bonus_Degat_Arme_Done(-35);												// Reduction des degats infligés
+							Bonus_Degat_Arme_Done(-50);												// Reduction des degats infligés
 							me->CastSpell(victim, Spell_branche2_2, true);
-							//Bonus_Degat_Arme_Done(35);
-							Cooldown_Spell2 = 4500;
+							Bonus_Degat_Arme_Done(50);
+							Cooldown_Spell2 = 5500;
 						}
 						else Cooldown_Spell2 -= diff;
 
 						// Spell3 sur la cible
 						if (Cooldown_Spell3 <= diff)
 						{
-							//Bonus_Degat_Arme_Done(-15);												// Reduction des degats infligés
+							Bonus_Degat_Arme_Done(-50);												// Reduction des degats infligés
 							me->CastSpell(victim, Spell_branche2_3, true);
-							//Bonus_Degat_Arme_Done(15);
-							Cooldown_Spell3 = urand(6000,8000);
+							Bonus_Degat_Arme_Done(50);
+							Cooldown_Spell3 = urand(7000, 8000);
 						}
 						else Cooldown_Spell3 -= diff;
 
 						// Spell4 sur la cible
 						if (Cooldown_Spell4 <= diff)
 						{
+							Bonus_Degat_Arme_Done(-50);
 							me->CastSpell(victim, Spell_branche2_4, true);
-							Cooldown_Spell4 = urand(15000,20000);
+							Bonus_Degat_Arme_Done(50); 
+							Cooldown_Spell4 = urand(12000, 15000);
 						}
 						else Cooldown_Spell4 -= diff;
 
+						Bonus_Degat_Arme_Done(-50);
 						Heal_En_Combat_Melee(diff);
+						Bonus_Degat_Arme_Done(50);
 						break;
-					case 3: // Spécialisation Marche-vent #########################################################################################################
-							// Regen en combat --------------------------------------------------------------------------------------------------------------------
-						Mana = me->GetPower(POWER_ENERGY);
-						if (Cooldown_RegenMana <= diff)
-						{
-							me->SetPower(POWER_ENERGY, Mana + (MaxMana / 10));
-							if (Mana > MaxMana) { me->SetPower(POWER_ENERGY, MaxMana); }
-							Cooldown_RegenMana = 2000;
-						}
-						else Cooldown_RegenMana -= diff;
-
-						me->SetPower(POWER_CHI, 4);
+					case 3: // Spécialisation Marche-vent 3 #########################################################################################################
+						// Regen en combat --------------------------------------------------------------------------------------------------------------------
 
 						// Combat ---------------------------------------------------------------------------------------------------------------------------------
 						// Spell1 sur la cible
 						if (Cooldown_Spell1 <= diff)
 						{
-							//Bonus_Degat_Arme_Done(-40);											// Reduction des degats infligés
-							//me->CastSpell(victim, Spell_branche3_1, true);	ne fait pas baisser le power
-							DoCast(victim, Spell_branche3_1);
-							//Bonus_Degat_Arme_Done(40);
-							DoMeleeAttackIfReady();													// Combat en mélée
-							Cooldown_Spell1 = 2500;
+							Bonus_Degat_Arme_Done(20);											// Reduction des degats infligés
+							me->CastSpell(victim, Spell_branche3_1, true);
+							//DoCast(victim, Spell_branche3_1);
+							Bonus_Degat_Arme_Done(-20);
+							DoMeleeAttackIfReady();												// Combat en mélée
+							Cooldown_Spell1 = 3000;
 						}
 						else Cooldown_Spell1 -= diff;
 
 						// Spell2 sur la cible
 						if (Cooldown_Spell2 <= diff)
 						{
+							Bonus_Degat_Arme_Done(35);
 							me->CastSpell(victim, Spell_branche3_2, true);
-							Cooldown_Spell2 = urand(6000,8000);
+							Bonus_Degat_Arme_Done(-35); 
+							Cooldown_Spell2 = urand(4000, 6000);
 						}
 						else Cooldown_Spell2 -= diff;
 
 						// Spell3 sur la cible 
 						if (Cooldown_Spell3 <= diff)
 						{
+							Bonus_Degat_Arme_Done(35);
 							me->CastSpell(victim, Spell_branche3_3, true);
-							Cooldown_Spell3 = urand(15000,20000);
+							Bonus_Degat_Arme_Done(-35); 
+							Cooldown_Spell3 = urand(7000, 9000);
 						}
 						else Cooldown_Spell3 -= diff;
 
 						// Spell4 sur la cible
 						if (Cooldown_Spell4 <= diff)
 						{
+							Bonus_Degat_Arme_Done(35); 
 							me->CastSpell(victim, Spell_branche3_4, true);
-							Cooldown_Spell4 = 15000;
+							Bonus_Degat_Arme_Done(-35); 
+							Cooldown_Spell4 = urand(10000, 12000);
 						}
 						else Cooldown_Spell4 -= diff;
 
@@ -570,11 +557,13 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 				if (!UpdateVictim() || AuraFigé())
 					return;
 
+				if (me->HasAura(300049))
+					me->RemoveAura(300049); // bug face a un dk ... mais d'ou vient elle !
 
 				if (BrancheSpe == 1 || BrancheSpe == 3)
 				{
-					Mana = me->GetPower(POWER_ENERGY); 
-				} 
+					Mana = me->GetPower(POWER_ENERGY);
+				}
 				else Mana = me->GetPower(POWER_MANA);
 
 				Unit* victim = me->GetVictim();
@@ -585,7 +574,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 				// ------ ALLER A LA CIBLE -------------------------------------------------------------------------------------------------------------------------
 				if (Cooldown_Anti_Bug_Figer <= diff)
 				{
-					if (Dist >= ResteADistance+3)
+					if (Dist >= ResteADistance + 3)
 					{
 
 						float x = 0.0f, y = 0.0f, z = 0.0f;
@@ -705,7 +694,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 					break;
 
 					// Si Tisse-Brume --------------------------------------------------------------------------------------------------------------------------
-					case 2:
+				case 2:
 					if (Cooldown_Spell_Heal <= diff)
 					{
 						if (me->GetHealth() < (me->GetMaxHealth()*0.70)) 							// Si PV < 70%
@@ -715,7 +704,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 						}
 					}
 					else Cooldown_Spell_Heal -= diff;
-					
+
 					// heal sur Friend
 					if (target = DoSelectLowestHpFriendly(DistanceDeCast))							// Distance de l'allié = 30m
 					{
@@ -731,7 +720,7 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 					break;
 
 					// Si Marche-vent -----------------------------------------------------------------------------------------------------------------------------
-					case 3:
+				case 3:
 					if (Cooldown_Spell_Heal <= diff)
 					{
 						if (me->GetHealth() < (me->GetMaxHealth()*0.50)) 						// Si PV < 50%
@@ -759,16 +748,22 @@ public: Stitch_npc_ai_moine() : CreatureScript("Stitch_npc_ai_moine") { }
 				me->UpdateAllStats();
 			}
 			void VisuelPowerEnergy()
-		{
-				//me->SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_CLASS, 4);
+			{
+
+				me->SetByteValue(UNIT_FIELD_BYTES_0, UNIT_BYTES_0_OFFSET_CLASS, 8);
 
 				me->setPowerType(POWER_MANA);
-				me->SetPower(POWER_MANA, me->GetMaxPower(POWER_MANA));
-
+				me->SetMaxPower(POWER_MANA, 100);
+				me->ModifyPower(POWER_MANA, 100);
 				me->setPowerType(POWER_ENERGY);
 				me->SetMaxPower(POWER_ENERGY, 100);
 				me->SetPower(POWER_ENERGY, 100);
-		}
+				
+
+				//me->setPowerType(POWER_ENERGY);
+				//me->SetMaxPower(POWER_ENERGY, 100);
+				//me->SetPower(POWER_ENERGY, 100);
+			}
 			void VisuelPowerMana()
 			{
 				me->setPowerType(POWER_MANA);
@@ -859,18 +854,3 @@ void AddSC_npc_ai_moine()
 {
 	new Stitch_npc_ai_moine();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

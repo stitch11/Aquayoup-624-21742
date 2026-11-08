@@ -73,9 +73,9 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 			uint32 Spell_branche1_2 = 0;
 			uint32 Spell_branche1_3 = 0;
 			uint32 branche1_agro[2] = { 100, 355 };									// Charge 100, Provocation 355
-			uint32 branche1_1[2] = { 29426, 29426 };								// Frappe héroïque 29426
+			uint32 branche1_1[2] = { 29567, 29567 };								// Frappe héroïque 29426
 			uint32 branche1_2[3] = { 167105, 125436, 77558 };						// Frappe du colosse 167105 (posture de combat 6s), Découpe d'os 125436, Frappe sanglante 77558
-			uint32 branche1_3[3] = { 6552, 772, 118532 };							// Volée de coups 6552 (interrompt 4s), Pourfendre 772 (18s), Entaille infectée 118532
+			uint32 branche1_3[3] = { 6552, 36991, 118532 };							// Volée de coups 6552 (interrompt 4s), Pourfendre 772 (18s), Entaille infectée 118532
 			
 			// Spells Fureur
 			uint32 Spell_branche2_agro = 0;
@@ -83,7 +83,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 			uint32 Spell_branche2_2 = 0;
 			uint32 Spell_branche2_3 = 0;
 			uint32 branche2_agro[2] = { 6544, 355 };								// Bond héroïque 6544, Provocation 355
-			uint32 branche2_1[2] = { 126799, 126799 };								// Frappe héroïque 29426 , Frappe tranchante 126799
+			uint32 branche2_1[2] = { 29567, 29567 };								// Frappe héroïque 29426 , Frappe tranchante 126799
 			uint32 branche2_2[2] = { 1680, 85288 };									// tourbillon unique 1680, Coup déchainé 85288
 			uint32 branche2_3[2] = { 8147, 125436 };								// Coup de tonnerre 8147, Découpe d'os 125436
 
@@ -93,9 +93,9 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 			uint32 Spell_branche3_2 = 0;
 			uint32 Spell_branche3_3 = 0;
 			uint32 branche3_agro[2] = { 355, 355 };									// Provocation 355
-			uint32 branche3_1[2] = { 118326, 118326 };								// Frappe héroïque 29426, Attaque vicieuse 118326
+			uint32 branche3_1[2] = { 29567, 29567 };								// Frappe héroïque 29426, Attaque vicieuse 118326
 			uint32 branche3_2[2] = { 53600, 62317 };								// Bouclier du vertueux 53600, Dévaster 62317
-			uint32 branche3_3[3] = { 162638, 8147, 125978 };						// Bouclier du vengeur 162638, Coup de tonnerre 8147, Heurt de bouclier 125978 
+			uint32 branche3_3[3] = { 162638, 6343, 23922 };							// Bouclier du vengeur 162638, Coup de tonnerre 8147, Heurt de bouclier 125978 
 
 			// Emotes
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
@@ -305,6 +305,8 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 							Talk(1);
 						}
 
+						me->SetMaxPower(POWER_RAGE, 1000);
+
 						// ########################################################################################################################################
 						// Spell a lancer a l'agro 
 						// ########################################################################################################################################
@@ -334,9 +336,18 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						}
 					}
 
+					// Regen rage en combat ---------------------------------------------------------------------------------------------------------------
+					if (Cooldown_RegenRage <= diff)
+					{
+						me->SetPower(POWER_RAGE, Rage + 175);
+						if (Rage > MaxRage) { me->SetPower(POWER_RAGE, MaxRage); }
+						Cooldown_RegenRage = 2000;
+					}
+					else Cooldown_RegenRage -= diff;
 
 					// ############################################################################################################################################
 					// Combat suivant la Spécialisation
+
 
 					if (Dist < 6)
 					{ 
@@ -344,25 +355,16 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 					switch (BrancheSpe)
 					{
 					case 1: // Spécialisation Armes (1 épées) #####################################################################################################
-							// Regen rage en combat ---------------------------------------------------------------------------------------------------------------
-						if (Cooldown_RegenRage <= diff)
-						{
-							me->SetPower(POWER_RAGE, Rage + 10);
-							if (Rage > MaxRage) { me->SetPower(POWER_RAGE, MaxRage); }
-							Cooldown_RegenRage = 2000;
-						}
-						else Cooldown_RegenRage -= diff;
 
 						// Combat ---------------------------------------------------------------------------------------------------------------------------------
-						Bonus_Degat_Arme_Done(-75);
+						//Bonus_Degat_Arme_Done(-75);
 
 						// Spell1 sur la cible
 						
 						if (Cooldown_Spell1 <= diff)
 						{
-							DoCast(victim, Spell_branche1_1);
-							//me->CastSpell(victim, Spell_branche1_1, true);  ne fait pas baisser le mana
-							DoMeleeAttackIfReady();														// Combat en mélée
+							me->CastSpell(victim, Spell_branche1_1, false);  
+							DoMeleeAttackIfReady();											// Combat en mélée
 							Cooldown_Spell1 = 2500;
 							
 						}
@@ -371,7 +373,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						// Spell2 sur la cible
 						if (Cooldown_Spell2 <= diff)
 						{
-							me->CastSpell(victim, Spell_branche1_2, true);
+							me->CastSpell(victim, Spell_branche1_2, false);
 							Cooldown_Spell2 = urand(4000, 6000);
 						}
 						else Cooldown_Spell2 -= diff;
@@ -379,7 +381,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						// Spell3 sur la cible 
 						if (Cooldown_Spell3 <= diff)
 						{
-							me->CastSpell(victim, Spell_branche1_3, true);
+							me->CastSpell(victim, Spell_branche1_3, false);
 
 							Random = urand(1, 2);
 							if (Random == 1) { me->CastSpell(victim, Brise_genou, true); }
@@ -388,22 +390,14 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						}
 						else Cooldown_Spell3 -= diff;
 						
-						Bonus_Degat_Arme_Done(75);
+						//Bonus_Degat_Arme_Done(75);
 
 						break;
 
 					case 2: // Spécialisation Fureur (2 épées) ####################################################################################################
-							// Regen rage en combat ---------------------------------------------------------------------------------------------------------------
-						if (Cooldown_RegenRage <= diff)
-						{
-							me->SetPower(POWER_RAGE, Rage + (MaxRage / 10));
-							if (Rage > MaxRage) { me->SetPower(POWER_RAGE, MaxRage); }
-							Cooldown_RegenRage = 1000;
-						}
-						else Cooldown_RegenRage -= diff;
 
 						// Combat ---------------------------------------------------------------------------------------------------------------------------------
-						Bonus_Degat_Arme_Done(-75);
+						//Bonus_Degat_Arme_Done(-75);
 
 						// Spell1 sur la cible
 						if (Cooldown_Spell1 <= diff)
@@ -434,26 +428,18 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						}
 						else Cooldown_Spell3 -= diff;
 
-						Bonus_Degat_Arme_Done(75);
+						//Bonus_Degat_Arme_Done(75);
 						break;
 
 					case 3: // Spécialisation Protection (1 épée + bouclier) ######################################################################################
-							// Regen rage en combat ---------------------------------------------------------------------------------------------------------------
-						if (Cooldown_RegenRage <= diff)
-						{
-							me->SetPower(POWER_RAGE, Rage + (MaxRage / 10));
-							if (Rage > MaxRage) { me->SetPower(POWER_RAGE, MaxRage); }
-							Cooldown_RegenRage = 1000;
-						}
-						else Cooldown_RegenRage -= diff;
 
 						// Combat ---------------------------------------------------------------------------------------------------------------------------------
-						Bonus_Degat_Arme_Done(-50);
+						//Bonus_Degat_Arme_Done(-50);
 
 						// Spell1 sur la cible chaque (Sort Régulié)
 						if (Cooldown_Spell1 <= diff)
 						{
-							me->CastSpell(victim, Spell_branche3_1, true);
+							me->CastSpell(victim, Spell_branche3_1, false);
 							DoMeleeAttackIfReady();														// Combat en mélée
 							Cooldown_Spell1 = 2000;
 						}
@@ -462,7 +448,7 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						// Spell2 sur la cible chaque (Sort secondaire plus lent)
 						if (Cooldown_Spell2 <= diff)
 						{
-							me->CastSpell(victim, Spell_branche3_2, true);
+							me->CastSpell(victim, Spell_branche3_2, false);
 							Cooldown_Spell2 = urand(4000, 6000);
 						}
 						else Cooldown_Spell2 -= diff;
@@ -470,12 +456,12 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 						// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot)
 						if (Cooldown_Spell3 <= diff)
 						{
-							me->CastSpell(victim, Spell_branche3_3, true);
+							me->CastSpell(victim, Spell_branche3_3, false);
 							Cooldown_Spell3 = urand(10000, 12000);
 						}
 						else Cooldown_Spell3 -= diff;
 
-						Bonus_Degat_Arme_Done(50);
+						//Bonus_Degat_Arme_Done(50);
 						break;
 
 					}
@@ -544,6 +530,9 @@ public: Stitch_npc_ai_guerrier() : CreatureScript("Stitch_npc_ai_guerrier") { }
 			{
 				if (!UpdateVictim() || AuraFigé())
 					return;
+
+				if (me->HasAura(300049))
+					me->RemoveAura(300049); // bug face a un dk ... mais d'ou vient elle !
 
 				Rage = me->GetPower(POWER_RAGE);
 				Unit* victim = me->GetVictim();

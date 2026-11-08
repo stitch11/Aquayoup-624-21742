@@ -62,31 +62,31 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 			uint32 Spell_branche1_2 = 0;
 			uint32 Spell_branche1_3 = 0;
 			uint32 Spell_branche1_4 = 0;
-			uint32 branche1_agro[3] = { 30449, 102051, 31589 };							// Vol de sort 30449, Givregueule 102051 (silence 8s), Lenteur 31589
-			uint32 branche1_1[2] = { 145437, 145437 };									// Barrage des Arcanes 145437
-			uint32 branche1_2[3] = { 145434, 145434,128192 };							// Déflagration des Arcanes 145434,Lance d'esprit 128192
-			uint32 branche1_3[2] = { 191293, 191293 };									// Projectiles des Arcanes 191293 
+			uint32 branche1_agro[3] = { 30449, 44614, 31589 };						// Vol de sort 30449, Givregueule 102051 (silence 8s), Lenteur 31589
+			uint32 branche1_1[2] = { 44425, 44425 };								// Barrage des Arcanes 145437
+			uint32 branche1_2[3] = { 30451, 30451,128192 };							// Déflagration des Arcanes 145434,Lance d'esprit 128192
+			uint32 branche1_3[2] = { 5143, 5143 };									// Projectiles des Arcanes 191293 
 
 			// Spells Feu
 			uint32 Spell_branche2_agro = 0;
 			uint32 Spell_branche2_1 = 0;
 			uint32 Spell_branche2_2 = 0;
 			uint32 Spell_branche2_3 = 0;
-			uint32 Spell_branche2_4 = 31661;											// Souffle du dragon 31661 (Recharge 20s,12m)
-			uint32 branche2_agro[4] = { 56858, 30449, 102051 , 2139 };					// Choc de flammes 56858, Vol de sort 30449, Givregueule 102051 (silence 8s), Contresort 2139
-			uint32 branche2_1[2] = { 9053, 9053 };										// Boule de feu 9053 
-			uint32 branche2_2[2] = { 38391, 38391 };									// Brûlure 38391 
-			uint32 branche2_3[2] = { 14145, 14145 };									// Trait de feu 14145
+			uint32 Spell_branche2_4 = 31661;										// Souffle du dragon 31661 (Recharge 20s,12m)
+			uint32 branche2_agro[4] = { 2120, 30449, 44614 , 2139 };				// Choc de flammes 56858, Vol de sort 30449, Givregueule 102051 (silence 8s), Contresort 2139
+			uint32 branche2_1[2] = { 133, 133 };									// Boule de feu 9053 
+			uint32 branche2_2[2] = { 2948, 2948 };									// Brûlure 38391 
+			uint32 branche2_3[2] = { 2136, 2136 };									// Trait de feu 14145
 
 			// Spells Givre
 			uint32 Spell_branche3_agro = 0;
 			uint32 Spell_branche3_1 = 0;
 			uint32 Spell_branche3_2 = 0;
 			uint32 Spell_branche3_3 = 0;
-			uint32 branche3_agro[4] = { 140485, 84714, 2139, 124935 };					// Piège à runes gelé 140485 (gele 20s,20m), Sol gelé 84714, Contresort 2139, Torrent 124935
-			uint32 branche3_1[4] = { 71318, 71318, 71318,34425 };						// Eclair de givre 71318,Trait d'eau 34425	
-			uint32 branche3_2[2] = { 49906, 49906 };									// Javelot de glace 49906
-			uint32 branche3_3[2] = { 120, 122 };										// Cône de froid 120 (Recharge 12s,12m) , Nova de givre 122
+			uint32 branche3_agro[4] = { 140485, 84714, 2139, 124935 };				// Piège à runes gelé 140485 (gele 20s,20m), Sol gelé 84714, Contresort 2139, Torrent 124935
+			uint32 branche3_1[4] = { 116, 116, 116,34425 };							// Eclair de givre 71318,Trait d'eau 34425	
+			uint32 branche3_2[2] = { 30455, 30455 };								// Javelot de glace 49906
+			uint32 branche3_3[2] = { 120, 122 };									// Cône de froid 120 (Recharge 12s,12m) , Nova de givre 122
 			uint32 cone_de_froid = 120;
 
 			// Emotes
@@ -339,7 +339,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 							// Regen mana en combat -------------------------------------------------------------------------------------------------------------------
 						if (Cooldown_RegenMana <= diff)
 						{
-							me->SetPower(POWER_MANA, Mana + (MaxMana / 12));
+							me->SetPower(POWER_MANA, Mana + (MaxMana / 14));
 							if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
 							Cooldown_RegenMana = urand(2500, 3000);
 						}
@@ -350,7 +350,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						if (Cooldown_Spell3 <= diff)
 						{
 							DoCastVictim(Spell_branche1_3);
-							Cooldown_Spell3 = 10000;
+							Cooldown_Spell3 = urand(10000,15000);
 						}
 						else Cooldown_Spell3 -= diff;
 
@@ -358,7 +358,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						if (Cooldown_Spell2 <= diff)
 						{
 							DoCastVictim(Spell_branche1_2);
-							Cooldown_Spell2 = 4000;
+							Cooldown_Spell2 = 5000;
 						}
 						else Cooldown_Spell2 -= diff;
 
@@ -366,7 +366,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						if (Cooldown_Spell1 <= diff && !me->HasUnitState(UNIT_STATE_MOVE))
 						{
 								DoCastVictim(Spell_branche1_1);
-								Cooldown_Spell1 = 3000;
+								Cooldown_Spell1 = 4000;
 						}
 						else Cooldown_Spell1 -= diff;
 						break;
@@ -375,7 +375,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 							// Regen mana en combat -------------------------------------------------------------------------------------------------------------------
 						if (Cooldown_RegenMana <= diff)
 						{
-							me->SetPower(POWER_MANA, Mana + (MaxMana / 12));
+							me->SetPower(POWER_MANA, Mana + (MaxMana / 22));
 							if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
 							Cooldown_RegenMana = urand(2000, 2500);
 						}
@@ -386,7 +386,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						if (Cooldown_Spell1 <= diff && !me->HasUnitState(UNIT_STATE_MOVE))
 						{
 							DoCastVictim(Spell_branche2_1);
-							Cooldown_Spell1 = 3500;
+							Cooldown_Spell1 = 4000;
 						}
 						else Cooldown_Spell1 -= diff;
 
@@ -394,7 +394,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						if (Cooldown_Spell2 <= diff)
 						{
 							DoCastVictim(Spell_branche2_2);
-							Cooldown_Spell2 = urand(2500, 3500);
+							Cooldown_Spell2 = urand(4000, 5000);
 						}
 						else Cooldown_Spell2 -= diff;
 
@@ -402,7 +402,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						if (Cooldown_Spell3 <= diff)
 						{
 							DoCastVictim(Spell_branche2_3);
-							Cooldown_Spell3 = urand(6000, 8000);
+							Cooldown_Spell3 = urand(6000, 10000);
 						}
 						else Cooldown_Spell3 -= diff;
 
@@ -419,7 +419,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 							// Regen mana en combat ------------------------------------------------------------------------------------------------------------------------
 						if (Cooldown_RegenMana <= diff)
 						{
-							me->SetPower(POWER_MANA, Mana + (MaxMana / 15));
+							me->SetPower(POWER_MANA, Mana + (MaxMana / 27));
 							if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
 							Cooldown_RegenMana = urand(2000, 2500);
 						}
@@ -434,7 +434,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						{
 							if ( Spell_branche3_3 == cone_de_froid && me->isInFront(victim, Dist) || Spell_branche3_3 != cone_de_froid )
 							{
-								DoCastVictim(Spell_branche3_3, true);
+								DoCastVictim(Spell_branche3_3, false);
 								Cooldown_Spell3 = urand(15000, 20000);
 							}
 						}
@@ -443,8 +443,8 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						// Spell2 sur la cible chaque (Sort secondaire plus lent)
 						if (Cooldown_Spell2 <= diff)
 						{
-							DoCastVictim(Spell_branche3_2, true);
-							Cooldown_Spell2 = urand(2500, 3500);
+							DoCastVictim(Spell_branche3_2, false);
+							Cooldown_Spell2 = urand(3000, 4200);
 						}
 						else Cooldown_Spell2 -= diff;
 
@@ -452,7 +452,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						if (Cooldown_Spell1 <= diff && !me->HasUnitState(UNIT_STATE_MOVE) )
 						{
 							DoCastVictim(Spell_branche3_1/*, true*/);
-							Cooldown_Spell1 = 3500;
+							Cooldown_Spell1 = 4000;
 						}
 						else Cooldown_Spell1 -= diff;
 
@@ -537,7 +537,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 
 						if (AuraLenteur() == false && !Interieur())
 						{
-							me->SetSpeedRate(MOVE_RUN, 1.1f); // Uniquement si non ralenti par un spell joueur
+							//me->SetSpeedRate(MOVE_RUN, 1.1f); // Uniquement si non ralenti par un spell joueur
 						}
 
 						float x = 0.0f, y = 0.0f, z = 0.0f;
@@ -555,7 +555,7 @@ public: Stitch_npc_ai_mage() : CreatureScript("Stitch_npc_ai_mage") { }
 						}
 						mapid = victim->GetMapId();
 						me->GetMotionMaster()->MovePoint(mapid, x, y, z);
-						Cooldown_ResteADistance = 2000;
+						Cooldown_ResteADistance = 3000;
 					}
 				}
 				else Cooldown_ResteADistance -= diff;

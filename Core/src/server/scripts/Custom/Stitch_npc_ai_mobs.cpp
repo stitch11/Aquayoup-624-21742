@@ -2739,11 +2739,11 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 						Random = urand(1, 2);									// 1 chance sur 2 de lancer un buf a l'agro
 						if (Random == 1 && Tmp4 != 0)
 						{
-							me->CastSpell(me, Tmp4, true);
+							me->CastSpell(me, Tmp4, false);
 						}
 						if (Tmp3 != 0)
 						{
-							me->CastSpell(me, Tmp3, true);
+							me->CastSpell(me, Tmp3, false);
 						}
 
 
@@ -2759,7 +2759,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							Random = urand(1, 5);								// 3 Chance sur 5 de lancer le sort sur la cible a d'agro
 							if (Random < 4 && Spell_agro != 0)
 							{
-								me->CastSpell(victim, Spell_agro, true);//
+								me->CastSpell(victim, Spell_agro, false);//
 
 							}
 							Start_Agro2 = 1;
@@ -2785,7 +2785,6 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							if (Dist <= 6 || ResteADistance >5 )
 							{
 								DoMeleeAttackIfReady();																	// Combat en mélée
-								//me->CastSpell(victim, Spell_A, true);  ne fait pas baisser le power
 								DoCast(victim, Spell_A);
 
 								Cooldown_SpellA = Cooldown_SpellA_defaut + urand(0,1000) -500;
@@ -2804,7 +2803,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 								{
 									if (Spell_B_Non_Cumulable == 0 || (Spell_B_Non_Cumulable == 1 && !victim->HasAura(Spell_B)))
 									{
-										me->CastSpell(victim, Spell_B, true);
+										me->CastSpell(victim, Spell_B, false);
 
 										if (Dist > 6 && Cooldown_New_SpellB_rapide_defaut != 0)
 										{

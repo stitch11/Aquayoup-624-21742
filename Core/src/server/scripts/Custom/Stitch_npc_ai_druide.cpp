@@ -62,9 +62,9 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 			uint32 Spell_branche1_1 = 0;
 			uint32 Spell_branche1_2 = 0;
 			uint32 Spell_branche1_3 = 0;
-			uint32 branche1_agro[4] = { 21668, 21668, 21668, 33844 };				// Feu stellaire 21668, Sarments (4s) 33844
-			uint32 branche1_1[2] = { 119577, 119577 };								// Colère (verte) 119577 
-			uint32 branche1_2[2] = { 98995, 770 };									// Éruption stellaire 98995, Lucioles 770
+			uint32 branche1_agro[4] = { 2912, 2912, 2912, 33844 };					// Feu stellaire 21668, Sarments (4s) 21668 33844
+			uint32 branche1_1[2] = { 149466, 149466 };								// Colère (verte) 119577 
+			uint32 branche1_2[2] = { 78674, 770 };									// Éruption stellaire 98995, Lucioles 770
 			uint32 branche1_3[2] = { 15798, 21668 };								// Eclat lunaire 15798, Feu stellaire 21668
 																					
 			// Definitions des Spells Ours
@@ -381,7 +381,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 							me->SetDisplayId(Modelid_Branche2);											// Modelid Ours
 
 							Random = urand(1, 2);
-							if (Random == 1) { me->CastSpell(victim, Spell_branche2_agro, true); }		// 1/2 Chance de lancer le sort d'agro
+							if (Random == 1) { me->CastSpell(victim, Spell_branche2_agro, false); }		// 1/2 Chance de lancer le sort d'agro
 							break;
 
 						case 3: // Si Felin ----------------------------------------------------------------------------------------------------------------
@@ -391,7 +391,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 							me->SetDisplayId(Modelid_Branche3);											// Modelid Felin
 
 							Random = urand(1, 2);
-							if (Random == 1) { me->CastSpell(victim, Spell_branche3_agro, true); }		// 1/2 Chance de lancer le sort d'agro
+							if (Random == 1) { me->CastSpell(victim, Spell_branche3_agro, false); }		// 1/2 Chance de lancer le sort d'agro
 							break;
 
 						case 4: // Si Tréant ----------------------------------------------------------------------------------------------------------------
@@ -401,7 +401,7 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 							me->SetDisplayId(Modelid_Branche4);											// Modelid Tréant - Petite-Branche 57040
 
 							Random = urand(1, 2);
-							if (Random == 1) { me->CastSpell(victim, Spell_branche4_agro, true); }		// 1/2 Chance de lancer le sort d'agro
+							if (Random == 1) { me->CastSpell(victim, Spell_branche4_agro, false); }		// 1/2 Chance de lancer le sort d'agro
 							break;
 
 							// ####################################################################################################################################
@@ -427,9 +427,8 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 						// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot)
 						if (Cooldown_Spell3 <= diff && (!victim->HasAura(Spell_branche1_3) && Spell_branche1_3 != Eclat_lunaire && Spell_branche1_3 != Feu_stellaire))
 						{
-							//DoCastVictim(Spell_branche1_3);
 							me->StopMoving();
-							me->CastSpell(victim, Spell_branche1_3, true);
+							me->CastSpell(victim, Spell_branche1_3, false);
 							Cooldown_Spell3 = urand(10000, 12000);
 						}
 						else Cooldown_Spell3 -= diff;
@@ -448,7 +447,6 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 							if (!me->HasUnitState(UNIT_STATE_MOVE))
 							{
 								DoCast(victim, Spell_branche1_1);
-								//DoCastVictim(Spell_branche1_1);	ne fait pas baisser le power
 								Cooldown_Spell1 = 3500;
 							}
 						}
@@ -482,7 +480,6 @@ public: Stitch_npc_ai_druide() : CreatureScript("Stitch_npc_ai_druide") { }
 							// Spell2 sur la cible chaque (Sort secondaire plus lent)
 							if (Cooldown_Spell2 <= diff)
 							{
-								//DoCastVictim(Spell_branche2_2);
 								DoCast(victim, Spell_branche2_2);
 								Cooldown_Spell2 = 4000;
 							}

@@ -237,7 +237,7 @@ void Creature::AddToWorld()
 		if (getPowerType() == POWER_RAGE)
 		{
 			SetMaxPower(POWER_RAGE, 1000);
-			SetPower(POWER_RAGE, 0);
+			//SetPower(POWER_RAGE, 0);
 		}
 
 

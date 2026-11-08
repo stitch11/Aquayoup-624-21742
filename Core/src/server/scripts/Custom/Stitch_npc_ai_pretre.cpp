@@ -55,20 +55,20 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 			uint32 Nova_Sacree = 132157;											// Nova sacrée dmg/heal 12m
 			uint32 Mot_de_pouvoir_Bouclier = 17;									// Mot de pouvoir : Bouclier
 			uint32 Mot_de_pouvoir_Bouclier_effet = 11835;
-			uint32 Soins_Rapides = 300265;											// Soins Rapides 300265/2061
+			uint32 Soins_Rapides = 2061;											// Soins Rapides 300265/2061
 			uint32 Toucher_Vampirique = 300231;
-			uint32 Peste_devorante = 138490;
-			uint32 Mot_de_lombre_Douleur = 34941;
+			uint32 Peste_devorante = 2944;
+			uint32 Mot_de_lombre_Douleur = 589;
 
 			// Spells Ombre
 			uint32 Spell_branche1_agro = 0;
 			uint32 Spell_branche1_1 = 0;
 			uint32 Spell_branche1_2 = 0;
 			uint32 Spell_branche1_3 = 0;
-			uint32 branche1_agro[4] = { 15487, 15487, 172884, 64044 };				// Ombrefiel 172884, Horreur psychique 64044 (fear 5s), Silence 15487 5s
-			uint32 branche1_1[4] = { 183324, 183324, 183324, 60440 };				// Fouet mental 183324, Incandescence mentale 60440
-			uint32 branche1_2[2] = { 92713, 145550 };								// Attaque mentale 92713, Pointe mentale 145550
-			uint32 branche1_3[3] = { 300231, 138490, 34941 };						// Toucher vampirique 300231,  Peste dévorante 138490, Mot de l’ombre:Douleur 34941
+			uint32 branche1_agro[4] = { 15487, 15487, 172884, 64044 };			// Ombrefiel 172884, Horreur psychique 64044 (fear 5s), Silence 15487 5s
+			uint32 branche1_1[4] = { 183324, 183324, 183324, 60440 };			// Fouet mental 183324, Incandescence mentale 60440
+			uint32 branche1_2[2] = { 92713, 145550 };							// Attaque mentale 92713, Pointe mentale 145550
+			uint32 branche1_3[3] = { 300231, 2944, 589 };						// Toucher vampirique 300231,  Peste dévorante 138490, Mot de l’ombre:Douleur 34941
 
 			// Spells Discipline
 			uint32 Spell_branche2_agro = 0;	//    
@@ -76,9 +76,9 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 			uint32 Spell_branche2_2 = 0;
 			uint32 Spell_branche2_3 = 0;
 			uint32 branche2_agro[6] = { 15487, 15487, 15487, 88625, 88625, 64044 };	// Horreur psychique 64044 (fear 5s), Silence 15487 5s , Mot sacré : Châtier 88625 (stun 3s) , 
-			uint32 branche2_1[2] = { 168380, 168380 };								// Châtiment 168380  
-			uint32 branche2_2[3] = { 18165, 18165 ,165721 };						// Flammes sacrées 18165, Pénitence 165721
-			uint32 branche2_3[3] = { 34941, 34941, 34941 };							// Mot de l’ombre:Douleur 34941
+			uint32 branche2_1[2] = { 585, 585 };								// Châtiment 168380  
+			uint32 branche2_2[3] = { 14914, 14914 ,165721 };						// Flammes sacrées 18165, Pénitence 165721
+			uint32 branche2_3[3] = { 589, 589, 589 };								// Mot de l’ombre:Douleur 34941
 
 			// Emotes
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
@@ -175,7 +175,6 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 			void JustRespawned() override
 			{
 				me->GetMotionMaster()->MoveTargetedHome();								// Retour home pour rafraichir client
-				//me->SetSpeedRate(MOVE_RUN, 1.01f);
 				me->SetReactState(REACT_AGGRESSIVE);
 
 				Init_AI();
@@ -274,7 +273,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 							me->CastSpell(me, Buf_branche1, true);															// Buf1 sur lui meme
 							
 							Random = urand(1, 2);
-							if (Random == 1) { me->CastSpell(victim, Spell_branche1_agro, true); }							// 1/2 Chance de lancer le sort d'agro
+							if (Random == 1) { me->CastSpell(victim, Spell_branche1_agro, false); }							// 1/2 Chance de lancer le sort d'agro
 							break;
 
 						case 2: // Si Discipline --------------------------------------------------------------------------------------------------------------------------
@@ -282,7 +281,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 							me->CastSpell(me, Buf_branche2, true);															// Buf2 sur lui meme
 							
 							Random = urand(1, 2);
-							if (Random == 1) { me->CastSpell(victim, Spell_branche2_agro, true); }							// 1/2 Chance de lancer le sort d'agro
+							if (Random == 1) { me->CastSpell(victim, Spell_branche2_agro, false); }							// 1/2 Chance de lancer le sort d'agro
 							break;
 
 							// ############################################################################################################################################
@@ -297,7 +296,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 							// Regen mana en combat -----------------------------------------------------------------------------------------------------------------------
 						if (Cooldown_RegenMana <= diff)
 						{
-							me->SetPower(POWER_MANA, Mana + (MaxMana / 10));
+							me->SetPower(POWER_MANA, Mana + (MaxMana / 20));
 							if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
 							Cooldown_RegenMana = urand(3000, 3500);
 						}
@@ -312,7 +311,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 						if (Cooldown_Spell3 <= diff && (!victim->HasAura(Spell_branche1_3) && Spell_branche1_3 != Toucher_Vampirique && Spell_branche1_3 != Peste_devorante && Spell_branche1_3 != Mot_de_lombre_Douleur))
 						{
 							//DoCastVictim(Spell_branche1_3);
-							me->CastSpell(victim, Spell_branche1_3, true);
+							me->CastSpell(victim, Spell_branche1_3, false);
 							Cooldown_Spell3 = urand(8000, 10000);
 						}
 						else Cooldown_Spell3 -= diff;
@@ -345,7 +344,7 @@ public: Stitch_npc_ai_pretre() : CreatureScript("Stitch_npc_ai_pretre") { }
 							// Regen mana en combat -----------------------------------------------------------------------------------------------------------------------
 						if (Cooldown_RegenMana <= diff)
 						{
-							me->SetPower(POWER_MANA, Mana + (MaxMana / 10));
+							me->SetPower(POWER_MANA, Mana + (MaxMana / 15));
 							if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
 							Cooldown_RegenMana = urand(2000, 2500);
 						}

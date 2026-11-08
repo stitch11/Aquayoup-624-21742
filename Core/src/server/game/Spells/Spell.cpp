@@ -2953,6 +2953,34 @@ void Spell::prepare(SpellCastTargets const* targets, AuraEffect const* triggered
     // Fill cost data (not use power for item casts
     if (!m_CastItem)
         m_powerCost = m_spellInfo->CalcPowerCost(m_caster, m_spellSchoolMask);
+
+
+
+	//Stitch : tout power pour rage/focus/energie - cout = puissance du mob, coefficient selon son max
+	//Stitch : cout = puissance du mob, coefficient selon son max
+	if (m_caster->GetTypeId() == TYPEID_UNIT && !m_caster->ToCreature()->IsPet())
+	{
+		Powers mobPower = m_caster->getPowerType();
+		if (m_caster->ToCreature()->GetCreatureTemplate()->unit_class == 16)
+			mobPower = POWER_ENERGY;    // vraie ressource de la classe 16
+
+		if (mobPower != POWER_MANA)
+		{
+			int32 mobMax = int32(m_caster->GetMaxPower(mobPower));
+			for (SpellInfo::CostData& cost : m_powerCost)
+			{
+				if (cost.Power == POWER_HEALTH || cost.Power == POWER_RUNES || cost.Power == mobPower)
+					continue;
+				cost.Amount = int32(int64(cost.Amount) * mobMax / 1000);
+				cost.Power = mobPower;
+			}
+		}
+	}
+
+
+
+
+
     if (m_caster->GetTypeId() == TYPEID_PLAYER)
         m_caster->ToPlayer()->SetSpellModTakingSpell(this, false);
 
@@ -2961,7 +2989,6 @@ void Spell::prepare(SpellCastTargets const* targets, AuraEffect const* triggered
         m_needComboPoints = false;
 
     SpellCastResult result = CheckCast(true);
-   
 
 	// target is checked in too many locations and with different results to handle each of them
     // handle just the general SPELL_FAILED_BAD_TARGETS result which is the default result for most DBC target checks
@@ -4465,6 +4492,7 @@ void Spell::TakeCastItem()
 void Spell::TakePower()
 {
 
+
 	if (m_CastItem || m_triggeredByAuraSpell)
 		return;
 
@@ -4531,6 +4559,7 @@ void Spell::TakePower()
 			&& m_caster->ToCreature()->GetCreatureTemplate()->unit_class == 16
 			&& powerType == POWER_ENERGY)
 			m_caster->ModifyPower(POWER_FOCUS, -cost.Amount);
+
 
 
 		if (hit)

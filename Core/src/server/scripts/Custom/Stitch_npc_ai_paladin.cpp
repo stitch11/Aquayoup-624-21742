@@ -51,10 +51,10 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			uint32 Buf_branche1a = 79977;											// Bénédiction de puissance 79977
 			uint32 Buf_branche2 = 20165;											// Sceau de clairvoyance 20165, Sceau de protection de mana 20154,
 			uint32 Buf_branche2a = 31821;											// Aura de dévotion 31821, Aura de dévotion 52442 (armure+25%)
-			uint32 Buf_branche3 = 31801;											// Sceau de clairvoyance 20165, Sceau de vérité 31801
+			uint32 Buf_branche3 = 20165;											// ++Sceau de clairvoyance 20165, Sceau de vérité 31801
 			uint32 Buf_branche3a = 31850;											// Ardent défenseur 31850 (dmg -20% 10s), Bénédiction des rois 72043, Protection divine 498, Aura de dévotion 52442 (armure+25%) 
-			uint32 Spell_Heal_Caster = 300262;  									// Eclair lumineux 300262
-			uint32 Spell_Heal_Heal = 177551;  										// Lumière sacrée 177551
+			uint32 Spell_Heal_Caster = 19750;  										// Eclair lumineux 300262
+			uint32 Spell_Heal_Heal = 300262;  										// Lumière sacrée 177551, Lumiere Sacrée 82326
 
 			// Spells Vindice
 			uint32 Spell_branche1_agro = 0;
@@ -62,9 +62,9 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			uint32 Spell_branche1_2 = 0;
 			uint32 Spell_branche1_3 = 0;
 			uint32 branche1_agro[4] = { 853, 853, 853, 62124 };						// Marteau de la justice 853 (stun 6s), Réprimandes 96231 (interrompt 4s), Rétribution(agro) 62124
-			uint32 branche1_1[2] = { 57774, 57774 };								// Jugement 57774
+			uint32 branche1_1[2] = { 20271, 20271 };								// Jugement 57774
 			uint32 branche1_2[2] = { 66003, 66003 };								// Frappe du croisé 66003
-			uint32 branche1_3[3] = { 79964, 150628, 79970 };						// Exorcisme 79964, Marteau du vertueux 150628 6s, Tempête divine 79970
+			uint32 branche1_3[3] = { 879, 53595, 53385 };							// Exorcisme 79964, Marteau du vertueux 150628 6s, Tempête divine 79970
 			
 			// Spells Sacré
 			uint32 Spell_branche2_agro = 0;
@@ -72,9 +72,9 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			uint32 Spell_branche2_2 = 0;
 			uint32 Spell_branche2_3 = 0;
 			uint32 branche2_agro[4] = { 853, 96231, 96231, 96231 };					// Dénoncer 2812 , Marteau de la justice 853 (stun 6s), Réprimandes 96231 (interrompt 4s)
-			uint32 branche2_1[2] = { 57774, 57774 };								// Jugement 57774
+			uint32 branche2_1[2] = { 20271, 20271 };								// Jugement 57774
 			uint32 branche2_2[2] = { 66003, 66003 };								// Frappe du croisé 66003
-			uint32 branche2_3[2] = { 32771, 32771 };								// Horion sacré 32771
+			uint32 branche2_3[2] = { 20473, 20473 };								// Horion sacré 32771
 
 			// Spells Protection
 			uint32 Spell_branche3_agro = 0;
@@ -82,9 +82,9 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			uint32 Spell_branche3_2 = 0;
 			uint32 Spell_branche3_3 = 0;
 			uint32 branche3_agro[3] = { 853, 96231, 62124 };						// Marteau de la justice 853 (stun 6s), Réprimandes 96231 (interrompt 4s), Rétribution 62124
-			uint32 branche3_1[2] = { 57774, 57774 };								// Jugement 57774
-			uint32 branche3_2[2] = { 53600, 53600 };								// Frappe du croisé 66003, Bouclier du vertueux 53600
-			uint32 branche3_3[2] = { 162638, 26573 };								// Bouclier du vengeur 162638 (interrompt 3s), Consécration 26573, 
+			uint32 branche3_1[2] = { 20271, 20271 };								// Jugement 57774
+			uint32 branche3_2[2] = { 66003, 66003 };								// Frappe du croisé 66003, Bouclier du vertueux 53600
+			uint32 branche3_3[2] = { 31935, 26573 };								// Bouclier du vengeur 162638 (interrompt 3s), Consécration 26573, 
 
 			// Emotes
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
@@ -292,7 +292,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 						// ########################################################################################################################################
 						// Spell a lancer a l'agro 
 						// ########################################################################################################################################
-						Bonus_Degat_Arme_Done(-50);
+						//Bonus_Degat_Arme_Done(-50);
 						switch (BrancheSpe)
 						{
 						case 1: // Si Vindice ---------------------------------------------------------------------------------------------------------------------
@@ -324,7 +324,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 
 							// ####################################################################################################################################
 						}
-						Bonus_Degat_Arme_Done(50);
+						//Bonus_Degat_Arme_Done(50);
 					}
 
 
@@ -339,7 +339,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 								// Regen Mana en combat ---------------------------------------------------------------------------------------------------------------
 							if (Cooldown_RegenMana <= diff)
 							{
-								me->SetPower(POWER_MANA, Mana + (MaxMana / 2));
+								me->SetPower(POWER_MANA, Mana + (MaxMana / 6));
 								if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
 								Cooldown_RegenMana = 2000;
 							}
@@ -349,26 +349,29 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 							//Bonus_Degat_Arme_Done(-10);										// Bonus de dégat 
 
 																							// Spell1 sur la cible
-							if (Cooldown_Spell1 <= diff)
+							if (Cooldown_Spell1 <= diff && !me->HasUnitState(UNIT_STATE_CASTING))
 							{
-								DoCastVictim(Spell_branche1_1);
+								me->CastSpell(victim, Spell_branche1_1, false);
+								//DoCastVictim(Spell_branche1_1);
 								Cooldown_Spell1 = 6000;
 							}
 							else Cooldown_Spell1 -= diff;
 
 							// Spell2 sur la cible
-							if (Cooldown_Spell2 <= diff)
+							if (Cooldown_Spell2 <= diff && !me->HasUnitState(UNIT_STATE_CASTING))
 							{
-								DoCastVictim(Spell_branche1_2);
-								Cooldown_Spell2 = 2500;
+								me->CastSpell(victim, Spell_branche1_2, false);
+								//DoCastVictim(Spell_branche1_2);
+								Cooldown_Spell2 = 3500;
 							}
 							else Cooldown_Spell2 -= diff;
 
 							// Spell3 sur la cible 
-							if (Cooldown_Spell3 <= diff)
+							if (Cooldown_Spell3 <= diff && !me->HasUnitState(UNIT_STATE_CASTING))
 							{
-								DoCastVictim(Spell_branche1_3);
-								Cooldown_Spell3 = 4000;
+								me->CastSpell(victim, Spell_branche1_3, false);
+								//DoCastVictim(Spell_branche1_3);
+								Cooldown_Spell3 = urand(5000,6500);
 							}
 							else Cooldown_Spell3 -= diff;
 
@@ -382,7 +385,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 							if (Cooldown_RegenMana <= diff)
 							{
 								me->setPowerType(POWER_MANA);
-								me->SetPower(POWER_MANA, Mana + (MaxMana / 2));
+								me->SetPower(POWER_MANA, Mana + (MaxMana / 4));
 								if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
 
 								Cooldown_RegenMana = 2000;
@@ -393,25 +396,28 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 
 							// Combat ---------------------------------------------------------------------------------------------------------------------------------
 							// Spell1 sur la cible
-							if (Cooldown_Spell1 <= diff)
+							if (Cooldown_Spell1 <= diff && !me->HasUnitState(UNIT_STATE_CASTING))
 							{
-								DoCastVictim(Spell_branche2_1);
+								me->CastSpell(victim, Spell_branche2_1, false);
+								//DoCastVictim(Spell_branche2_1);
 								Cooldown_Spell1 = 6000;
 							}
 							else Cooldown_Spell1 -= diff;
 
 							// Spell2 sur la cible
-							if (Cooldown_Spell2 <= diff)
+							if (Cooldown_Spell2 <= diff && !me->HasUnitState(UNIT_STATE_CASTING))
 							{
-								DoCastVictim(Spell_branche2_2);
-								Cooldown_Spell2 = 3000;
+								me->CastSpell(victim, Spell_branche2_1, false);
+								//DoCastVictim(Spell_branche2_2);
+								Cooldown_Spell2 = 3500;
 							}
 							else Cooldown_Spell2 -= diff;
 
 							// Spell3 sur la cible
-							if (Cooldown_Spell3 <= diff)
+							if (Cooldown_Spell3 <= diff && !me->HasUnitState(UNIT_STATE_CASTING))
 							{
-								DoCastVictim(Spell_branche2_3);
+								me->CastSpell(victim, Spell_branche2_3, false);
+								//DoCastVictim(Spell_branche2_3);
 								Cooldown_Spell3 = urand(8000, 10000);
 							}
 							else Cooldown_Spell3 -= diff;
@@ -426,7 +432,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 								// Regen Mana en combat ---------------------------------------------------------------------------------------------------------------
 							if (Cooldown_RegenMana <= diff)
 							{
-								me->SetPower(POWER_MANA, Mana + (MaxMana / 2));
+								me->SetPower(POWER_MANA, Mana + (MaxMana / 6));
 								if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
 								Cooldown_RegenMana = 2000;
 							}
@@ -436,25 +442,25 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 
 							// Combat ---------------------------------------------------------------------------------------------------------------------------------
 							// Spell1 sur la cible chaque (Sort Régulié)
-							if (Cooldown_Spell1 <= diff)
-							{
-								me->CastSpell(victim, Spell_branche3_1, true);
+							if (Cooldown_Spell1 <= diff && !me->HasUnitState(UNIT_STATE_CASTING))
+							{me->CastSpell(victim, Spell_branche2_3, false);
+								me->CastSpell(victim, Spell_branche3_1, false);
 								Cooldown_Spell1 = 6000;
 							}
 							else Cooldown_Spell1 -= diff;
 
 							// Spell2 sur la cible chaque (Sort secondaire plus lent)
-							if (Cooldown_Spell2 <= diff)
+							if (Cooldown_Spell2 <= diff && !me->HasUnitState(UNIT_STATE_CASTING))
 							{
-								me->CastSpell(victim, Spell_branche3_2, true);
-								Cooldown_Spell2 = 3000;
+								me->CastSpell(victim, Spell_branche3_2, false);
+								Cooldown_Spell2 = 3500;
 							}
 							else Cooldown_Spell2 -= diff;
 
 							// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot)
-							if (Cooldown_Spell3 <= diff)
+							if (Cooldown_Spell3 <= diff && !me->HasUnitState(UNIT_STATE_CASTING))
 							{
-								me->CastSpell(victim, Spell_branche3_3, true);
+								me->CastSpell(victim, Spell_branche3_3, false);
 								Cooldown_Spell3 = urand(10000, 12000);
 							}
 							else Cooldown_Spell3 -= diff;
@@ -527,6 +533,9 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 			{
 				if (!UpdateVictim() || AuraFigé() /*|| me->HasUnitState(UNIT_STATE_CASTING)*/)
 					return;
+
+				if (me->HasAura(300049))
+					me->RemoveAura(300049); // bug face a un dk ... mais d'ou vient elle !
 
 				Mana = me->GetPower(POWER_MANA);
 				Unit* victim = me->GetVictim();
@@ -634,6 +643,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 																									// heal sur lui meme
 					if ((me->GetHealth() < (me->GetMaxHealth()*0.50)))								// Si PV < 50%
 					{
+						//me->CastSpell(victim, Spell_Heal_Heal, true);
 						DoCast(me, Spell_Heal_Heal);
 						Cooldown_Spell_Heal = 6000;
 					}
@@ -660,7 +670,7 @@ public: Stitch_npc_ai_paladin() : CreatureScript("Stitch_npc_ai_paladin") { }
 				{
 					Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 1, DistanceDeCast, true);		// pour heal friend
 					// heal sur lui meme
-					if ((me->GetHealth() < (me->GetMaxHealth()*0.50)))								// Si PV < 50%
+					if ((me->GetHealth() < (me->GetMaxHealth()/3.33)))								// Si PV < 50%
 					{
 						DoCast(me, Spell_Heal_Caster);
 						Cooldown_Spell_Heal = 7000;

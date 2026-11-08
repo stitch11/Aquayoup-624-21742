@@ -67,20 +67,20 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 			uint32 Spell_branche1_1 = 0;
 			uint32 Spell_branche1_2 = 0;
 			uint32 Spell_branche1_3 = 0;
-			uint32 branche1_agro[4] = { 15039, 12548, 3599, 73393 };				// Horion de flammes 15039 - Horion de givre 12548 - Totem incendiaire 3599 - Totem de flot de mana 73393
-			uint32 branche1_1[2] = { 9532, 9532 };									// Eclair 9532
-			uint32 branche1_2[2] = { 12548, 13728 };								// Horion de givre 12548 - Horion de terre 13728 (stun 2s)
-			uint32 branche1_3[2] = { 15039, 57994 };								// Horion de flammes 15039 30s - Cisaille de vent 57994
+			uint32 branche1_agro[4] = { 8050, 8056, 3599, 73393 };				// Horion de flammes 15039 - Horion de givre 12548 - Totem incendiaire 3599 - Totem de flot de mana 73393
+			uint32 branche1_1[2] = { 96891, 96891 };							// Eclair 9532
+			uint32 branche1_2[2] = { 8056, 57994 };								// Horion de givre 12548 - Horion de terre 13728 (stun 2s)
+			uint32 branche1_3[2] = { 8050, 57994 };								// Horion de flammes 15039 30s - Cisaille de vent 57994
 			
 			// Definitions des Spells Elementaire
 			uint32 Spell_branche2_agro = 0;
 			uint32 Spell_branche2_1 = 0;
 			uint32 Spell_branche2_2 = 0;
 			uint32 Spell_branche2_3 = 0;
-			uint32 branche2_agro[5] = { 15039, 12548, 3599, 2484, 78222 };			// Horion de flammes 15039 - Horion de givre 12548 - Totem incendiaire 3599 - Totem de lien terrestre 2484 - Totem de peau de pierre 78222
-			uint32 branche2_1[4] = { 9532, 9532, 9532, 28167 };						// Eclair 9532 - Chaîne d'éclairs 28167 
-			uint32 branche2_2[3] = { 178091, 178091 ,12548 };						// Explosion de lave 178091 - Horion de givre 12548 8s
-			uint32 branche2_3[4] = { 15039, 15039, 13728, 57994 };					// Horion de flammes 15039 30s - Horion de terre 13728 (stun 2s) - Cisaille de vent 57994
+			uint32 branche2_agro[5] = { 8050, 12548, 3599, 2484, 78222 };			// Horion de flammes 15039 - Horion de givre 12548 - Totem incendiaire 3599 - Totem de lien terrestre 2484 - Totem de peau de pierre 78222
+			uint32 branche2_1[4] = { 96891, 96891, 96891,12058 };					// Eclair 9532 - Chaîne d'éclairs 28167 
+			uint32 branche2_2[3] = { 51505, 51505 ,8056 };							// Explosion de lave 178091 - Horion de givre 12548 8s
+			uint32 branche2_3[4] = { 8050, 8050, 23114, 57994 };					// Horion de flammes 15039 30s - Horion de terre 13728 (stun 2s) - Cisaille de vent 57994
 
 			// Spells Amelioration
 			uint32 Spell_branche3_agro = 0;
@@ -89,8 +89,8 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 			uint32 Spell_branche3_3 = 0;
 			uint32 branche3_agro[4] = { 370, 370, 2484, 3599 };						// Purge 370 (retire 1 buf), Totem de lien terrestre 2484, Totem incendiaire 3599
 			uint32 branche3_1[2] = { 79926, 79926 };								// Frappe primordiale 79926
-			uint32 branche3_2[3] = { 172779, 147093, 12548 };						// Horion de givre 12548 8s - Frappe-tempête 172779 - Fouet de lave 147093
-			uint32 branche3_3[2] = { 15039, 13728 };								// Horion de flammes 15039 - Cisaille de vent 57994 -  Horion de givre 12548 8s - Horion de terre 13728 (stun 2s)
+			uint32 branche3_2[3] = { 8056, 60103, 8056 };						// Horion de givre 12548 8s - Frappe-tempête 172779 - Fouet de lave 147093
+			uint32 branche3_3[2] = { 8050, 8042 };								// Horion de flammes 15039 - Cisaille de vent 57994 -  Horion de givre 12548 8s - Horion de terre 13728 (stun 2s)
 
 			// Emotes
 			uint32 Npc_Emotes[22] = { 1,3,7,11,15,16,19,21,22,23,24,53,66,71,70,153,254,274,381,401,462,482 };
@@ -321,17 +321,17 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 						{
 						case 1: // Si Restauration ----------------------------------------------------------------------------------------------------------------
 							Random = urand(1, 2);
-							if (Random == 1) { me->CastSpell(victim, Spell_branche1_agro, true); }		// 1/2 Chance de lancer le sort d'agro
+							if (Random == 1) { me->CastSpell(victim, Spell_branche1_agro, false); }		// 1/2 Chance de lancer le sort d'agro
 							break;
 
 						case 2: // Si Elementaire -----------------------------------------------------------------------------------------------------------------
 							Random = urand(1, 2);
-							if (Random == 1) { me->CastSpell(victim, Spell_branche2_agro, true); }		// 1/2 Chance de lancer le sort d'agro
+							if (Random == 1) { me->CastSpell(victim, Spell_branche2_agro, false); }		// 1/2 Chance de lancer le sort d'agro
 							break;
 
 						case 3: // Si Amelioration ----------------------------------------------------------------------------------------------------------------
 							Random = urand(1, 2);
-							if (Random == 1) { me->CastSpell(victim, Spell_branche3_agro, true); }		// 1/2 Chance de lancer le sort d'agro
+							if (Random == 1) { me->CastSpell(victim, Spell_branche3_agro, false); }		// 1/2 Chance de lancer le sort d'agro
 							break;
 
 							// ####################################################################################################################################
@@ -347,7 +347,7 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 							// Regen mana en combat ---------------------------------------------------------------------------------------------------------------
 						if (Cooldown_RegenMana <= diff)
 						{
-							me->SetPower(POWER_MANA, Mana + (MaxMana / 5));
+							me->SetPower(POWER_MANA, Mana + (MaxMana / 20));
 							if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
 							Cooldown_RegenMana = urand(1000, 1500);
 						}
@@ -391,8 +391,8 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 							// Regen mana en combat -------------------------------------------------------------------------------------------------------------------
 						if (Cooldown_RegenMana <= diff)
 						{
-							me->SetPower(POWER_MANA, Mana + (MaxMana / 5));
-							if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
+							me->SetPower(POWER_MANA, Mana + (MaxMana / 15));
+							//if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
 							Cooldown_RegenMana = urand(1500, 2000);
 						}
 						else Cooldown_RegenMana -= diff;
@@ -435,8 +435,8 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 							// Regen mana en combat ------------------------------------------------------------------------------------------------------------------------
 						if (Cooldown_RegenMana <= diff)
 						{
-							me->SetPower(POWER_MANA, Mana + (MaxMana / 10));
-							if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
+							me->SetPower(POWER_MANA, Mana + (MaxMana / 15));
+							//if (Mana > MaxMana) { me->SetPower(POWER_MANA, MaxMana); }
 							Cooldown_RegenMana = 1000;
 						}
 						else Cooldown_RegenMana -= diff;

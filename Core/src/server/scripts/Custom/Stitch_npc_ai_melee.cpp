@@ -260,7 +260,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 						//Random = urand(1, 3);
 						//if (Random == 1 && Spell_evade == 137573 && Spell_agro != 100 && Spell_agro != 145763)
 						//{
-						if (Spell_evade != 0) { me->CastSpell(me, Spell_evade, true); }	// vitesse_4s si spell_agro n'est pas charge ou Bondir
+						if (Spell_evade != 0) { me->CastSpell(me, Spell_evade, false); }	// vitesse_4s si spell_agro n'est pas charge ou Bondir
 						//}
 
 
@@ -274,7 +274,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 						Random = urand(1, 2);
 						if (Random == 1 && Spell_agro != 0)
 						{
-							me->CastSpell(victim, Spell_agro, true);
+							me->CastSpell(victim, Spell_agro, false);
 						}	// 1/2 Chance de lancer le sort d'agro
 
 					}
@@ -284,7 +284,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 						Random = urand(1, 2);
 						if (Random == 1 && Spell_agro != 0)
 						{
-							me->CastSpell(victim, Spell_agro, true);
+							me->CastSpell(victim, Spell_agro, false);
 						}	// 1/2 Chance de lancer le sort d'agro
 
 					}
@@ -314,7 +314,7 @@ public: Stitch_npc_ai_melee() : CreatureScript("Stitch_npc_ai_melee") { }
 						{
 							if (!victim->HasAura(Spell_2))
 							{
-								me->CastSpell(victim, Spell_2, true);
+								me->CastSpell(victim, Spell_2, false);
 								Cooldown_Spell2 = urand(6000, 8000);
 							}
 						}

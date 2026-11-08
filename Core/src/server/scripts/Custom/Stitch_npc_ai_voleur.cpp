@@ -59,8 +59,8 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 			
 			uint32 Vampire_Berserker = 300124;										// Vampire Berserker 300124
 			uint32 Buf_branche2 = 300137;											// Peau de demon 300137 (armure+100% esquive/parade+2%), 
-			uint32 Liste_Buf_branche2a[3] = { 2823, 2823, 3408 };					// Poison mortel 2823, Poison affaiblissant 3408
-			uint32 Buf_branche2a = 0;													//  
+			uint32 Liste_Buf_branche2a[3] = { 300137, 300135, 3408 };				// Poison mortel 2823, Poison affaiblissant 3408
+			uint32 Buf_branche2a = 0;												//  
 			uint32 Spell_Heal1 = 97462;  											// Evasion 5277 (esquive +100%/10s)
 			uint32 Spell_Lancer = 121733;
 
@@ -70,20 +70,21 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 			uint32 Spell_branche1_2 = 0;
 			uint32 Spell_branche1_3 = 0;
 			uint32 branche1_agro[5] = { 2094, 128903, 79140, 79140, 79140 };		// Cécité 2094, Lancer 121733, Vendetta 79140, Garrot 128903, Eviscération 41177
-			uint32 branche1_1[2] = { 172028, 80588 };								// Attaque pernicieuse 172028, Estropier 80588
-			uint32 branche1_2[2] = { 41177, 41177 };								// Eviscération 41177
-			uint32 branche1_3[5] = { 1776, 1776, 171957, 300249, 14874 };			// Suriner 1776 (stun 4s), Hémorragie 171957 (dps 24s), Frappe révélatrice 300249 (regen 24s), Rupture 14874 (dot 12s)  
+			uint32 branche1_1[2] = { 172028, 172028 };								// *Attaque pernicieuse 172028
+			uint32 branche1_2[2] = { 2098, 1329 };									// *Eviscération 15691/41177/2098,*Estropier 80588/1329
+			uint32 branche1_3[5] = { 1776, 1776, 171957, 84617, 1943 };				// *Suriner 1776 (stun 4s), Hémorragie 16511/171957 (dps 24s), 
+																					// *Frappe révélatrice 84617/300249 (regen 24s), *Rupture 1943/14874 (dot 12s)  
 			uint32 Spell_Camouflage = 1784;
 			uint32 Spell_Embuscade = 24337;
 			uint32 Hemorragie = 171957;
-			uint32 Rupture = 14874;
+			uint32 Rupture = 1943;
 
 			// Spells Vampire Berserker
 			uint32 Spell_branche2_agro = 300131;									// Griffure bondissante 300131
 			uint32 Spell_branche2_1 = 300242;										// Frappe sanglante 300242 
 			uint32 Spell_branche2_2 = 300243;										// Frappe sauvage 300243
 			uint32 Spell_branche2_3 = 300244;										// Enchaînement Sanglant 300244
-			uint32 Spell_branche2_4 = 300130;										// Griffure sanglante 300130/300174 (version talent)
+			uint32 Spell_branche2_4 = 300174;										// Griffure sanglante 300130/300174 (version talent)
 			
 
 
@@ -151,7 +152,7 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 					me->CastSpell(me, Buf_branche1a, true);
 
 					Bonus_Armure(125);															// Bonus d'armure +25%
-					//VisuelPowerEnergy();
+					VisuelPowerEnergy();
 
 					break;
 
@@ -282,27 +283,29 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 						switch (BrancheSpe)
 						{
 						case 1: // Voleur : si camouflé le sort d'agro inflige +100%, sinon 1 chance sur 2 de lancer un sort a l'agro -----------------------------
-							Mana = me->GetPower(POWER_ENERGY);
-							
+							//Mana = me->GetPower(POWER_ENERGY);
+							VisuelPowerEnergy();
+							me->SetPower(POWER_ENERGY, 100);
+							Start_Agro = 1;
+
 							if (me->HasAura(Spell_Camouflage) )
 							{ 
-								me->CastSpell(victim, Spell_branche1_agro, true); // 100% de Chance de lancer le sort d'agro
-
-								Start_Agro = 1;
+								me->CastSpell(victim, Spell_branche1_agro, false); // 100% de Chance de lancer le sort d'agro
 							} 
 							else
 							{
 								Random = urand(1, 2);
 								if (Random == 1)
 								{
-									me->CastSpell(victim, Spell_branche1_agro, true); // 1/2 Chance de lancer le sort d'agro
+									me->CastSpell(victim, Spell_branche1_agro, false); // 1/2 Chance de lancer le sort d'agro
 								}
-								Start_Agro = 1;
 							}
 								break;
 
 						case 2: // Vampire Berserker --------------------------------------------------------------------------------------------------------------
-							Mana = me->GetPower(POWER_DEMONIC_FURY);
+							//Mana = me->GetPower(POWER_DEMONIC_FURY);
+							VisuelPowerDemonicFury();
+							me->SetPower(POWER_DEMONIC_FURY, 100);
 							Start_Agro = 1;
 
 							Random = urand(1, 2);
@@ -324,7 +327,7 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 						Mana = me->GetPower(POWER_ENERGY);
 						if (Cooldown_RegenMana <= diff)
 						{
-							me->SetPower(POWER_ENERGY, Mana + (MaxMana / 10));
+							me->SetPower(POWER_ENERGY, Mana + 5);
 							if (Mana > MaxMana) { me->SetPower(POWER_ENERGY, MaxMana); }
 							Cooldown_RegenMana = 2000;
 						}
@@ -335,7 +338,7 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 						if (Cooldown_Spell1 <= diff)
 						{
 							Bonus_Degat_Arme_Done(-40);													// Reduction des degats infligés
-							me->CastSpell(victim, Spell_branche1_1, true);
+							me->CastSpell(victim, Spell_branche1_1, false);
 							Bonus_Degat_Arme_Done(40);
 							DoMeleeAttackIfReady();														// Combat en mélée
 							Cooldown_Spell1 = 1500;
@@ -345,20 +348,20 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 						// Spell2 sur la cible
 						if (Cooldown_Spell2 <= diff)
 						{
-							Bonus_Degat_Arme_Done(-25);//
-							me->CastSpell(victim, Spell_branche1_2, true);
+							Bonus_Degat_Arme_Done(-80);//
+							me->CastSpell(victim, Spell_branche1_2, false);
 							Cooldown_Spell2 = urand(3000, 5000);
-							Bonus_Degat_Arme_Done(25);//
+							Bonus_Degat_Arme_Done(80);//
 						}
 						else Cooldown_Spell2 -= diff;
 
 						// Spell3 sur la cible 
-						if (Cooldown_Spell3 <= diff && (!victim->HasAura(Spell_branche1_3) && Spell_branche1_3 != Hemorragie && Spell_branche1_3 != Rupture))
+						if (Cooldown_Spell3 <= diff && (!victim->HasAura(Spell_branche1_3)))
 						{
-							Bonus_Degat_Arme_Done(-25);//
+							Bonus_Degat_Arme_Done(-50);//
 							me->CastSpell(victim, Spell_branche1_3, true);
-							Cooldown_Spell3 = urand(8000, 12000);
-							Bonus_Degat_Arme_Done(25);//
+							Cooldown_Spell3 = urand(5000, 7000);
+							Bonus_Degat_Arme_Done(50);
 						}
 						else Cooldown_Spell3 -= diff;
 
@@ -370,7 +373,7 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 						Mana = me->GetPower(POWER_DEMONIC_FURY);
 						if (Cooldown_RegenMana <= diff)
 						{
-							me->SetPower(POWER_DEMONIC_FURY, Mana + (MaxMana / 10));
+							me->SetPower(POWER_DEMONIC_FURY, Mana + (5));
 							if (Mana > MaxMana) { me->SetPower(POWER_DEMONIC_FURY, MaxMana); }
 							Cooldown_RegenMana = 2000;
 						}
@@ -380,41 +383,41 @@ public: Stitch_npc_ai_voleur() : CreatureScript("Stitch_npc_ai_voleur") { }
 						// Spell1 sur la cible
 						if (Cooldown_Spell1 <= diff)
 						{
-							Bonus_Degat_Arme_Done(-40);													// Reduction des degats infligés
-							me->CastSpell(victim, Spell_branche2_1, true);
-							Bonus_Degat_Arme_Done(40);	
+							Bonus_Degat_Arme_Done(-50);													// Reduction des degats infligés
+							me->CastSpell(victim, Spell_branche2_1, false);
+							Bonus_Degat_Arme_Done(50);	
 							DoMeleeAttackIfReady();														// Combat en mélée
-							Cooldown_Spell1 = 4500;
+							Cooldown_Spell1 = 5000;
 						}
 						else Cooldown_Spell1 -= diff;
 
 						// Spell2 sur la cible
 						if (Cooldown_Spell2 <= diff)
 						{
-							Bonus_Degat_Arme_Done(-25);//
-							me->CastSpell(victim, Spell_branche2_2, true);
-							Cooldown_Spell2 = 4500;
-							Bonus_Degat_Arme_Done(25);//
+							Bonus_Degat_Arme_Done(-60);//
+							me->CastSpell(victim, Spell_branche2_2, false);
+							Cooldown_Spell2 = 7000;
+							Bonus_Degat_Arme_Done(60);//
 						}
 						else Cooldown_Spell2 -= diff;
 
 						// Spell3 sur la cible
 						if (Cooldown_Spell3 <= diff)
 						{
-							Bonus_Degat_Arme_Done(-25);//
-							me->CastSpell(victim, Spell_branche2_3, true);
-							Cooldown_Spell3 = 4500;
-							Bonus_Degat_Arme_Done(25);//
+							Bonus_Degat_Arme_Done(-30);//
+							me->CastSpell(victim, Spell_branche2_3, false);
+							Cooldown_Spell3 = 8000;
+							Bonus_Degat_Arme_Done(30);//
 						}
 						else Cooldown_Spell3 -= diff;
 
 						// Spell4 sur la cible
 						if (Cooldown_Spell4 <= diff)
 						{
-							Bonus_Degat_Arme_Done(-25);//
-							me->CastSpell(victim, Spell_branche2_4, true);
+							Bonus_Degat_Arme_Done(-50);//
+							me->CastSpell(victim, Spell_branche2_4, false);
 							Cooldown_Spell4 = 9000;
-							Bonus_Degat_Arme_Done(25);//
+							Bonus_Degat_Arme_Done(50);//
 						}
 						else Cooldown_Spell4 -= diff;
 

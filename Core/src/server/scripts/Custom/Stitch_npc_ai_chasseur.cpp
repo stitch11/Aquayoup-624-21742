@@ -41,7 +41,9 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 			uint32 ResteADistance = 12;												// Distance max a laquelle un npc s'approchera
 			uint32 Dist;															// Distance entre le npc et sa cible
 			uint32 Mana;
+			uint32 Focus;
 			uint32 MaxMana = 100;
+			uint32 MaxFocus = 100;
 			uint32 Start_Agro = 0;
 			uint32 MessageAlagro = 0;
 			uint32 Spell_ContreAttaque = 0;
@@ -54,7 +56,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 			uint32 Cooldown_Spell4 = 5500;
 			uint32 Cooldown_Spell_Heal = 6000;											// Cooldown pour la fréquence du heal
 			uint32 Cooldown_RegenMana = 3000;											// Cooldown pour le regen du mana
-			uint32 Cooldown_ResteADistance = 500;										// Test si en contact pour s'eloigner
+			uint32 Cooldown_ResteADistance = 250;										// Test si en contact pour s'eloigner
 			uint32 Cooldown_Npc_Emotes = urand(5000, 8000);
 			uint32 Cooldown_Spell_ContreAttaque = 4000;
 			uint32 Cooldown_Spell_ContreAttaque_defaut = 8000;
@@ -65,9 +67,9 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 			uint32 Buf_branche1_liste[2] = { 109212, 109212 };							// Engagement spirituel 109212
 			uint32 Buf_branche2 = 0;
 			uint32 Buf_branche2_liste[2] = { 109260, 109260 };							// Faucon de fer 109260
-			uint32 Spell_Heal_Caster = 300247;  										// Piqure du moustique 300247
-			uint32 Fleche_noire = 80003;
-			uint32 Morsure_de_serpent = 35511;
+			uint32 Spell_Heal_Caster = 300247;  										// Piqure du moustique 300247/19801
+			uint32 Fleche_noire = 80003;												// Flèche noire 3674/80003
+			uint32 Morsure_de_serpent = 31975;
 
 			// Spells Survie
 			uint32 Spell_branche1_agro = 0;
@@ -76,10 +78,10 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 			uint32 Spell_branche1_3 = 0;
 			uint32 Spell_branche1_4 = 0;
 			uint32 branche1_agro[5] = { 145663, 145663, 82941, 82941, 145663 };			// Piège explosif a distance 82939, Piège de glace a distance 82941, Marque du chasseur 145663
-			uint32 branche1_1[2] = { 171943, 171943 };									// Tir des arcanes 171943 
-			uint32 branche1_2[3] = { 300241, 35511, 35511 };							// Tir explosif 300241, Morsure de serpent 35511 15s 
-			uint32 branche1_3[3] = { 145654, 145654, 48098 };							// Tir du cobra 145654 , Flèches multiples 48098 3s
-			uint32 branche1_4[2] = { 80003, 5116 };										// Flèche noire 80003 18s, Trait de choc 5116 6s
+			uint32 branche1_1[2] = { 3044, 3044 };										// Tir des arcanes 171943 
+			uint32 branche1_2[3] = { 300241, 31975, 31975 };							// Tir explosif 300241/53301, Morsure de serpent 35511 15s 
+			uint32 branche1_3[3] = { 145654, 145654, 2643 };							// Tir du cobra 145654/77767 , Flèches multiples 48098 3s
+			uint32 branche1_4[2] = { 3674, 5116 };										// Flèche noire 80003 18s, Trait de choc 5116 6s
 
 			// Spells Bete
 			uint32 Spell_branche2_agro = 0;	//    
@@ -87,9 +89,9 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 			uint32 Spell_branche2_2 = 0;
 			uint32 Spell_branche2_3 = 0;
 			uint32 branche2_agro[6] = { 13813, 13809, 19386, 19577, 19386, 19577 };				// Piège explosif 13813, Piège de glace 13809, Piqûre de wyverne 19386, Intimidation 19577
-			uint32 branche2_1[2] = { 171943, 171943 };											// Tir des arcanes 171943 
-			uint32 branche2_2[2] = { 80015, 80015 };											// Tir assuré 80015
-			uint32 branche2_3[2] = { 19574, 34026 };											// Courroux bestial 19574 60s, Ordre de tuer 34026 30s
+			uint32 branche2_1[2] = { 3044, 3044 };												// Tir des arcanes 171943 
+			uint32 branche2_2[2] = { 80015, 35511 };											// Tir assuré 80015, Morsure de serpent 35511 15s 
+			uint32 branche2_3[2] = { 19574, 82939 };											// Courroux bestial 19574 60s, Ordre de tuer 34026 30s,Piège explosif a distance 82939
 			uint32 Pet_Chasseur;
 			uint32 Pet_Chasseur_Liste[7] = { 3612, 7488, 7906, 8274, 7909, 32730, 3621 };		// Tigre 3612 (698), Loup 7488 (3862), Lion 7906 (5438), Sanglier 8274 (4535), Gorille 7909 (5442), Ravageur 32730 (19461), Panthere noire 3621 (756)
 
@@ -119,9 +121,8 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				else
 				{
 					// Sinon Choix de la Spécialisation Aléatoire
-					BrancheSpe = urand(1, NbrDeSpe + 1);															// Plus de chance d'etre Survie
+					BrancheSpe = urand(1, NbrDeSpe);															// Plus de chance d'etre Survie
 				}
-				if ((BrancheSpe > NbrDeSpe) || (BrancheSpe == 0)) { BrancheSpe = 2; }
 
 				// Reste a distance variable suivant ci le mob est a l'extérieur ou a l'Intérieur
 				if (me->GetMap()->IsOutdoors(me->GetPositionX(), me->GetPositionY(), me->GetPositionZ()))
@@ -179,7 +180,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				// Divers
 				// ################################################################################################################################################
 				me->SetSheath(SHEATH_STATE_RANGED);																	// S'equipe de l'arme a distance
-				me->LoadEquipment(1, true);													// creature_equip_template 1
+				me->LoadEquipment(BrancheSpe, true);													// creature_equip_template 1
 
 				me->SetReactState(REACT_AGGRESSIVE);
 
@@ -233,6 +234,8 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				Def_Power();
 				Start_Agro = 0;
 				Bonus_Armure(100);														// Retire bonus d'armure
+				me->SetPower(POWER_FOCUS, 100);
+			
 			}
 			void JustReachedHome() override
 			{
@@ -242,6 +245,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				me->SetReactState(REACT_AGGRESSIVE);
 				Bonus_Armure(100);														// Retire bonus d'armure
 				Def_Power();
+				me->SetPower(POWER_FOCUS, 100);
 			}
 			void UpdateAI(uint32 diff) override
 			{
@@ -264,9 +268,10 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				// ################################################################################################################################################
 				if (UpdateVictim())
 				{ 
-				Mana = me->GetPower(POWER_FOCUS);
-				Unit* victim = me->GetVictim();
-				Dist = me->GetDistance(victim);
+					Mana = me->GetPower(POWER_MANA);
+					Focus = me->GetPower(POWER_FOCUS);
+					Unit* victim = me->GetVictim();
+					Dist = me->GetDistance(victim);
 
 				if (Start_Agro == 0)
 				{
@@ -280,28 +285,36 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 						Talk(0);
 					}
 
-					me->CastSpell(me, Buf_all, true);																	// Buf_all sur lui meme
+					me->CastSpell(me, Buf_all, false);																	// Buf_all sur lui meme
 
 					switch (BrancheSpe)
 					{
 					case 1: // Si Survie ------------------------------------------------------------------------------------------------------------------------------
-						me->CastSpell(me, Buf_branche1, true);															// Buf1 sur lui meme
+						me->CastSpell(me, Buf_branche1, false);															// Buf1 sur lui meme
 						Random = urand(1, 2);
-						if (Random == 1 && UpdateVictim()) { me->CastSpell(victim, Spell_branche1_agro, true); }		// 1/2 Chance de lancer le sort d'agro
+						if (Random == 1 && UpdateVictim()) { me->CastSpell(victim, Spell_branche1_agro, false); }		// 1/2 Chance de lancer le sort d'agro
 
 						break;
 					case 2: // Si Bete --------------------------------------------------------------------------------------------------------------------------------
-						me->CastSpell(me, Buf_branche2, true);															// Buf1 sur lui meme
+						me->CastSpell(me, Buf_branche2, false);															// Buf1 sur lui meme
 						Random = urand(1, 2);
-						if (Random == 1 && UpdateVictim()) { me->CastSpell(victim, Spell_branche2_agro, true); }		// 1/2 Chance de lancer le sort d'agro
+
+
+						if (Random == 1 && UpdateVictim()) 		// 1/2 Chance de lancer le sort d'agro
+						{ 
+							me->CastSpell(victim, Spell_branche2_agro, true); 
+						}
 
 						// Tirages aléatoires du pet
 						me->CastSpell(me, Pet_Chasseur, true);
 						break;
 						// ################################################################################################################################################
 
-						DoCastAOE(95826, true);
+						me->CastSpell(victim, 95826, true);				//Tir a l'arc
+
 					}
+
+
 				}
 
 					// ################################################################################################################################################
@@ -309,21 +322,20 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 					// ################################################################################################################################################
 
 				// ################################################################################################################################################
+				// Regen Mana en combat ---------------------------------------------------------------------------------------------------------------
+				if (Cooldown_RegenMana <= diff)
+				{
+					//me->SetPower(POWER_MANA, Mana + (MaxMana / 25));
+					if (Focus > MaxFocus) { me->SetPower(POWER_FOCUS, Focus + 10); }
+
+					Cooldown_RegenMana = 2000;
+				}
+				else Cooldown_RegenMana -= diff;
+
 				// Combat suivant la Spécialisation
 					switch (BrancheSpe)
 				{
 				case 1: // Spécialisation Survie ------------------------------------------------------------------------------------------------------------------
-						// Regen mana en combat -------------------------------------------------------------------------------------------------------------------
-					if (Cooldown_RegenMana <= diff)
-					{
-						me->SetPower(POWER_FOCUS, Mana + (MaxMana / 2.5));
-						if (Mana > MaxMana || Mana == 0) { me->SetPower(POWER_FOCUS, MaxMana); }
-						Cooldown_RegenMana = urand(1500, 2000);
-
-						me->SetSheath(SHEATH_STATE_RANGED);																	// S'equipe de l'arme a distance
-						me->SetReactState(REACT_AGGRESSIVE);
-					}
-					else Cooldown_RegenMana -= diff;
 
 					// Combat -------------------------------------------------------------------------------------------------------------------------------------
 
@@ -331,23 +343,23 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 						break;
 
 						// Spell4 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot) : Flèche noire 3674 18s, Morsure de serpent 31975 15s
-					if (Cooldown_Spell4 <= diff && (!victim->HasAura(Spell_branche1_4) && Spell_branche1_4 != Fleche_noire))
+					if (Cooldown_Spell4 <= diff && !victim->HasAura(Spell_branche1_4) )
 					{
-						me->CastSpell(victim, Spell_branche1_4, true);
-						Cooldown_Spell4 = urand(15000, 18000);
+						me->CastSpell(victim, Spell_branche1_4, false);
+						Cooldown_Spell4 = urand(12000, 15000);
 					}
 					else Cooldown_Spell4 -= diff;
 
 					// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot) : Tir du cobra 77767, Flèches multiples 2643 3s
 					if (Cooldown_Spell3 <= diff)
 					{
-						me->CastSpell(victim, Spell_branche1_3, true);
+						me->CastSpell(victim, Spell_branche1_3, false);
 						Cooldown_Spell3 = urand(8000, 8000);
 					}
 					else Cooldown_Spell3 -= diff;
 
 					// Spell2 sur la cible chaque (Sort secondaire plus lent) : Tir explosif 53301 6s, Trait de choc
-					if (Cooldown_Spell2 <= diff && (!victim->HasAura(Spell_branche1_2) && Spell_branche1_2 != Morsure_de_serpent))
+					if (Cooldown_Spell2 <= diff && !victim->HasAura(Spell_branche1_2) )
 					{
 						me->CastSpell(victim, Spell_branche1_2, true);
 						Cooldown_Spell2 = urand(6000, 7000);
@@ -355,28 +367,16 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 					else Cooldown_Spell2 -= diff;
 
 					// Spell1 sur la cible chaque (Sort Régulié) : Tir des arcanes
-					if (Cooldown_Spell1 <= diff)
+					if (Cooldown_Spell1 <= diff )
 					{
 						DoCast(victim, Spell_branche1_1);
-						//me->CastSpell(victim, Spell_branche1_1, true); 	ne fait pas baisser le power
-						Cooldown_Spell1 = 2000;
+						Cooldown_Spell1 = urand(2000,3000);
 					}
 					else Cooldown_Spell1 -= diff;
 
 					break;
 
 				case 2: // Spécialisation Bete --------------------------------------------------------------------------------------------------------------------
-						// Regen mana en combat ------------------------------------------------------------------------------------------------------------------------
-					if (Cooldown_RegenMana <= diff)
-					{
-						me->SetPower(POWER_FOCUS, Mana + (MaxMana / 2.5));
-						if (Mana > MaxMana) { me->SetPower(POWER_FOCUS, MaxMana); }
-						Cooldown_RegenMana = urand(2500, 3000);
-
-						me->SetSheath(SHEATH_STATE_RANGED);																	// S'equipe de l'arme a distance
-						me->SetReactState(REACT_AGGRESSIVE);
-					}
-					else Cooldown_RegenMana -= diff;
 
 					if (!me->isInFront(victim, Dist))																		// Si la cible n'est pas de face
 						break;
@@ -385,13 +385,13 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 					// Spell1 sur la cible chaque (Sort Régulié) : Tir des arcanes
 					if (Cooldown_Spell1 <= diff)
 					{
-						me->CastSpell(victim, Spell_branche2_1, true);
-						Cooldown_Spell1 = 2000;
+						me->CastSpell(victim, Spell_branche2_1, false);
+						Cooldown_Spell1 = urand(2250, 2750);
 					}
 					else Cooldown_Spell1 -= diff;
 
 					// Spell2 sur la cible chaque (Sort secondaire plus lent) : Tir assuré
-					if (Cooldown_Spell2 <= diff && !victim->HasAura(Spell_branche2_2))
+					if (Cooldown_Spell2 <= diff && !victim->HasAura(Spell_branche2_2) )
 					{
 						me->CastSpell(victim, Spell_branche2_2, true);
 						Cooldown_Spell2 = urand(5000, 6000);
@@ -401,7 +401,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 					// Spell3 sur la cible  (Sort secondaire tres lent , généralement utilisé comme Dot) : Courroux bestial 19574 60s, Ordre de tuer 34026 30s
 					if (Cooldown_Spell3 <= diff && !victim->HasAura(Spell_branche2_3) )
 					{
-						me->CastSpell(victim, Spell_branche2_3, true);
+						me->CastSpell(victim, Spell_branche2_3, false);
 						Cooldown_Spell3 = urand(40000, 60000);
 					}
 					else Cooldown_Spell3 -= diff;
@@ -474,6 +474,9 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 				Mana = me->GetPower(POWER_FOCUS);
 				Unit* victim = me->GetVictim();
 				Dist = me->GetDistance(victim);
+
+				if (me->HasAura(300049))
+					me->RemoveAura(300049); // bug face a un dk ... mais d'ou vient elle !
 
 				if (Cooldown_ResteADistance <= diff)
 				{
@@ -558,7 +561,7 @@ public: Stitch_npc_ai_chasseur() : CreatureScript("Stitch_npc_ai_chasseur") { }
 					if ((me->GetHealth() < (me->GetMaxHealth()*0.6)))								// Si PV < 60%
 					{
 						DoCastVictim(Spell_Heal_Caster);
-						Cooldown_Spell_Heal = 6000;
+						Cooldown_Spell_Heal = 5000;
 					}
 				}
 				else Cooldown_Spell_Heal -= diff;
