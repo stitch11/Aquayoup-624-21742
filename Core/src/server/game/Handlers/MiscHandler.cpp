@@ -419,8 +419,11 @@ void WorldSession::HandleSetSelectionOpcode(WorldPackets::Misc::SetSelection& pa
 		msg += ";";
 		msg += std::to_string(static_cast<uint32>(creature->GetCreatureTemplate()->unit_class));
 
+		//Stitch idTip
 		msg += ";";
 		msg += std::to_string(creature->GetCreatureTemplate()->spells[0]);
+		msg += ";";
+		msg += std::to_string(creature->GetSpawnId());
 
 		WorldPackets::Chat::Chat chat;
 		chat.Initialize(CHAT_MSG_WHISPER, LANG_ADDON, _player, _player,
