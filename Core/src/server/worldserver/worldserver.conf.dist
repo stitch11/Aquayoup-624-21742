@@ -36,6 +36,7 @@ FunSpeedCast = 1
 FunArmor	= 1
 #FunPowerRegen = 2 
 
+########################
 #    Rate.Drop.Item.Rank0
 #    Rate.Drop.Item.Rank1
 #    Rate.Drop.Item.Rank2
@@ -96,6 +97,17 @@ JourPermanent = 3
 JourPermanent.DureeJour = 50
 JourPermanent.DureeNuit = 10
 
+########################
+#
+#    MeteoEtendu
+#        Description: Active l'effet de brouillard renforcé (blizzard, tempête de sable, pluie)
+#                     pendant la météo.
+#        Default:     1 - (Activé)
+#                     0 - (Désactivé)
+
+MeteoEtendu = 1
+
+########################
 
 ########### Guilde ###########################################
 # 5 rangs de base comme suit :

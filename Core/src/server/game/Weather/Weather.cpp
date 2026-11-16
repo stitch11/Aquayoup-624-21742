@@ -30,6 +30,12 @@
 #include "WorldSession.h"
 #include "MiscPackets.h"
 
+//Stitch MeteoEtendu
+#include "DBCStores.h"
+#include "MapManager.h"
+#include "Map.h"
+
+
 /// Create the Weather object
 Weather::Weather(uint32 zone, WeatherData const* weatherChances)
     : m_zone(zone), m_weatherChances(weatherChances)
@@ -191,10 +197,32 @@ bool Weather::ReGenerate()
     return m_type != old_type || m_grade != old_grade;
 }
 
+//Stitch meteo bug de l'effet visuel
+class WeatherDelayedSend : public BasicEvent
+{
+public:
+	WeatherDelayedSend(Player* player, WeatherState state) : _player(player), _state(state) { }
+	bool Execute(uint64 /*time*/, uint32 /*diff*/) override
+	{
+		WorldPackets::Misc::Weather weather(_state, 1.0f);
+		_player->GetSession()->SendPacket(weather.Write());
+		return true;
+	}
+private:
+	Player* _player;
+	WeatherState _state;
+};
+
 void Weather::SendWeatherUpdateToPlayer(Player* player)
 {
-    WorldPackets::Misc::Weather weather(GetWeatherState(), m_grade);
-    player->GetSession()->SendPacket(weather.Write());
+	//Stitch meteo : effet au maximun
+    //WorldPackets::Misc::Weather weather(GetWeatherState(), m_grade);
+	WorldPackets::Misc::Weather weather(GetWeatherState(), 1.0f);
+
+	//Stitch meteo qui parfois n'active pas le visuel
+    //player->GetSession()->SendPacket(weather.Write());
+	player->GetSession()->SendPacket(weather.Write());
+	player->m_Events.AddEvent(new WeatherDelayedSend(player, GetWeatherState()), player->m_Events.CalculateTime(3000));
 }
 
 /// Send the new weather to all players in the zone
@@ -208,7 +236,39 @@ bool Weather::UpdateWeather()
 
     WeatherState state = GetWeatherState();
 
-    WorldPackets::Misc::Weather weather(state, m_grade);
+	//Stitch meteo : effet au maximun
+    //WorldPackets::Misc::Weather weather(state, m_grade);
+	WorldPackets::Misc::Weather weather(state, 1.0f);
+
+	//Stitch MeteoEtendu
+	if (sWorld->getBoolConfig(CONFIG_METEO_ETENDU))
+	{
+		uint32 lightId = 0;
+		switch (state)
+		{
+		case WEATHER_STATE_LIGHT_SNOW:
+		case WEATHER_STATE_MEDIUM_SNOW:
+		case WEATHER_STATE_HEAVY_SNOW:
+			lightId = 6586;
+			break;
+		case WEATHER_STATE_LIGHT_SANDSTORM:
+		case WEATHER_STATE_MEDIUM_SANDSTORM:
+		case WEATHER_STATE_HEAVY_SANDSTORM:
+			lightId = 6587;
+			break;
+		case WEATHER_STATE_LIGHT_RAIN:
+		case WEATHER_STATE_MEDIUM_RAIN:
+		case WEATHER_STATE_HEAVY_RAIN:
+			lightId = 6588;
+			break;
+		default:
+			break;
+		}
+
+		if (AreaTableEntry const* area = sAreaTableStore.LookupEntry(m_zone))
+			if (Map* map = sMapMgr->FindBaseNonInstanceMap(area->MapID))
+				map->SetZoneOverrideLight(m_zone, lightId, 3000);
+	}
 
     //- Returns false if there were no players found to update
     if (!sWorld->SendZoneMessage(m_zone, weather.Write()))
@@ -314,3 +374,4 @@ WeatherState Weather::GetWeatherState() const
             return WEATHER_STATE_FINE;
     }
 }
+
