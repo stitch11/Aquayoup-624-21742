@@ -546,7 +546,6 @@ void OpcodeTable::Initialize()
     DEFINE_HANDLER(CMSG_MOVE_TOGGLE_COLLISION_CHEAT,                        STATUS_UNHANDLED, PROCESS_INPLACE,      WorldPackets::Null, &WorldSession::Handle_NULL);
     DEFINE_HANDLER(CMSG_MOVE_WATER_WALK_ACK,                                STATUS_LOGGEDIN,  PROCESS_THREADSAFE,   WorldPackets::Movement::MovementAckMessage, &WorldSession::HandleMovementAckMessage);
     DEFINE_HANDLER(CMSG_NEUTRAL_PLAYER_SELECT_FACTION,                      STATUS_UNHANDLED, PROCESS_INPLACE,      WorldPackets::Null, &WorldSession::Handle_NULL);
-    DEFINE_HANDLER(CMSG_NEXT_CINEMATIC_CAMERA,                              STATUS_UNHANDLED, PROCESS_THREADUNSAFE, WorldPackets::Misc::NextCinematicCamera, &WorldSession::HandleNextCinematicCamera);
     DEFINE_HANDLER(CMSG_OBJECT_UPDATE_FAILED,                               STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, WorldPackets::Misc::ObjectUpdateFailed, &WorldSession::HandleObjectUpdateFailedOpcode);
     DEFINE_HANDLER(CMSG_OBJECT_UPDATE_RESCUED,                              STATUS_LOGGEDIN,  PROCESS_INPLACE,      WorldPackets::Misc::ObjectUpdateRescued, &WorldSession::HandleObjectUpdateRescuedOpcode);
     DEFINE_HANDLER(CMSG_OFFER_PETITION,                                     STATUS_UNHANDLED, PROCESS_THREADUNSAFE, WorldPackets::Petition::OfferPetition, &WorldSession::HandleOfferPetition);
@@ -654,9 +653,20 @@ void OpcodeTable::Initialize()
 	//Stitch exit vehicle
 	//DEFINE_HANDLER(CMSG_REQUEST_VEHICLE_EXIT,                               STATUS_UNHANDLED, PROCESS_THREADUNSAFE, WorldPackets::Vehicle::RequestVehicleExit, &WorldSession::HandleRequestVehicleExit);
 	DEFINE_HANDLER(CMSG_REQUEST_VEHICLE_EXIT,								  STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, WorldPackets::Vehicle::RequestVehicleExit, &WorldSession::HandleRequestVehicleExit);
-	DEFINE_HANDLER(CMSG_REQUEST_VEHICLE_NEXT_SEAT,                          STATUS_UNHANDLED, PROCESS_THREADUNSAFE, WorldPackets::Vehicle::RequestVehicleNextSeat, &WorldSession::HandleRequestVehicleNextSeat);
-    DEFINE_HANDLER(CMSG_REQUEST_VEHICLE_PREV_SEAT,                          STATUS_UNHANDLED, PROCESS_THREADUNSAFE, WorldPackets::Vehicle::RequestVehiclePrevSeat, &WorldSession::HandleRequestVehiclePrevSeat);
-    DEFINE_HANDLER(CMSG_REQUEST_VEHICLE_SWITCH_SEAT,                        STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, WorldPackets::Vehicle::RequestVehicleSwitchSeat, &WorldSession::HandleRequestVehicleSwitchSeat);
+	//DEFINE_HANDLER(CMSG_REQUEST_VEHICLE_NEXT_SEAT,                          STATUS_UNHANDLED, PROCESS_THREADUNSAFE, WorldPackets::Vehicle::RequestVehicleNextSeat, &WorldSession::HandleRequestVehicleNextSeat);
+	DEFINE_HANDLER(CMSG_REQUEST_VEHICLE_NEXT_SEAT, STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, WorldPackets::Vehicle::RequestVehicleNextSeat, &WorldSession::HandleRequestVehicleNextSeat);
+	//DEFINE_HANDLER(CMSG_REQUEST_VEHICLE_PREV_SEAT,                          STATUS_UNHANDLED, PROCESS_THREADUNSAFE, WorldPackets::Vehicle::RequestVehiclePrevSeat, &WorldSession::HandleRequestVehiclePrevSeat);
+	DEFINE_HANDLER(CMSG_REQUEST_VEHICLE_PREV_SEAT, STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, WorldPackets::Vehicle::RequestVehiclePrevSeat, &WorldSession::HandleRequestVehiclePrevSeat);
+	//DEFINE_HANDLER(CMSG_SCENE_PLAYBACK_CANCELED, STATUS_UNHANDLED, PROCESS_INPLACE, WorldPackets::Scenes::ScenePlaybackCanceled, &WorldSession::HandleScenePlaybackCanceled);
+	DEFINE_HANDLER(CMSG_SCENE_PLAYBACK_CANCELED, STATUS_LOGGEDIN, PROCESS_INPLACE, WorldPackets::Scenes::ScenePlaybackCanceled, &WorldSession::HandleScenePlaybackCanceled);
+	//    DEFINE_HANDLER(CMSG_SCENE_PLAYBACK_COMPLETE,                            STATUS_UNHANDLED, PROCESS_INPLACE,      WorldPackets::Scenes::ScenePlaybackComplete, &WorldSession::HandleScenePlaybackComplete);
+	DEFINE_HANDLER(CMSG_SCENE_PLAYBACK_COMPLETE, STATUS_LOGGEDIN, PROCESS_INPLACE, WorldPackets::Scenes::ScenePlaybackComplete, &WorldSession::HandleScenePlaybackComplete);
+	//    DEFINE_HANDLER(CMSG_SCENE_TRIGGER_EVENT,                                STATUS_UNHANDLED, PROCESS_INPLACE,      WorldPackets::Scenes::SceneTriggerEvent, &WorldSession::HandleSceneTriggerEvent);
+	DEFINE_HANDLER(CMSG_SCENE_TRIGGER_EVENT, STATUS_LOGGEDIN, PROCESS_INPLACE, WorldPackets::Scenes::SceneTriggerEvent, &WorldSession::HandleSceneTriggerEvent);
+
+
+
+	DEFINE_HANDLER(CMSG_REQUEST_VEHICLE_SWITCH_SEAT,                        STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, WorldPackets::Vehicle::RequestVehicleSwitchSeat, &WorldSession::HandleRequestVehicleSwitchSeat);
     DEFINE_HANDLER(CMSG_REQUEST_WOW_TOKEN_MARKET_PRICE,                     STATUS_UNHANDLED, PROCESS_THREADUNSAFE, WorldPackets::Token::RequestWowTokenMarketPrice, &WorldSession::HandleRequestWowTokenMarketPrice);
     DEFINE_HANDLER(CMSG_RESET_CHALLENGE_MODE,                               STATUS_UNHANDLED, PROCESS_INPLACE,      WorldPackets::Null, &WorldSession::Handle_NULL);
     DEFINE_HANDLER(CMSG_RESET_INSTANCES,                                    STATUS_UNHANDLED, PROCESS_THREADUNSAFE, WorldPackets::Instance::ResetInstances, &WorldSession::HandleResetInstancesOpcode);
@@ -666,9 +676,6 @@ void OpcodeTable::Initialize()
     DEFINE_HANDLER(CMSG_SAVE_CUF_PROFILES,                                  STATUS_LOGGEDIN,  PROCESS_INPLACE,      WorldPackets::Misc::SaveCUFProfiles, &WorldSession::HandleSaveCUFProfiles);
     DEFINE_HANDLER(CMSG_SAVE_EQUIPMENT_SET,                                 STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, WorldPackets::EquipmentSet::SaveEquipmentSet, &WorldSession::HandleEquipmentSetSave);
     DEFINE_HANDLER(CMSG_SAVE_GUILD_EMBLEM,                                  STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, WorldPackets::Guild::SaveGuildEmblem, &WorldSession::HandleSaveGuildEmblem);
-    DEFINE_HANDLER(CMSG_SCENE_PLAYBACK_CANCELED,                            STATUS_UNHANDLED, PROCESS_INPLACE,      WorldPackets::Scenes::ScenePlaybackCanceled, &WorldSession::HandleScenePlaybackCanceled);
-    DEFINE_HANDLER(CMSG_SCENE_PLAYBACK_COMPLETE,                            STATUS_UNHANDLED, PROCESS_INPLACE,      WorldPackets::Scenes::ScenePlaybackComplete, &WorldSession::HandleScenePlaybackComplete);
-    DEFINE_HANDLER(CMSG_SCENE_TRIGGER_EVENT,                                STATUS_UNHANDLED, PROCESS_INPLACE,      WorldPackets::Scenes::SceneTriggerEvent, &WorldSession::HandleSceneTriggerEvent);
     DEFINE_HANDLER(CMSG_SELF_RES,                                           STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, WorldPackets::Spells::SelfRes, &WorldSession::HandleSelfResOpcode);
     DEFINE_HANDLER(CMSG_SELL_ITEM,                                          STATUS_LOGGEDIN,  PROCESS_THREADUNSAFE, WorldPackets::Item::SellItem, &WorldSession::HandleSellItemOpcode);
     DEFINE_HANDLER(CMSG_SELL_WOW_TOKEN_CONFIRM,                             STATUS_UNHANDLED, PROCESS_INPLACE,      WorldPackets::Null, &WorldSession::Handle_NULL);
