@@ -69,6 +69,169 @@ bool Weather::Update(uint32 diff)
 /// Calculate the new weather
 bool Weather::ReGenerate()
 {
+
+	//Stitch Météo forcée par zone
+	// WEATHER_TYPE_FINE = 0, WEATHER_TYPE_RAIN (Pluie) = 1, WEATHER_TYPE_SNOW (Neige) = 2,
+	//  WEATHER_TYPE_STORM (TEMPÊTE) = 3,WEATHER_TYPE_THUNDERS (TONNERRE)= 86, WEATHER_TYPE_BLACKRAIN (PLUIE NOIRE) = 90
+	switch (m_zone)
+	{
+	case 1:    // Dun Morogh
+	{
+		uint8 Tmp = urand(1,10);
+		if (Tmp < 8)
+		{
+			m_type = WEATHER_TYPE_SNOW;
+			m_grade = 1.0f;
+			return true;
+		}
+		break;
+	}
+	case 4:    // Terres foudroyées
+	{
+		uint8 Tmp = urand(1, 10);
+		if (Tmp < 8)
+		{
+			m_type = WEATHER_TYPE_THUNDERS;
+			m_grade = 1.0f;
+			return true;
+		}
+		break;
+	}
+	case 65:    // Desolation des dragon 
+	{
+		uint8 Tmp = urand(1, 10);
+		if (Tmp < 8)
+		{
+			m_type = WEATHER_TYPE_SNOW;
+			m_grade = 1.0f;
+			return true;
+		}
+		break;
+	}
+	case 67:    // Les pics Foudroyés 
+	{
+		uint8 Tmp = urand(1, 10);
+		if (Tmp < 8)
+		{
+			m_type = WEATHER_TYPE_SNOW;
+			m_grade = 1.0f;
+			return true;
+		}
+		break;
+	}
+	case 210:    // La couronne de glace  
+	{
+		uint8 Tmp = urand(1, 10);
+		if (Tmp < 6)
+		{
+			m_type = WEATHER_TYPE_SNOW;
+			m_grade = 1.0f;
+			return true;
+		}
+		break;
+	}
+	case 440:    // Tanaris
+	{
+		uint8 Tmp = urand(1, 10);
+		if (Tmp < 8)
+		{
+			m_type = WEATHER_TYPE_STORM;
+			m_grade = 1.0f;
+			return true;
+		}
+		break;
+	}
+	case 4197:    //  Joug-d'Hiver 
+	{
+		uint8 Tmp = urand(1, 10);
+		if (Tmp < 5)
+		{
+			m_type = WEATHER_TYPE_SNOW;
+			m_grade = 1.0f;
+			return true;
+		}
+		break;
+	}
+	case 618:    // Berceau-de-l'hiver
+	{
+		uint8 Tmp = urand(1, 10);
+		if (Tmp < 8)
+		{
+			m_type = WEATHER_TYPE_SNOW;
+			m_grade = 1.0f;
+			return true;
+		}
+		break;
+	}
+	case 1377:    // Silitus
+	{
+		uint8 Tmp = urand(1, 10);
+		if (Tmp < 4)
+		{
+			m_type = WEATHER_TYPE_STORM;
+			m_grade = 1.0f;
+			return true;
+		}
+		break;
+	}
+	case 3520:    // Vallée d'ombrelune
+	{
+		uint8 Tmp = urand(1, 10);
+		if (Tmp < 5)
+		{
+			m_type = WEATHER_TYPE_STORM /* WEATHER_TYPE_THUNDERS*/;
+			m_grade = 1.0f;
+			return true;
+		}
+		break;
+	}
+	case 3521:    // Marecage de Zangar
+	{
+		uint8 Tmp = urand(1, 10);
+		if (Tmp < 3)
+		{
+			m_type = WEATHER_TYPE_RAIN;
+			m_grade = 1.0f;
+			return true;
+		}
+		break;
+	}
+	case 3523:    // Raz-de-Néant 
+	{
+		uint8 Tmp = urand(1,10);
+		if (Tmp < 3)
+		{
+			m_type = WEATHER_TYPE_STORM /*WEATHER_TYPE_THUNDERS*/;
+			m_grade = 1.0f;
+			return true;
+		}
+		else if (Tmp < 6)
+		{
+			m_type = WEATHER_TYPE_STORM;
+			m_grade = 1.0f;
+			return true;
+		}
+		break;
+	}
+	case 3711:    // Bassin de Sholazar 
+	{
+		uint8 Tmp = urand(1, 10);
+		if (Tmp < 3)
+		{
+			m_type = WEATHER_TYPE_RAIN;
+			m_grade = 1.0f;
+			return true;
+		}
+		break;
+	}
+
+		
+	default:
+		break;
+	}
+
+
+
     if (!m_weatherChances)
     {
         m_type = WEATHER_TYPE_FINE;
@@ -83,7 +246,9 @@ bool Weather::ReGenerate()
     ///- 10% - radical change (if not fine)
     uint32 u = urand(0, 99);
 
-    if (u < 30)
+	//Stitch meteo change plus souvent
+    //if (u < 30)
+	if (u < 10)
         return false;
 
     // remember old values
@@ -175,7 +340,9 @@ bool Weather::ReGenerate()
     }
     else if (u < 90)
     {
-        m_grade = (float)rand_norm() * 0.3333f;
+		//Stitch meteo faible : plus forte
+        //m_grade = (float)rand_norm() * 0.3333f;
+		m_grade = (float)rand_norm() * 0.3333f + 0.3334f;
     }
     else
     {
