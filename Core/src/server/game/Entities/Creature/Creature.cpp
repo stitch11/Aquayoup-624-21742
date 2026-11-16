@@ -237,7 +237,7 @@ void Creature::AddToWorld()
 		if (getPowerType() == POWER_RAGE)
 		{
 			SetMaxPower(POWER_RAGE, 1000);
-			//SetPower(POWER_RAGE, 0);
+			SetPower(POWER_RAGE, 0);
 		}
 
 
@@ -1335,7 +1335,7 @@ void Creature::Update(uint32 diff)
 				{
 					if (GetPower(POWER_RAGE) < 300)
 						ModifyPower(POWER_RAGE, 150);
-					else
+					else if (getPowerType() == POWER_RAGE && !IsInCombat())
 						ModifyPower(POWER_RAGE, 75);
 				}
 				//Stitch : unit_class 4, regen energie

@@ -1710,6 +1710,9 @@ SpellCastResult SpellInfo::CheckLocation(uint32 map_id, uint32 zone_id, uint32 a
         }
 
         if (!found)
+		{
+			TC_LOG_ERROR("server", "___Vous n'etes pas dans la bonne region : CheckLocation spell %u AreaGroupId %u map %u zone %u area %u", Id, RequiredAreasID, map_id, zone_id, area_id);
+		}
             return SPELL_FAILED_INCORRECT_AREA;
     }
 
