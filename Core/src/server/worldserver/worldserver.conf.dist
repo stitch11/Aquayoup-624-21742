@@ -98,16 +98,7 @@ JourPermanent.DureeJour = 50
 JourPermanent.DureeNuit = 10
 
 ########################
-#
-#    MeteoEtendu
-#        Description: Active l'effet de brouillard renforcé (blizzard, tempête de sable, pluie)
-#                     pendant la météo.
-#        Default:     1 - (Activé)
-#                     0 - (Désactivé)
 
-MeteoEtendu = 1
-
-########################
 
 ########### Guilde ###########################################
 # 5 rangs de base comme suit :

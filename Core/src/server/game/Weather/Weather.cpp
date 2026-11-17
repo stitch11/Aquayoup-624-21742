@@ -141,17 +141,6 @@ bool Weather::ReGenerate()
 		}
 		break;
 	}
-	case 4197:    //  Joug-d'Hiver 
-	{
-		uint8 Tmp = urand(1, 10);
-		if (Tmp < 5)
-		{
-			m_type = WEATHER_TYPE_SNOW;
-			m_grade = 1.0f;
-			return true;
-		}
-		break;
-	}
 	case 618:    // Berceau-de-l'hiver
 	{
 		uint8 Tmp = urand(1, 10);
@@ -224,8 +213,53 @@ bool Weather::ReGenerate()
 		}
 		break;
 	}
+	case 4197:    //  Joug-d'Hiver 
+	{
+		uint8 Tmp = urand(1, 10);
+		if (Tmp < 5)
+		{
+			m_type = WEATHER_TYPE_SNOW;
+			m_grade = 1.0f;
+			return true;
+		}
+		break;
+	}
+	case 5841:    //  Sommet de kun-Lai
+	{
+		uint8 Tmp = urand(1, 10);
+		if (Tmp < 7)
+		{
+			m_type = WEATHER_TYPE_SNOW;
+			m_grade = 1.0f;
+			return true;
+		}
+		break;
+	}
+	case 6134:    //  Etendues Sauvage de Krasarang
+	{
+		uint8 Tmp = urand(1, 10);
+		if (Tmp < 4)
+		{
+			m_type = WEATHER_TYPE_RAIN;
+			m_grade = 1.0f;
+			return true;
+		}
+		break;
+	}
+	case 6720:    //  Crete de GivreFeu
+	{
+		uint8 Tmp = urand(1, 10);
+		if (Tmp < 6)
+		{
+			m_type = WEATHER_TYPE_SNOW;
+			m_grade = 1.0f;
+			return true;
+		}
+		break;
+	}
 
-		
+
+
 	default:
 		break;
 	}
