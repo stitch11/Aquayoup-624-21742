@@ -7146,6 +7146,20 @@ void Player::UpdateArea(uint32 newArea)
         SetRestFlag(REST_FLAG_IN_FACTION_AREA);
     else
         RemoveRestFlag(REST_FLAG_IN_FACTION_AREA);
+
+
+	//Stitch meteo : area plutot que zone
+	if (sWorld->getBoolConfig(CONFIG_WEATHER) && !HasAuraType(SPELL_AURA_FORCE_WEATHER))
+	{
+		uint32 weatherId = WeatherMgr::ResolveWeatherId(newArea, m_zoneUpdateId);
+		if (Weather* weather = weatherId ? WeatherMgr::FindWeather(weatherId) : nullptr)
+			weather->SendWeatherUpdateToPlayer(this);
+		else if (!weatherId || !WeatherMgr::AddWeather(weatherId))
+			WeatherMgr::SendFineWeatherUpdateToPlayer(this);
+	}
+
+
+
 }
 
 void Player::UpdateZone(uint32 newZone, uint32 newArea)
@@ -7179,6 +7193,8 @@ void Player::UpdateZone(uint32 newZone, uint32 newArea)
     if (!zone)
         return;
 
+	//Stitch meteo : area plutot que zone
+	/*
     if (sWorld->getBoolConfig(CONFIG_WEATHER) && !HasAuraType(SPELL_AURA_FORCE_WEATHER))
     {
         if (Weather* weather = WeatherMgr::FindWeather(zone->ID))
@@ -7187,6 +7203,9 @@ void Player::UpdateZone(uint32 newZone, uint32 newArea)
             // send fine weather packet to remove old zone's weather
             WeatherMgr::SendFineWeatherUpdateToPlayer(this);
     }
+	*/
+
+
 
     sScriptMgr->OnPlayerUpdateZone(this, newZone, newArea);
 

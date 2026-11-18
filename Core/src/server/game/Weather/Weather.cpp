@@ -30,6 +30,10 @@
 #include "WorldSession.h"
 #include "MiscPackets.h"
 
+//Stitch meteo : area plutot que zone
+#include"World.h"
+#include "DBCStores.h"
+#include "WeatherMgr.h"
 //Stitch TMP
 //#include "Map.h"
 
@@ -39,6 +43,7 @@ Weather::Weather(uint32 zone, WeatherData const* weatherChances)
 {
     m_timer.SetInterval(sWorld->getIntConfig(CONFIG_INTERVAL_CHANGEWEATHER));
     m_type = WEATHER_TYPE_FINE;
+	m_rainCycles = 0;	//Stitch meteo : duree de la pluie
     m_grade = 0;
 
     TC_LOG_INFO("misc", "WORLD: Starting weather system for zone %u (change every %u minutes).", m_zone, (uint32)(m_timer.GetInterval() / (MINUTE*IN_MILLISECONDS)));
@@ -76,7 +81,15 @@ bool Weather::ReGenerate()
 	//Stitch Météo forcée par zone
 	// WEATHER_TYPE_FINE = 0, WEATHER_TYPE_RAIN (Pluie) = 1, WEATHER_TYPE_SNOW (Neige) = 2,
 	//  WEATHER_TYPE_STORM (TEMPÊTE) = 3,WEATHER_TYPE_THUNDERS (TONNERRE)= 86, WEATHER_TYPE_BLACKRAIN (PLUIE NOIRE) = 90
-	switch (m_zone)
+	
+	
+	uint32 forcedZone = m_zone;
+	if (AreaTableEntry const* areaEntry = sAreaTableStore.LookupEntry(m_zone))
+		if (areaEntry->ParentAreaID)
+			forcedZone = areaEntry->ParentAreaID;
+	switch (forcedZone)
+	//switch (m_zone)
+
 	{
 	case 1:    // Dun Morogh
 	{
@@ -281,6 +294,23 @@ bool Weather::ReGenerate()
     ///- 30% - weather gets better (if not fine) or change weather type
     ///- 30% - weather worsens (if not fine)
     ///- 10% - radical change (if not fine)
+
+	//Stitch meteo : duree de la pluie
+	if (m_type == WEATHER_TYPE_RAIN)
+	{
+		uint32 maxCycles = (sWorld->getIntConfig(CONFIG_WEATHER_RAIN_MAX_DURATION) + 4) / 5;
+		if (maxCycles && ++m_rainCycles >= maxCycles)
+		{
+			m_rainCycles = 0;
+			m_type = WEATHER_TYPE_FINE;
+			m_grade = 0.0f;
+			return true;
+		}
+	}
+	else
+		m_rainCycles = 0;
+
+
     uint32 u = urand(0, 99);
 
 	//Stitch meteo change plus souvent
@@ -422,9 +452,28 @@ bool Weather::UpdateWeather()
 	///WorldPackets::Misc::Weather weather(state, 1.0f);
 
     //- Returns false if there were no players found to update
+
+
+
+	//Stitch meteo : area plutot que zone
+	/*
    if (!sWorld->SendZoneMessage(m_zone, weather.Write()))
 
         return false;
+		*/
+	WorldPacket const* weatherPacket = weather.Write();
+	bool playersFound = false;
+	for (auto const& itr : sWorld->GetAllSessions())
+	{
+		Player* p = itr.second->GetPlayer();
+		if (p && p->IsInWorld() && IsInWeatherArea(p))
+		{
+			p->GetSession()->SendPacket(weatherPacket);
+			playersFound = true;
+		}
+	}
+	if (!playersFound)
+		return false;
 
 
 
@@ -441,10 +490,17 @@ bool Weather::UpdateWeather()
    for (auto const& itr : sWorld->GetAllSessions())
    {
 	   Player* p = itr.second->GetPlayer();
-	   if (p && p->IsInWorld() && p->GetZoneId() == m_zone)
+	   
+	   //Stitch meteo : area plutot que zone
+	   //if (p && p->IsInWorld() && p->GetZoneId() == m_zone)
+	   if (p && p->IsInWorld() && IsInWeatherArea(p))
+
+
 	   {
-		   p->GetMap()->SetZoneOverrideLight(m_zone, lightId, 2000);
-		   break;
+		   p->GetMap()->SendOverrideLightToPlayer(p, lightId, 2000);
+		   //Stitch meteo : area plutot que zone
+		   //p->GetMap()->SetZoneOverrideLight(m_zone, lightId, 2000);
+		   //break;
 	   }
    }
 
@@ -459,7 +515,12 @@ bool Weather::UpdateWeather()
    for (auto const& itr : sWorld->GetAllSessions())
    {
 	   Player* pl = itr.second->GetPlayer();
-	   if (!pl || !pl->IsInWorld() || pl->GetZoneId() != m_zone)
+	   
+	   //Stitch meteo : area plutot que zone
+	   if (!pl || !pl->IsInWorld() || !IsInWeatherArea(pl))
+		   //if (!pl || !pl->IsInWorld() || pl->GetZoneId() != m_zone)
+
+
 		   continue;
 
 	   for (uint8 i = MOVE_WALK; i < MAX_MOVE_TYPE; ++i)
@@ -600,3 +661,9 @@ bool Weather::IsSlowingWeather() const
 	return (m_type == WEATHER_TYPE_SNOW || m_type == WEATHER_TYPE_STORM) && GetWeatherState() != WEATHER_STATE_FINE;
 }
 
+
+//Stitch meteo : area plutot que zone : le joueur est-il concerne par cette meteo ?
+bool Weather::IsInWeatherArea(Player* player) const
+{
+	return WeatherMgr::ResolveWeatherId(player->GetAreaId(), player->GetZoneId()) == m_zone;
+}

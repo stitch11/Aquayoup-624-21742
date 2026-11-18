@@ -84,10 +84,13 @@ class TC_GAME_API Weather
 
     private:
 
+		bool IsInWeatherArea(Player* player) const;	//Stitch meteo : area plutot que zone
+
         WeatherState GetWeatherState() const;
         uint32 m_zone;
         WeatherType m_type;
         float m_grade;
+		uint32 m_rainCycles;	//Stitch meteo : duree de la pluie
         IntervalTimer m_timer;
         WeatherData const* m_weatherChances;
 };

@@ -1111,6 +1111,9 @@ void World::LoadConfigSettings(bool reload)
 
     m_int_configs[CONFIG_GROUP_VISIBILITY] = sConfigMgr->GetIntDefault("Visibility.GroupMode", 1);
 
+	//Stitch meteo : duree de la pluie m_int_configs[CONFIG_WEATHER_RAIN_MAX_DURATION]
+	m_int_configs[CONFIG_WEATHER_RAIN_MAX_DURATION] = sConfigMgr->GetIntDefault("Weather.RainMaxDuration", 0);
+
     m_int_configs[CONFIG_MAIL_DELIVERY_DELAY] = sConfigMgr->GetIntDefault("MailDeliveryDelay", HOUR);
 
     m_int_configs[CONFIG_UPTIME_UPDATE] = sConfigMgr->GetIntDefault("UpdateUptimeInterval", 10);

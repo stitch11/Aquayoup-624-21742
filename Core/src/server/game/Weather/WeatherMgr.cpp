@@ -28,6 +28,9 @@
 #include "WorldSession.h"
 #include "MiscPackets.h"
 
+//Stitch meteo : area plutot que zone
+#include "WeatherMgr.h"	
+#include "DBCStores.h"
 namespace WeatherMgr
 {
 
@@ -64,9 +67,28 @@ void RemoveWeather(uint32 id)
 }
 
 /// Add a Weather object to the list
+
+//Stitch meteo : area plutot que zone
+uint32 ResolveWeatherId(uint32 areaId, uint32 zoneId)
+{
+	if (areaId && (GetWeatherData(areaId) || GetWeatherData(zoneId)))
+		return areaId;
+	if (zoneId && GetWeatherData(zoneId))
+		return zoneId;
+	return 0;
+}
+
 Weather* AddWeather(uint32 zone_id)
 {
     WeatherData const* weatherChances = GetWeatherData(zone_id);
+
+
+	//Stitch meteo : area plutot que zone - area sans ligne game_weather -> % de sa zone parente
+	if (!weatherChances)
+		if (AreaTableEntry const* area = sAreaTableStore.LookupEntry(zone_id))
+			if (area->ParentAreaID)
+				weatherChances = GetWeatherData(area->ParentAreaID);
+
 
     // zone does not have weather, ignore
     if (!weatherChances)

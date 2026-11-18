@@ -10066,7 +10066,12 @@ void Unit::UpdateSpeed(UnitMoveType mtype)
 
 	//Stitch ralentissement neige/tempête (pied, monture, nage, vol)
 	if (GetTypeId() == TYPEID_PLAYER && mtype != MOVE_TURN_RATE && mtype != MOVE_PITCH_RATE)
-		if (Weather* w = WeatherMgr::FindWeather(GetZoneId()))
+		
+		//Stitch meteo : area plutot que zone
+		if (Weather* w = WeatherMgr::FindWeather(WeatherMgr::ResolveWeatherId(GetAreaId(), GetZoneId())))
+		//if (Weather* w = WeatherMgr::FindWeather(GetZoneId()))
+
+
 			if (w->IsSlowingWeather())
 				speed *= float(sWorld->getIntConfig(CONFIG_WEATHER_SLOW_PCT)) / 100.0f;
 

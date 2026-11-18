@@ -3978,6 +3978,18 @@ void Map::SetZoneOverrideLight(uint32 zoneId, uint32 lightId, uint32 fadeInTime)
     }
 }
 
+
+
+//Stitch meteo : area plutot que zone : lumiere envoyee a un seul joueur
+void Map::SendOverrideLightToPlayer(Player* player, uint32 lightId, uint32 fadeInTime)
+{
+	WorldPackets::Misc::OverrideLight overrideLight;
+	overrideLight.AreaLightID = _defaultLight;
+	overrideLight.OverrideLightID = lightId;
+	overrideLight.TransitionMilliseconds = fadeInTime;
+	player->SendDirectMessage(overrideLight.Write());
+}
+
 void Map::UpdateAreaDependentAuras()
 {
     Map::PlayerList const& players = GetPlayers();

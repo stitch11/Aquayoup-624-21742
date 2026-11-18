@@ -1414,7 +1414,10 @@ public:
         float grade = float(atof(py));                          //0 to 1, sending -1 is instand good weather
 
         Player* player = handler->GetSession()->GetPlayer();
-        uint32 zoneid = player->GetZoneId();
+       
+		//uint32 zoneid = player->GetZoneId();
+		uint32 zoneid = WeatherMgr::ResolveWeatherId(player->GetAreaId(), player->GetZoneId());
+		//uint32 zoneid = player->GetZoneId();
 
         Weather* weather = WeatherMgr::FindWeather(zoneid);
 

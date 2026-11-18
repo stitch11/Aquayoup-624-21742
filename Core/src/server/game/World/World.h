@@ -406,6 +406,7 @@ enum WorldIntConfigs
 	CONFIG_JOUR_DUREE_JOUR,
 	CONFIG_JOUR_DUREE_NUIT,
 	CONFIG_WEATHER_SLOW_PCT,			//Stitch meteo : Vitesse de déplacement pendant la neige ou la tempête
+	CONFIG_WEATHER_RAIN_MAX_DURATION,	//Stitch meteo : duree de la pluie
 	INT_CONFIG_VALUE_COUNT
 };
 

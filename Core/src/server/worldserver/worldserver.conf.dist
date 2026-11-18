@@ -106,8 +106,8 @@ Weather.SlowSpeedPct = 70
 
 ########################
 #    Weather.RainMaxDuration
-#        Description: Durée maximale de la pluie, en minutes (arrondie par paliers de 5 min).
-#                     La pluie repasse au beau temps après cette durée.
+#        Description: Durée maximale de la pluie, en minutes (arrondie par paliers de 5 min) : valeurs 1 à 5 donne 5mn
+#         La pluie repasse au beau temps après cette durée.
 #        Default:     0  - (Désactivé, comportement d'origine)
 #                     30 - (30 minutes maximum)
 

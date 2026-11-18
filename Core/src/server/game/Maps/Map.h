@@ -556,6 +556,8 @@ class TC_GAME_API Map : public GridRefManager<NGridType>
         void SetZoneWeather(uint32 zoneId, WeatherState weatherId, float weatherGrade);
         void SetZoneOverrideLight(uint32 zoneId, uint32 lightId, uint32 fadeInTime);
 
+		void SendOverrideLightToPlayer(Player* player, uint32 lightId, uint32 fadeInTime);	//Stitch meteo : area plutot que zone
+
         void UpdateAreaDependentAuras();
 
         template<HighGuid high>

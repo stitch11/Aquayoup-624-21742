@@ -32,6 +32,8 @@ namespace WeatherMgr
 {
     TC_GAME_API void LoadWeatherData();
 
+	TC_GAME_API uint32 ResolveWeatherId(uint32 areaId, uint32 zoneId); //Stitch meteo : area plutot que zone
+
     TC_GAME_API Weather* FindWeather(uint32 id);
     TC_GAME_API Weather* AddWeather(uint32 zone_id);
     TC_GAME_API void RemoveWeather(uint32 zone_id);

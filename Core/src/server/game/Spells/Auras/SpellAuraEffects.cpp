@@ -6744,6 +6744,8 @@ void AuraEffect::HandleAuraForceWeather(AuraApplication const* aurApp, uint8 mod
         target->GetSession()->SendPacket(weather.Write());
     }
     else
+		//Stitch meteo : area plutot que zone
+		/*
     {
         // send weather for current zone
         if (Weather* weather = WeatherMgr::FindWeather(target->GetZoneId()))
@@ -6757,6 +6759,23 @@ void AuraEffect::HandleAuraForceWeather(AuraApplication const* aurApp, uint8 mod
             }
         }
     }
+	*/
+	{
+		// send weather for current area/zone
+		uint32 weatherId = WeatherMgr::ResolveWeatherId(target->GetAreaId(), target->GetZoneId());
+		if (Weather* weather = WeatherMgr::FindWeather(weatherId))
+			weather->SendWeatherUpdateToPlayer(target);
+		else
+		{
+			if (!WeatherMgr::AddWeather(weatherId))
+			{
+				// send fine weather packet to remove old weather
+				WeatherMgr::SendFineWeatherUpdateToPlayer(target);
+			}
+		}
+	}
+
+
 }
 
 void AuraEffect::HandleEnableAltPower(AuraApplication const* aurApp, uint8 mode, bool apply) const
