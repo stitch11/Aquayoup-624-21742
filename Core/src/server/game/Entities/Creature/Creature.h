@@ -146,7 +146,7 @@ struct TC_GAME_API CreatureTemplate
     uint32  GetFirstVisibleModel() const;
 
 	//
-	// Stitch : unit_class custom 16 (Focus), 32 (Fureur demoniaque), 64 (Puissance runique)
+	//Stitch : unit_class custom 16 (Focus), 32 (Fureur demoniaque), 64 (Puissance runique)
 	// Classe creature valide (1/2/4/8) utilisee pour creature_classlevelstats
 	uint8 GetStatsClass() const
 	{

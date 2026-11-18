@@ -1,4 +1,4 @@
-// Stitch : correspondance ID ItemRandomProperties -> ID ItemRandomSuffix de meme nom (francais).
+//Stitch : correspondance ID ItemRandomProperties -> ID ItemRandomSuffix de meme nom (francais).
 // Le client 6.2.4 n'affiche que "+1" pour les proprietes aleatoires (ID positif) mais calcule
 // correctement la valeur des suffixes (ID negatif). Voir Item::GenerateItemRandomPropertyId.
 // Les proprietes sans suffixe de meme nom (resistances, defense, guerison...) ne sont pas listees.

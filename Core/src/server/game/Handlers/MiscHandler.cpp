@@ -405,7 +405,7 @@ void WorldSession::HandleSetSelectionOpcode(WorldPackets::Misc::SetSelection& pa
 {
     _player->SetSelection(packet.Selection);
 
-	// Stitch IDTip correction de l'id affiche par la popup
+	//Stitch IDTip correction de l'id affiche par la popup
 	if (Creature* creature = ObjectAccessor::GetCreature(*_player, packet.Selection))
 	{
 		std::string msg = std::to_string(creature->GetEntry());
