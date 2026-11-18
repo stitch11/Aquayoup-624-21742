@@ -31,7 +31,7 @@
 #include "MiscPackets.h"
 
 //Stitch TMP
-#include "Map.h"
+//#include "Map.h"
 
 /// Create the Weather object
 Weather::Weather(uint32 zone, WeatherData const* weatherChances)

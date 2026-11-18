@@ -404,10 +404,6 @@ void WorldSession::HandleDBQueryBulk(WorldPackets::Query::DBQueryBulk& packet)
     DB2StorageBase const* store = sDB2Manager.GetStorage(packet.TableHash);
     if (!store)
     {
-		//Stitch TMP
-        //TC_LOG_ERROR("network", "CMSG_DB_QUERY_BULK: %s requested unsupported unknown hotfix type: %u", GetPlayerInfo().c_str(), packet.TableHash);
-		TC_LOG_DEBUG("network", "CMSG_DB_QUERY_BULK: %s requested unsupported unknown hotfix type: %u", GetPlayerInfo().c_str(), packet.TableHash);
-		
 		return;
     }
 
