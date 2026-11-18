@@ -104,9 +104,14 @@ JourPermanent.DureeNuit = 10
 #        Default: 100
 Weather.SlowSpeedPct = 70
 
-
 ########################
+#    Weather.RainMaxDuration
+#        Description: Durée maximale de la pluie, en minutes (arrondie par paliers de 5 min).
+#                     La pluie repasse au beau temps après cette durée.
+#        Default:     0  - (Désactivé, comportement d'origine)
+#                     30 - (30 minutes maximum)
 
+Weather.RainMaxDuration = 1
 
 ########### Guilde ###########################################
 # 5 rangs de base comme suit :
