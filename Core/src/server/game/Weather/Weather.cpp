@@ -30,6 +30,9 @@
 #include "WorldSession.h"
 #include "MiscPackets.h"
 
+//Stitch TMP
+#include "Map.h"
+
 /// Create the Weather object
 Weather::Weather(uint32 zone, WeatherData const* weatherChances)
     : m_zone(zone), m_weatherChances(weatherChances)
@@ -376,7 +379,7 @@ bool Weather::ReGenerate()
     {
 		//Stitch meteo faible : plus forte
         //m_grade = (float)rand_norm() * 0.3333f;
-		m_grade = (float)rand_norm() * 0.3333f + 0.3334f;
+		m_grade = (float)rand_norm() * 0.3333f + 0.2222f;
     }
     else
     {
@@ -412,13 +415,84 @@ bool Weather::UpdateWeather()
 
     WeatherState state = GetWeatherState();
 
+	TC_LOG_ERROR("server", "Weather zone %u type %u grade %f state %u", m_zone, m_type, m_grade, uint32(state));
+
 	//Stitch meteo : effet au maximun
     WorldPackets::Misc::Weather weather(state, m_grade);
-	//WorldPackets::Misc::Weather weather(state, 1.0f);
+	///WorldPackets::Misc::Weather weather(state, 1.0f);
 
     //- Returns false if there were no players found to update
-    if (!sWorld->SendZoneMessage(m_zone, weather.Write()))
+   if (!sWorld->SendZoneMessage(m_zone, weather.Write()))
+
         return false;
+
+
+
+   //Stitch meteo : override lumiere neige (0 = retour à la lumiere normale)
+   uint32 lightId = 0;
+   if (state != WEATHER_STATE_FINE)
+   {
+	   if (m_type == WEATHER_TYPE_SNOW)
+		   lightId = 6586;
+	   else if (m_type == WEATHER_TYPE_STORM)
+		   lightId = 6587;
+   }
+   TC_LOG_ERROR("server", "Override zone %u type %u lightId %u", m_zone, uint32(m_type), lightId);
+   for (auto const& itr : sWorld->GetAllSessions())
+   {
+	   Player* p = itr.second->GetPlayer();
+	   if (p && p->IsInWorld() && p->GetZoneId() == m_zone)
+	   {
+		   p->GetMap()->SetZoneOverrideLight(m_zone, lightId, 2000);
+		   break;
+	   }
+   }
+
+
+
+   //Stitch Meteo : rafraîchir la vitesse + messages (ralentissement neige/tempête)
+   static std::unordered_map<uint32, bool> s_slowByZone;
+   bool slowNow = IsSlowingWeather();
+   bool slowBefore = s_slowByZone[m_zone];
+   s_slowByZone[m_zone] = slowNow;
+
+   for (auto const& itr : sWorld->GetAllSessions())
+   {
+	   Player* pl = itr.second->GetPlayer();
+	   if (!pl || !pl->IsInWorld() || pl->GetZoneId() != m_zone)
+		   continue;
+
+	   for (uint8 i = MOVE_WALK; i < MAX_MOVE_TYPE; ++i)
+		   pl->UpdateSpeed(UnitMoveType(i));
+
+	   if (sWorld->getIntConfig(CONFIG_WEATHER_SLOW_PCT) >= 100 || slowNow == slowBefore)
+		   continue;
+
+	   std::string msg;
+	   LocaleConstant loc = pl->GetSession()->GetSessionDbcLocale();
+	   if (slowNow)
+	   {
+		   switch (loc)
+		   {
+		   case LOCALE_frFR: msg = "D\xC3\xA9" "placement r\xC3\xA9" "duit par le mauvais temps"; break;
+		   case LOCALE_esES: msg = "Movimiento reducido por el mal tiempo"; break;
+		   case LOCALE_deDE: msg = "Bewegung durch das schlechte Wetter verringert"; break;
+		   default:          msg = "Movement reduced by bad weather"; break;
+		   }
+	   }
+	   else
+	   {
+		   switch (loc)
+		   {
+		   case LOCALE_frFR: msg = "Vitesse de d\xC3\xA9" "placement restaur\xC3\xA9" "e"; break;
+		   case LOCALE_esES: msg = "Velocidad de movimiento restaurada"; break;
+		   case LOCALE_deDE: msg = "Bewegungsgeschwindigkeit wiederhergestellt"; break;
+		   default:          msg = "Movement speed restored"; break;
+		   }
+	   }
+	   pl->GetSession()->SendNotification("%s", msg.c_str());
+   }
+
 
     ///- Log the event
     char const* wthstr;
@@ -519,5 +593,10 @@ WeatherState Weather::GetWeatherState() const
         default:
             return WEATHER_STATE_FINE;
     }
+}
+
+bool Weather::IsSlowingWeather() const
+{
+	return (m_type == WEATHER_TYPE_SNOW || m_type == WEATHER_TYPE_STORM) && GetWeatherState() != WEATHER_STATE_FINE;
 }
 

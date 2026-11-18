@@ -405,7 +405,7 @@ enum WorldIntConfigs
 	CONFIG_JOUR_PERMANENT,				//Stitch JourPermanent
 	CONFIG_JOUR_DUREE_JOUR,
 	CONFIG_JOUR_DUREE_NUIT,
-
+	CONFIG_WEATHER_SLOW_PCT,			//Stitch meteo : Vitesse de déplacement pendant la neige ou la tempête
 	INT_CONFIG_VALUE_COUNT
 };
 

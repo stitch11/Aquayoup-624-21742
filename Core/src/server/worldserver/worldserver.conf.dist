@@ -98,6 +98,14 @@ JourPermanent.DureeJour = 50
 JourPermanent.DureeNuit = 10
 
 ########################
+#    Weather.SlowSpeedPct
+#        Vitesse des joueurs (pied et monture) pendant la neige ou la tempête.
+#        100 = vitesse normale
+#        Default: 100
+Weather.SlowSpeedPct = 70
+
+
+########################
 
 
 ########### Guilde ###########################################

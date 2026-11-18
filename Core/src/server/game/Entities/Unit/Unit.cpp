@@ -70,6 +70,11 @@
 #include "VehiclePackets.h"
 #include "LootPackets.h"
 #include "PartyPackets.h"
+
+//Stitch meteo : Vitesse de déplacement des joueurs pendant la neige ou la tempête
+#include "Weather.h"
+#include "WeatherMgr.h"
+
 #include <cmath>
 
  //Stitch FunRate
@@ -10057,6 +10062,14 @@ void Unit::UpdateSpeed(UnitMoveType mtype)
         if (speed < min_speed)
             speed = min_speed;
     }
+
+
+	//Stitch ralentissement neige/tempête (pied, monture, nage, vol)
+	if (GetTypeId() == TYPEID_PLAYER && mtype != MOVE_TURN_RATE && mtype != MOVE_PITCH_RATE)
+		if (Weather* w = WeatherMgr::FindWeather(GetZoneId()))
+			if (w->IsSlowingWeather())
+				speed *= float(sWorld->getIntConfig(CONFIG_WEATHER_SLOW_PCT)) / 100.0f;
+
 
     SetSpeedRate(mtype, speed);
 }

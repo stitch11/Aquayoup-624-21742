@@ -66,6 +66,8 @@ class TC_GAME_API Weather
 {
     public:
 
+		bool IsSlowingWeather() const;	//Stitch meteo : Vitesse de déplacement pendant la neige ou la tempête
+
         Weather(uint32 zone, WeatherData const* weatherChances);
         ~Weather() { };
 
