@@ -40,6 +40,10 @@ namespace WeatherMgr
 
     TC_GAME_API void SendFineWeatherUpdateToPlayer(Player* player);
 
+	//Stitch meteo jour
+	void RefreshAllWeatherLights();
+
+
     TC_GAME_API void Update(uint32 diff);
 }
 

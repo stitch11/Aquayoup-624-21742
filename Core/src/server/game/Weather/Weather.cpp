@@ -478,7 +478,25 @@ bool Weather::UpdateWeather()
 
 
    //Stitch meteo : override lumiere neige (0 = retour à la lumiere normale)
-   uint32 lightId = 0;
+   
+	//Stitch meteo beau temp
+	//uint32 lightId = 0;
+	uint32 lightId = 0;
+	if (state == WEATHER_STATE_FINE)
+		
+		////Stitch meteo jour
+		//lightId = 9000;
+		lightId = sWorld->getBoolConfig(CONFIG_WEATHER_CUSTOM_LIGHT) ? 9000 : 0;
+
+	else
+	{
+		if (m_type == WEATHER_TYPE_SNOW)
+			lightId = 6586;
+		else if (m_type == WEATHER_TYPE_STORM)
+			lightId = 6587;
+	}
+
+
    if (state != WEATHER_STATE_FINE)
    {
 	   if (m_type == WEATHER_TYPE_SNOW)
@@ -521,6 +539,10 @@ bool Weather::UpdateWeather()
 		   //if (!pl || !pl->IsInWorld() || pl->GetZoneId() != m_zone)
 
 
+		   continue;
+
+	   //Stitch meteo : ne pas écraser la vitesse d'un GM
+	   if (pl->IsGameMaster())
 		   continue;
 
 	   for (uint8 i = MOVE_WALK; i < MAX_MOVE_TYPE; ++i)

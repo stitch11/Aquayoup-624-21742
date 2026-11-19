@@ -113,6 +113,19 @@ Weather.SlowSpeedPct = 70
 
 Weather.RainMaxDuration = 1
 
+########################
+#    Weather.CustomLight
+#        Description: Météo Lumière par beau temps personnalisée (Light 9000) .
+#        Default:     1 - (Activée)
+#                     0 - (Désactivée)
+
+Weather.CustomLight = 1
+
+########################
+
+
+
+
 ########### Guilde ###########################################
 # 5 rangs de base comme suit :
 # - 0 : Chef de guilde

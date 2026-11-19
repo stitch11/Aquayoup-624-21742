@@ -168,6 +168,7 @@ enum WorldBoolConfigs
     CONFIG_ENABLE_MMAPS,
     CONFIG_WINTERGRASP_ENABLE,
     CONFIG_TOLBARAD_ENABLE,
+	CONFIG_WEATHER_CUSTOM_LIGHT,//Stitch meteo jour
 
 	//Stitch id quete : affichage avant le nom de quete 
     //CONFIG_UI_QUESTLEVELS_IN_DIALOGS,     // Should we add quest levels to the title in the NPC dialogs?

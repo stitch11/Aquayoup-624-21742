@@ -819,7 +819,12 @@ void World::LoadConfigSettings(bool reload)
         m_int_configs[CONFIG_PORT_INSTANCE] = sConfigMgr->GetIntDefault("InstanceServerPort", 8086);
     }
 
-	m_int_configs[CONFIG_WEATHER_SLOW_PCT] = sConfigMgr->GetIntDefault("Weather.SlowSpeedPct", 100);	//Stitch meteo : Vitesse de déplacement pendant la neige ou la tempête
+	m_int_configs[CONFIG_WEATHER_SLOW_PCT] = sConfigMgr->GetIntDefault("Weather.SlowSpeedPct", 100);		//Stitch meteo : Vitesse de déplacement pendant la neige ou la tempête
+	m_bool_configs[CONFIG_WEATHER_CUSTOM_LIGHT] = sConfigMgr->GetBoolDefault("Weather.CustomLight", true);	//Stitch meteo jour
+
+	//Stitch meteo jour//Stitch meteo jour
+	if (reload)
+		WeatherMgr::RefreshAllWeatherLights();
 
     m_int_configs[CONFIG_SOCKET_TIMEOUTTIME] = sConfigMgr->GetIntDefault("SocketTimeOutTime", 900000);
     m_int_configs[CONFIG_SESSION_ADD_DELAY] = sConfigMgr->GetIntDefault("SessionAddDelay", 10000);

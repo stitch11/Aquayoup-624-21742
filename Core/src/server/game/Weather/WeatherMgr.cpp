@@ -169,6 +169,15 @@ void SendFineWeatherUpdateToPlayer(Player* player)
     player->GetSession()->SendPacket(weather.Write());
 }
 
+
+//Stitch meteo jour : renvoie la lumière à tous les joueurs (après .reload config)
+void RefreshAllWeatherLights()
+{
+	for (auto const& itr : m_weathers)
+		itr.second->UpdateWeather();
+}
+
+
 void Update(uint32 diff)
 {
     ///- Send an update signal to Weather objects
