@@ -88,6 +88,7 @@ class TC_GAME_API Weather
 
         WeatherState GetWeatherState() const;
         uint32 m_zone;
+		uint32 m_lastLightId = 0; //Stitch jour permanent
         WeatherType m_type;
         float m_grade;
 		uint32 m_rainCycles;	//Stitch meteo : duree de la pluie

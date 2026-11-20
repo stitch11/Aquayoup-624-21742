@@ -90,7 +90,7 @@ ForceClientLangue = auto
 #        Default:     50
 #
 #    JourPermanent.DureeNuit
-#        Description: Duree de la nuit en minutes reelles (mode 3).
+#        Description: Duree du jour et de la nuit en minutes reelles (mode 3).
 #        Default:     10
 
 JourPermanent = 3

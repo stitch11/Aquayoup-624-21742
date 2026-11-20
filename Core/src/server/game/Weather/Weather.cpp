@@ -30,6 +30,37 @@
 #include "WorldSession.h"
 #include "MiscPackets.h"
 
+#include <ctime>
+
+//Stitch jour permanent : 9000 = jour (skybox 130), 9001 = nuit (skybox 159)
+static uint32 GetCustomLightId()
+{
+	time_t now = sWorld->GetGameTime();
+	uint32 mode = sWorld->getIntConfig(CONFIG_JOUR_PERMANENT);
+	uint32 secJeu; // secondes depuis minuit, heure du jeu
+
+	if (mode == 1 || mode == 2)
+		secJeu = 12 * HOUR;
+	else if (mode == 3)
+	{
+		uint32 dj = sWorld->getIntConfig(CONFIG_JOUR_DUREE_JOUR) * 60;
+		uint32 dn = sWorld->getIntConfig(CONFIG_JOUR_DUREE_NUIT) * 60;
+		uint32 pos = uint32(now % (dj + dn));
+		if (pos < dj)
+			secJeu = 6 * HOUR + uint32(uint64(pos) * 12 * HOUR / dj);
+		else
+			secJeu = (18 * HOUR + uint32(uint64(pos - dj) * 12 * HOUR / dn)) % DAY;
+	}
+	else
+	{
+		tm t;
+		localtime_r(&now, &t);
+		secJeu = t.tm_hour * HOUR + t.tm_min * MINUTE;
+	}
+
+	uint32 minutes = secJeu / MINUTE;
+	return (minutes >= 375 && minutes < 1245) ? 9000 : 9001; // 06:15 -> 20:45
+}
 //Stitch meteo : area plutot que zone
 #include"World.h"
 #include "DBCStores.h"
@@ -69,6 +100,15 @@ bool Weather::Update(uint32 diff)
                 return false;
         }
     }
+
+
+	//Stitch jour permanent : rappel du ciel jour/nuit quand l'heure du jeu change
+	if (m_lastLightId != 0 && sWorld->getBoolConfig(CONFIG_WEATHER_CUSTOM_LIGHT)
+		&& GetWeatherState() == WEATHER_STATE_FINE && GetCustomLightId() != m_lastLightId)
+	{
+		if (!UpdateWeather())
+			return false;
+	}
 
     sScriptMgr->OnWeatherUpdate(this, diff);
     return true;
@@ -184,7 +224,7 @@ bool Weather::ReGenerate()
 		uint8 Tmp = urand(1, 10);
 		if (Tmp < 5)
 		{
-			m_type = WEATHER_TYPE_STORM /* WEATHER_TYPE_THUNDERS*/;
+			m_type = /*WEATHER_TYPE_STORM */ WEATHER_TYPE_THUNDERS;
 			m_grade = 1.0f;
 			return true;
 		}
@@ -206,7 +246,7 @@ bool Weather::ReGenerate()
 		uint8 Tmp = urand(1,10);
 		if (Tmp < 3)
 		{
-			m_type = WEATHER_TYPE_STORM /*WEATHER_TYPE_THUNDERS*/;
+			m_type = /*WEATHER_TYPE_STORM*/ WEATHER_TYPE_THUNDERS;
 			m_grade = 1.0f;
 			return true;
 		}
@@ -486,7 +526,9 @@ bool Weather::UpdateWeather()
 		
 		////Stitch meteo jour
 		//lightId = 9000;
-		lightId = sWorld->getBoolConfig(CONFIG_WEATHER_CUSTOM_LIGHT) ? 9000 : 0;
+		////lightId = sWorld->getBoolConfig(CONFIG_WEATHER_CUSTOM_LIGHT) ? 9000 : 0;
+		lightId = sWorld->getBoolConfig(CONFIG_WEATHER_CUSTOM_LIGHT) ? GetCustomLightId() : 0;
+
 
 	else
 	{
@@ -504,6 +546,12 @@ bool Weather::UpdateWeather()
 	   else if (m_type == WEATHER_TYPE_STORM)
 		   lightId = 6587;
    }
+
+   //Stitch TMP
+   if (sWorld->getBoolConfig(CONFIG_WEATHER_CUSTOM_LIGHT)) lightId = GetCustomLightId();
+
+   m_lastLightId = lightId; //Stitch jour permanent
+   //Stitch TMP
    TC_LOG_ERROR("server", "Override zone %u type %u lightId %u", m_zone, uint32(m_type), lightId);
    for (auto const& itr : sWorld->GetAllSessions())
    {
@@ -515,7 +563,7 @@ bool Weather::UpdateWeather()
 
 
 	   {
-		   p->GetMap()->SendOverrideLightToPlayer(p, lightId, 2000);
+		   p->GetMap()->SendOverrideLightToPlayer(p, lightId, 500);
 		   //Stitch meteo : area plutot que zone
 		   //p->GetMap()->SetZoneOverrideLight(m_zone, lightId, 2000);
 		   //break;
