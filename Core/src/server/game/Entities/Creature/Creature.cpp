@@ -50,6 +50,9 @@
 
 #include "Transport.h"
 
+ //Stitch creature_addon & creature_template_addon : conflit d'ecrasement plutot que fusion
+#include <algorithm>
+
 TrainerSpell const* TrainerSpellData::Find(uint32 spell_id) const
 {
     TrainerSpellMap::const_iterator itr = spellList.find(spell_id);
@@ -2977,7 +2980,8 @@ bool Creature::CanCreatureAttack(Unit const* victim, bool /*force*/) const
     else
         return victim->IsInDist(&m_homePosition, dist);
 }
-
+//Stitch creature_addon & creature_template_addon : conflit d'ecrasement plutot que fusion
+/* 
 CreatureAddon const* Creature::GetCreatureAddon() const
 {
     if (m_spawnId)
@@ -2989,16 +2993,106 @@ CreatureAddon const* Creature::GetCreatureAddon() const
     // dependent from difficulty mode entry
     return sObjectMgr->GetCreatureTemplateAddon(GetCreatureTemplate()->Entry);
 }
+*/
+CreatureAddon const* Creature::GetCreatureAddon() const
+{
+	CreatureAddon const* spawnAddon = nullptr;
+	CreatureAddon const* templateAddon =
+		sObjectMgr->GetCreatureTemplateAddon(GetCreatureTemplate()->Entry);
+
+	if (m_spawnId)
+		spawnAddon = sObjectMgr->GetCreatureAddon(m_spawnId);
+
+	if (!spawnAddon)
+		return templateAddon;
+
+	if (!templateAddon)
+		return spawnAddon;
+
+	// Both addons exist: merge their data.
+	static thread_local CreatureAddon mergedAddon;
+
+	mergedAddon = *templateAddon;
+
+	if (spawnAddon->path_id)
+		mergedAddon.path_id = spawnAddon->path_id;
+
+	if (spawnAddon->mount)
+		mergedAddon.mount = spawnAddon->mount;
+
+	if (spawnAddon->bytes1)
+		mergedAddon.bytes1 = spawnAddon->bytes1;
+
+	if (spawnAddon->bytes2)
+		mergedAddon.bytes2 = spawnAddon->bytes2;
+
+	if (spawnAddon->emote)
+		mergedAddon.emote = spawnAddon->emote;
+
+	for (uint32 spellId : spawnAddon->auras)
+	{
+		if (std::find(mergedAddon.auras.begin(), mergedAddon.auras.end(), spellId) == mergedAddon.auras.end())
+			mergedAddon.auras.push_back(spellId);
+	}
+
+	return &mergedAddon;
+}
 
 //creature_addon table
 bool Creature::LoadCreaturesAddon()
 {
+	//Stitch creature_addon & creature_template_addon : conflit d'ecrasement plutot que fusion
+	/*
     CreatureAddon const* cainfo = GetCreatureAddon();
     if (!cainfo)
         return false;
 
     if (cainfo->mount != 0)
         Mount(cainfo->mount);
+		*/
+	CreatureAddon mergedAddon;
+
+	CreatureAddon const* spawnAddon = nullptr;
+	CreatureAddon const* templateAddon =
+		sObjectMgr->GetCreatureTemplateAddon(GetCreatureTemplate()->Entry);
+
+	if (m_spawnId)
+		spawnAddon = sObjectMgr->GetCreatureAddon(m_spawnId);
+
+	if (!spawnAddon && !templateAddon)
+		return false;
+
+	if (templateAddon)
+		mergedAddon = *templateAddon;
+
+	if (spawnAddon)
+	{
+		if (spawnAddon->mount)
+			mergedAddon.mount = spawnAddon->mount;
+
+		if (spawnAddon->bytes1)
+			mergedAddon.bytes1 = spawnAddon->bytes1;
+
+		if (spawnAddon->bytes2)
+			mergedAddon.bytes2 = spawnAddon->bytes2;
+
+		if (spawnAddon->emote)
+			mergedAddon.emote = spawnAddon->emote;
+
+		if (spawnAddon->path_id)
+			mergedAddon.path_id = spawnAddon->path_id;
+
+		for (uint32 spellId : spawnAddon->auras)
+			if (std::find(mergedAddon.auras.begin(), mergedAddon.auras.end(), spellId) == mergedAddon.auras.end())
+				mergedAddon.auras.push_back(spellId);
+	}
+
+	CreatureAddon const* cainfo = &mergedAddon;
+
+
+
+
+
 
     if (cainfo->bytes1 != 0)
     {
