@@ -117,6 +117,7 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 
 
 			uint32 Start_Agro = 0;
+			bool OriCorrigee = false;
 
 			void InitializeAI() override 
 			{
@@ -124,7 +125,9 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				uint32 Tmp = me->m_spells[3];
 				if (Tmp != 0)
 				{
-					me->CastSpell(me, Tmp, true);
+					//Stitch bug d'orientation
+					{ float oriInit = me->GetOrientation(); me->CastSpell(me, Tmp, true); me->SetOrientation(oriInit); }
+					//me->CastSpell(me, Tmp, true); 
 				}
 				Spell_canalisé_hc_home();
 				Arme_rangé();
@@ -310,7 +313,11 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 				Init_AI();
 				Arme_rangé();
 				Random = urand(1, 2);
-				if (Random == 1 && Spell_respawn_evade != 0) { me->CastSpell(me, Spell_respawn_evade, true); }		// 1/2 Chance de lancer le sort au respawn ou evade
+				if (Random == 1 && Spell_respawn_evade != 0) 
+				{ 
+					//Stitch bug d'orientation
+					{ float oriInit = me->GetOrientation(); me->CastSpell(me, Spell_respawn_evade, true); me->SetOrientation(oriInit); }
+				}		// 1/2 Chance de lancer le sort au respawn ou evade
 			}
 
 			void EnterCombat(Unit* /*who*/) override
@@ -363,6 +370,9 @@ public: Stitch_npc_ai_caster() : CreatureScript("Stitch_npc_ai_caster") { }
 			}
 			void UpdateAI(uint32 diff) override
 			{
+				//Stitch bug d'orientation
+				if (!OriCorrigee && !me->IsInCombat() && !me->isMoving()) { me->SetFacingTo(me->GetHomePosition().GetOrientation()); OriCorrigee = true; } //Bug d'orientation
+
 				if (me->HasUnitState(UNIT_STATE_CONFUSED) || me->HasUnitState(UNIT_STATE_STUNNED) || me->HasUnitState(UNIT_STATE_DISTRACTED) || me->HasUnitState(UNIT_STATE_CANNOT_TURN) || me->HasUnitState(UNIT_STATE_CONTROLLED) || me->HasUnitState(UNIT_STATE_POSSESSED) || me->HasUnitState(UNIT_STATE_CONFUSED_MOVE))
 					return;
 				// ################################################################################################################################################

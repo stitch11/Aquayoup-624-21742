@@ -97,13 +97,18 @@ public: Stitch_npc_ai_chaman() : CreatureScript("Stitch_npc_ai_chaman") { }
 
 			uint32 Start_Agro = 0;
 
+			bool OriCorrigee = false;
+
+
 			void InitializeAI() override
 			{
 				// Buf au lancement du serveur (Pet, armure de givre, etc)
 				uint32 Tmp = me->m_spells[3];
 				if (Tmp != 0)
 				{
-					me->CastSpell(me, Tmp, true);
+					//me->CastSpell(me, Tmp, true);
+					//Stitch bug d'orientation
+					{ float oriInit = me->GetOrientation(); me->CastSpell(me, Tmp, true); me->SetOrientation(oriInit); }
 				}
 				me->SetSheath(SHEATH_STATE_UNARMED);								//Arme rangée
 			}
