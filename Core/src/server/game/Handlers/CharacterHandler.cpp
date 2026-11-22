@@ -316,7 +316,7 @@ void WorldSession::HandleCharEnum(PreparedQueryResult result)
 
 void WorldSession::HandleCharEnumOpcode(WorldPackets::Character::EnumCharacters& /*enumCharacters*/)
 {
-    // remove expired bans
+	// remove expired bans
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_EXPIRED_BANS);
     CharacterDatabase.Execute(stmt);
 
@@ -908,7 +908,8 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
     ChatHandler chH = ChatHandler(pCurrChar->GetSession());
 
     // "GetAccountId() == db stored account id" checked in LoadFromDB (prevent login not own character using cheating tools)
-    if (!pCurrChar->LoadFromDB(playerGuid, holder))
+
+	if (!pCurrChar->LoadFromDB(playerGuid, holder))
     {
         SetPlayer(NULL);
         KickPlayer();                                       // disconnect client, player no set to session and it will not deleted or saved at kick
@@ -917,7 +918,6 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
         m_playerLoading.Clear();
         return;
     }
-
     SendTutorialsData();
 
     pCurrChar->GetMotionMaster()->Initialize();
