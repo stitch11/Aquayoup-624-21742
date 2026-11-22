@@ -2337,7 +2337,6 @@ void World::LoadAutobroadcasts()
 void World::Update(uint32 diff)
 {
 
-
 	//Stitch JourPermanent : renvoie l'heure a tous les joueurs a chaque changement de phase
 	if (m_int_configs[CONFIG_JOUR_PERMANENT] == 3)
 	{

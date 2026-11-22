@@ -352,6 +352,7 @@ void WorldSession::LogUnprocessedTail(WorldPacket* packet)
 /// Update the WorldSession (triggered by World update)
 bool WorldSession::Update(uint32 diff, PacketFilter& updater)
 {
+
     /// Update Timeout timer.
     UpdateTimeOutTime(diff);
 

@@ -547,12 +547,11 @@ bool Weather::UpdateWeather()
 		   lightId = 6587;
    }
 
-   //Stitch TMP
+   //Stitch 
    if (sWorld->getBoolConfig(CONFIG_WEATHER_CUSTOM_LIGHT)) lightId = GetCustomLightId();
 
    m_lastLightId = lightId; //Stitch jour permanent
-   //Stitch TMP
-   TC_LOG_ERROR("server", "Override zone %u type %u lightId %u", m_zone, uint32(m_type), lightId);
+
    for (auto const& itr : sWorld->GetAllSessions())
    {
 	   Player* p = itr.second->GetPlayer();

@@ -88,6 +88,7 @@ WorldSocket::~WorldSocket()
 void WorldSocket::Start()
 {
     std::string ip_address = GetRemoteIpAddress().to_string();
+
     PreparedStatement* stmt = LoginDatabase.GetPreparedStatement(LOGIN_SEL_IP_INFO);
     stmt->setString(0, ip_address);
     stmt->setUInt32(1, inet_addr(ip_address.c_str()));
