@@ -1329,7 +1329,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 							ResteADistance = 5;
 							Spell_Trop_Loin = Spell_Bondir_Guerrier;									//
 							Cooldown_Trop_Loin = 5000;
-							Cooldown_Trop_Loin_Defaut = urand(4000, 7000);
+							Cooldown_Trop_Loin_Defaut = urand(3750, 4750);
 							break;
 						case 11:	// Raptor  -  CREATURE_FAMILY_RAPTOR - AI : 1/4_Mouvement_Contact_Avance_Recule  , 1/4_Mouvement_Contact_Tournant_Aleatoire, 2/4_Mouvement_Contact_Basique, %Cri_Incapacitant";
 							AI_Random = urand(1, 3);
