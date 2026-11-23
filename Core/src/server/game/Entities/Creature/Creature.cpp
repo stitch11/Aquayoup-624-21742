@@ -3047,8 +3047,7 @@ bool Creature::LoadCreaturesAddon()
     if (!cainfo)
         return false;
 
-    if (cainfo->mount != 0)
-        Mount(cainfo->mount);
+
 		*/
 	CreatureAddon mergedAddon;
 
@@ -3093,6 +3092,8 @@ bool Creature::LoadCreaturesAddon()
 
 
 
+	if (cainfo->mount != 0)
+		Mount(cainfo->mount);
 
     if (cainfo->bytes1 != 0)
     {
