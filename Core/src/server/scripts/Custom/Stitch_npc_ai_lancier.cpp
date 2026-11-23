@@ -304,6 +304,7 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 
 						if (Spell_respawn_evade != 0) { me->CastSpell(me, Spell_respawn_evade, true); }
 
+						PetOrder::AttackTarget(me, victim); // Ordonne au familier d'attaquer sa cible
 					}
 
 					// ############################################################################################################################################
@@ -318,9 +319,13 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 					else Cooldown_RegenMana -= diff;
 
 					// Combat au contat ---------------------------------------------------------------------------------------------------------------------------
-					if (Dist < 6)
+					if (Dist < 6 || SpellRangeCheck::IsTargetInRange(Spell_1, me))	// Distance <6m ou portée de spell vers victim okai
 					{
-						me->SetSheath(SHEATH_STATE_MELEE);												// S'equipe de l'arme au contact
+						if (Dist < 6 || Tir_1 == Lancer_une_Arme)
+							me->SetSheath(SHEATH_STATE_MELEE);			// S'equipe de l'arme au contact ou a lancer
+						else 
+							me->SetSheath(SHEATH_STATE_RANGED);			// S'equipe de l'arme a distance
+
 						// Spell1 sur la cible  
 						if (Cooldown_Spell1 <= diff && Spell_1 !=0)
 						{
@@ -447,7 +452,6 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 					EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);						// Quite le combat si la cible > 30m (Caster & Mélée) ou > 40m de home
 				}
 			}
-
 			// ###### Reste a distance mais va au contact si la cible ce raproche ##################################################################################
 			void Mouvement_Caster_Puis_Contact(uint32 diff)
 			{
@@ -665,7 +669,6 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 					DoCast(me, Spell_Canalise_hc);
 				}
 			}
-
 			void Demande_Assistance(uint32 diff)
 			{
 				if (Demande_Assistance_effectué == 1 || AuraLenteur() == true || !UpdateVictim() || me_rank != 0)
@@ -688,6 +691,48 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 				}
 				else Cooldown_Demande_Assistance -= diff;
 			}
+
+			struct SpellRangeCheck
+			{
+				static bool IsTargetInRange(uint32 spellId, Unit* caster, bool positive = false)
+				{
+					if (!caster)
+						return false;
+
+					Unit* target = caster->GetVictim();
+					if (!target)
+						return false;
+
+					SpellInfo const* info = sSpellMgr->GetSpellInfo(spellId);
+					if (!info)
+					{
+						TC_LOG_ERROR("server", "Stitch_npc_ai_lancier : spell_1 : SpellRangeCheck: spell %u introuvable", spellId);
+						return false;
+					}
+
+					return caster->GetDistance(target) <= info->GetMaxRange(positive, caster);
+				}
+			};
+			struct PetOrder
+			{
+				// Ordonne au familier d'attaquer sa cible
+				static void AttackTarget(Unit* owner, Unit* target)
+				{
+					if (!owner || !target)
+						return;
+
+					for (Unit* controlled : owner->m_Controlled)
+					{
+						Creature* pet = controlled->ToCreature();
+						if (!pet || !pet->IsAlive() || !pet->IsAIEnabled)
+							continue;
+
+						if (pet->GetVictim() != target)
+							pet->AI()->AttackStart(target);
+					}
+				}
+			};
+
 		};
 
 
