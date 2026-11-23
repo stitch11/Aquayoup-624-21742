@@ -9025,6 +9025,18 @@ uint32 Unit::MeleeDamageBonusDone(Unit* victim, uint32 pdamage, WeaponAttackType
         if (Player* modOwner = GetSpellModOwner())
             modOwner->ApplySpellMod(spellProto->Id, SPELLMOD_DAMAGE, tmpDamage);
 
+
+	//Stitch mob : degat augmenter
+	if (GetTypeId() == TYPEID_UNIT)
+	{
+		switch (GetEntry())
+		{
+		case 21811: tmpDamage *= 12.0f; break;	// Rejeton du culte du Ver
+		}
+	}
+
+
+
     // bonus result can be negative
     return uint32(std::max(tmpDamage, 0.0f));
 }

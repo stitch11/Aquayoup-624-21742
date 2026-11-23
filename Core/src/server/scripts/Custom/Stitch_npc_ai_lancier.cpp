@@ -304,7 +304,8 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 
 						if (Spell_respawn_evade != 0) { me->CastSpell(me, Spell_respawn_evade, true); }
 
-						PetOrder::AttackTarget(me, victim); // Ordonne au familier d'attaquer sa cible
+						
+						Pet* pet = victim->ToPlayer()->GetPet();
 					}
 
 					// ############################################################################################################################################
@@ -431,11 +432,6 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 						EnterEvadeMode(EVADE_REASON_NO_HOSTILES);
 					}
 				}
-
-
-
-
-
 				if (!UpdateVictim())
 					return;
 
@@ -706,30 +702,10 @@ public: Stitch_npc_ai_lancier() : CreatureScript("Stitch_npc_ai_lancier") { }
 					SpellInfo const* info = sSpellMgr->GetSpellInfo(spellId);
 					if (!info)
 					{
-						TC_LOG_ERROR("server", "Stitch_npc_ai_lancier : spell_1 : SpellRangeCheck: spell %u introuvable", spellId);
 						return false;
 					}
 
 					return caster->GetDistance(target) <= info->GetMaxRange(positive, caster);
-				}
-			};
-			struct PetOrder
-			{
-				// Ordonne au familier d'attaquer sa cible
-				static void AttackTarget(Unit* owner, Unit* target)
-				{
-					if (!owner || !target)
-						return;
-
-					for (Unit* controlled : owner->m_Controlled)
-					{
-						Creature* pet = controlled->ToCreature();
-						if (!pet || !pet->IsAlive() || !pet->IsAIEnabled)
-							continue;
-
-						if (pet->GetVictim() != target)
-							pet->AI()->AttackStart(target);
-					}
 				}
 			};
 
