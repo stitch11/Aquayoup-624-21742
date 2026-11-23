@@ -2980,8 +2980,8 @@ bool Creature::CanCreatureAttack(Unit const* victim, bool /*force*/) const
     else
         return victim->IsInDist(&m_homePosition, dist);
 }
+
 //Stitch creature_addon & creature_template_addon : conflit d'ecrasement plutot que fusion
-/* 
 CreatureAddon const* Creature::GetCreatureAddon() const
 {
     if (m_spawnId)
@@ -2993,50 +2993,8 @@ CreatureAddon const* Creature::GetCreatureAddon() const
     // dependent from difficulty mode entry
     return sObjectMgr->GetCreatureTemplateAddon(GetCreatureTemplate()->Entry);
 }
-*/
-CreatureAddon const* Creature::GetCreatureAddon() const
-{
-	CreatureAddon const* spawnAddon = nullptr;
-	CreatureAddon const* templateAddon =
-		sObjectMgr->GetCreatureTemplateAddon(GetCreatureTemplate()->Entry);
 
-	if (m_spawnId)
-		spawnAddon = sObjectMgr->GetCreatureAddon(m_spawnId);
 
-	if (!spawnAddon)
-		return templateAddon;
-
-	if (!templateAddon)
-		return spawnAddon;
-
-	// Both addons exist: merge their data.
-	static thread_local CreatureAddon mergedAddon;
-
-	mergedAddon = *templateAddon;
-
-	if (spawnAddon->path_id)
-		mergedAddon.path_id = spawnAddon->path_id;
-
-	if (spawnAddon->mount)
-		mergedAddon.mount = spawnAddon->mount;
-
-	if (spawnAddon->bytes1)
-		mergedAddon.bytes1 = spawnAddon->bytes1;
-
-	if (spawnAddon->bytes2)
-		mergedAddon.bytes2 = spawnAddon->bytes2;
-
-	if (spawnAddon->emote)
-		mergedAddon.emote = spawnAddon->emote;
-
-	for (uint32 spellId : spawnAddon->auras)
-	{
-		if (std::find(mergedAddon.auras.begin(), mergedAddon.auras.end(), spellId) == mergedAddon.auras.end())
-			mergedAddon.auras.push_back(spellId);
-	}
-
-	return &mergedAddon;
-}
 
 //creature_addon table
 bool Creature::LoadCreaturesAddon()
@@ -3049,45 +3007,18 @@ bool Creature::LoadCreaturesAddon()
 
 
 		*/
-	CreatureAddon mergedAddon;
 
-	CreatureAddon const* spawnAddon = nullptr;
-	CreatureAddon const* templateAddon =
-		sObjectMgr->GetCreatureTemplateAddon(GetCreatureTemplate()->Entry);
+
+	CreatureAddon const* cainfo = nullptr;
 
 	if (m_spawnId)
-		spawnAddon = sObjectMgr->GetCreatureAddon(m_spawnId);
+		cainfo = sObjectMgr->GetCreatureAddon(m_spawnId);
 
-	if (!spawnAddon && !templateAddon)
+	if (!cainfo)
+		cainfo = sObjectMgr->GetCreatureTemplateAddon(GetCreatureTemplate()->Entry);
+
+	if (!cainfo)
 		return false;
-
-	if (templateAddon)
-		mergedAddon = *templateAddon;
-
-	if (spawnAddon)
-	{
-		if (spawnAddon->mount)
-			mergedAddon.mount = spawnAddon->mount;
-
-		if (spawnAddon->bytes1)
-			mergedAddon.bytes1 = spawnAddon->bytes1;
-
-		if (spawnAddon->bytes2)
-			mergedAddon.bytes2 = spawnAddon->bytes2;
-
-		if (spawnAddon->emote)
-			mergedAddon.emote = spawnAddon->emote;
-
-		if (spawnAddon->path_id)
-			mergedAddon.path_id = spawnAddon->path_id;
-
-		for (uint32 spellId : spawnAddon->auras)
-			if (std::find(mergedAddon.auras.begin(), mergedAddon.auras.end(), spellId) == mergedAddon.auras.end())
-				mergedAddon.auras.push_back(spellId);
-	}
-
-	CreatureAddon const* cainfo = &mergedAddon;
-
 
 
 
