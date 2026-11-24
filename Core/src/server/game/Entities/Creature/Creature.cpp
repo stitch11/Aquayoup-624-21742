@@ -216,6 +216,26 @@ Creature::~Creature()
     //    TC_LOG_ERROR("entities.unit", "Deconstruct Creature Entry = %u", GetEntry());
 }
 
+
+//Stitch auras addon reappliquees 1s apres entree dans le monde
+class StitchAddonAuraEvent : public BasicEvent
+{
+public:
+	StitchAddonAuraEvent(Creature* c) : _c(c) { }
+	bool Execute(uint64 /*e_time*/, uint32 /*p_time*/) override
+	{
+		if (_c->IsInWorld() && _c->IsAlive())
+			if (CreatureAddon const* a = _c->GetCreatureAddon())
+				for (uint32 spellId : a->auras)
+					if (spellId && !_c->HasAura(spellId))
+						_c->AddAura(spellId, _c);
+		return true;
+	}
+private:
+	Creature* _c;
+};
+
+
 void Creature::AddToWorld()
 {
 
@@ -254,6 +274,10 @@ void Creature::AddToWorld()
         Unit::AddToWorld();
         SearchFormation();
         AIM_Initialize();
+
+		//Stitch réapplique les auras du mob 1 seconde après son entrée dans le monde : bug creature_template_ADDON
+		m_Events.AddEvent(new StitchAddonAuraEvent(this), m_Events.CalculateTime(1000));
+
         if (IsVehicle())
             GetVehicleKit()->Install();
     }
@@ -3022,7 +3046,6 @@ bool Creature::LoadCreaturesAddon()
 
 
 
-
 	if (cainfo->mount != 0)
 		Mount(cainfo->mount);
 
@@ -3075,6 +3098,7 @@ bool Creature::LoadCreaturesAddon()
         for (std::vector<uint32>::const_iterator itr = cainfo->auras.begin(); itr != cainfo->auras.end(); ++itr)
         {
             SpellInfo const* AdditionalSpellInfo = sSpellMgr->GetSpellInfo(*itr);
+
             if (!AdditionalSpellInfo)
             {
                 TC_LOG_ERROR("sql.sql", "Creature (%s) has wrong spell %u defined in `auras` field.", GetGUID().ToString().c_str(), *itr);
