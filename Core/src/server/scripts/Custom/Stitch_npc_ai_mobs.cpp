@@ -3963,7 +3963,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				// Custom 156
 				if (Crfamily == CREATURE_FAMILY_SE_DETERRE_AU_CONTACT /*156*/ && !me->HasUnitState(UNIT_STATE_MOVE))
 				{
-					Random = urand(1, 3);
+					Random = urand(1, 2);
 					if (Random == 1)
 					{
 						Senterre_sans_fumee();
