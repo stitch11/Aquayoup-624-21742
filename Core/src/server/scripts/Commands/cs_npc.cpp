@@ -1110,7 +1110,11 @@ public:
             return false;
 
         uint32 phaseID = uint32(atoi((char*)args));
-        if (!sPhaseStore.LookupEntry(phaseID))
+        
+		//Stitch phase : autorise .npc set phase 0 pour retire la phase d'un mob
+		//if (!sPhaseStore.LookupEntry(phaseID))
+		if (phaseID != 0 && !sPhaseStore.LookupEntry(phaseID))
+
         {
             handler->SendSysMessage(LANG_PHASE_NOTFOUND);
             handler->SetSentErrorMessage(true);
@@ -1125,9 +1129,18 @@ public:
             return false;
         }
 
-        creature->ClearPhases();
-        creature->SetInPhase(phaseID, true, true);
-        creature->SetDBPhase(phaseID);
+		//Stitch phase : autorise .npc set phase 0 pour retire la phase d'un mob
+        //creature->ClearPhases();
+        //creature->SetInPhase(phaseID, true, true);
+        //creature->SetDBPhase(phaseID);
+		creature->ClearPhases();
+		if (phaseID)
+			creature->SetInPhase(phaseID, true, true);
+		else
+			creature->UpdateObjectVisibility();
+		creature->SetDBPhase(phaseID);
+
+
 
         creature->SaveToDB();
 
