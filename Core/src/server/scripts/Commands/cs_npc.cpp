@@ -755,6 +755,9 @@ public:
             if (mechanicImmuneMask & (1 << (mechanicImmunes[i].Value - 1)))
                 handler->PSendSysMessage("%s (0x%X)", mechanicImmunes[i].Name, mechanicImmunes[i].Value);
 
+		//Stitch npc info retourne type_flags
+		handler->PSendSysMessage("Type Flags: %u", target->GetCreatureTemplate()->type_flags);
+
         return true;
     }
 
