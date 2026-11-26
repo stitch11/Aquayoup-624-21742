@@ -48,13 +48,23 @@ public:
         {
             { "phase", rbac::RBAC_PERM_COMMAND_GOBJECT_SET_PHASE, false, &HandleGameObjectSetPhaseCommand,  "" },
             { "state", rbac::RBAC_PERM_COMMAND_GOBJECT_SET_STATE, false, &HandleGameObjectSetStateCommand,  "" },
-        };
+
+			//Stitch commande : .gobject set type <entry> <n> - .gobject set displayid <entry> <n> - .gobject set data <entry> <idx> <n> - .gobject getdata <entry> : lit les Data. Elle doit répondre OK : DATA v0 v1 v2 ...
+			{ "type",      rbac::RBAC_PERM_COMMAND_GOBJECT_SET_PHASE, false, &HandleGameObjectSetTypeCommand,    "" },
+			{ "displayid", rbac::RBAC_PERM_COMMAND_GOBJECT_SET_PHASE, false, &HandleGameObjectSetDisplayCommand, "" },
+			{ "data",      rbac::RBAC_PERM_COMMAND_GOBJECT_SET_PHASE, false, &HandleGameObjectSetDataCommand,    "" },
+
+		};
         static std::vector<ChatCommand> gobjectCommandTable =
         {
             { "activate", rbac::RBAC_PERM_COMMAND_GOBJECT_ACTIVATE, false, &HandleGameObjectActivateCommand,  ""       },
             { "delete",   rbac::RBAC_PERM_COMMAND_GOBJECT_DELETE,   false, &HandleGameObjectDeleteCommand,    ""       },
             { "info",     rbac::RBAC_PERM_COMMAND_GOBJECT_INFO,     false, &HandleGameObjectInfoCommand,      ""       },
-            { "move",     rbac::RBAC_PERM_COMMAND_GOBJECT_MOVE,     false, &HandleGameObjectMoveCommand,      ""       },
+
+			//Stitch commande : .gobject set type <entry> <n> - .gobject set displayid <entry> <n> - .gobject set data <entry> <idx> <n> - .gobject getdata <entry> : lit les Data. Elle doit répondre OK : DATA v0 v1 v2 ...
+			{ "getdata", rbac::RBAC_PERM_COMMAND_GOBJECT_INFO, false, &HandleGameObjectGetDataCommand, "" },
+
+			{ "move",     rbac::RBAC_PERM_COMMAND_GOBJECT_MOVE,     false, &HandleGameObjectMoveCommand,      ""       },
             { "near",     rbac::RBAC_PERM_COMMAND_GOBJECT_NEAR,     false, &HandleGameObjectNearCommand,      ""       },
             { "target",   rbac::RBAC_PERM_COMMAND_GOBJECT_TARGET,   false, &HandleGameObjectTargetCommand,    ""       },
             { "turn",     rbac::RBAC_PERM_COMMAND_GOBJECT_TURN,     false, &HandleGameObjectTurnCommand,      ""       },
@@ -501,6 +511,80 @@ public:
 
         return true;
     }
+
+
+
+
+	//Stitch commande : .gobject set type <entry> <n> - .gobject set displayid <entry> <n> - .gobject set data <entry> <idx> <n> - .gobject getdata <entry> : lit les Data. Elle doit répondre OK : DATA v0 v1 v2 ...
+	static bool GoTplUpdate(ChatHandler* handler, char const* args, uint8 mode)
+	{
+		char* pEntry = strtok((char*)args, " ");
+		char* pA = strtok(NULL, " ");
+		char* pB = strtok(NULL, " ");
+		if (!pEntry || !pA || (mode == 2 && !pB))
+		{
+			handler->SendSysMessage("Erreur : arguments manquants");
+			return true;
+		}
+		uint32 entry = strtoul(pEntry, nullptr, 10);
+		uint32 a = strtoul(pA, nullptr, 10);
+		GameObjectTemplate const* ci = sObjectMgr->GetGameObjectTemplate(entry);
+		if (!ci)
+		{
+			handler->PSendSysMessage("Erreur : gameobject_template %u introuvable", entry);
+			return true;
+		}
+		GameObjectTemplate* t = const_cast<GameObjectTemplate*>(ci);
+		if (mode == 0)
+		{
+			if (a >= MAX_GAMEOBJECT_TYPE) { handler->SendSysMessage("Erreur : type invalide"); return true; }
+			WorldDatabase.PExecute("UPDATE gameobject_template SET type = %u WHERE entry = %u", a, entry);
+			t->type = a;
+			handler->PSendSysMessage("OK : type %u", a);
+		}
+		else if (mode == 1)
+		{
+			WorldDatabase.PExecute("UPDATE gameobject_template SET displayId = %u WHERE entry = %u", a, entry);
+			t->displayId = a;
+			handler->PSendSysMessage("OK : displayid %u", a);
+		}
+		else
+		{
+			uint32 val = strtoul(pB, nullptr, 10);
+			if (a >= MAX_GAMEOBJECT_DATA) { handler->SendSysMessage("Erreur : index data invalide"); return true; }
+			WorldDatabase.PExecute("UPDATE gameobject_template SET Data%u = %u WHERE entry = %u", a, val, entry);
+			t->raw.data[a] = val;
+			handler->PSendSysMessage("OK : Data%u = %u", a, val);
+		}
+		return true;
+	}
+
+	static bool HandleGameObjectSetTypeCommand(ChatHandler* handler, char const* args) { return GoTplUpdate(handler, args, 0); }
+	static bool HandleGameObjectSetDisplayCommand(ChatHandler* handler, char const* args) { return GoTplUpdate(handler, args, 1); }
+	static bool HandleGameObjectSetDataCommand(ChatHandler* handler, char const* args) { return GoTplUpdate(handler, args, 2); }
+
+	static bool HandleGameObjectGetDataCommand(ChatHandler* handler, char const* args)
+	{
+		if (!*args)
+		{
+			handler->SendSysMessage("Erreur : entry manquant");
+			return true;
+		}
+		uint32 entry = strtoul(args, nullptr, 10);
+		GameObjectTemplate const* t = sObjectMgr->GetGameObjectTemplate(entry);
+		if (!t)
+		{
+			handler->PSendSysMessage("Erreur : gameobject_template %u introuvable", entry);
+			return true;
+		}
+		std::string s = "OK : DATA";
+		for (uint32 i = 0; i < MAX_GAMEOBJECT_DATA; ++i)
+			s += ' ' + std::to_string(t->raw.data[i]);
+		handler->SendSysMessage(s.c_str());
+		return true;
+	}
+
+
 
     //set phasemask for selected object
     static bool HandleGameObjectSetPhaseCommand(ChatHandler* /*handler*/, char const* /*args*/)
