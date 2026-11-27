@@ -1049,6 +1049,17 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			}
 			void Mouvement_All()
 			{
+				// Mod entérré : fumée s'il ce déplace , sans si fixe // me->GetRespawnRadius()
+				if (Crfamily == CREATURE_FAMILY_SENTERRE || Crfamily == CREATURE_FAMILY_SE_DETERRE_AU_CONTACT || Crfamily == CREATURE_FAMILY_SENTERRE_FIXE || Crfamily == CREATURE_FAMILY_SENTERRE_REMOU_CLAIR_CONTACT)
+				{
+					if (me->GetRespawnRadius() > 0.0f && !me->IsInCombat() && !me->HasAura(Spell_Senterre))
+						me->CastSpell(me, Spell_Senterre, true);
+
+					if (me->GetRespawnRadius() == 0.0f || me->IsInCombat())
+						me->RemoveAurasDueToSpell(Spell_Senterre);
+				}
+
+
 				// Anti bug de combat
 				if (me->IsAlive() && (me->GetDistance(me->GetHomePosition()) >  50))
 				{
@@ -1067,11 +1078,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 					}
 				}
 
-				if (!me->IsAlive())
-				{
-					RetireBugDeCombat();
-				}
-
+				if (!me->IsAlive()) { RetireBugDeCombat(); }
 
 				if (!UpdateVictim())
 					return;
@@ -3861,20 +3868,22 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				//if (me->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE)
 				//	return;
 
-				me->CastSpell(me, Spell_Senterre_sans_fumee, true);								// Fumée et terre remuée Temporaire
-				me->CastSpell(me, Spell_Sedeterre_sans_fumee, true);							// Pour visuel sedeterrer
+				//me->CastSpell(me, Spell_Senterre_sans_fumee, true);								// Fumée et terre remuée Temporaire
+				//me->CastSpell(me, Spell_Sedeterre_sans_fumee, true);							// Pour visuel sedeterrer
 				me->CastSpell(me, Spell_No_ModelID, true);										// Masque le ModelID
 				me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Non selectionnable
-				me->RemoveAura(Spell_Senterre);															// fumée
+				//me->RemoveAura(Spell_Senterre);													// fumée
 			}
 			void Se_Deterre()
 			{
 				me->CastSpell(me, Spell_Sedeterre_sans_fumee, true);
-				me->RemoveAurasDueToSpell(Spell_Senterre);										// Retire fumée et terre remuée Persistant
-				me->RemoveAurasDueToSpell(Spell_Senterre_sans_fumee);							// Retire fumée et terre remuée Temporaire
 				me->RemoveAurasDueToSpell(Spell_Sedeterre_sans_fumee);							// Visuel explosion de fumée
 				me->RemoveAurasDueToSpell(Spell_No_ModelID);									// Retire invisible
-				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Selectionnable
+				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Retire Selectionnable
+
+				//me->RemoveAurasDueToSpell(Spell_Senterre_sans_fumee);							// Retire fumée et terre remuée Temporaire
+				//me->RemoveAurasDueToSpell(Spell_Senterre);									// Retire fumée et terre remuée Persistant
+						
 			}
 			void Senterre_remou_clair()
 			{
@@ -3887,17 +3896,22 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 			{
 				me->RemoveAurasDueToSpell(Spell_Senterre);
 				me->RemoveAurasDueToSpell(Spell_Senterre_sans_fumee);							// Retire fumée et terre remuée Temporaire
-				me->RemoveAurasDueToSpell(Spell_Sedeterre_sans_fumee);							// Visuel explosion de fumée
 				me->RemoveAurasDueToSpell(Spell_No_ModelID);									// Retire invisible
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Selectionnable
+
+				me->CastSpell(me, Spell_Sedeterre_sans_fumee, true);
+				me->RemoveAurasDueToSpell(Spell_Sedeterre_sans_fumee);							// Visuel explosion de fumée
+																			
 			}
 			void Se_Deterre_remou_clair()
 			{
 				me->RemoveAurasDueToSpell(Spell_Senterre);
 				me->RemoveAurasDueToSpell(Spell_Senterre_remou_clair);							// Retire fumée et terre remuée Temporaire
-				me->RemoveAurasDueToSpell(Spell_Sedeterre_sans_fumee);							// Visuel explosion de fumée
+				me->CastSpell(me, Spell_Sedeterre_sans_fumee, true);
 				me->RemoveAurasDueToSpell(Spell_No_ModelID);									// Retire invisible
 				me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);						// Selectionnable
+
+				me->RemoveAurasDueToSpell(Spell_Sedeterre_sans_fumee);
 			}
 			void Morph_Rocher()
 			{
@@ -3941,7 +3955,7 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				//Scorpion, ver
 				if (Crfamily == CREATURE_FAMILY_SCORPID  /*20*/ || Crfamily == CREATURE_FAMILY_WORM /*42*/)
 				{
-					Random = urand(1, 3);
+					Random = urand(1, 2);
 					if (Random == 1)
 					{
 						Senterre_sans_fumee();
@@ -3951,12 +3965,12 @@ public: Stitch_npc_ai_mobs() : CreatureScript("Stitch_npc_ai_mobs") { }
 				//Custom 155
 				if (Crfamily == CREATURE_FAMILY_SENTERRE /*155*/ && !me->HasUnitState(UNIT_STATE_MOVE))
 				{
-					Random = urand(1, 3);
-					if (Random > 1)
+					/*Random = urand(1, 5);
+					if (Random == 1)
 					{
 						Senterre();
 					}
-					else
+					else*/
 						Senterre_sans_fumee();
 				}
 
