@@ -92,7 +92,11 @@ public:
             { "saveall",          rbac::RBAC_PERM_COMMAND_SAVEALL,           true, &HandleSaveAllCommand,          "" },
             { "save",             rbac::RBAC_PERM_COMMAND_SAVE,             false, &HandleSaveCommand,             "" },
             { "setskill",         rbac::RBAC_PERM_COMMAND_SETSKILL,         false, &HandleSetSkillCommand,         "" },
-            { "showarea",         rbac::RBAC_PERM_COMMAND_SHOWAREA,         false, &HandleShowAreaCommand,         "" },
+
+			//Stitch commande pour conaitre les metiers d'une cible
+			{ "skills",             rbac::RBAC_PERM_COMMAND_PINFO,    false, &HandleSkillsInfoCommand,  "" },
+
+			{ "showarea",         rbac::RBAC_PERM_COMMAND_SHOWAREA,         false, &HandleShowAreaCommand,         "" },
             { "summon",           rbac::RBAC_PERM_COMMAND_SUMMON,           false, &HandleSummonCommand,           "" },
             { "unaura",           rbac::RBAC_PERM_COMMAND_UNAURA,           false, &HandleUnAuraCommand,           "" },
             { "unbindsight",      rbac::RBAC_PERM_COMMAND_UNBINDSIGHT,      false, HandleUnbindSightCommand,       "" },
@@ -1451,6 +1455,41 @@ public:
         return true;
     }
 
+	//Stitch commande pour conaitre les metiers d'une cible
+	static bool HandleSkillsInfoCommand(ChatHandler* handler, char const* /*args*/)
+	{
+		Player* target = handler->getSelectedPlayerOrSelf();
+		if (!target)
+		{
+			handler->SendSysMessage(LANG_NO_CHAR_SELECTED);
+			handler->SetSentErrorMessage(true);
+			return false;
+		}
+		static uint32 const ids[] = { 171,794,773,197,185,393,333,164,182,202,755,186,356,129,165 };
+		
+		//Stitch commande pour conaitre les metiers d'une cible
+		std::string msg = "GMASK:";
+		//std::string msg = "GMASK\t";
+
+		for (uint32 id : ids)
+			if (target->GetSkillValue(id))
+				
+				//Stitch commande pour conaitre les metiers d'une cible
+				msg += std::to_string(id) + ":" + std::to_string(target->GetPureMaxSkillValue(id)) + ",";
+				//msg += std::to_string(id) + ",";
+
+		//Stitch commande pour conaitre les metiers d'une cible
+		//Stitch TMP
+		TC_LOG_ERROR("server", "SKILLS msg=%s", msg.c_str());
+		//Player* me = handler->GetSession()->GetPlayer();
+		//me->Whisper(msg, LANG_ADDON, me);
+		handler->SendSysMessage(msg.c_str());
+
+
+		return true;
+	}
+
+
     static bool HandleSetSkillCommand(ChatHandler* handler, char const* args)
     {
         // number or [name] Shift-click form |color|Hskill:skill_id|h[name]|h|r
@@ -1492,9 +1531,22 @@ public:
 
         bool targetHasSkill = target->GetSkillValue(skill) != 0;
 
+		//Stitch commande pour conaitre les metiers d'une cible
+		if (level == 0)
+		{
+			target->SetSkill(skill, 0, 0, 0);
+			handler->PSendSysMessage(LANG_SET_SKILL, skill, skillLine->DisplayName_lang, handler->GetNameLink(target).c_str(), 0, 0);
+			return true;
+		}
+
+
         // If our target does not yet have the skill they are trying to add to them, the chosen level also becomes
         // the max level of the new profession.
         uint16 max = maxPureSkill ? atoul(maxPureSkill) : targetHasSkill ? target->GetPureMaxSkillValue(skill) : uint16(level);
+
+
+		//Stitch TMP
+		TC_LOG_ERROR("server", "SETSKILL skill=%d level=%d max=%u hasSkill=%d", skill, level, uint32(max), int(targetHasSkill));
 
         if (level <= 0 || level > max || max <= 0)
             return false;
@@ -1502,7 +1554,13 @@ public:
         // If the player has the skill, we get the current skill step. If they don't have the skill, we
         // add the skill to the player's book with step 1 (which is the first rank, in most cases something
         // like 'Apprentice <skill>'.
+		//Stitch TMP
+		TC_LOG_ERROR("server", "SETSKILL avant: alch=%u calli=%u", target->GetSkillValue(171), target->GetSkillValue(773));
+
         target->SetSkill(skill, targetHasSkill ? target->GetSkillStep(skill) : 1, level, max);
+		//Stitch TMP
+		TC_LOG_ERROR("server", "SETSKILL apres: alch=%u calli=%u", target->GetSkillValue(171), target->GetSkillValue(773));
+
         handler->PSendSysMessage(LANG_SET_SKILL, skill, skillLine->DisplayName_lang, handler->GetNameLink(target).c_str(), level, max);
         return true;
     }
