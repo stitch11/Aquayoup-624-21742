@@ -3229,7 +3229,25 @@ void Spell::EffectWeaponDmg(SpellEffIndex effIndex)
     // Add melee damage bonuses (also check for negative)
     uint32 damageBonusDone = m_caster->MeleeDamageBonusDone(unitTarget, eff_damage, m_attackType, m_spellInfo);
 
-    m_damage += unitTarget->MeleeDamageBonusTaken(m_caster, damageBonusDone, m_attackType, m_spellInfo);
+
+	//Stitch SPELL_EFFECT_WEAPON_DAMAGE x2 pour les mobs
+    //m_damage += unitTarget->MeleeDamageBonusTaken(m_caster, damageBonusDone, m_attackType, m_spellInfo);
+	uint32 effDmg = unitTarget->MeleeDamageBonusTaken(m_caster, damageBonusDone, m_attackType, m_spellInfo);
+
+	if (m_spellInfo->GetEffect(effIndex)->Effect == SPELL_EFFECT_WEAPON_DAMAGE)
+	{
+		const float WEAPON_DMG_MULT_PLAYER = 1.0f; // joueurs, pets, gardiens, totems
+		const float WEAPON_DMG_MULT_CREATURE = 1.0f; // mobs
+
+		if (m_caster->GetTypeId() == TYPEID_PLAYER || m_caster->IsControlledByPlayer())
+			effDmg = uint32(effDmg * WEAPON_DMG_MULT_PLAYER);
+		else
+			effDmg = uint32(effDmg * WEAPON_DMG_MULT_CREATURE);
+	}
+
+	m_damage += effDmg;
+
+
 
 	//Stitch FunRate FunDamageSpell
 	if (Player* player = m_caster->ToPlayer())
